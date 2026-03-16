@@ -185,6 +185,10 @@ The server also exposes docs as MCP resources:
 - `gamedev://prompts/code-rules` — AI code generation rules
 - `gamedev://prompts/monogame-arch` — MonoGame-specific rules
 
+## Landing Page
+
+View the project landing page at [sbenson2.github.io/gamedev-mcp-server](https://sbenson2.github.io/gamedev-mcp-server/) — or run it locally from the `site/` directory.
+
 ## License
 
 MIT

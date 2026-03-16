@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameDev MCP Server — AI-Powered Game Dev Knowledge</title>
+<meta name="description" content="An MCP server with 118 docs, 5 tools, and structured dev sessions for game development. Works with Claude Code, Cursor, Windsurf, and any MCP client.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Anybody:wght@100;400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   RESET & FOUNDATION
+   ═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #0a0a0f;
+  --bg-surface: #12121a;
+  --bg-elevated: #1a1a26;
+  --bg-card: #16161f;
+  --text-primary: #e8e6e3;
+  --text-secondary: #8a8899;
+  --text-muted: #5a5868;
+  --accent-fire: #ff6a35;
+  --accent-fire-dim: #cc4a1a;
+  --accent-water: #35b8ff;
+  --accent-wind: #7aff8a;
+  --accent-earth: #d4a057;
+  --accent-lightning: #c89aff;
+  --accent-ice: #8aefff;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-glow: rgba(255, 106, 53, 0.15);
+  --font-display: 'Anybody', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'DM Mono', 'SF Mono', monospace;
+  --grid-gap: 1px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-fire-dim) var(--bg-deep);
+}
+
+body {
+  font-family: var(--font-mono);
+  font-weight: 300;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent-fire);
+  color: var(--bg-deep);
+}
+
+a {
+  color: var(--accent-fire);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover { color: var(--accent-water); }
+
+/* ═══════════════════════════════════════════════
+   NOISE TEXTURE OVERLAY
+   ═══════════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════ */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+}
+
+section {
+  padding: clamp(4rem, 8vw, 8rem) 0;
+}
+
+/* ═══════════════════════════════════════════════
+   TOPBAR
+   ═══════════════════════════════════════════════ */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1rem 0;
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(20px) saturate(1.2);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: transform 0.3s;
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-logo {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.topbar-logo span { color: var(--accent-fire); }
+
+.topbar-nav {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.topbar-nav a {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+.topbar-nav a:hover { color: var(--text-primary); }
+
+.topbar-cta {
+  font-size: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--accent-fire);
+  color: var(--accent-fire);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.topbar-cta:hover {
+  background: var(--accent-fire);
+  color: var(--bg-deep);
+}
+
+/* ═══════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding-top: 6rem;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-fire);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent-fire);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  max-width: 14ch;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s forwards;
+}
+
+.hero h1 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent-fire);
+}
+
+.hero-sub {
+  margin-top: 2rem;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  color: var(--text-secondary);
+  max-width: 50ch;
+  line-height: 1.8;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s forwards;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-subtle);
+  opacity: 0;
+  animation: fadeUp 0.8s 0.8s forwards;
+}
+
+.hero-stat-value {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2rem;
+  color: var(--text-primary);
+}
+
+.hero-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.25rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 1s forwards;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: var(--accent-fire);
+  color: var(--bg-deep);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary:hover {
+  background: #ff8055;
+  color: var(--bg-deep);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION SHARED
+   ═══════════════════════════════════════════════ */
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-fire);
+  margin-bottom: 1.5rem;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.section-heading em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.section-sub {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  max-width: 55ch;
+  margin-bottom: 3rem;
+  line-height: 1.8;
+}
+
+/* ═══════════════════════════════════════════════
+   TOOLS SECTION
+   ═══════════════════════════════════════════════ */
+.tools {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+  margin-top: 3rem;
+}
+
+.tool-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-fire);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+  z-index: 1;
+}
+
+.tool-card:hover::before {
+  transform: scaleX(1);
+}
+
+.tool-card:hover {
+  background: var(--bg-elevated);
+}
+
+.tool-name {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent-fire);
+  margin-bottom: 0.75rem;
+}
+
+.tool-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.tool-usage {
+  margin-top: 1rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════
+   CLIENTS SECTION
+   ═══════════════════════════════════════════════ */
+.clients {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--grid-gap);
+}
+
+.client-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2rem;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.client-card:hover {
+  background: var(--bg-elevated);
+}
+
+.client-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.client-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.client-desc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════════
+   SETUP SECTION
+   ═══════════════════════════════════════════════ */
+.setup {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.setup-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border: 1px solid var(--border-subtle);
+  border-bottom: none;
+  width: fit-content;
+}
+
+.setup-tab {
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: none;
+  border-right: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.setup-tab:last-child { border-right: none; }
+.setup-tab:hover { color: var(--text-secondary); }
+
+.setup-tab.active {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.setup-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-fire);
+}
+
+.setup-code-wrap {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  position: relative;
+}
+
+.setup-code-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.setup-code {
+  padding: 1.5rem;
+  font-size: 0.8rem;
+  line-height: 1.8;
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 2;
+  color: var(--text-secondary);
+}
+
+.setup-code .kw { color: var(--accent-lightning); }
+.setup-code .str { color: var(--accent-wind); }
+.setup-code .key { color: var(--accent-water); }
+.setup-code .cm { color: var(--text-muted); }
+
+.copy-btn {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.3rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent-fire);
+  color: var(--accent-fire);
+}
+
+/* ═══════════════════════════════════════════════
+   MODULES SECTION
+   ═══════════════════════════════════════════════ */
+.modules {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--grid-gap);
+}
+
+.module-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2.5rem;
+  transition: background 0.2s;
+  position: relative;
+}
+
+.module-card:hover {
+  background: var(--bg-elevated);
+}
+
+.module-card.active-module {
+  border-color: var(--border-glow);
+}
+
+.module-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  padding: 0.2rem 0.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.module-badge.available {
+  background: rgba(255, 106, 53, 0.12);
+  color: var(--accent-fire);
+}
+
+.module-badge.coming {
+  background: rgba(138, 136, 153, 0.12);
+  color: var(--text-muted);
+}
+
+.module-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.module-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.module-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.module-tag {
+  font-size: 0.6rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════
+   GENRE LOOKUP PREVIEW
+   ═══════════════════════════════════════════════ */
+.genre-section {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.genre-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+}
+
+.genre-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.genre-card:hover {
+  background: var(--bg-elevated);
+}
+
+.genre-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.genre-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.genre-count {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.genre-systems {
+  padding: 1.5rem 2rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.genre-systems li {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.genre-systems li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent-fire);
+}
+
+.genre-systems li.critical::before {
+  color: var(--accent-fire);
+}
+
+.genre-systems li.recommended::before {
+  content: '+';
+  color: var(--accent-water);
+}
+
+/* ═══════════════════════════════════════════════
+   PROVEN SECTION
+   ═══════════════════════════════════════════════ */
+.proven {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.proven-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.proven h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.proven h2 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.proven p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.proven-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gap);
+}
+
+.proven-stat {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2rem;
+  text-align: center;
+}
+
+.proven-stat-val {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.5rem;
+  color: var(--accent-fire);
+}
+
+.proven-stat-desc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════ */
+.footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 4rem 0;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer-left strong {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.footer-right {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.75rem;
+}
+
+.footer-right a {
+  color: var(--text-muted);
+}
+.footer-right a:hover { color: var(--text-primary); }
+
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .tools-grid { grid-template-columns: repeat(2, 1fr); }
+  .client-grid { grid-template-columns: repeat(2, 1fr); }
+  .genre-grid { grid-template-columns: repeat(2, 1fr); }
+  .module-grid { grid-template-columns: 1fr; }
+  .proven-inner { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+@media (max-width: 768px) {
+  .topbar-nav { display: none; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .client-grid { grid-template-columns: 1fr; }
+  .genre-grid { grid-template-columns: 1fr; }
+  .hero-stats { flex-direction: column; gap: 1.5rem; }
+  .hero-actions { flex-direction: column; }
+  .setup-tabs { flex-wrap: wrap; }
+  .proven-stats-grid { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ TOPBAR ═══════════════════ -->
+<nav class="topbar">
+  <div class="container topbar-inner">
+    <div class="topbar-logo">GameDev<span>MCP</span></div>
+    <ul class="topbar-nav">
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#setup">Setup</a></li>
+      <li><a href="#modules">Modules</a></li>
+      <li><a href="#genres">Genres</a></li>
+      <li><a href="#clients">Clients</a></li>
+    </ul>
+    <a href="https://github.com/sbenson2/gamedev-mcp-server" class="topbar-cta">View on GitHub</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="container hero-content">
+    <div class="hero-badge">MCP Server &middot; Model Context Protocol</div>
+    <h1>GameDev <em>knowledge</em> at your fingertips</h1>
+    <p class="hero-sub">
+      An AI-powered game development knowledge server. 118 structured docs, 5 MCP tools,
+      dev session co-pilot, and genre-specific system mapping &mdash; all connected to your
+      AI coding tool via the Model Context Protocol.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-value">118</div>
+        <div class="hero-stat-label">Documents</div>
+      </div>
+      <div>
+        <div class="hero-stat-value">5</div>
+        <div class="hero-stat-label">MCP Tools</div>
+      </div>
+      <div>
+        <div class="hero-stat-value">2</div>
+        <div class="hero-stat-label">Modules</div>
+      </div>
+      <div>
+        <div class="hero-stat-value">0</div>
+        <div class="hero-stat-label">External Deps</div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a href="#setup" class="btn-primary">Get Started &darr;</a>
+      <a href="#tools" class="btn-secondary">Explore Tools</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ TOOLS ═══════════════════ -->
+<section class="tools" id="tools">
+  <div class="container">
+    <div class="section-label reveal">MCP Tools</div>
+    <div class="section-heading reveal">5 tools. <em>Zero</em> configuration.</div>
+    <p class="section-sub reveal">Every tool is available the moment you connect. Search docs, start dev sessions, look up genre systems &mdash; all through natural language in your AI coding tool.</p>
+
+    <div class="tools-grid reveal">
+      <div class="tool-card">
+        <div class="tool-name">search_docs</div>
+        <div class="tool-desc">TF-IDF full-text search across all game dev docs. Filter by category, module, or let it find the best match. Returns ranked results with relevance scores.</div>
+        <div class="tool-usage">"search for camera smoothing techniques"</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">get_doc</div>
+        <div class="tool-desc">Fetch a specific document by ID. Get the full content of any guide, reference, or concept doc instantly. Supports both numeric (G52) and slug (camera-theory) IDs.</div>
+        <div class="tool-usage">"get doc G1" &middot; "get camera-theory"</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">list_docs</div>
+        <div class="tool-desc">Browse all available documentation organized by category and module. See what's available before diving in. Filter by core, engine-specific, or all.</div>
+        <div class="tool-usage">"list all monogame guides"</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">session</div>
+        <div class="tool-desc">Structured dev session co-pilot. Start a session, then use workflows: plan your architecture, make decisions, scope features, debug issues, or build new systems.</div>
+        <div class="tool-usage">"start session" &middot; "plan" &middot; "debug"</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">genre_lookup</div>
+        <div class="tool-desc">Instant genre-to-systems mapping. Input a genre (platformer, roguelike, metroidvania, etc.) and get back the required systems, recommended additions, and starter checklists.</div>
+        <div class="tool-usage">"look up roguelike genre systems"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CLIENTS ═══════════════════ -->
+<section class="clients" id="clients">
+  <div class="container">
+    <div class="section-label reveal">Supported Clients</div>
+    <div class="section-heading reveal">Works with <em>your</em> tools</div>
+    <p class="section-sub reveal">Any tool that speaks the Model Context Protocol can connect. Here are the ones we've tested and documented.</p>
+
+    <div class="client-grid reveal">
+      <div class="client-card">
+        <span class="client-icon">&gt;_</span>
+        <div class="client-name">Claude Code</div>
+        <div class="client-desc">.mcp.json in project root</div>
+      </div>
+      <div class="client-card">
+        <span class="client-icon">&laquo;&raquo;</span>
+        <div class="client-name">Cursor</div>
+        <div class="client-desc">.cursor/mcp.json</div>
+      </div>
+      <div class="client-card">
+        <span class="client-icon">~</span>
+        <div class="client-name">Windsurf</div>
+        <div class="client-desc">~/.windsurf/mcp.json</div>
+      </div>
+      <div class="client-card">
+        <span class="client-icon">&clubs;</span>
+        <div class="client-name">Claude Desktop</div>
+        <div class="client-desc">claude_desktop_config.json</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SETUP ═══════════════════ -->
+<section class="setup" id="setup">
+  <div class="container">
+    <div class="section-label reveal">Quick Setup</div>
+    <div class="section-heading reveal">Connected in <em>30 seconds</em></div>
+    <p class="section-sub reveal">Add the server config to your tool's MCP configuration file. Set GAMEDEV_MODULES to control which engine-specific docs are loaded.</p>
+
+    <div class="reveal">
+      <div class="setup-tabs">
+        <button class="setup-tab active" data-target="claude-code">Claude Code</button>
+        <button class="setup-tab" data-target="cursor">Cursor</button>
+        <button class="setup-tab" data-target="windsurf">Windsurf</button>
+        <button class="setup-tab" data-target="claude-desktop">Claude Desktop</button>
+      </div>
+
+      <div class="setup-code-wrap">
+        <div class="setup-code-header">
+          <span id="setupFileName">.mcp.json</span>
+          <button class="copy-btn" id="copyBtn">Copy</button>
+        </div>
+        <div class="setup-code" id="setupCode"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MODULES ═══════════════════ -->
+<section class="modules" id="modules">
+  <div class="container">
+    <div class="section-label reveal">Module System</div>
+    <div class="section-heading reveal">Core knowledge. <em>Engine</em> specifics.</div>
+    <p class="section-sub reveal">The core module provides engine-agnostic game dev knowledge. Engine modules add implementation-specific guides, architecture docs, and library references.</p>
+
+    <div class="module-grid reveal">
+      <div class="module-card active-module">
+        <span class="module-badge available">Available</span>
+        <div class="module-name">core</div>
+        <div class="module-desc">Engine-agnostic game development knowledge. Design fundamentals, programming patterns, algorithms, project management, AI workflow, and universal concepts like camera systems, physics, pathfinding.</div>
+        <div class="module-tags">
+          <span class="module-tag">Game Design</span>
+          <span class="module-tag">Patterns</span>
+          <span class="module-tag">Algorithms</span>
+          <span class="module-tag">Project Mgmt</span>
+          <span class="module-tag">AI Workflow</span>
+          <span class="module-tag">Session Co-pilot</span>
+        </div>
+      </div>
+      <div class="module-card active-module">
+        <span class="module-badge available">Available</span>
+        <div class="module-name">monogame-arch</div>
+        <div class="module-desc">MonoGame + Arch ECS implementation guides. 63 step-by-step guides (G1&ndash;G63), architecture overview, library stack reference, project structure, and engine-specific code patterns.</div>
+        <div class="module-tags">
+          <span class="module-tag">MonoGame</span>
+          <span class="module-tag">Arch ECS</span>
+          <span class="module-tag">63 Guides</span>
+          <span class="module-tag">C#</span>
+          <span class="module-tag">HLSL</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <span class="module-badge coming">Planned</span>
+        <div class="module-name">godot</div>
+        <div class="module-desc">Godot 4.x implementation guides. GDScript and C# patterns, scene tree architecture, signal-based communication, and Godot-specific tooling.</div>
+        <div class="module-tags">
+          <span class="module-tag">Godot 4</span>
+          <span class="module-tag">GDScript</span>
+          <span class="module-tag">Scene Tree</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <span class="module-badge coming">Planned</span>
+        <div class="module-name">unity</div>
+        <div class="module-desc">Unity implementation guides. MonoBehaviour patterns, ECS (DOTS), scriptable objects, editor tooling, and Unity-specific performance guidance.</div>
+        <div class="module-tags">
+          <span class="module-tag">Unity</span>
+          <span class="module-tag">C#</span>
+          <span class="module-tag">DOTS</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <span class="module-badge coming">Planned</span>
+        <div class="module-name">bevy</div>
+        <div class="module-desc">Bevy engine implementation guides. Rust ECS patterns, plugin architecture, asset management, and systems scheduling.</div>
+        <div class="module-tags">
+          <span class="module-tag">Bevy</span>
+          <span class="module-tag">Rust</span>
+          <span class="module-tag">ECS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ GENRE LOOKUP ═══════════════════ -->
+<section class="genre-section" id="genres">
+  <div class="container">
+    <div class="section-label reveal">Genre Lookup</div>
+    <div class="section-heading reveal">Genre &rarr; <em>systems</em> mapping</div>
+    <p class="section-sub reveal">Tell the server your genre and get back exactly which systems you need to build. Critical systems, recommended additions, and starter checklists &mdash; instantly.</p>
+
+    <div class="genre-grid reveal">
+      <div class="genre-card">
+        <div class="genre-header">
+          <span class="genre-name">Platformer</span>
+          <span class="genre-count">8 systems</span>
+        </div>
+        <ul class="genre-systems">
+          <li class="critical">Character controller + physics</li>
+          <li class="critical">Collision detection (AABB/SAT)</li>
+          <li class="critical">Camera follow + smoothing</li>
+          <li class="critical">Tilemap + level loading</li>
+          <li class="critical">Game feel (coyote time, buffering)</li>
+          <li class="recommended">Particle effects</li>
+          <li class="recommended">Screen shake + juice</li>
+          <li class="recommended">Parallax scrolling</li>
+        </ul>
+      </div>
+      <div class="genre-card">
+        <div class="genre-header">
+          <span class="genre-name">Roguelike</span>
+          <span class="genre-count">9 systems</span>
+        </div>
+        <ul class="genre-systems">
+          <li class="critical">Procedural generation</li>
+          <li class="critical">Turn-based / real-time loop</li>
+          <li class="critical">Inventory + item system</li>
+          <li class="critical">FOV / fog of war</li>
+          <li class="critical">Permadeath + progression</li>
+          <li class="critical">AI / pathfinding</li>
+          <li class="recommended">Loot tables + RNG</li>
+          <li class="recommended">Status effects</li>
+          <li class="recommended">Mini-map</li>
+        </ul>
+      </div>
+      <div class="genre-card">
+        <div class="genre-header">
+          <span class="genre-name">Metroidvania</span>
+          <span class="genre-count">8 systems</span>
+        </div>
+        <ul class="genre-systems">
+          <li class="critical">Interconnected world map</li>
+          <li class="critical">Ability-gated progression</li>
+          <li class="critical">Character controller (extended)</li>
+          <li class="critical">Save system + checkpoints</li>
+          <li class="critical">Boss encounters</li>
+          <li class="recommended">Map reveal system</li>
+          <li class="recommended">Backtracking shortcuts</li>
+          <li class="recommended">Sequence break detection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ TOOLKIT LINK ═══════════════════ -->
+<section class="proven" id="toolkit">
+  <div class="container">
+    <div class="proven-inner reveal">
+      <div>
+        <div class="section-label">Built On</div>
+        <h2>Universal 2D Engine <em>Toolkit</em></h2>
+        <p>This MCP server is powered by the documentation from the Universal 2D Engine Toolkit &mdash;
+          a complete 2D game development knowledge base with battle-tested guides, production-grade
+          shader code, and a composed library stack for MonoGame + Arch ECS.</p>
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="https://github.com/sbenson2/Universal-2D-Engine-Toolkit" class="btn-primary">Toolkit Repo</a>
+          <a href="https://sbenson2.github.io/Universal-2D-Engine-Toolkit/" class="btn-secondary">Toolkit Landing Page</a>
+        </div>
+      </div>
+      <div class="proven-stats-grid">
+        <div class="proven-stat">
+          <div class="proven-stat-val">118</div>
+          <div class="proven-stat-desc">Total Docs</div>
+        </div>
+        <div class="proven-stat">
+          <div class="proven-stat-val">63</div>
+          <div class="proven-stat-desc">Impl. Guides</div>
+        </div>
+        <div class="proven-stat">
+          <div class="proven-stat-val">13</div>
+          <div class="proven-stat-desc">Genre Mappings</div>
+        </div>
+        <div class="proven-stat">
+          <div class="proven-stat-val">5</div>
+          <div class="proven-stat-desc">Session Workflows</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-left">
+      <strong>GameDev MCP Server</strong> &mdash; AI-powered game development knowledge
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/sbenson2/gamedev-mcp-server">GitHub</a>
+      <a href="https://github.com/sbenson2/Universal-2D-Engine-Toolkit">Toolkit</a>
+      <a href="https://modelcontextprotocol.io">MCP Spec</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+// ═══════════════════════════════════════════════════
+// SCROLL REVEAL
+// ═══════════════════════════════════════════════════
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => revealObserver.observe(el));
+
+// ═══════════════════════════════════════════════════
+// HERO CANVAS — subtle particle field
+// ═══════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  function init() {
+    resize();
+    particles = [];
+    const count = Math.floor((w * h) / 8000);
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.5 + 0.5,
+        a: Math.random() * 0.3 + 0.05
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = w;
+      if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h;
+      if (p.y > h) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 106, 53, ${p.a})`;
+      ctx.fill();
+    }
+
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(255, 106, 53, ${0.06 * (1 - dist / 120)})`;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+  window.addEventListener('resize', () => { resize(); });
+})();
+
+// ═══════════════════════════════════════════════════
+// SETUP TABS — config code switching
+// ═══════════════════════════════════════════════════
+const setupConfigs = {
+  'claude-code': {
+    file: '.mcp.json',
+    code: `{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"gamedev"</span>: {
+      <span class="key">"command"</span>: <span class="str">"node"</span>,
+      <span class="key">"args"</span>: [<span class="str">"/path/to/gamedev-mcp-server/dist/index.js"</span>],
+      <span class="key">"env"</span>: {
+        <span class="key">"GAMEDEV_MODULES"</span>: <span class="str">"monogame-arch"</span>
+      }
+    }
+  }
+}`,
+    raw: `{
+  "mcpServers": {
+    "gamedev": {
+      "command": "node",
+      "args": ["/path/to/gamedev-mcp-server/dist/index.js"],
+      "env": {
+        "GAMEDEV_MODULES": "monogame-arch"
+      }
+    }
+  }
+}`
+  },
+  'cursor': {
+    file: '.cursor/mcp.json',
+    code: `{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"gamedev"</span>: {
+      <span class="key">"command"</span>: <span class="str">"node"</span>,
+      <span class="key">"args"</span>: [<span class="str">"/path/to/gamedev-mcp-server/dist/index.js"</span>],
+      <span class="key">"env"</span>: {
+        <span class="key">"GAMEDEV_MODULES"</span>: <span class="str">"monogame-arch"</span>
+      }
+    }
+  }
+}`,
+    raw: `{
+  "mcpServers": {
+    "gamedev": {
+      "command": "node",
+      "args": ["/path/to/gamedev-mcp-server/dist/index.js"],
+      "env": {
+        "GAMEDEV_MODULES": "monogame-arch"
+      }
+    }
+  }
+}`
+  },
+  'windsurf': {
+    file: '~/.windsurf/mcp.json',
+    code: `{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"gamedev"</span>: {
+      <span class="key">"command"</span>: <span class="str">"node"</span>,
+      <span class="key">"args"</span>: [<span class="str">"/path/to/gamedev-mcp-server/dist/index.js"</span>],
+      <span class="key">"env"</span>: {
+        <span class="key">"GAMEDEV_MODULES"</span>: <span class="str">"monogame-arch"</span>
+      }
+    }
+  }
+}`,
+    raw: `{
+  "mcpServers": {
+    "gamedev": {
+      "command": "node",
+      "args": ["/path/to/gamedev-mcp-server/dist/index.js"],
+      "env": {
+        "GAMEDEV_MODULES": "monogame-arch"
+      }
+    }
+  }
+}`
+  },
+  'claude-desktop': {
+    file: 'claude_desktop_config.json',
+    code: `{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"gamedev"</span>: {
+      <span class="key">"command"</span>: <span class="str">"node"</span>,
+      <span class="key">"args"</span>: [<span class="str">"/path/to/gamedev-mcp-server/dist/index.js"</span>],
+      <span class="key">"env"</span>: {
+        <span class="key">"GAMEDEV_MODULES"</span>: <span class="str">"monogame-arch"</span>
+      }
+    }
+  }
+}`,
+    raw: `{
+  "mcpServers": {
+    "gamedev": {
+      "command": "node",
+      "args": ["/path/to/gamedev-mcp-server/dist/index.js"],
+      "env": {
+        "GAMEDEV_MODULES": "monogame-arch"
+      }
+    }
+  }
+}`
+  }
+};
+
+function setActiveSetup(target) {
+  document.querySelectorAll('.setup-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.setup-tab[data-target="${target}"]`).classList.add('active');
+  const config = setupConfigs[target];
+  document.getElementById('setupFileName').textContent = config.file;
+  document.getElementById('setupCode').innerHTML = config.code;
+}
+
+document.querySelectorAll('.setup-tab').forEach(tab => {
+  tab.addEventListener('click', () => setActiveSetup(tab.dataset.target));
+});
+
+// Initialize
+setActiveSetup('claude-code');
+
+// Copy button
+document.getElementById('copyBtn').addEventListener('click', function() {
+  const activeTab = document.querySelector('.setup-tab.active').dataset.target;
+  const raw = setupConfigs[activeTab].raw;
+  navigator.clipboard.writeText(raw).then(() => {
+    this.textContent = 'Copied!';
+    setTimeout(() => { this.textContent = 'Copy'; }, 2000);
+  });
+});
+</script>
+</body>
+</html>
