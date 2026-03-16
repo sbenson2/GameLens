@@ -10,6 +10,15 @@ import { handleGetDoc } from "./tools/get-doc.js";
 import { handleListDocs } from "./tools/list-docs.js";
 import { handleSession } from "./tools/session.js";
 import { handleGenreLookup } from "./tools/genre-lookup.js";
+import { validateLicense } from "./license.js";
+import {
+  Tier,
+  isToolAllowed,
+  isModuleAllowed,
+  getTierFeatures,
+  PRO_GATE_MESSAGE,
+  UPGRADE_URL,
+} from "./tiers.js";
 
 function findDocsRoot(): string {
   // Try to find docs relative to __dirname (works in CJS)
@@ -37,6 +46,12 @@ const SESSION_ACTIONS = [
   "feature", "debug", "scope", "status",
 ] as const;
 
+type ToolResult = { content: Array<{ type: "text"; text: string }> };
+
+function proGateResponse(): ToolResult {
+  return { content: [{ type: "text", text: PRO_GATE_MESSAGE }] };
+}
+
 export async function createServer() {
   const activeModules = (process.env.GAMEDEV_MODULES ?? "monogame-arch")
     .split(",")
@@ -51,9 +66,14 @@ export async function createServer() {
   searchEngine.index(docStore.getAllDocs());
 
   const allDocs = docStore.getAllDocs();
+
+  // Validate license
+  const { tier, message: licenseMessage } = await validateLicense();
+
   console.error(
     `[gamedev-mcp] Loaded ${allDocs.length} docs from ${docsRoot} (modules: ${activeModules.join(", ")})`
   );
+  console.error(licenseMessage);
 
   const server = new McpServer({
     name: "gamedev-mcp-server",
@@ -70,7 +90,25 @@ export async function createServer() {
       category: z.enum(CATEGORIES).optional().describe("Filter by category"),
       module: z.string().optional().describe("Filter by module (e.g. 'core', 'monogame-arch')"),
     },
-    async (args) => handleSearchDocs(args, docStore, searchEngine)
+    async (args) => {
+      const access = isToolAllowed(tier, "search_docs");
+      if (access === false) return proGateResponse();
+
+      // Free tier: force module to 'core'
+      if (access === "limited") {
+        if (args.module && args.module !== "core") {
+          return {
+            content: [{
+              type: "text",
+              text: `Searching non-core modules requires a Pro license. ${PRO_GATE_MESSAGE}`,
+            }],
+          };
+        }
+        args.module = "core";
+      }
+
+      return handleSearchDocs(args, docStore, searchEngine);
+    }
   );
 
   server.tool(
@@ -79,7 +117,29 @@ export async function createServer() {
     {
       id: z.string().describe("Doc ID (e.g. 'G52', 'E6', 'P0', 'camera-theory')"),
     },
-    async (args) => handleGetDoc(args, docStore)
+    async (args) => {
+      const access = isToolAllowed(tier, "get_doc");
+      if (access === false) return proGateResponse();
+
+      if (access === "limited") {
+        // Check if doc belongs to a non-core module
+        const doc =
+          docStore.getDoc(args.id) ??
+          docStore.getAllDocs().find(
+            (d) => d.id.toLowerCase() === args.id.toLowerCase()
+          );
+        if (doc && !isModuleAllowed(tier, doc.module)) {
+          return {
+            content: [{
+              type: "text",
+              text: `The doc "${args.id}" is part of the ${doc.module} module, which requires a Pro license. ${PRO_GATE_MESSAGE}`,
+            }],
+          };
+        }
+      }
+
+      return handleGetDoc(args, docStore);
+    }
   );
 
   server.tool(
@@ -98,7 +158,10 @@ export async function createServer() {
     {
       action: z.enum(SESSION_ACTIONS).describe("Session action to perform"),
     },
-    async (args) => handleSession(args)
+    async (args) => {
+      if (!isToolAllowed(tier, "session")) return proGateResponse();
+      return handleSession(args);
+    }
   );
 
   server.tool(
@@ -107,7 +170,76 @@ export async function createServer() {
     {
       genre: z.string().describe("Game genre (e.g. 'platformer', 'roguelike', 'metroidvania', 'tower-defense', 'rpg')"),
     },
-    async (args) => handleGenreLookup(args)
+    async (args) => {
+      const access = isToolAllowed(tier, "genre_lookup");
+      if (access === false) return proGateResponse();
+
+      const result = handleGenreLookup(args);
+
+      // Free tier: strip recommended docs and system mappings
+      if (access === "limited") {
+        const text = result.content[0].text;
+        // Keep genre name, description, and starter checklist but strip system mappings and doc refs
+        const lines = text.split("\n");
+        const filtered: string[] = [];
+        let skip = false;
+        for (const line of lines) {
+          if (line.startsWith("## Required Systems")) {
+            filtered.push(line);
+            filtered.push("");
+            filtered.push(`_Full system mappings require a Pro license. ${PRO_GATE_MESSAGE}_`);
+            filtered.push("");
+            skip = true;
+            continue;
+          }
+          if (line.startsWith("## Recommended Docs")) {
+            filtered.push(line);
+            filtered.push("");
+            filtered.push(`_Doc recommendations require a Pro license. ${PRO_GATE_MESSAGE}_`);
+            filtered.push("");
+            skip = true;
+            continue;
+          }
+          if (line.startsWith("## ")) {
+            skip = false;
+          }
+          if (!skip) {
+            filtered.push(line);
+          }
+        }
+        return { content: [{ type: "text", text: filtered.join("\n") }] };
+      }
+
+      return result;
+    }
+  );
+
+  server.tool(
+    "license_info",
+    "Show current license tier, what tools and modules are unlocked, and upgrade URL.",
+    {},
+    async () => {
+      const features = getTierFeatures(tier);
+
+      let output = `# License Info\n\n`;
+      output += `**Current tier:** ${tier === "pro" ? "Pro" : "Free"}\n`;
+      output += `**Description:** ${features.description}\n\n`;
+      output += `## Tool Access\n\n`;
+      for (const [tool, status] of Object.entries(features.tools)) {
+        output += `- **${tool}**: ${status}\n`;
+      }
+      output += `\n## Accessible Modules\n\n`;
+      for (const mod of features.modules) {
+        output += `- ${mod}\n`;
+      }
+
+      if (tier === "free") {
+        output += `\n---\n\n**Upgrade to Pro:** ${UPGRADE_URL}\n`;
+        output += `Set your license key via \`GAMEDEV_MCP_LICENSE\` env var or \`~/.gamedev-mcp/license.json\`\n`;
+      }
+
+      return { content: [{ type: "text", text: output }] };
+    }
   );
 
   // --- Resources ---

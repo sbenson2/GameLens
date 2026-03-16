@@ -21,13 +21,14 @@ Future modules: `godot`, `unity`, `bevy`, etc.
 
 ## MCP Tools
 
-| Tool | Description |
-|------|-------------|
-| `search_docs` | Search across all docs with optional category/module filters |
-| `get_doc` | Fetch a specific doc by ID (e.g. `G52`, `camera-theory`) |
-| `list_docs` | Browse available docs by category and module |
-| `session` | Dev session co-pilot (start, plan, decide, feature, debug, scope) |
-| `genre_lookup` | Genre → systems mapping (platformer, roguelike, metroidvania, etc.) |
+| Tool | Free | Pro | Description |
+|------|------|-----|-------------|
+| `list_docs` | Yes | Yes | Browse available docs by category and module |
+| `search_docs` | Core only | All modules | Search across docs with optional category/module filters |
+| `get_doc` | Core only | All modules | Fetch a specific doc by ID (e.g. `G52`, `camera-theory`) |
+| `session` | — | Yes | Dev session co-pilot (start, plan, decide, feature, debug, scope) |
+| `genre_lookup` | Limited | Full | Genre → systems mapping (platformer, roguelike, metroidvania, etc.) |
+| `license_info` | Yes | Yes | Show current tier, unlocked features, and upgrade URL |
 
 ## Installation
 
@@ -126,6 +127,39 @@ Add to `claude_desktop_config.json`:
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `GAMEDEV_MODULES` | `monogame-arch` | Comma-separated list of active engine modules |
+| `GAMEDEV_MCP_LICENSE` | — | Pro license key (from [gamedev-mcp.lemonsqueezy.com](https://gamedev-mcp.lemonsqueezy.com)) |
+| `GAMEDEV_MCP_DEV` | — | Set to `true` to skip license validation (local dev only) |
+
+### License Key Setup
+
+**Option 1:** Set the `GAMEDEV_MCP_LICENSE` env var in your MCP config:
+
+```json
+{
+  "mcpServers": {
+    "gamedev": {
+      "command": "npx",
+      "args": ["gamedev-mcp-server"],
+      "env": {
+        "GAMEDEV_MODULES": "monogame-arch",
+        "GAMEDEV_MCP_LICENSE": "your-license-key"
+      }
+    }
+  }
+}
+```
+
+**Option 2:** Create a config file at `~/.gamedev-mcp/license.json`:
+
+```json
+{
+  "key": "your-license-key"
+}
+```
+
+The server validates the key against LemonSqueezy on startup and caches the result for 24 hours. If offline, a cached validation within 7 days is accepted. Without a valid key, the server runs in free tier (it never crashes).
+
+See [PRICING.md](./PRICING.md) for a full tier comparison.
 
 ### Module Selection
 

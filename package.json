@@ -1,7 +1,7 @@
 {
   "name": "gamedev-mcp-server",
   "version": "1.0.0",
-  "description": "MCP server for game development knowledge, session workflows, and engine-specific guidance",
+  "description": "MCP server for game development knowledge, session workflows, and engine-specific guidance. Free core docs + Pro tier for full access.",
   "main": "dist/index.js",
   "bin": {
     "gamedev-mcp-server": "dist/index.js"
