@@ -1,0 +1,40 @@
+{
+  "name": "gamedev-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for game development knowledge, session workflows, and engine-specific guidance",
+  "main": "dist/index.js",
+  "bin": {
+    "gamedev-mcp-server": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "gamedev",
+    "game-development",
+    "monogame",
+    "ecs",
+    "claude",
+    "cursor",
+    "windsurf"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
