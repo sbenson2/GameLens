@@ -1,164 +1,327 @@
 # Input Handling -- Theory & Concepts
 
-This document covers engine-agnostic input handling theory for games. For engine-specific implementations, see the relevant engine module.
+This document covers engine-agnostic input handling theory, including input abstraction, buffering, rebinding, dead zones, and multi-device support. Pseudocode is used throughout. For engine-specific implementations, see the relevant engine module.
 
 ---
 
 ## Input Abstraction Layer
 
-Map physical inputs to game actions. This decouples gameplay code from specific hardware:
+The most important pattern in input handling: never let game logic reference physical inputs directly. Map physical inputs to game actions.
 
 ```
-Game Actions:    Jump, Attack, Interact, Pause, MoveLeft, MoveRight
-Physical Inputs: Space, Z, E, Escape, Left Arrow, Right Arrow, Gamepad A, etc.
+enum GameAction:
+    Jump, Attack, Interact, Pause, MoveLeft, MoveRight
+
+input_map = {
+    Jump:     [Keyboard.Space, Gamepad.ButtonA],
+    Attack:   [Keyboard.Z, Mouse.LeftButton, Gamepad.ButtonX],
+    Interact: [Keyboard.E, Gamepad.ButtonY],
+    Pause:    [Keyboard.Escape, Gamepad.Start],
+}
+
+function is_pressed(action):
+    for binding in input_map[action]:
+        if binding.just_pressed():
+            return true
+    return false
 ```
 
-Each game action maps to one or more physical inputs. The gameplay code only queries actions, never raw keys.
-
-### Benefits
-
-- Rebinding is trivial -- change the mapping, not the gameplay code
-- Multi-device support -- keyboard and gamepad share the same action queries
-- Clean gameplay code -- `if action_pressed(Jump)` instead of `if key_pressed(Space) or gamepad_pressed(A)`
+**Benefits:**
+- Game logic is device-agnostic -- works identically for keyboard, gamepad, touch
+- Rebinding only changes the map, not gameplay code
+- Multiple physical inputs can trigger the same action (OR combinator)
+- Compound inputs can require simultaneous presses (AND combinator)
 
 ---
 
 ## Edge Detection
 
-| Method | Meaning |
-|--------|---------|
-| **Pressed** | Just pressed this frame (rising edge) |
-| **Released** | Just released this frame (falling edge) |
-| **Held** | Currently held down |
-| **HeldOnly** | Held but not just pressed (excludes the press frame) |
+Raw input state (held/not held) is insufficient. Games need edge detection:
 
-Edge detection requires comparing the current frame's input state with the previous frame's state.
+- **Pressed** -- just pressed this frame (rising edge). Use for jumps, attacks, menu confirms.
+- **Released** -- just released this frame (falling edge). Use for variable-height jumps, charged attacks.
+- **Held** -- currently held down. Use for movement, aiming, sprinting.
+- **HeldOnly** -- held but not just pressed. Distinguishes sustained input from the initial press.
+
+```
+function update_input_state():
+    previous_state = current_state
+    current_state = poll_hardware()
+
+    pressed  = current_state AND NOT previous_state
+    released = NOT current_state AND previous_state
+    held     = current_state
+```
 
 ---
 
 ## Input Buffering
 
-Store input for a short window so actions are not lost if pressed slightly early. Essential for responsive game feel.
+Input buffering stores recent inputs and replays them when the action becomes possible. Without buffering, players who press a button 1-2 frames "too early" get nothing, and the game feels unresponsive.
 
 ### Jump Buffering
 
-If the player presses jump while airborne (just before landing), buffer the input. When they land within the buffer window, execute the jump.
+If the player presses jump while airborne (a few frames before landing), the jump executes the instant they touch ground.
 
 ```
-if jump_pressed:
-    jump_buffer_timer = buffer_duration    // e.g., 0.08--0.13 seconds
+BUFFER_WINDOW = 0.133  -- ~8 frames at 60fps
 
-each frame:
+function on_jump_pressed():
+    jump_buffer_timer = BUFFER_WINDOW
+
+function update(dt):
     jump_buffer_timer -= dt
-    if grounded and jump_buffer_timer > 0:
+
+    if just_landed AND jump_buffer_timer > 0:
         execute_jump()
         jump_buffer_timer = 0
 ```
 
-### Attack Buffering
+### General Input Buffer (Ring Buffer)
 
-Same concept applied to combo attacks -- the next attack input is buffered during the current attack animation.
+For games buffering multiple action types, store the last N frames of inputs:
+
+```
+BUFFER_SIZE = 10
+input_ring = circular_buffer(BUFFER_SIZE)
+
+function record_input(frame, actions):
+    input_ring.push({ frame: frame, actions: actions })
+
+function was_pressed_recently(action, window_frames):
+    for entry in input_ring.last(window_frames):
+        if action in entry.actions:
+            return true
+    return false
+```
+
+### Typical Buffer Windows
+
+| Frames (60fps) | Seconds | Feel |
+|---|---|---|
+| 4-5 | 0.066-0.083 | Tight -- skilled players only |
+| 6-8 | 0.100-0.133 | Standard -- feels responsive |
+| 9-12 | 0.150-0.200 | Very generous |
+
+---
+
+## Input Consumption (Priority System)
+
+When multiple systems listen for the same input (UI and gameplay), you need a priority system to prevent double-handling.
+
+**Pattern: UI eats input first**
+
+```
+function update():
+    begin_input_frame()
+
+    -- UI gets first priority
+    ui_handled = ui_system.handle_input()   -- uses "tracked" conditions
+
+    -- Gameplay only processes if UI did not consume
+    if not ui_handled:
+        if is_pressed(Jump):
+            player.jump()
+        if is_pressed(Attack):
+            player.attack()
+
+    end_input_frame()
+```
+
+The "tracked" or "consumable" condition pattern: once a system consumes an input, other systems do not see it for that frame. This prevents a menu confirm from also triggering a player jump.
+
+---
+
+## Gamepad Dead Zones
+
+Analog sticks rarely rest exactly at (0, 0). Dead zones filter out noise near the center.
+
+### Axial Dead Zone (Simple, Flawed)
+
+Apply dead zone to each axis independently.
+
+```
+function axial_deadzone(x, y, threshold):
+    if abs(x) < threshold: x = 0
+    if abs(y) < threshold: y = 0
+    return (x, y)
+```
+
+**Problem:** Creates a cross-shaped dead zone. Diagonal inputs near the threshold feel wrong.
+
+### Radial Dead Zone (Preferred)
+
+Apply dead zone to the combined magnitude.
+
+```
+function radial_deadzone(x, y, threshold):
+    magnitude = sqrt(x*x + y*y)
+    if magnitude < threshold:
+        return (0, 0)
+
+    -- Rescale to 0-1 range after dead zone
+    normalized = (magnitude - threshold) / (1 - threshold)
+    normalized = clamp(normalized, 0, 1)
+
+    -- Preserve direction, apply rescaled magnitude
+    direction = (x / magnitude, y / magnitude)
+    return direction * normalized
+```
+
+### Response Curves
+
+After dead zone filtering, apply a response curve to give more precision at low deflections:
+
+```
+-- Quadratic: more precision at small inputs
+output = input * input
+
+-- Square root: more precision at large inputs (less common)
+output = sqrt(input)
+```
+
+### Typical Dead Zone Values
+
+| Value | Use Case |
+|---|---|
+| 0.10-0.15 | Standard for movement |
+| 0.20-0.25 | Worn or loose controllers |
+| 0.05-0.10 | Aiming (precision-critical) |
 
 ---
 
 ## Key Rebinding
 
-### Runtime Rebinding
+A rebinding system lets players change which physical input maps to each game action. The key requirements:
 
-1. Enter "listening" mode for a specific action
-2. Wait for the next key/button press
-3. Assign that input to the action
-4. Rebuild the input condition
-
-### Persistence
-
-Save bindings to a file (JSON or similar). Load on startup and rebuild conditions. Use a default fallback if no saved bindings exist.
-
-### Conflict Detection
-
-When a new binding is assigned, check if it conflicts with an existing binding. Either warn the user or automatically unbind the conflicting action.
-
----
-
-## Gamepad Support
-
-### Dead Zones
-
-Analog sticks rarely rest at exactly (0, 0). Apply a radial dead zone:
+1. **Store bindings as data** -- not hardcoded conditions
+2. **Serialize to disk** -- JSON or similar format for persistence
+3. **Rebuild conditions at runtime** -- when a binding changes, reconstruct the input condition
 
 ```
-magnitude = length(raw_stick)
-if magnitude < dead_zone:
-    return (0, 0)
+bindings = {
+    Jump:   { key: Space, pad_button: A, mouse: null },
+    Attack: { key: Z, pad_button: X, mouse: LeftButton },
+}
 
-// Rescale to 0--1 range after dead zone
-normalized = (magnitude - dead_zone) / (1 - dead_zone)
-normalized = clamp(normalized, 0, 1)
-return (raw_stick / magnitude) * normalized
+function rebind(action, new_key):
+    bindings[action].key = new_key
+    rebuild_condition(action)
+    save_bindings_to_file()
+
+function rebuild_condition(action):
+    binding = bindings[action]
+    conditions = []
+    if binding.key:        conditions.add(KeyCondition(binding.key))
+    if binding.pad_button: conditions.add(PadCondition(binding.pad_button))
+    if binding.mouse:      conditions.add(MouseCondition(binding.mouse))
+    input_map[action] = AnyCondition(conditions)
 ```
 
-**Typical dead zone:** 0.15--0.25
+### Rebinding UI Flow
 
-### Response Curves
-
-Apply a response curve after dead zone for precision at low ranges:
-
-- **Linear:** `output = input` -- direct mapping
-- **Quadratic:** `output = input^2` -- more precision at low values, useful for aiming
-- **Cubic:** `output = input^3` -- even more precision at low values
-
-### Rumble/Haptics
-
-Trigger vibration for impacts, explosions, and feedback. Always provide a setting to disable it. Schedule a stop timer since most APIs do not auto-stop vibration.
+1. Player selects an action to rebind
+2. Show "Press any key..." prompt
+3. Listen for the next physical input
+4. Check for conflicts (same key bound to another action)
+5. Assign the new binding and rebuild
 
 ---
 
-## Simultaneous Input Devices
+## Simultaneous Multi-Device Input
 
-Support keyboard and gamepad simultaneously:
+Many players switch between keyboard and gamepad mid-session, or use both simultaneously (keyboard for menus, gamepad for gameplay).
 
-- Poll both devices every frame
-- For movement, use whichever has greater magnitude (analog stick vs digital keys)
-- For actions, trigger if either device fires the action
+**Pattern: take the input with greater magnitude**
 
----
+```
+function get_movement():
+    digital = (0, 0)
+    if key_held(Left):  digital.x -= 1
+    if key_held(Right): digital.x += 1
+    if key_held(Up):    digital.y -= 1
+    if key_held(Down):  digital.y += 1
+    if length(digital) > 1: digital = normalize(digital)
 
-## Input Priority and Consumption
+    analog = get_stick_with_deadzone(LEFT_STICK)
 
-When multiple systems need input (UI and gameplay), establish priority:
-
-1. UI processes input first using "tracked" or "consumable" conditions
-2. If UI consumes an input, gameplay does not see it
-3. If UI does not consume it, gameplay processes normally
-
-This prevents actions like "confirm menu selection" from also triggering "attack" in the game behind the menu.
+    -- Use whichever has greater magnitude
+    if length(analog) > length(digital):
+        return analog
+    return digital
+```
 
 ---
 
 ## Touch Input
 
-### Tap, Swipe, Pinch
+Touch input maps to game actions through virtual controls:
 
-- **Tap:** Touch press and release within a small movement threshold
-- **Swipe:** Touch press, drag beyond threshold, release. Direction determined by delta
-- **Pinch:** Two touches; track distance change between them for zoom
+- **Tap** -- position + press event (maps to attack, interact)
+- **Swipe** -- start position + delta vector (maps to dash direction)
+- **Virtual joystick** -- touch region that returns normalized (-1 to 1) offset from center
+- **Pinch** -- two-finger distance change (maps to zoom)
 
-### Virtual Joystick
+```
+function get_virtual_joystick(touch_pos, joystick_region):
+    if not region_contains(joystick_region, touch_pos):
+        return (0, 0)
 
-Define a screen region. Track the touch position relative to the region center, normalize to -1..1 range, clamp to the region radius.
+    center = region_center(joystick_region)
+    offset = touch_pos - center
+    max_radius = joystick_region.width / 2
+
+    if length(offset) > max_radius:
+        offset = normalize(offset) * max_radius
+
+    return offset / max_radius  -- normalized -1 to 1
+```
 
 ---
 
 ## Input Recording and Playback
 
-For replays, testing, and demos:
+Recording raw inputs per tick enables replays, automated testing, and demo playback.
 
-1. Record: each frame, capture all pressed keys, mouse position, and gamepad state with a tick number
-2. Playback: feed recorded frames back instead of live input
-3. Requires deterministic game logic (fixed timestep, seeded random)
+```
+struct InputFrame:
+    tick: int
+    keys_down: set of keys
+    mouse_position: vec2
+    mouse_buttons: set of buttons
 
-Save/load recordings as serialized frame lists.
+function record(tick):
+    frame = InputFrame(tick, get_pressed_keys(), get_mouse_pos(), get_mouse_buttons())
+    recording.append(frame)
+
+function playback(tick):
+    if playback_index >= recording.length:
+        return null
+    if recording[playback_index].tick == tick:
+        return recording[playback_index++]
+    return null
+```
+
+**Requirements for deterministic replay:**
+- Fixed timestep (same dt every tick)
+- Seed random number generators
+- Record inputs at the logic tick level, not the frame level
 
 ---
 
-*Implementation examples are available in engine-specific modules.*
+## Haptic Feedback (Rumble)
+
+Gamepad vibration reinforces game events. Most controllers have two motors:
+
+- **Low frequency** -- heavy, bass rumble (landing, explosions)
+- **High frequency** -- sharp, buzzy vibration (hits, UI feedback)
+
+```
+function rumble(player_index, low_intensity, high_intensity, duration):
+    set_vibration(player_index, low_intensity, high_intensity)
+    schedule_stop(player_index, duration)
+```
+
+Keep rumble short (0.05-0.3 seconds) and proportional to event intensity. Always allow players to disable it.
+
+> Implementation examples for specific engines are available in the engine-specific modules.
