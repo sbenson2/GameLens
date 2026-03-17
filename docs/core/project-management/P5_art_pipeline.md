@@ -169,7 +169,7 @@ YourGame/
 3. The pipeline processor reads tags, layers, and frame data automatically
 4. In code, load via `Content.Load<AsepriteFile>("Sprites/player")`
 
-See [G8 — Content Pipeline](../G/G8_content_pipeline.md) for full content pipeline configuration, including custom processors and build actions.
+See [G8 — Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md) for full content pipeline configuration, including custom processors and build actions.
 
 **Key advantage:** Edit in Aseprite, save, rebuild, see changes. No export-copy-reimport cycle.
 
@@ -340,7 +340,7 @@ var texture = Content.Load<Texture2D>("Sprites/player_spritesheet");
 var frameRect = new Rectangle(0, 0, 32, 32); // First frame
 ```
 
-See [G8 — Content Pipeline](../G/G8_content_pipeline.md) for advanced content pipeline configuration.
+See [G8 — Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md) for advanced content pipeline configuration.
 
 ---
 
@@ -410,7 +410,7 @@ Your animation system should map game states to animation clips. Common state gr
          └──────────┘
 ```
 
-See [G31 — Animation State Machines](../G/G31_animation_state_machines.md) for implementation details on transitions, blend logic, and interrupt priorities.
+See [G31 — Animation State Machines](../../monogame-arch/guides/G31_animation_state_machines.md) for implementation details on transitions, blend logic, and interrupt priorities.
 
 ---
 
@@ -469,7 +469,7 @@ Tile indices based on UDLR neighbors:
 3. **Paint your map** — Use layers: `ground`, `walls`, `decoration`, `collision` (invisible)
 4. **Export as TMX or JSON** — Load in MonoGame with a TMX loader library
 
-See [G37 — Tilemap Systems](../G/G37_tilemap_systems.md) for MonoGame-side tilemap rendering, collision layers, and chunked loading.
+See [G37 — Tilemap Systems](../../monogame-arch/guides/G37_tilemap_systems.md) for MonoGame-side tilemap rendering, collision layers, and chunked loading.
 
 **Tiled tips:**
 - Use **object layers** for spawn points, triggers, and zones — not tile layers
@@ -563,7 +563,7 @@ UI is the most-seen art in your game. Players stare at health bars, menus, and i
 - Edge regions should be simple gradients or repeating patterns
 - Export as a single image with consistent corner sizes documented
 
-See [G5 — UI Framework](../G/G5_ui_framework.md) for 9-slice rendering implementation and layout systems.
+See [G5 — UI Framework](../../monogame-arch/guides/G5_ui_framework.md) for 9-slice rendering implementation and layout systems.
 
 ### Font Selection
 
@@ -624,7 +624,7 @@ For trails and beams, a 1D gradient texture (e.g., 256×1 white-to-transparent) 
 
 Keep particle art simple. The system does the work — spawning, moving, fading, scaling. Your art just needs to be a good building block.
 
-See [G23 — Particles](../G/G23_particles.md) for particle system implementation, emitter configuration, and pooling.
+See [G23 — Particles](../../monogame-arch/guides/G23_particles.md) for particle system implementation, emitter configuration, and pooling.
 
 ---
 
@@ -673,7 +673,7 @@ This mimics how real atmosphere desaturates and lightens distant objects. It als
 - **Vary element spacing** — On a mountain layer, don't evenly space peaks. Cluster some, spread others. Even distribution reads as fake.
 - **Ground line** — Make sure each layer's ground line (if visible) aligns with the parallax math, or hide it behind the layer in front.
 
-See [G22 — Parallax & Depth Layers](../G/G22_parallax_depth_layers.md) for the rendering and scrolling implementation.
+See [G22 — Parallax & Depth Layers](../../monogame-arch/guides/G22_parallax_depth_layers.md) for the rendering and scrolling implementation.
 
 ---
 
@@ -738,7 +738,7 @@ Texture Memory = Width × Height × 4 bytes (RGBA)
 - **Reuse and tint.** One white particle sprite tinted 10 different colors costs less than 10 colored sprites.
 - **Mirror programmatically.** Don't draw left-facing and right-facing sprites — flip in code via `SpriteEffects.FlipHorizontally`.
 
-See [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md) for GPU profiling, draw call analysis, and performance budgeting.
+See [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md) for GPU profiling, draw call analysis, and performance budgeting.
 
 ---
 

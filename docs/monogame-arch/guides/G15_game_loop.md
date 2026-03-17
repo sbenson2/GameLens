@@ -98,7 +98,7 @@ internal class AppDelegate : UIApplicationDelegate
 }
 ```
 
-Full iOS project structure and .csproj: see [R3 Project Structure](../R/R3_project_structure.md).
+Full iOS project structure and .csproj: see [R3 Project Structure](../reference/R3_project_structure.md).
 
 ---
 

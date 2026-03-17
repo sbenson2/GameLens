@@ -1,5 +1,5 @@
 # E3 — Engine Alternatives Evaluated
-> **Category:** Explanation · **Related:** [E1 Architecture Overview](./E1_architecture_overview.md) · [E2 Why Nez Was Dropped](./E2_nez_dropped.md) · [R1 Library Stack](../R/R1_library_stack.md)
+> **Category:** Explanation · **Related:** [E1 Architecture Overview](./E1_architecture_overview.md) · [E2 Why Nez Was Dropped](./E2_nez_dropped.md) · [R1 Library Stack](../reference/R1_library_stack.md)
 
 ---
 
@@ -101,7 +101,7 @@ Every alternative was measured against these priorities, in order:
 | **Feature overlap** | The features Monofoxe adds (scene management, cameras, tilemaps) are exactly the things the toolkit already handles through composed libraries + ~1,000 lines of custom code. |
 | **Still a framework** | Even though it's lighter, adopting Monofoxe still means adopting its scene/entity lifecycle. The "lightweight framework" is still a framework. |
 
-**Verdict:** Monofoxe is the closest to the "right idea" — add a thin layer over MonoGame. But its EC model conflicts with Arch ECS, and the features it provides are small enough to write yourself. The toolkit's custom glue code ([G1](../G/G1_custom_code_recipes.md)) covers the same ground in ~1,000 lines you fully control.
+**Verdict:** Monofoxe is the closest to the "right idea" — add a thin layer over MonoGame. But its EC model conflicts with Arch ECS, and the features it provides are small enough to write yourself. The toolkit's custom glue code ([G1](../guides/G1_custom_code_recipes.md)) covers the same ground in ~1,000 lines you fully control.
 
 ---
 
@@ -112,7 +112,7 @@ Every alternative was measured against these priorities, in order:
 [MLEM](https://mlem.ellpeck.de/) is a set of MonoGame extension libraries (MLEM, MLEM.Ui, MLEM.Data, MLEM.Extended) by Ellpeck (same author as the Coroutine package).
 
 - **Strengths:** Proper library approach (not a framework), good text formatting, non-XNB content loading, UI system, NuGet packages
-- **Why partially adopted:** MLEM.Data's content loading is useful for text-heavy games. It's listed in [R1](../R/R1_library_stack.md) as Tier 2.
+- **Why partially adopted:** MLEM.Data's content loading is useful for text-heavy games. It's listed in [R1](../reference/R1_library_stack.md) as Tier 2.
 - **Why not adopted wholesale:** MLEM.Ui is less capable than Gum. MLEM doesn't provide ECS, physics, or AI — so you still need the rest of the composed stack anyway.
 
 MLEM is actually a good example of the library composition philosophy done right. It's not trying to be a framework — it's a set of independent utilities. The toolkit cherry-picks what's useful.
@@ -166,10 +166,10 @@ The composed library approach is the only option that:
 
 ### The "no editor" tradeoff
 
-The biggest thing you give up is a visual editor. Murder and FlatRedBall both have editors; the composed stack doesn't (unless you build one — see [G29](../G/G29_game_editor.md) and [E8](./E8_monogamestudio_postmortem.md) for how that went). For many 2D games, Tiled + Aseprite + ImGui debug overlays cover 90% of what an editor provides. The remaining 10% is rarely worth the framework lock-in.
+The biggest thing you give up is a visual editor. Murder and FlatRedBall both have editors; the composed stack doesn't (unless you build one — see [G29](../guides/G29_game_editor.md) and [E8](./E8_monogamestudio_postmortem.md) for how that went). For many 2D games, Tiled + Aseprite + ImGui debug overlays cover 90% of what an editor provides. The remaining 10% is rarely worth the framework lock-in.
 
 ### The meta-lesson
 
 The MonoGame ecosystem is full of talented developers building frameworks and engines. Every one of them made reasonable decisions for their use case. The issue isn't that these tools are bad — it's that adopting any one of them means adopting **all** of its decisions. For a solo developer who wants to control their architecture and use Arch ECS as the foundation, the composed library approach is the only path that doesn't compromise.
 
-The stack described in [E1](./E1_architecture_overview.md) and [R1](../R/R1_library_stack.md) is the result of evaluating all of these alternatives and choosing the parts that work best — from multiple sources, independently swappable, unified by Arch ECS.
+The stack described in [E1](./E1_architecture_overview.md) and [R1](../reference/R1_library_stack.md) is the result of evaluating all of these alternatives and choosing the parts that work best — from multiple sources, independently swappable, unified by Arch ECS.

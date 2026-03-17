@@ -2,7 +2,7 @@
 
 ![](../img/nature.png)
 
-> **Category:** Guide · **Related:** [G19 Display & Resolution](./G19_display_resolution_viewports.md) · [G15 Game Loop](./G15_game_loop.md) · [G25 Safe Areas](./G25_safe_areas_adaptive_layout.md) · [R3 Project Structure](../R/R3_project_structure.md)
+> **Category:** Guide · **Related:** [G19 Display & Resolution](./G19_display_resolution_viewports.md) · [G15 Game Loop](./G15_game_loop.md) · [G25 Safe Areas](./G25_safe_areas_adaptive_layout.md) · [R3 Project Structure](../reference/R3_project_structure.md)
 
 ---
 
@@ -318,4 +318,4 @@ Window.AllowUserResizing = false;  // Fixed size for pixel-perfect
 - [G19 Display, Resolution & Viewports](./G19_display_resolution_viewports.md) — virtual resolution, scaling strategies
 - [G15 Game Loop](./G15_game_loop.md) — frame timing, fixed timestep, ProMotion
 - [G25 Safe Areas & Adaptive Layout](./G25_safe_areas_adaptive_layout.md) — iOS safe areas
-- [R3 Project Structure](../R/R3_project_structure.md) — platform-specific project setup
+- [R3 Project Structure](../reference/R3_project_structure.md) — platform-specific project setup

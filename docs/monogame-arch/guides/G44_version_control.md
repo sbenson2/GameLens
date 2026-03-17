@@ -3,7 +3,7 @@
 ![](../img/camera.png)
 
 
-> **Category:** Guide · **Related:** [E4 Solo Project Management](../E/E4_project_management.md) · [R3 Project Structure](../R/R3_project_structure.md) · [G8 Content Pipeline](./G8_content_pipeline.md)
+> **Category:** Guide · **Related:** [E4 Solo Project Management](../../core/project-management/E4_project_management.md) · [R3 Project Structure](../reference/R3_project_structure.md) · [G8 Content Pipeline](./G8_content_pipeline.md)
 
 ---
 

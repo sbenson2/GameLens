@@ -1,6 +1,6 @@
 # 02 — Pre-Production Checklist
 > **Phase:** Pre-Production (Weeks 2–3) · **Goal:** Answer every major question before writing game code
-> **Related:** [00 Master Playbook](./00_master_playbook.md) · [E4 Solo Project Management](../E/E4_project_management.md) · [E6 Game Design Fundamentals](../E/E6_game_design_fundamentals.md) · [E9 Solo Dev Playbook](../E/E9_solo_dev_playbook.md)
+> **Related:** [00 Master Playbook](./00_master_playbook.md) · [E4 Solo Project Management](E4_project_management.md) · [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) · [E9 Solo Dev Playbook](E9_solo_dev_playbook.md)
 
 ---
 
@@ -99,13 +99,13 @@ Before proceeding, answer honestly:
 - [ ] Is the core mechanic fun in isolation, without art or sound?
 - [ ] Could you build a playable prototype of the core mechanic in 1 week?
 
-> **If you answered "no" to 2+ of these:** Step back. Play more games in your genre, narrow the scope, or find a simpler core mechanic. See [E6 Game Design Fundamentals](../E/E6_game_design_fundamentals.md) for design pillar methodology.
+> **If you answered "no" to 2+ of these:** Step back. Play more games in your genre, narrow the scope, or find a simpler core mechanic. See [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) for design pillar methodology.
 
 ---
 
 ## 2. Genre Selection Guide
 
-Use this alongside [C1 Genre Reference](../C/C1_genre_reference.md) (which maps genres → systems → toolkit docs) and [C2 Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md) (which covers *how to make each genre feel good*).
+Use this alongside [C1 Genre Reference](../game-design/C1_genre_reference.md) (which maps genres → systems → toolkit docs) and [C2 Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md) (which covers *how to make each genre feel good*).
 
 ⏱️ *Time: 30 minutes to review, but take days to decide*
 
@@ -134,8 +134,8 @@ Use this alongside [C1 Genre Reference](../C/C1_genre_reference.md) (which maps 
 
 ### Genre Decision Checklist
 
-- [ ] Reviewed genre requirements in [C1 Genre Reference](../C/C1_genre_reference.md)
-- [ ] Studied feel techniques for chosen genre in [C2 Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md)
+- [ ] Reviewed genre requirements in [C1 Genre Reference](../game-design/C1_genre_reference.md)
+- [ ] Studied feel techniques for chosen genre in [C2 Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md)
 - [ ] Confirmed this genre matches my estimated scope (Section 4)
 - [ ] I have personal experience *playing* this genre (at least 10+ hours)
 - [ ] Identified which toolkit systems I'll need (from C1's "Systems" lists)
@@ -172,7 +172,7 @@ This is not a 50-page GDD. It's a **living document** — 3–5 pages max — th
 | 2. ___________ | ___________ | ___________ |
 | 3. ___________ | ___________ | ___________ |
 
-> See [E6 Game Design Fundamentals § Design Pillars](../E/E6_game_design_fundamentals.md) for how to define and use these.
+> See [E6 Game Design Fundamentals § Design Pillars](../game-design/E6_game_design_fundamentals.md) for how to define and use these.
 
 #### 3.3 Core Loop
 
@@ -198,7 +198,7 @@ _________________________________________________________________________
 _________________________________________________________________________
 ```
 
-> Reference: [G15 Game Loop](../G/G15_game_loop.md) for technical implementation of the core loop.
+> Reference: [G15 Game Loop](../../monogame-arch/guides/G15_game_loop.md) for technical implementation of the core loop.
 
 #### 3.4 Player Mechanics
 
@@ -240,7 +240,7 @@ P0 = Core (must ship) · P1 = Important (should ship) · P2 = Nice-to-have (cut 
 - **Animation Approach:** ☐ Frame-by-frame (Aseprite) ☐ Skeletal (Spine) ☐ Tweened
 - **Tileset Style:** ☐ Grid-locked ☐ Freeform ☐ Auto-tile ☐ N/A
 
-> Reference: [G8 Content Pipeline](../G/G8_content_pipeline.md) for Aseprite integration, [G31 Animation State Machines](../G/G31_animation_state_machines.md) for sprite workflow.
+> Reference: [G8 Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md) for Aseprite integration, [G31 Animation State Machines](../../monogame-arch/guides/G31_animation_state_machines.md) for sprite workflow.
 
 #### 3.8 Audio Direction
 
@@ -250,7 +250,7 @@ P0 = Core (must ship) · P1 = Important (should ship) · P2 = Nice-to-have (cut 
 - **Adaptive Audio?** ☐ Yes ☐ No — If yes, how? ___
 - **Voice Acting?** ☐ No ☐ Grunts/gibberish ☐ Full VO
 
-> Reference: [G6 Audio](../G/G6_audio.md) for MonoGame audio vs FMOD decision. If you need crossfading, ducking, or bus mixing → FMOD via FmodForFoxes.
+> Reference: [G6 Audio](../../monogame-arch/guides/G6_audio.md) for MonoGame audio vs FMOD decision. If you need crossfading, ducking, or bus mixing → FMOD via FmodForFoxes.
 
 #### 3.9 Controls
 
@@ -263,7 +263,7 @@ P0 = Core (must ship) · P1 = Important (should ship) · P2 = Nice-to-have (cut 
 | Pause | Escape | Start | Pause button |
 | Menu Navigate | Arrows | D-Pad / Stick | Touch |
 
-> Reference: [G7 Input Handling](../G/G7_input_handling.md) for Apos.Input implementation, input buffering, and rebinding.
+> Reference: [G7 Input Handling](../../monogame-arch/guides/G7_input_handling.md) for Apos.Input implementation, input buffering, and rebinding.
 
 ---
 
@@ -319,7 +319,7 @@ Check any that apply to your project. Each one is a warning sign:
 - [ ] No clear "done" criteria — when is this game finished?
 - [ ] The pitch requires the word "and" more than twice
 
-> **3+ checked?** Your scope is too big. Cut or restructure before proceeding. See [E4 Solo Project Management](../E/E4_project_management.md) and [E9 Solo Dev Playbook](../E/E9_solo_dev_playbook.md).
+> **3+ checked?** Your scope is too big. Cut or restructure before proceeding. See [E4 Solo Project Management](E4_project_management.md) and [E9 Solo Dev Playbook](E9_solo_dev_playbook.md).
 
 ### 4.3 The Cut List
 
@@ -405,7 +405,7 @@ Your game's **virtual resolution** determines how much world the player sees and
 > **Decision:** My virtual resolution is **___ × ___**
 > **Rationale:** ___
 
-> Reference: [G19 Display, Resolution & Viewports](../G/G19_display_resolution_viewports.md) for implementation, scaling strategies, and aspect ratio handling. Also see [G25 Safe Areas & Adaptive Layout](../G/G25_safe_areas_adaptive_layout.md) for mobile.
+> Reference: [G19 Display, Resolution & Viewports](../../monogame-arch/guides/G19_display_resolution_viewports.md) for implementation, scaling strategies, and aspect ratio handling. Also see [G25 Safe Areas & Adaptive Layout](../../monogame-arch/guides/G25_safe_areas_adaptive_layout.md) for mobile.
 
 ### 5.3 Color Palette Planning
 
@@ -422,7 +422,7 @@ Your game's **virtual resolution** determines how much world the player sees and
   - UI / Interactive elements: ___
   - Hazards / Danger: ___
 - [ ] **Contrast check:** Player reads clearly against all background types?
-- [ ] **Accessibility:** Tested with color-blind simulation? See [G35 Accessibility](../G/G35_accessibility.md)
+- [ ] **Accessibility:** Tested with color-blind simulation? See [G35 Accessibility](../../monogame-arch/guides/G35_accessibility.md)
 
 ### 5.4 Reference Board
 
@@ -446,7 +446,7 @@ Outline style:            ☐ None ☐ 1px dark ☐ 1px colored ☐ Selective
 Sub-pixel animation:      ☐ Yes ☐ No (affects smoothness vs crispness)
 ```
 
-> Reference: [G8 Content Pipeline](../G/G8_content_pipeline.md) for Aseprite → MonoGame workflow, [G28 Top-Down Perspective](../G/G28_top_down_perspective.md) for top-down sprite proportions.
+> Reference: [G8 Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md) for Aseprite → MonoGame workflow, [G28 Top-Down Perspective](../../monogame-arch/guides/G28_top_down_perspective.md) for top-down sprite proportions.
 
 ---
 
@@ -458,7 +458,7 @@ Decide these before writing game code. Each choice is hard to change later.
 
 ### 6.1 Library Stack
 
-Start with the full reference: [R1 Library Stack](../R/R1_library_stack.md) and [R2 Capability Matrix](../R/R2_capability_matrix.md).
+Start with the full reference: [R1 Library Stack](../../monogame-arch/reference/R1_library_stack.md) and [R2 Capability Matrix](../../monogame-arch/reference/R2_capability_matrix.md).
 
 **Tier 0 — Always Install (non-negotiable):**
 - [x] MonoGame.Framework.DesktopGL
@@ -467,17 +467,17 @@ Start with the full reference: [R1 Library Stack](../R/R1_library_stack.md) and 
 **Tier 1 — Essential Infrastructure:**
 - [ ] MonoGame.Extended (camera, collision shapes, math, Tiled maps)
 - [ ] MonoGame.Extended.Content.Pipeline (Tiled/atlas importers)
-- [ ] Gum.MonoGame (UI framework) → [G5](../G/G5_ui_framework.md)
-- [ ] Apos.Input (input handling) → [G7](../G/G7_input_handling.md)
+- [ ] Gum.MonoGame (UI framework) → [G5](../../monogame-arch/guides/G5_ui_framework.md)
+- [ ] Apos.Input (input handling) → [G7](../../monogame-arch/guides/G7_input_handling.md)
 - [ ] FontStashSharp.MonoGame (runtime font rendering)
-- [ ] MonoGame.Aseprite (direct .ase import) → [G8](../G/G8_content_pipeline.md)
-- [ ] Aether.Physics2D (only if you need rigid body physics) → [G3](../G/G3_physics_and_collision.md)
+- [ ] MonoGame.Aseprite (direct .ase import) → [G8](../../monogame-arch/guides/G8_content_pipeline.md)
+- [ ] Aether.Physics2D (only if you need rigid body physics) → [G3](../../monogame-arch/guides/G3_physics_and_collision.md)
 
 **Tier 2 — Genre-Specific (pick what you need):**
-- [ ] BrainAI (FSM, behavior trees, GOAP, pathfinding) → [G4](../G/G4_ai_systems.md)
-- [ ] FmodForFoxes (advanced audio: buses, crossfade, spatial) → [G6](../G/G6_audio.md)
-- [ ] LiteNetLib (networking) → [G9](../G/G9_networking.md)
-- [ ] ImGui.NET (debug tools, editors) → [G16](../G/G16_debugging.md), [G29](../G/G29_game_editor.md)
+- [ ] BrainAI (FSM, behavior trees, GOAP, pathfinding) → [G4](../../monogame-arch/guides/G4_ai_systems.md)
+- [ ] FmodForFoxes (advanced audio: buses, crossfade, spatial) → [G6](../../monogame-arch/guides/G6_audio.md)
+- [ ] LiteNetLib (networking) → [G9](../../monogame-arch/guides/G9_networking.md)
+- [ ] ImGui.NET (debug tools, editors) → [G16](../../monogame-arch/guides/G16_debugging.md), [G29](../../monogame-arch/guides/G29_game_editor.md)
 - [ ] Arch.Relationships (entity hierarchies)
 - [ ] Arch.EventBus (typed pub/sub)
 - [ ] Arch.Persistence (save/load ECS state)
@@ -493,9 +493,9 @@ Start with the full reference: [R1 Library Stack](../R/R1_library_stack.md) and 
   - ☐ Expand viewport (show more world on wider screens, like Terraria)
   - ☐ Letterbox/Pillarbox (fixed aspect ratio, bars on mismatch)
 - [ ] **Target aspect ratio:** ☐ 16:9 ☐ 16:10 ☐ Flexible
-- [ ] **Mobile support?** If yes, review [G25 Safe Areas](../G/G25_safe_areas_adaptive_layout.md)
+- [ ] **Mobile support?** If yes, review [G25 Safe Areas](../../monogame-arch/guides/G25_safe_areas_adaptive_layout.md)
 
-> Reference: [G19 Display, Resolution & Viewports](../G/G19_display_resolution_viewports.md) — this doc has a complete decision table.
+> Reference: [G19 Display, Resolution & Viewports](../../monogame-arch/guides/G19_display_resolution_viewports.md) — this doc has a complete decision table.
 
 ### 6.3 Input Scheme
 
@@ -505,7 +505,7 @@ Start with the full reference: [R1 Library Stack](../R/R1_library_stack.md) and 
 - [ ] **Input buffering?** ☐ Yes (action games) ☐ No (turn-based/puzzle)
 - [ ] **Analog movement?** ☐ Yes (stick) ☐ No (8-dir digital)
 
-> Reference: [G7 Input Handling](../G/G7_input_handling.md) for Apos.Input setup, [C2 Game Feel](../C/C2_game_feel_and_genre_craft.md) for genre-specific input techniques (coyote time, jump buffering, etc.)
+> Reference: [G7 Input Handling](../../monogame-arch/guides/G7_input_handling.md) for Apos.Input setup, [C2 Game Feel](../game-design/C2_game_feel_and_genre_craft.md) for genre-specific input techniques (coyote time, jump buffering, etc.)
 
 ### 6.4 Save System Approach
 
@@ -525,7 +525,7 @@ Decide this early — it influences data architecture.
 - [ ] **Save location:** `Environment.SpecialFolder.LocalApplicationData`
 - [ ] **Cloud saves?** ☐ No ☐ Steam Cloud ☐ Other
 
-> Reference: [G10 Custom Game Systems](../G/G10_custom_game_systems.md) for save/load patterns.
+> Reference: [G10 Custom Game Systems](../../monogame-arch/guides/G10_custom_game_systems.md) for save/load patterns.
 
 ### 6.5 Scene Architecture
 
@@ -542,7 +542,7 @@ Decide this early — it influences data architecture.
   - ☐ Credits
 - [ ] **Scene transition style:** ☐ Fade ☐ Wipe ☐ Pixelate ☐ Circle ☐ Cut
 
-> Reference: [G1 Custom Code Recipes](../G/G1_custom_code_recipes.md) for scene manager implementation, [G42 Screen Transitions](../G/G42_screen_transitions.md) for transition effects, [G38 Scene Management](../G/G38_scene_management.md) for advanced scene patterns.
+> Reference: [G1 Custom Code Recipes](../../monogame-arch/guides/G1_custom_code_recipes.md) for scene manager implementation, [G42 Screen Transitions](../../monogame-arch/guides/G42_screen_transitions.md) for transition effects, [G38 Scene Management](../../monogame-arch/guides/G38_scene_management.md) for advanced scene patterns.
 
 ### 6.6 Camera Strategy
 
@@ -552,13 +552,13 @@ Decide this early — it influences data architecture.
   - ☐ Room-based (snap to room boundaries, Zelda-style)
   - ☐ Free scroll (RTS, sim)
 - [ ] **Camera features needed:**
-  - ☐ Screen shake → [G20](../G/G20_camera_systems.md), [G30](../G/G30_game_feel_tooling.md)
+  - ☐ Screen shake → [G20](../../monogame-arch/guides/G20_camera_systems.md), [G30](../../monogame-arch/guides/G30_game_feel_tooling.md)
   - ☐ Zoom in/out
   - ☐ Lookahead (camera leads player movement)
   - ☐ Camera bounds / limits
   - ☐ Split screen
 
-> Reference: [G20 Camera Systems](../G/G20_camera_systems.md) for full implementation guide.
+> Reference: [G20 Camera Systems](../../monogame-arch/guides/G20_camera_systems.md) for full implementation guide.
 
 ---
 
@@ -599,11 +599,11 @@ Everything you set up in the repo before writing game logic.
 - [ ] Push to remote (GitHub recommended for Actions CI)
 - [ ] Set up branch strategy: ☐ `main` only (solo) ☐ `main` + `dev` (team)
 
-> Reference: [G44 Version Control](../G/G44_version_control.md) for Git workflow with game projects.
+> Reference: [G44 Version Control](../../monogame-arch/guides/G44_version_control.md) for Git workflow with game projects.
 
 ### 7.2 Solution & Project Structure
 
-Follow the structure in [R3 Project Structure](../R/R3_project_structure.md):
+Follow the structure in [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md):
 
 - [ ] Create solution: `dotnet new sln -n MyGame`
 - [ ] Create core project: `dotnet new mgdesktopgl -n MyGame.Core`
@@ -649,7 +649,7 @@ Follow the structure in [R3 Project Structure](../R/R3_project_structure.md):
 - [ ] Configure `Content.mgcb` with appropriate importers
 - [ ] Test: load a placeholder sprite, display it on screen
 
-> Reference: [G8 Content Pipeline](../G/G8_content_pipeline.md) for MGCB configuration and asset workflow.
+> Reference: [G8 Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md) for MGCB configuration and asset workflow.
 
 ### 7.4 CI / Build Automation
 
@@ -671,7 +671,7 @@ Follow the structure in [R3 Project Structure](../R/R3_project_structure.md):
   ```
 - [ ] Verify CI passes on first push
 
-> Reference: [G32 Deployment & Platform Builds](../G/G32_deployment_platform_builds.md) for full CI/CD and publishing pipeline.
+> Reference: [G32 Deployment & Platform Builds](../../monogame-arch/guides/G32_deployment_platform_builds.md) for full CI/CD and publishing pipeline.
 
 ### 7.5 Task Tracking
 
@@ -686,7 +686,7 @@ Pick one and set it up. Don't track tasks in your head.
   - [ ] Milestone 4: Beta — content complete (Week 18–22)
   - [ ] Milestone 5: Release candidate (Week 23–24)
 
-> Reference: [E4 Solo Project Management](../E/E4_project_management.md) for vertical slice methodology, Kanban tips, and avoiding the "tool-building trap."
+> Reference: [E4 Solo Project Management](E4_project_management.md) for vertical slice methodology, Kanban tips, and avoiding the "tool-building trap."
 
 ---
 
@@ -712,14 +712,14 @@ List everything about your game that you've **never built before** or that you'r
 
 - Performance with large entity counts (1000+ enemies/bullets) — test with Arch ECS early
 - Procedural generation quality (looks random, not designed)
-- Tilemap rendering performance at scale → [G37 Tilemap Systems](../G/G37_tilemap_systems.md)
-- Shader compatibility across platforms → [G27 Shaders & Effects](../G/G27_shaders_and_effects.md)
-- Mobile touch input feeling responsive → [G7 Input Handling](../G/G7_input_handling.md)
-- Pathfinding on large maps → [G40 Pathfinding](../G/G40_pathfinding.md)
-- Complex UI layout (inventory, skill trees) → [G5 UI Framework](../G/G5_ui_framework.md)
-- Save/load with complex game state → [G10 Custom Game Systems](../G/G10_custom_game_systems.md)
-- Networking latency / desync (if multiplayer) → [G9 Networking](../G/G9_networking.md)
-- Content pipeline issues with .ase/.tmx imports → [G8 Content Pipeline](../G/G8_content_pipeline.md)
+- Tilemap rendering performance at scale → [G37 Tilemap Systems](../../monogame-arch/guides/G37_tilemap_systems.md)
+- Shader compatibility across platforms → [G27 Shaders & Effects](../../monogame-arch/guides/G27_shaders_and_effects.md)
+- Mobile touch input feeling responsive → [G7 Input Handling](../../monogame-arch/guides/G7_input_handling.md)
+- Pathfinding on large maps → [G40 Pathfinding](../../monogame-arch/guides/G40_pathfinding.md)
+- Complex UI layout (inventory, skill trees) → [G5 UI Framework](../../monogame-arch/guides/G5_ui_framework.md)
+- Save/load with complex game state → [G10 Custom Game Systems](../../monogame-arch/guides/G10_custom_game_systems.md)
+- Networking latency / desync (if multiplayer) → [G9 Networking](../../monogame-arch/guides/G9_networking.md)
+- Content pipeline issues with .ase/.tmx imports → [G8 Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md)
 
 ### 8.2 Prototype Plan
 
@@ -781,16 +781,16 @@ These are **hard deadlines** where you must have evidence that the game works. I
 
 | Topic | Primary Doc | Also See |
 |-------|------------|----------|
-| Architecture & ECS | [E1 Architecture Overview](../E/E1_architecture_overview.md) | [G12 Design Patterns](../G/G12_design_patterns.md), [G18 Game Programming Patterns](../G/G18_game_programming_patterns.md) |
-| Libraries & Packages | [R1 Library Stack](../R/R1_library_stack.md) | [R2 Capability Matrix](../R/R2_capability_matrix.md) |
-| Project Structure | [R3 Project Structure](../R/R3_project_structure.md) | [G44 Version Control](../G/G44_version_control.md) |
-| Game Design | [E6 Game Design Fundamentals](../E/E6_game_design_fundamentals.md) | [R4 Game Design Resources](../R/R4_game_design_resources.md) |
-| Genre Planning | [C1 Genre Reference](../C/C1_genre_reference.md) | [C2 Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md) |
-| Scope & Management | [E4 Solo Project Management](../E/E4_project_management.md) | [E9 Solo Dev Playbook](../E/E9_solo_dev_playbook.md) |
-| Display & Resolution | [G19 Display & Viewports](../G/G19_display_resolution_viewports.md) | [G25 Safe Areas](../G/G25_safe_areas_adaptive_layout.md) |
-| Input | [G7 Input Handling](../G/G7_input_handling.md) | [C2 Game Feel](../C/C2_game_feel_and_genre_craft.md) |
-| Audio | [G6 Audio](../G/G6_audio.md) | |
-| Content Pipeline | [G8 Content Pipeline](../G/G8_content_pipeline.md) | [G31 Animation](../G/G31_animation_state_machines.md) |
-| Game Feel & Polish | [G30 Game Feel Tooling](../G/G30_game_feel_tooling.md) | [C2 Game Feel](../C/C2_game_feel_and_genre_craft.md) |
-| Deployment | [G32 Deployment](../G/G32_deployment_platform_builds.md) | [G36 Publishing](../G/G36_publishing_distribution.md) |
-| Accessibility | [G35 Accessibility](../G/G35_accessibility.md) | |
+| Architecture & ECS | [E1 Architecture Overview](../../monogame-arch/architecture/E1_architecture_overview.md) | [G12 Design Patterns](../../monogame-arch/guides/G12_design_patterns.md), [G18 Game Programming Patterns](../../monogame-arch/guides/G18_game_programming_patterns.md) |
+| Libraries & Packages | [R1 Library Stack](../../monogame-arch/reference/R1_library_stack.md) | [R2 Capability Matrix](../../monogame-arch/reference/R2_capability_matrix.md) |
+| Project Structure | [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) | [G44 Version Control](../../monogame-arch/guides/G44_version_control.md) |
+| Game Design | [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) | [R4 Game Design Resources](../game-design/R4_game_design_resources.md) |
+| Genre Planning | [C1 Genre Reference](../game-design/C1_genre_reference.md) | [C2 Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md) |
+| Scope & Management | [E4 Solo Project Management](E4_project_management.md) | [E9 Solo Dev Playbook](E9_solo_dev_playbook.md) |
+| Display & Resolution | [G19 Display & Viewports](../../monogame-arch/guides/G19_display_resolution_viewports.md) | [G25 Safe Areas](../../monogame-arch/guides/G25_safe_areas_adaptive_layout.md) |
+| Input | [G7 Input Handling](../../monogame-arch/guides/G7_input_handling.md) | [C2 Game Feel](../game-design/C2_game_feel_and_genre_craft.md) |
+| Audio | [G6 Audio](../../monogame-arch/guides/G6_audio.md) | |
+| Content Pipeline | [G8 Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md) | [G31 Animation](../../monogame-arch/guides/G31_animation_state_machines.md) |
+| Game Feel & Polish | [G30 Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md) | [C2 Game Feel](../game-design/C2_game_feel_and_genre_craft.md) |
+| Deployment | [G32 Deployment](../../monogame-arch/guides/G32_deployment_platform_builds.md) | [G36 Publishing](../../monogame-arch/guides/G36_publishing_distribution.md) |
+| Accessibility | [G35 Accessibility](../../monogame-arch/guides/G35_accessibility.md) | |

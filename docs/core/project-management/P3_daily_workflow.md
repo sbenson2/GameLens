@@ -182,7 +182,7 @@ git tag -a v0.2-combat -m "Melee combat working"
 git tag -a demo-1 -m "First playable demo"
 ```
 
-> 📘 For a deeper dive on version control setup and best practices, see [G44 — Version Control](../G/G44_version_control.md).
+> 📘 For a deeper dive on version control setup and best practices, see [G44 — Version Control](../../monogame-arch/guides/G44_version_control.md).
 
 ---
 
@@ -225,7 +225,7 @@ Every few days, **don't play for 24 hours**, then sit down and play from the sta
 
 This is the closest a solo dev gets to outside playtesting. Do it at least weekly.
 
-> 📘 For tools and techniques to measure and improve game feel, see [G30 — Game Feel & Tooling](../G/G30_game_feel_tooling.md).
+> 📘 For tools and techniques to measure and improve game feel, see [G30 — Game Feel & Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md).
 
 ---
 
@@ -469,7 +469,7 @@ Use ImGui (or your engine's equivalent) to build real-time debug panels:
 
 Toggle these with a key (F1–F4 are common). Keep them available in every build, not just debug builds.
 
-> 📘 For detailed debugging setup and ImGui integration, see [G16 — Debugging](../G/G16_debugging.md).
+> 📘 For detailed debugging setup and ImGui integration, see [G16 — Debugging](../../monogame-arch/guides/G16_debugging.md).
 
 ### Logging Strategy
 
@@ -543,8 +543,8 @@ Red flags:
 - Load times getting longer as you add content
 - GC pauses (if using a managed language)
 
-> 📘 For profiling tools and optimization techniques, see [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md).
-> 📘 For testing strategies and automation, see [G17 — Testing](../G/G17_testing.md).
+> 📘 For profiling tools and optimization techniques, see [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md).
+> 📘 For testing strategies and automation, see [G17 — Testing](../../monogame-arch/guides/G17_testing.md).
 
 ---
 

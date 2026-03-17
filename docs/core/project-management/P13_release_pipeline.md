@@ -6,9 +6,9 @@
 A step-by-step guide for building, testing, signing, and uploading release builds of your MonoGame DesktopGL game. This covers everything from `dotnet publish` to getting your game on Steam and itch.io.
 
 > **Related docs:**
-> - [G32 — Deployment & Platform Builds](../G/G32_deployment_platform_builds.md)
-> - [G36 — Publishing & Distribution](../G/G36_publishing_distribution.md)
-> - [G51 — Crash Reporting](../G/G51_crash_reporting.md)
+> - [G32 — Deployment & Platform Builds](../../monogame-arch/guides/G32_deployment_platform_builds.md)
+> - [G36 — Publishing & Distribution](../../monogame-arch/guides/G36_publishing_distribution.md)
+> - [G51 — Crash Reporting](../../monogame-arch/guides/G51_crash_reporting.md)
 
 ---
 
@@ -705,7 +705,7 @@ In Steamworks dashboard, set launch options:
 
 ### Steam Input API
 
-If you want controller support (recommended), see [G32](../G/G32_deployment_platform_builds.md) for Steam Input integration details. At minimum, configure default controller templates in the Steamworks dashboard so controllers work out of the box.
+If you want controller support (recommended), see [G32](../../monogame-arch/guides/G32_deployment_platform_builds.md) for Steam Input integration details. At minimum, configure default controller templates in the Steamworks dashboard so controllers work out of the box.
 
 ---
 
@@ -900,7 +900,7 @@ Go through this on **every platform** before you ship.
 
 ### Release Infrastructure
 
-- [ ] Crash reporting is enabled and tested — see [G51](../G/G51_crash_reporting.md)
+- [ ] Crash reporting is enabled and tested — see [G51](../../monogame-arch/guides/G51_crash_reporting.md)
 - [ ] Version number is correct and displayed in-game
 - [ ] Store page text and screenshots are up to date
 - [ ] System requirements listed accurately
@@ -1312,13 +1312,13 @@ Copy this for every release. Print it, put it in a Notion page, whatever works f
 #### Post-Release
 
 - [ ] Patch notes posted (Steam, itch.io, social media)
-- [ ] Crash reporting confirmed working — see [G51](../G/G51_crash_reporting.md)
+- [ ] Crash reporting confirmed working — see [G51](../../monogame-arch/guides/G51_crash_reporting.md)
 - [ ] Monitor for bug reports (24-48 hours)
 - [ ] Celebrate! You shipped a game! 🎉
 
 ---
 
 > **See also:**
-> - [G32 — Deployment & Platform Builds](../G/G32_deployment_platform_builds.md) for platform-specific build details
-> - [G36 — Publishing & Distribution](../G/G36_publishing_distribution.md) for store setup and marketing
-> - [G51 — Crash Reporting](../G/G51_crash_reporting.md) for setting up crash analytics
+> - [G32 — Deployment & Platform Builds](../../monogame-arch/guides/G32_deployment_platform_builds.md) for platform-specific build details
+> - [G36 — Publishing & Distribution](../../monogame-arch/guides/G36_publishing_distribution.md) for store setup and marketing
+> - [G51 — Crash Reporting](../../monogame-arch/guides/G51_crash_reporting.md) for setting up crash analytics

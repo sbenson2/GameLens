@@ -130,7 +130,7 @@ List 3-5 games and what you're taking from each:
 
 ## 5. Core Gameplay Loop
 
-> *See [E6 — Game Design Fundamentals](../E/E6_game_design_fundamentals.md) for loop theory and pacing concepts.*
+> *See [E6 — Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) for loop theory and pacing concepts.*
 
 ### The Three Loops
 
@@ -543,7 +543,7 @@ What order does the player gain abilities/tools?
 
 ## 12. UI/UX Design
 
-> *See [G5 — UI Framework](../G/G5_ui_framework.md) for implementation patterns, [G7 — Input Handling](../G/G7_input_handling.md) for input architecture, and [G35 — Accessibility](../G/G35_accessibility.md) for accessibility guidelines.*
+> *See [G5 — UI Framework](../../monogame-arch/guides/G5_ui_framework.md) for implementation patterns, [G7 — Input Handling](../../monogame-arch/guides/G7_input_handling.md) for input architecture, and [G35 — Accessibility](../../monogame-arch/guides/G35_accessibility.md) for accessibility guidelines.*
 
 ### Screen Flow
 
@@ -624,7 +624,7 @@ What order does the player gain abilities/tools?
 | Subtitle options | [___] | |
 | One-handed mode | [___] | |
 
-*Not everything is feasible for every project — but consider each one. See [G35 — Accessibility](../G/G35_accessibility.md) for implementation guidance.*
+*Not everything is feasible for every project — but consider each one. See [G35 — Accessibility](../../monogame-arch/guides/G35_accessibility.md) for implementation guidance.*
 
 > **🪞 Ask yourself:**
 > - Can a new player understand my HUD in the first 10 seconds?
@@ -635,7 +635,7 @@ What order does the player gain abilities/tools?
 
 ## 13. Technical Design
 
-> *See [R1 — Library Stack](../R/R1_library_stack.md) for the full library reference.*
+> *See [R1 — Library Stack](../../monogame-arch/reference/R1_library_stack.md) for the full library reference.*
 
 ### Architecture Overview
 

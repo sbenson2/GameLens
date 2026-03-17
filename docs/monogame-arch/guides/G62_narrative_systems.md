@@ -3,7 +3,7 @@
 ![](../img/topdown.png)
 
 
-> **Category:** Guide · **Related:** [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G45 Cutscenes](./G45_cutscenes.md) · [G5 UI Framework](./G5_ui_framework.md) · [G47 Achievements](./G47_achievements.md) · [E6 Game Design Fundamentals](../E/E6_game_design_fundamentals.md)
+> **Category:** Guide · **Related:** [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G45 Cutscenes](./G45_cutscenes.md) · [G5 UI Framework](./G5_ui_framework.md) · [G47 Achievements](./G47_achievements.md) · [E6 Game Design Fundamentals](../../core/game-design/E6_game_design_fundamentals.md)
 
 ---
 
@@ -1116,6 +1116,6 @@ var narrativeEvents = new NarrativeEventSystem(world);
 - **[G45 Cutscenes](./G45_cutscenes.md)** — Scripted sequences that complement narrative events
 - **[G5 UI Framework](./G5_ui_framework.md)** — Building the dialogue box, journal screen, and choice buttons
 - **[G47 Achievements](./G47_achievements.md)** — Achievements triggered by story milestones and endings
-- **[E6 Game Design Fundamentals](../E/E6_game_design_fundamentals.md)** — Pacing, player agency, and narrative design principles
+- **[E6 Game Design Fundamentals](../../core/game-design/E6_game_design_fundamentals.md)** — Pacing, player agency, and narrative design principles
 - [Yarn Spinner Documentation](https://docs.yarnspinner.dev/)
 - [Ink by Inkle](https://github.com/inkle/ink)

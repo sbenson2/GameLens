@@ -2,7 +2,7 @@
 
 ![](../img/networking.png)
 
-> **Category:** Reference · **Related:** [E1 Architecture Overview](../E/E1_architecture_overview.md) · [R2 Capability Matrix](./R2_capability_matrix.md) · [R3 Project Structure](./R3_project_structure.md)
+> **Category:** Reference · **Related:** [E1 Architecture Overview](../architecture/E1_architecture_overview.md) · [R2 Capability Matrix](./R2_capability_matrix.md) · [R3 Project Structure](./R3_project_structure.md)
 
 ---
 
@@ -36,11 +36,11 @@ dotnet add package Arch.System.SourceGenerator
 |---------|---------|---------|
 | MonoGame.Extended | 5.3.1 | Camera, Tiled maps, collision shapes, math |
 | MonoGame.Extended.Content.Pipeline | 5.3.1 | Tiled/atlas/Aseprite content importers |
-| Gum.MonoGame | Latest | UI framework (MonoGame's official recommendation) → [G5](../G/G5_ui_framework.md) |
-| Apos.Input | 2.5.0 | Input handling with JustPressed tracking → [G7](../G/G7_input_handling.md) |
+| Gum.MonoGame | Latest | UI framework (MonoGame's official recommendation) → [G5](../guides/G5_ui_framework.md) |
+| Apos.Input | 2.5.0 | Input handling with JustPressed tracking → [G7](../guides/G7_input_handling.md) |
 | FontStashSharp.MonoGame | 1.3.7 | Runtime .ttf/.otf rendering at any size |
-| Aether.Physics2D | 2.2.0 | Box2D-style rigid body physics → [G3](../G/G3_physics_and_collision.md) |
-| MonoGame.Aseprite | 6.3.1 | Direct .ase/.aseprite sprite import → [G8](../G/G8_content_pipeline.md) |
+| Aether.Physics2D | 2.2.0 | Box2D-style rigid body physics → [G3](../guides/G3_physics_and_collision.md) |
+| MonoGame.Aseprite | 6.3.1 | Direct .ase/.aseprite sprite import → [G8](../guides/G8_content_pipeline.md) |
 
 ```bash
 dotnet add package MonoGame.Extended --version 5.3.1
@@ -58,8 +58,8 @@ dotnet add package MonoGame.Aseprite --version 6.3.1
 
 | Package | Purpose | Genres / Trigger |
 |---------|---------|-----------------|
-| LiteNetLib | Reliable UDP networking | Fighting (rollback), RTS, co-op → [G9](../G/G9_networking.md) |
-| FmodForFoxes + FmodForFoxes.Desktop | FMOD audio engine | Rhythm games, advanced audio → [G6](../G/G6_audio.md) |
+| LiteNetLib | Reliable UDP networking | Fighting (rollback), RTS, co-op → [G9](../guides/G9_networking.md) |
+| FmodForFoxes + FmodForFoxes.Desktop | FMOD audio engine | Rhythm games, advanced audio → [G6](../guides/G6_audio.md) |
 | Arch.Persistence | ECS world serialization | Sandbox, sim, any with save/load |
 | Arch.Relationships | Entity-to-entity relationships | RPG (party members), RTS (squads) |
 | ImGui.NET | Debug overlays and console | Development/debugging |
@@ -87,7 +87,7 @@ dotnet add package MLEM.Data
 | MonoGame.Penumbra.DesktopGL / .WindowsDX | 2D lighting with soft shadows | v3.0.0, both platforms |
 | MonoGame-Mojo | 2D lighting/shadows/normal mapping | GitHub source only (not on NuGet) |
 | Roy-T.AStar | Standalone A* pathfinding | NuGet, no framework dependency |
-| BrainAI | FSM, BT, GOAP, Utility AI, pathfinding, influence maps | GitHub source reference → [G4](../G/G4_ai_systems.md) |
+| BrainAI | FSM, BT, GOAP, Utility AI, pathfinding, influence maps | GitHub source reference → [G4](../guides/G4_ai_systems.md) |
 | Apos.Tweens | Fluent tweening API | Alternative to custom tweens |
 
 ```bash
@@ -107,7 +107,7 @@ If you specifically need Newtonsoft.Json for compatibility: `dotnet add package 
 
 ## Custom Code (No Package Needed)
 
-These are written as part of your project. ~1,000 lines total, ~14.5 hours of work. See [G1 Custom Code Recipes](../G/G1_custom_code_recipes.md) for implementation.
+These are written as part of your project. ~1,000 lines total, ~14.5 hours of work. See [G1 Custom Code Recipes](../guides/G1_custom_code_recipes.md) for implementation.
 
 | Module | ~Lines |
 |--------|--------|

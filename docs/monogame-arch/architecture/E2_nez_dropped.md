@@ -1,5 +1,5 @@
 # E2 — Why Nez Was Dropped
-> **Category:** Explanation · **Related:** [E1 Architecture Overview](./E1_architecture_overview.md) · [E8 MonoGameStudio Post-Mortem](./E8_monogamestudio_postmortem.md) · [R1 Library Stack](../R/R1_library_stack.md)
+> **Category:** Explanation · **Related:** [E1 Architecture Overview](./E1_architecture_overview.md) · [E8 MonoGameStudio Post-Mortem](./E8_monogamestudio_postmortem.md) · [R1 Library Stack](../reference/R1_library_stack.md)
 
 ---
 
@@ -83,24 +83,24 @@ Every feature Nez provided has a replacement in the composed stack — most are 
 | Nez Feature | Replacement | Notes |
 |---|---|---|
 | Entity-Component model | **Arch ECS** (v2.1.0) | True ECS with archetypes, cache-friendly, handles thousands of entities |
-| Scene management | **Custom** (~150 lines) | Scene manager with transitions — [G1](../G/G1_custom_code_recipes.md) |
-| Physics / collision | **Aether.Physics2D** (v2.2.0) | Full Box2D-style physics — [G3](../G/G3_physics_and_collision.md) |
-| SpatialHash broadphase | **Custom** (~80 lines) | Simple, no dependency — [G1](../G/G1_custom_code_recipes.md) |
+| Scene management | **Custom** (~150 lines) | Scene manager with transitions — [G1](../guides/G1_custom_code_recipes.md) |
+| Physics / collision | **Aether.Physics2D** (v2.2.0) | Full Box2D-style physics — [G3](../guides/G3_physics_and_collision.md) |
+| SpatialHash broadphase | **Custom** (~80 lines) | Simple, no dependency — [G1](../guides/G1_custom_code_recipes.md) |
 | Collision shapes | **MonoGame.Extended** (v5.3.1) | AABB, circle, polygon + custom shapes (~150 lines) |
 | Render layers | **Custom** (~200 lines) | Full control over sort order and camera assignment |
-| Post-processors | **Custom** (~150 lines) | RenderTarget2D chain, your effects — [G2](../G/G2_rendering_and_graphics.md) |
-| Sprite rendering | **MonoGame.Aseprite** (v6.3.1) | Direct .aseprite import, better workflow — [G8](../G/G8_content_pipeline.md) |
+| Post-processors | **Custom** (~150 lines) | RenderTarget2D chain, your effects — [G2](../guides/G2_rendering_and_graphics.md) |
+| Sprite rendering | **MonoGame.Aseprite** (v6.3.1) | Direct .aseprite import, better workflow — [G8](../guides/G8_content_pipeline.md) |
 | Sprite atlas | **MonoGame.Extended** or custom | Atlas packing, texture regions |
-| UI system | **Gum.MonoGame** | Visual editor, forms controls, official MonoGame recommendation — [G5](../G/G5_ui_framework.md) |
-| Tweening | **Custom** (~100 lines) | Property tweens with easing — [G1](../G/G1_custom_code_recipes.md) |
-| Screen transitions | **Custom** (~100 lines) | Fade, slide, etc. — [G1](../G/G1_custom_code_recipes.md) |
+| UI system | **Gum.MonoGame** | Visual editor, forms controls, official MonoGame recommendation — [G5](../guides/G5_ui_framework.md) |
+| Tweening | **Custom** (~100 lines) | Property tweens with easing — [G1](../guides/G1_custom_code_recipes.md) |
+| Screen transitions | **Custom** (~100 lines) | Fade, slide, etc. — [G1](../guides/G1_custom_code_recipes.md) |
 | Timers | **Custom** or Coroutine (Ellpeck) | Unity-style coroutines for sequential logic |
 | Debug console | **ImGui.NET** | Industry-standard debug tooling |
-| AI (FSM, BT, GOAP) | **BrainAI** | Same feature set, standalone library — [G4](../G/G4_ai_systems.md) |
+| AI (FSM, BT, GOAP) | **BrainAI** | Same feature set, standalone library — [G4](../guides/G4_ai_systems.md) |
 | Pathfinding | **BrainAI** | A*, breadth-first, Dijkstra |
-| Input handling | **Apos.Input** (v2.5.0) | JustPressed tracking, multi-device — [G7](../G/G7_input_handling.md) |
+| Input handling | **Apos.Input** (v2.5.0) | JustPressed tracking, multi-device — [G7](../guides/G7_input_handling.md) |
 | Fonts | **FontStashSharp.MonoGame** (v1.3.7) | Runtime .ttf/.otf at any size |
-| Camera | **MonoGame.Extended** | Camera2D with viewport handling — [G20](../G/G20_camera_systems.md) |
+| Camera | **MonoGame.Extended** | Camera2D with viewport handling — [G20](../guides/G20_camera_systems.md) |
 
 The total custom code budget is ~1,000 lines ([E1](./E1_architecture_overview.md)) — about 14.5 hours of implementation. That's less time than you'd spend fighting Nez's architecture for a single non-standard feature.
 

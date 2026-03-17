@@ -1,5 +1,5 @@
 # R4 — Game Design Resources
-> **Category:** Reference · **Related:** [E1 Architecture Overview](../E/E1_architecture_overview.md) · [G12 Design Patterns](../G/G12_design_patterns.md) · [G18 Game Programming Patterns](../G/G18_game_programming_patterns.md) · [C1 Genre Reference](../C/C1_genre_reference.md)
+> **Category:** Reference · **Related:** [E1 Architecture Overview](../../monogame-arch/architecture/E1_architecture_overview.md) · [G12 Design Patterns](../../monogame-arch/guides/G12_design_patterns.md) · [G18 Game Programming Patterns](../../monogame-arch/guides/G18_game_programming_patterns.md) · [C1 Genre Reference](C1_genre_reference.md)
 
 ---
 
@@ -136,7 +136,7 @@ GDC talks, books by tier, pattern wikis, YouTube channels, and MonoGame communit
 | Resource | What It Is |
 |----------|-----------|
 | **Gameplay Design Patterns Wiki** (virt10.itu.chalmers.se) | 600+ academic patterns by Bjork et al. at Chalmers University, categorized with cross-references — the most extensive free collection available |
-| **Game Programming Patterns** (gameprogrammingpatterns.com) | Full book free online, covering State, Observer, Component, and other patterns applied specifically to games. See also [G18 Game Programming Patterns](../G/G18_game_programming_patterns.md) |
+| **Game Programming Patterns** (gameprogrammingpatterns.com) | Full book free online, covering State, Observer, Component, and other patterns applied specifically to games. See also [G18 Game Programming Patterns](../../monogame-arch/guides/G18_game_programming_patterns.md) |
 | **Game UI Database** (gameuidatabase.com) | Searchable interface design references by game and genre |
 | **Machinations** (machinations.io) | Visual tool for modeling game economies with a free tier |
 | **The 400 Project** (Hal Barwood & Noah Falstein) | 400 game design rules and heuristics |

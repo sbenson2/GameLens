@@ -2,7 +2,7 @@
 
 ![](../img/nature.png)
 
-> **Category:** Guide · **Related:** [G8 Content Pipeline](./G8_content_pipeline.md) · [G24 Window & Display Management](./G24_window_display_management.md) · [G25 Safe Areas & Adaptive Layout](./G25_safe_areas_adaptive_layout.md) · [E4 Solo Project Management](../E/E4_project_management.md)
+> **Category:** Guide · **Related:** [G8 Content Pipeline](./G8_content_pipeline.md) · [G24 Window & Display Management](./G24_window_display_management.md) · [G25 Safe Areas & Adaptive Layout](./G25_safe_areas_adaptive_layout.md) · [E4 Solo Project Management](../../core/project-management/E4_project_management.md)
 
 > Everything needed to ship a MonoGame + Arch ECS game: dotnet publish flags, platform-specific builds, Steam/itch.io distribution, code signing, CI/CD pipelines, and troubleshooting deployment failures.
 

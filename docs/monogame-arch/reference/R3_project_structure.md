@@ -1,5 +1,5 @@
 # R3 — Project Structure
-> **Category:** Reference · **Related:** [R1 Library Stack](./R1_library_stack.md) · [E1 Architecture Overview](../E/E1_architecture_overview.md)
+> **Category:** Reference · **Related:** [R1 Library Stack](./R1_library_stack.md) · [E1 Architecture Overview](../architecture/E1_architecture_overview.md)
 
 ---
 

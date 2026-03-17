@@ -2,7 +2,7 @@
 
 ![](../img/camera.png)
 
-> **Category:** Guide · **Related:** [G8 Content Pipeline](./G8_content_pipeline.md) · [G13 C# Performance](./G13_csharp_performance.md) · [G15 Game Loop](./G15_game_loop.md) · [R3 Project Structure](../R/R3_project_structure.md)
+> **Category:** Guide · **Related:** [G8 Content Pipeline](./G8_content_pipeline.md) · [G13 C# Performance](./G13_csharp_performance.md) · [G15 Game Loop](./G15_game_loop.md) · [R3 Project Structure](../reference/R3_project_structure.md)
 
 ---
 
@@ -399,5 +399,5 @@ The main difference: Godot reference-counts resources and frees them when unused
 
 - [G8 Content Pipeline](./G8_content_pipeline.md) — MGCB build configuration, importers, processors
 - [G13 C# Performance](./G13_csharp_performance.md) — zero-allocation patterns, avoiding GC pressure
-- [R3 Project Structure](../R/R3_project_structure.md) — where Content/ and Resources/ directories live
+- [R3 Project Structure](../reference/R3_project_structure.md) — where Content/ and Resources/ directories live
 - [G15 Game Loop](./G15_game_loop.md) — frame timing impact of loading during gameplay

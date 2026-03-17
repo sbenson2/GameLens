@@ -1,5 +1,5 @@
 # E1 — Architecture Overview
-> **Category:** Explanation · **Related:** [R1 Library Stack](../R/R1_library_stack.md) · [E2 Why Nez Was Dropped](./E2_nez_dropped.md) · [G1 Custom Code Recipes](../G/G1_custom_code_recipes.md)
+> **Category:** Explanation · **Related:** [R1 Library Stack](../reference/R1_library_stack.md) · [E2 Why Nez Was Dropped](./E2_nez_dropped.md) · [G1 Custom Code Recipes](../guides/G1_custom_code_recipes.md)
 
 ---
 
@@ -110,7 +110,7 @@ Each library handles one concern and is independently swappable:
 | Debug | ImGui.NET | Console.WriteLine (always works) |
 | Coroutines | Ellpeck/Coroutine | Custom IEnumerator wrapper (~60 lines) |
 
-**Full package list and install commands:** see [R1 Library Stack](../R/R1_library_stack.md).
+**Full package list and install commands:** see [R1 Library Stack](../reference/R1_library_stack.md).
 
 ---
 
@@ -131,7 +131,7 @@ Some things are better written yourself than taken from a library. The total cus
 | Line renderer | ~50 | 1 hour |
 | **Total** | **~1,010** | **~14.5 hours** |
 
-Every line is code you own, understand, and can debug. Implementation details and starter code are in [G1 Custom Code Recipes](../G/G1_custom_code_recipes.md).
+Every line is code you own, understand, and can debug. Implementation details and starter code are in [G1 Custom Code Recipes](../guides/G1_custom_code_recipes.md).
 
 ---
 
@@ -159,4 +159,4 @@ This architecture has been validated on:
 
 The Core project (95%+ of code) requires **zero platform-specific changes**. Platform projects are thin launchers — Desktop is 3 lines, iOS is ~25 lines (AppDelegate + deferred game creation). Content, ECS systems, rendering, and all game logic are shared.
 
-See [R3 Project Structure](../R/R3_project_structure.md) for iOS project setup and the AppDelegate pattern.
+See [R3 Project Structure](../reference/R3_project_structure.md) for iOS project setup and the AppDelegate pattern.

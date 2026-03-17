@@ -1,5 +1,5 @@
 # G11 — Programming Principles
-> **Category:** Guide · **Related:** [G12 Design Patterns](./G12_design_patterns.md) · [E1 Architecture Overview](../E/E1_architecture_overview.md) · [E5 AI Workflow](../E/E5_ai_workflow.md)
+> **Category:** Guide · **Related:** [G12 Design Patterns](./G12_design_patterns.md) · [E1 Architecture Overview](../architecture/E1_architecture_overview.md) · [E5 AI Workflow](../../core/ai-workflow/E5_ai_workflow.md)
 
 ---
 

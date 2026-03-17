@@ -5,7 +5,7 @@
 
 > Audio is half the experience. A game with great art and no audio feels like a silent film nobody asked for.
 
-Most solo devs treat audio as an afterthought — something to bolt on the week before release. That's a mistake. Audio is **game feel** (see [G30 — Game Feel Tooling](../G/G30_game_feel_tooling.md)). The satisfying *thwack* of a hit, the little *ding* when you pick up a coin, the ambient hum of a dungeon — these are what make a game feel *alive*.
+Most solo devs treat audio as an afterthought — something to bolt on the week before release. That's a mistake. Audio is **game feel** (see [G30 — Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md)). The satisfying *thwack* of a hit, the little *ding* when you pick up a coin, the ambient hum of a dungeon — these are what make a game feel *alive*.
 
 ---
 
@@ -47,7 +47,7 @@ Sound is the fastest feedback channel you have. A player *feels* a hit before th
 - A sound effect without any visual response feels disconnected.
 - Together, they create *impact*.
 
-See [G30 — Game Feel Tooling](../G/G30_game_feel_tooling.md) for how audio plugs into your game feel system.
+See [G30 — Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md) for how audio plugs into your game feel system.
 
 ### Budget Your Audio Time
 
@@ -243,7 +243,7 @@ Implementation: Use multiple `SoundEffect` instances for layers, or swap `Song` 
 
 ## 5 — Audio Implementation in MonoGame
 
-> For the full API reference, see [G6 — Audio](../G/G6_audio.md).
+> For the full API reference, see [G6 — Audio](../../monogame-arch/guides/G6_audio.md).
 
 ### SoundEffect vs Song
 
@@ -517,7 +517,7 @@ Players **must** be able to control volume. Minimum:
 - Music volume slider
 - SFX volume slider
 
-See [G55 — Settings Menu](../G/G55_settings_menu.md) for implementation patterns. Save settings to disk so they persist between sessions.
+See [G55 — Settings Menu](../../monogame-arch/guides/G55_settings_menu.md) for implementation patterns. Save settings to disk so they persist between sessions.
 
 ---
 
@@ -654,7 +654,7 @@ Run through this list before you ship. Every item should be checked off.
 - [ ] No UI interaction is silent
 
 ### Game Feel Sync
-- [ ] Hit sounds sync with hitstop/freeze frames (see [G30](../G/G30_game_feel_tooling.md))
+- [ ] Hit sounds sync with hitstop/freeze frames (see [G30](../../monogame-arch/guides/G30_game_feel_tooling.md))
 - [ ] Screen shake events have accompanying audio
 - [ ] Death has both visual and audio feedback
 - [ ] Pickups have immediate audio response
@@ -663,7 +663,7 @@ Run through this list before you ship. Every item should be checked off.
 - [ ] Master volume slider works and saves
 - [ ] Music volume slider works and saves
 - [ ] SFX volume slider works and saves
-- [ ] Volume settings persist between sessions (see [G55](../G/G55_settings_menu.md))
+- [ ] Volume settings persist between sessions (see [G55](../../monogame-arch/guides/G55_settings_menu.md))
 - [ ] Volume 0 = truly silent (no quiet bleed-through)
 - [ ] Mute option available (or volume 0 serves this purpose)
 

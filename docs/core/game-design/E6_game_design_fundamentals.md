@@ -2,7 +2,7 @@
 
 ![](../img/topdown.png)
 
-> **Category:** Explanation · **Related:** [C1 Genre Reference](../C/C1_genre_reference.md) · [C2 Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md) · [E4 Project Management](./E4_project_management.md) · [G10 Custom Game Systems](../G/G10_custom_game_systems.md) · [G11 Programming Principles](../G/G11_programming_principles.md)
+> **Category:** Explanation · **Related:** [C1 Genre Reference](C1_genre_reference.md) · [C2 Game Feel & Genre Craft](C2_game_feel_and_genre_craft.md) · [E4 Project Management](./E4_project_management.md) · [G10 Custom Game Systems](../../monogame-arch/guides/G10_custom_game_systems.md) · [G11 Programming Principles](../../monogame-arch/guides/G11_programming_principles.md)
 
 ---
 
@@ -249,5 +249,5 @@ Several principles recur across this document, forming a unified design philosop
 
 - **Systems beat scripts.** The most engaging games create systems whose interactions produce experiences the designer never explicitly authored.
 - **Constraints amplify creativity.** Embracing constraints — in scope, palette, mechanic count, and technology — produces more focused, more polished games.
-- **Juice is communication.** Every screen shake, hitstop frame, and particle burst confirms that a hit connected, signals danger, or acknowledges player input. See [C2 Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md).
+- **Juice is communication.** Every screen shake, hitstop frame, and particle burst confirms that a hit connected, signals danger, or acknowledges player input. See [C2 Game Feel & Genre Craft](C2_game_feel_and_genre_craft.md).
 - **Respect the player's intelligence, time, and agency.** Teach through design rather than text. Make death informative rather than punishing. Let players modulate their own risk.

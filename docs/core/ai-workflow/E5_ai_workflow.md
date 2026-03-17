@@ -1,5 +1,5 @@
 # E5 — AI-Assisted Development Workflow
-> **Category:** Explanation · **Related:** [E4 Project Management](./E4_project_management.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../R/R3_project_structure.md) · [G11 Programming Principles](../G/G11_programming_principles.md) · [E8 MonoGameStudio Post-Mortem](./E8_monogamestudio_postmortem.md)
+> **Category:** Explanation · **Related:** [E4 Project Management](./E4_project_management.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [G11 Programming Principles](../../monogame-arch/guides/G11_programming_principles.md) · [E8 MonoGameStudio Post-Mortem](./E8_monogamestudio_postmortem.md)
 
 ---
 
@@ -99,9 +99,9 @@ Structure the file with clear markdown headers to prevent instruction bleeding b
 
 ## What AI Is Bad At (Write It Yourself)
 
-- Core game loop and fixed timestep integration → [G15](../G/G15_game_loop.md)
-- Game feel tuning (but AI **can** scaffold the tooling that helps you tune) → [G30](../G/G30_game_feel_tooling.md)
-- Physics and collision resolution edge cases → [G3](../G/G3_physics_and_collision.md)
+- Core game loop and fixed timestep integration → [G15](../../monogame-arch/guides/G15_game_loop.md)
+- Game feel tuning (but AI **can** scaffold the tooling that helps you tune) → [G30](../../monogame-arch/guides/G30_game_feel_tooling.md)
+- Physics and collision resolution edge cases → [G3](../../monogame-arch/guides/G3_physics_and_collision.md)
 - State machine transitions with subtle timing requirements
 - Performance-critical inner loops (measure, don't trust AI's optimization instincts)
 - Anything involving your game's unique "feel" — jump arcs, attack timing, camera behavior
@@ -118,11 +118,11 @@ Structure the file with clear markdown headers to prevent instruction bleeding b
 AI-generated code has systematic failure patterns. Check every piece for:
 
 1. **Hallucinated APIs** — methods/classes that don't exist in your libraries
-2. **Performance anti-patterns** — O(n²) where O(n) exists, LINQ in hot paths, string concatenation in loops → [G13](../G/G13_csharp_performance.md)
+2. **Performance anti-patterns** — O(n²) where O(n) exists, LINQ in hot paths, string concatenation in loops → [G13](../../monogame-arch/guides/G13_csharp_performance.md)
 3. **Missing edge cases** — null inputs, empty collections, boundary values, integer overflow
 4. **Incorrect error handling** — swallowing exceptions, catching too broadly
 5. **Stale patterns** — using obsolete APIs from older .NET versions
-6. **Memory leaks** — event handlers not unsubscribed, async tasks not cancelled → [G13](../G/G13_csharp_performance.md)
+6. **Memory leaks** — event handlers not unsubscribed, async tasks not cancelled → [G13](../../monogame-arch/guides/G13_csharp_performance.md)
 7. **Thread safety assumptions** — AI often ignores concurrency concerns
 8. **ECS-specific failures** — modifying entities during iteration, incorrect query components, missing command buffer usage, structural changes without deferred execution
 
@@ -167,7 +167,7 @@ AI handles ~70% of initial grunt work (base compositions, color exploration, rou
 
 AI art generation is never the hard part — post-processing is. Budget 50%+ of art time for manual refinement. The games that ship without backlash are the ones whose AI contribution is invisible in the final product.
 
-Target specs for 3/4 perspective: 16×16 pixel tiles, 480×270 native resolution scaled 4×, characters at 16×32 pixels. See [G28](../G/G28_top_down_perspective.md).
+Target specs for 3/4 perspective: 16×16 pixel tiles, 480×270 native resolution scaled 4×, characters at 16×32 pixels. See [G28](../../monogame-arch/guides/G28_top_down_perspective.md).
 
 ---
 

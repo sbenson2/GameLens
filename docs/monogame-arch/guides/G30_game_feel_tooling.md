@@ -2,7 +2,7 @@
 
 ![](../img/topdown.png)
 
-> **Category:** Guide · **Related:** [C2 Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md) · [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G16 Debugging](./G16_debugging.md) · [G20 Camera Systems](./G20_camera_systems.md) · [E5 AI-Assisted Dev Workflow](../E/E5_ai_workflow.md) · [G5 UI Framework](./G5_ui_framework.md)
+> **Category:** Guide · **Related:** [C2 Game Feel & Genre Craft](../../core/game-design/C2_game_feel_and_genre_craft.md) · [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G16 Debugging](./G16_debugging.md) · [G20 Camera Systems](./G20_camera_systems.md) · [E5 AI-Assisted Dev Workflow](../../core/ai-workflow/E5_ai_workflow.md) · [G5 UI Framework](./G5_ui_framework.md)
 
 ---
 
@@ -603,12 +603,12 @@ All tooling code lives behind `#if DEBUG` preprocessor directives. Release build
 
 ## What AI Can Generate Here
 
-Following the [E5 workflow](../E/E5_ai_workflow.md):
+Following the [E5 workflow](../../core/ai-workflow/E5_ai_workflow.md):
 
 - **Yes:** The `MovementFeelProfile` struct, JSON serialization, ImGui slider boilerplate, ghost recorder data structure, frame advance controller
-- **No:** The actual slider ranges (those come from [C2 tuning values](../C/C2_game_feel_and_genre_craft.md)), which parameters to expose (that's design judgment), and the final tuned values themselves
+- **No:** The actual slider ranges (those come from [C2 tuning values](../../core/game-design/C2_game_feel_and_genre_craft.md)), which parameters to expose (that's design judgment), and the final tuned values themselves
 
-Write the interface/contract for each module yourself. Let AI scaffold the implementation. Review against the [AI code review checklist](../E/E5_ai_workflow.md#ai-code-review-checklist).
+Write the interface/contract for each module yourself. Let AI scaffold the implementation. Review against the [AI code review checklist](../../core/ai-workflow/E5_ai_workflow.md#ai-code-review-checklist).
 
 ---
 
@@ -629,7 +629,7 @@ Build reference presets early. Use them as comparison targets during playtesting
 
 ## Production Workflow
 
-1. **Start with defaults** based on [C2 reference values](../C/C2_game_feel_and_genre_craft.md)
+1. **Start with defaults** based on [C2 reference values](../../core/game-design/C2_game_feel_and_genre_craft.md)
 2. **Tune in-game** using the ImGui panel — iterate until it feels right
 3. **Save as a preset** with a descriptive name
 4. **Record ghost runs** to compare before/after tuning sessions

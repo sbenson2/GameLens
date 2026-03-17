@@ -318,7 +318,7 @@ Your store page converts browsers into wishlists and wishlists into buyers. Ever
   - Memory: 2–4 GB RAM
   - Graphics: OpenGL 3.0 / DirectX 11 compatible
   - Storage: [actual build size + 20% buffer]
-- [ ] See [../G/G32_deployment_platform_builds.md](../G/G32_deployment_platform_builds.md) for platform-specific build details
+- [ ] See [../../monogame-arch/guides/G32_deployment_platform_builds.md](../../monogame-arch/guides/G32_deployment_platform_builds.md) for platform-specific build details
 
 ### Demo Strategy
 
@@ -368,7 +368,7 @@ The final countdown. Everything should be ready before this week — this is abo
 ### Achievements & Integration
 
 - [ ] If using achievements, verify they all trigger correctly
-  - See [../G/G47_achievements.md](../G/G47_achievements.md) for implementation details
+  - See [../../monogame-arch/guides/G47_achievements.md](../../monogame-arch/guides/G47_achievements.md) for implementation details
 - [ ] Test **Steam Cloud saves** if enabled
 - [ ] Verify **Rich Presence** if configured
 - [ ] Test **Steam Trading Cards** if set up (usually post-launch)
@@ -414,7 +414,7 @@ The final countdown. Everything should be ready before this week — this is abo
 ### Monitoring
 
 - [ ] Watch for **crash reports** immediately
-  - See [../G/G51_crash_reporting.md](../G/G51_crash_reporting.md) for crash handling setup
+  - See [../../monogame-arch/guides/G51_crash_reporting.md](../../monogame-arch/guides/G51_crash_reporting.md) for crash handling setup
 - [ ] Monitor **Steam Community discussions** for issues
 - [ ] Watch your **Discord** for bug reports
 - [ ] Check **Steam reviews** as they come in (look for patterns, not individual opinions)
@@ -547,7 +547,7 @@ The dust is settling. Time to analyze, plan, and build momentum for the long tai
 - [ ] Content survey completed (maturity rating)
 - [ ] Build uploaded via SteamPipe
 - [ ] Launch configuration set (depots, executable paths)
-- [ ] Achievements configured (see [../G/G47_achievements.md](../G/G47_achievements.md))
+- [ ] Achievements configured (see [../../monogame-arch/guides/G47_achievements.md](../../monogame-arch/guides/G47_achievements.md))
 - [ ] Steam Cloud saves enabled (if applicable)
 - [ ] Controller support configured
 - [ ] Steam Input API integrated (if applicable)
@@ -576,7 +576,7 @@ The dust is settling. Time to analyze, plan, and build momentum for the long tai
 
 ### Mobile (Optional)
 
-- [ ] See [../G/G32_deployment_platform_builds.md](../G/G32_deployment_platform_builds.md) for platform build details
+- [ ] See [../../monogame-arch/guides/G32_deployment_platform_builds.md](../../monogame-arch/guides/G32_deployment_platform_builds.md) for platform build details
 - [ ] **Google Play:**
   - [ ] Developer account ($25 one-time)
   - [ ] Prepare store listing (title, description, screenshots)
@@ -643,7 +643,7 @@ Not the fun part, but ignoring it creates problems later. Handle this early.
 
 - [ ] **Privacy Policy** — required if you collect ANY user data
   - Analytics, crash reports, leaderboards, accounts = you need one
-  - See [../G/G51_crash_reporting.md](../G/G51_crash_reporting.md) for crash data considerations
+  - See [../../monogame-arch/guides/G51_crash_reporting.md](../../monogame-arch/guides/G51_crash_reporting.md) for crash data considerations
   - Free generators exist, but a lawyer review is worth it for peace of mind
 - [ ] **EULA** — Steam has a default subscriber agreement; custom EULA is optional
 - [ ] **GDPR compliance** (if accessible in EU) — right to deletion, data access requests

@@ -2,7 +2,7 @@
 
 ![](../img/tilemap.png)
 
-> **Category:** Guide · **Related:** [R1 Library Stack](../R/R1_library_stack.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G6 Audio](./G6_audio.md)
+> **Category:** Guide · **Related:** [R1 Library Stack](../reference/R1_library_stack.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G6 Audio](./G6_audio.md)
 
 > Deep dive into the MonoGame content pipeline: MGCB configuration, custom importers, Aseprite animation, Tiled maps, texture atlases, fonts, audio, data loading, hot-reload, and cross-platform content strategies.
 

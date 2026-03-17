@@ -2,7 +2,7 @@
 
 ![](../img/camera.png)
 
-> **Category:** Guide · **Related:** [G15 Game Loop](./G15_game_loop.md) · [G17 Testing](./G17_testing.md) · [R1 Library Stack](../R/R1_library_stack.md) · [G13 C# Performance](./G13_csharp_performance.md) · [G14 Data Structures](./G14_data_structures.md) · [G12 Design Patterns](./G12_design_patterns.md)
+> **Category:** Guide · **Related:** [G15 Game Loop](./G15_game_loop.md) · [G17 Testing](./G17_testing.md) · [R1 Library Stack](../reference/R1_library_stack.md) · [G13 C# Performance](./G13_csharp_performance.md) · [G14 Data Structures](./G14_data_structures.md) · [G12 Design Patterns](./G12_design_patterns.md)
 
 Systematic debugging methodology, visual symptom diagnosis, MonoGame + Arch ECS debugging, ImGui tooling, structured logging, assertions, and common C# pitfalls.
 
@@ -253,7 +253,7 @@ Enable `GraphicsAdapter.UseDebugDevice = true` before creating the `GraphicsDevi
 
 ## In-Game Debug Tooling (ImGui.NET)
 
-ImGui.NET is referenced directly via NuGet (see [R1](../R/R1_library_stack.md)). AAA studios (the teams behind FF7 Remake, Assassin's Creed, Fallout 76) use Dear ImGui extensively for debug tooling. For a solo developer, the ability to build an entity inspector, system timing display, and tweakable parameters in a single afternoon makes it the highest-leverage debug tool after basic debug drawing. Build debug tools as you build the game:
+ImGui.NET is referenced directly via NuGet (see [R1](../reference/R1_library_stack.md)). AAA studios (the teams behind FF7 Remake, Assassin's Creed, Fallout 76) use Dear ImGui extensively for debug tooling. For a solo developer, the ability to build an entity inspector, system timing display, and tweakable parameters in a single afternoon makes it the highest-leverage debug tool after basic debug drawing. Build debug tools as you build the game:
 
 - Entity inspectors (view/edit component values at runtime)
 - Spatial partition visualization (draw grid cells, quadtree nodes)

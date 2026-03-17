@@ -2,7 +2,7 @@
 
 ![](../img/topdown.png)
 
-> **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [G4 AI Systems](./G4_ai_systems.md) · [C2 Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md)
+> **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [G4 AI Systems](./G4_ai_systems.md) · [C2 Game Feel & Genre Craft](../../core/game-design/C2_game_feel_and_genre_craft.md)
 
 > Deep dive into 2D animation systems for MonoGame + Arch ECS: Aseprite playback, ECS animation components, state machines with transitions and priority, directional sprites, frame events, layered animation, and production-ready patterns for game feel.
 

@@ -5,7 +5,7 @@
 
 > **Summary:** A practical guide to setting and tracking performance budgets for your 2D MonoGame game. Plan for 60fps on modest hardware so you never hit "it works on my machine" surprises late in development.
 >
-> **See also:** [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md) for deep-dive techniques referenced throughout this document.
+> **See also:** [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md) for deep-dive techniques referenced throughout this document.
 
 ---
 
@@ -143,7 +143,7 @@ At 60fps, you have **16.67 milliseconds** per frame. Every frame. No exceptions.
 | UI / HUD | ≤ 1.5ms | Text rendering is expensive — cache when possible |
 | Post-processing / effects | ≤ 1.0ms | Shaders, screen transitions |
 
-> **See [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md)** for how to measure each of these phases.
+> **See [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md)** for how to measure each of these phases.
 
 ---
 
@@ -328,7 +328,7 @@ Common allocation sources to avoid:
 | Lambda captures | Avoid closures over local variables in hot paths |
 | `new Vector2(x, y)` | Reuse structs — but note: `Vector2` is a struct, no heap alloc. The issue is arrays/lists of them. |
 
-> **Deep dive:** [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md) covers GC profiling techniques and allocation tracking.
+> **Deep dive:** [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md) covers GC profiling techniques and allocation tracking.
 
 ---
 
@@ -382,7 +382,7 @@ But also: don't profile every frame. That's a waste of your time and it distorts
 | Tool | What It Measures | When to Use |
 |------|-----------------|-------------|
 | **`Stopwatch` / `GameTime`** | Frame time per system | Always — cheap, leave in as debug overlay |
-| **ImGui debug overlay** | Real-time frame breakdown | During development — see [G16 — Debugging](../G/G16_debugging.md) |
+| **ImGui debug overlay** | Real-time frame breakdown | During development — see [G16 — Debugging](../../monogame-arch/guides/G16_debugging.md) |
 | **`dotnet-trace`** | CPU sampling, method-level hotspots | When you know *something* is slow but not *what* |
 | **`dotnet-counters`** | GC collections, allocation rate, thread pool | Monitoring GC pressure over time |
 | **PerfView** | Deep GC analysis, allocation stacks | When GC pauses are killing your frame rate |
@@ -437,7 +437,7 @@ protected override void Update(GameTime gameTime)
 5. **Frame time spikes** — GC pauses, content loading, or I/O on main thread
 6. **Steady climb in memory** — memory leak (probably event handlers or growing collections)
 
-> **Full profiling guide:** [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md)
+> **Full profiling guide:** [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md)
 
 ---
 
@@ -561,7 +561,7 @@ Don't check every entity against every other entity. Use a spatial hash grid to 
 
 - O(n²) → O(n) for collision broadphase
 - Typically 10–100× faster for large entity counts
-- **See:** [G3 — Physics & Collision](../G/G3_physics_and_collision.md) for implementation details
+- **See:** [G3 — Physics & Collision](../../monogame-arch/guides/G3_physics_and_collision.md) for implementation details
 
 ### Frustum / Camera Culling
 
@@ -656,7 +656,7 @@ Group draws by render state to minimize expensive GPU state switches:
 
 Each group = one Begin/End pair = one state change.
 
-> **Full optimization catalog:** [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md)
+> **Full optimization catalog:** [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md)
 
 ---
 
@@ -684,7 +684,7 @@ The Steam Deck is the new "minimum spec" for PC games on Steam.
 
 ### Mobile (if targeting via FNA or similar)
 
-See [G32 — Deployment & Platform Builds](../G/G32_deployment_platform_builds.md) for setup details.
+See [G32 — Deployment & Platform Builds](../../monogame-arch/guides/G32_deployment_platform_builds.md) for setup details.
 
 | Resource | Budget |
 |----------|--------|
@@ -869,7 +869,7 @@ The process is simple:
 Most 2D games will never come close to these limits. That's the point — if you know the ceiling, you can build freely underneath it.
 
 > **Next steps:**
-> - [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md) — deep-dive on profiling tools and techniques
-> - [G16 — Debugging](../G/G16_debugging.md) — setting up ImGui debug overlays
-> - [G3 — Physics & Collision](../G/G3_physics_and_collision.md) — spatial hashing implementation
-> - [G32 — Deployment & Platform Builds](../G/G32_deployment_platform_builds.md) — platform-specific build configuration
+> - [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md) — deep-dive on profiling tools and techniques
+> - [G16 — Debugging](../../monogame-arch/guides/G16_debugging.md) — setting up ImGui debug overlays
+> - [G3 — Physics & Collision](../../monogame-arch/guides/G3_physics_and_collision.md) — spatial hashing implementation
+> - [G32 — Deployment & Platform Builds](../../monogame-arch/guides/G32_deployment_platform_builds.md) — platform-specific build configuration

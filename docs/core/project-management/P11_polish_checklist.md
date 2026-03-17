@@ -8,8 +8,8 @@
 This checklist is your polish-phase companion. Work through it systematically after your core gameplay loop is solid. Every checkbox is a small thing on its own — stacked together, they're the difference between "functional prototype" and "this feels amazing."
 
 **Key references:**
-- [Game Feel Tooling](../G/G30_game_feel_tooling.md) — engine-level systems that power juice
-- [Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md) — design philosophy behind why this matters
+- [Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md) — engine-level systems that power juice
+- [Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md) — design philosophy behind why this matters
 
 ---
 
@@ -32,7 +32,7 @@ Juice is the **feedback layer** between player input and game response. A functi
 
 Great juice layers all three simultaneously. A sword hit should flash the enemy (visual), play an impact sound (audio), *and* shake the camera (camera). One pillar alone feels thin. All three together feels unstoppable.
 
-> **Rule of thumb:** If a player action has no feedback from at least 2 of the 3 pillars, it will feel flat. — See [C2: Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md)
+> **Rule of thumb:** If a player action has no feedback from at least 2 of the 3 pillars, it will feel flat. — See [C2: Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md)
 
 ---
 
@@ -42,7 +42,7 @@ Great juice layers all three simultaneously. A sword hit should flash the enemy 
 
 **Intensity:** 🔥 Dramatic for combat. Subtle for movement.
 
-> Reference: [G20: Camera Systems](../G/G20_camera_systems.md)
+> Reference: [G20: Camera Systems](../../monogame-arch/guides/G20_camera_systems.md)
 
 ### Checklist
 
@@ -83,7 +83,7 @@ trauma = max(0, trauma - decay * delta)
 
 **Intensity:** 🔥 Dramatic. This is one of the highest-impact techniques.
 
-> Reference: [G15: Game Loop](../G/G15_game_loop.md) — understanding the update loop is critical for clean hitstop
+> Reference: [G15: Game Loop](../../monogame-arch/guides/G15_game_loop.md) — understanding the update loop is critical for clean hitstop
 
 ### Checklist
 
@@ -108,7 +108,7 @@ if freeze_timer > 0:
 # else: normal update
 ```
 
-**Key detail:** During hitstop, you should still process input buffering and render. The player should be able to queue their next action during the freeze. Only the game simulation pauses — see [G15](../G/G15_game_loop.md) for separating update from render.
+**Key detail:** During hitstop, you should still process input buffering and render. The player should be able to queue their next action during the freeze. Only the game simulation pauses — see [G15](../../monogame-arch/guides/G15_game_loop.md) for separating update from render.
 
 > **The test:** If a melee attack feels "clicky" and weightless, add 3 frames of hitstop. Instant improvement.
 
@@ -120,7 +120,7 @@ if freeze_timer > 0:
 
 **Intensity:** Varies — dramatic for combat, subtle for ambiance.
 
-> Reference: [G23: Particle Systems](../G/G23_particles.md)
+> Reference: [G23: Particle Systems](../../monogame-arch/guides/G23_particles.md)
 
 ### Checklist
 
@@ -142,7 +142,7 @@ if freeze_timer > 0:
 - Use **velocity inheritance** — particles should move in the direction of the action
 - **Fade out**, don't pop out — alpha tween to 0 over lifetime
 - **Randomize** size, speed, and lifetime slightly for organic feel
-- Pool and recycle particles — see [G23](../G/G23_particles.md) for object pooling patterns
+- Pool and recycle particles — see [G23](../../monogame-arch/guides/G23_particles.md) for object pooling patterns
 
 ---
 
@@ -187,7 +187,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 **Intensity:** 🎯 Subtle for movement. 🔥 Dramatic for events.
 
-> Reference: [G20: Camera Systems](../G/G20_camera_systems.md)
+> Reference: [G20: Camera Systems](../../monogame-arch/guides/G20_camera_systems.md)
 
 ### Checklist
 
@@ -219,7 +219,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 **Intensity:** 🎯 Subtle to moderate. The player shouldn't notice tweens — they should notice when tweens are *missing*.
 
-> Reference: [G41: Tweening](../G/G41_tweening.md)
+> Reference: [G41: Tweening](../../monogame-arch/guides/G41_tweening.md)
 
 ### Checklist
 
@@ -254,7 +254,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 **Intensity:** 🎯 Moderate. Should feel intentional, not flashy.
 
-> Reference: [G42: Screen Transitions](../G/G42_screen_transitions.md)
+> Reference: [G42: Screen Transitions](../../monogame-arch/guides/G42_screen_transitions.md)
 
 ### Checklist
 
@@ -281,7 +281,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 **Intensity:** 🎯 Subtle. UI juice should feel polished, not distracting.
 
-> Reference: [G5: UI Framework](../G/G5_ui_framework.md)
+> Reference: [G5: UI Framework](../../monogame-arch/guides/G5_ui_framework.md)
 
 ### Checklist
 
@@ -306,7 +306,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 **Intensity:** 🔥 Dramatic impact. Audio feedback is almost never "too much."
 
-> Reference: [G6: Audio](../G/G6_audio.md)
+> Reference: [G6: Audio](../../monogame-arch/guides/G6_audio.md)
 
 ### Checklist
 
@@ -364,7 +364,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 # Then swap back to normal sprite
 ```
 
-> **Why white flash works:** It's a universal "something happened" signal. Players process it instantly. See [G30: Game Feel Tooling](../G/G30_game_feel_tooling.md) for shader-based flash implementations.
+> **Why white flash works:** It's a universal "something happened" signal. Players process it instantly. See [G30: Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md) for shader-based flash implementations.
 
 ---
 
@@ -387,7 +387,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 ### Implementation Notes
 
 - Time manipulation affects your **game delta**, not real time. UI, input, and audio should still run at normal speed
-- Use a global `time_scale` multiplier on your delta time — see [G15: Game Loop](../G/G15_game_loop.md)
+- Use a global `time_scale` multiplier on your delta time — see [G15: Game Loop](../../monogame-arch/guides/G15_game_loop.md)
 - Tween `time_scale` back to 1.0 — don't snap it. Ease-in-quad feels natural
 - **Layer with zoom:** Slow-mo + slight camera zoom-in = cinematic kill moment
 - **Don't slow audio pitch** unless it's an intentional effect. Duck volume instead
@@ -400,7 +400,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 **Intensity:** ⚡ Minimal to subtle. Heavy post-processing is the #1 "indie game that looks amateur" tell.
 
-> Reference: [G27: Shaders & Effects](../G/G27_shaders_and_effects.md)
+> Reference: [G27: Shaders & Effects](../../monogame-arch/guides/G27_shaders_and_effects.md)
 
 ### Checklist
 
@@ -429,7 +429,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 **Intensity:** 🎯 Subtle. Environmental effects are ambient — they shouldn't compete with gameplay.
 
-> Reference: [G57: Weather Effects](../G/G57_weather_effects.md)
+> Reference: [G57: Weather Effects](../../monogame-arch/guides/G57_weather_effects.md)
 
 ### Checklist
 
@@ -448,7 +448,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 Environmental polish rewards *observation*. The player who walks slowly through a forest and sees birds scatter, grass sway, and dust motes float feels like the world is real. It doesn't affect gameplay — it affects *immersion*.
 
-> See [C2: Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md) for how environmental feedback ties into genre expectations.
+> See [C2: Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md) for how environmental feedback ties into genre expectations.
 
 ---
 
@@ -559,4 +559,4 @@ Copy this into your project tracker and check items off as you implement them:
 
 > *"A game without juice is a spreadsheet with sprites."*
 >
-> Go make it feel amazing. For the full systems-level breakdown, see [G30: Game Feel Tooling](../G/G30_game_feel_tooling.md) and [C2: Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md).
+> Go make it feel amazing. For the full systems-level breakdown, see [G30: Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md) and [C2: Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md).

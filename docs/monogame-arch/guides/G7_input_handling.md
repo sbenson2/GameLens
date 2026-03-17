@@ -1,5 +1,5 @@
 # G7 — Input Handling
-> **Category:** Guide · **Related:** [R1 Library Stack](../R/R1_library_stack.md) · [C1 Genre Reference](../C/C1_genre_reference.md)
+> **Category:** Guide · **Related:** [R1 Library Stack](../reference/R1_library_stack.md) · [C1 Genre Reference](../../core/game-design/C1_genre_reference.md)
 
 > Apos.Input deep dive — setup, input buffering, rebinding, multi-device support, and ECS integration.
 

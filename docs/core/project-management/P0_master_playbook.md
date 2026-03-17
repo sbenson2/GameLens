@@ -77,7 +77,7 @@ Coroutine (Ellpeck)              — Unity-style coroutines
 ~1,000 lines custom glue code    — Scene manager, render layers, tweens, etc.
 ```
 
-📚 Full details: [R1 — Library Stack](../R/R1_library_stack.md) · [R2 — Capability Matrix](../R/R2_capability_matrix.md)
+📚 Full details: [R1 — Library Stack](../../monogame-arch/reference/R1_library_stack.md) · [R2 — Capability Matrix](../../monogame-arch/reference/R2_capability_matrix.md)
 
 ---
 
@@ -116,7 +116,7 @@ Most failed projects fail here. Not because the developer lacked skill, but beca
 - You're excited to play it, not just build it
 - It plays to your strengths (good at code? mechanic-heavy. good at art? visual-heavy.)
 
-📚 **Read:** [C1 — Genre Reference](../C/C1_genre_reference.md) — Browse every 2D genre with their required mechanics and systems. This is your menu. Pick what excites you and matches your skill level.
+📚 **Read:** [C1 — Genre Reference](../game-design/C1_genre_reference.md) — Browse every 2D genre with their required mechanics and systems. This is your menu. Pick what excites you and matches your skill level.
 
 **Exercise:** Write down 3-5 game ideas in one sentence each. Sleep on it. Pick the one you keep thinking about.
 
@@ -149,7 +149,7 @@ For your chosen idea, answer these questions:
 
 This is where dreams meet reality. Be honest.
 
-📚 **Read:** [E9 — Solo Dev Playbook](../E/E9_solo_dev_playbook.md) — Realistic productivity data, scope management, what solo devs can actually ship.
+📚 **Read:** [E9 — Solo Dev Playbook](E9_solo_dev_playbook.md) — Realistic productivity data, scope management, what solo devs can actually ship.
 
 **Ask yourself:**
 
@@ -251,7 +251,7 @@ Pre-production is where you make the cheap mistakes. Changing a design doc costs
 
 Your pitch was the "what." The GDD is the "how."
 
-📚 **Read:** [E6 — Game Design Fundamentals](../E/E6_game_design_fundamentals.md) — MDA framework, design pillars, player motivation, feedback loops, pacing
+📚 **Read:** [E6 — Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) — MDA framework, design pillars, player motivation, feedback loops, pacing
 📚 **Use:** [13 — GDD Template](./13_gdd_template.md) — Fill-in-the-blank design document
 
 **Your GDD should cover:**
@@ -286,7 +286,7 @@ You need to lock in two critical decisions early because they affect everything:
 
 **Resolution & Scaling:**
 
-📚 **Read:** [G19 — Display, Resolution & Viewports](../G/G19_display_resolution_viewports.md)
+📚 **Read:** [G19 — Display, Resolution & Viewports](../../monogame-arch/guides/G19_display_resolution_viewports.md)
 
 | Style | Base Resolution | Tile Size | Character Size |
 |-------|----------------|-----------|----------------|
@@ -300,9 +300,9 @@ You need to lock in two critical decisions early because they affect everything:
 **Perspective:**
 
 📚 **Choose one and read its guide:**
-- [G56 — Side-Scrolling](../G/G56_side_scrolling.md) — Platformers, run-and-gun, Metroidvania
-- [G28 — 3/4 Top-Down](../G/G28_top_down_perspective.md) — Zelda-like, RPGs, action-adventure
-- [G49 — Isometric](../G/G49_isometric.md) — Tactics, city builders, CRPGs
+- [G56 — Side-Scrolling](../../monogame-arch/guides/G56_side_scrolling.md) — Platformers, run-and-gun, Metroidvania
+- [G28 — 3/4 Top-Down](../../monogame-arch/guides/G28_top_down_perspective.md) — Zelda-like, RPGs, action-adventure
+- [G49 — Isometric](../../monogame-arch/guides/G49_isometric.md) — Tactics, city builders, CRPGs
 
 Each perspective has fundamentally different rendering, collision, and level design approaches. This isn't a cosmetic choice — it's an architectural one.
 
@@ -310,7 +310,7 @@ Each perspective has fundamentally different rendering, collision, and level des
 
 ### Step 3: Scope Into Milestones
 
-📚 **Read:** [E4 — Solo Project Management](../E/E4_project_management.md) — Vertical slices, scope, tech debt management
+📚 **Read:** [E4 — Solo Project Management](E4_project_management.md) — Vertical slices, scope, tech debt management
 
 Break your GDD into concrete milestones:
 
@@ -373,10 +373,10 @@ If the mechanic doesn't feel fun in gray-box? **Pivot now.** Go back to Phase 0.
 Now you write real code. But you set it up right from the start.
 
 📚 **Read in order:**
-1. [E1 — Architecture Overview](../E/E1_architecture_overview.md) — Understand the composed stack philosophy
-2. [R1 — Library Stack](../R/R1_library_stack.md) — Install all packages
-3. [R3 — Project Structure](../R/R3_project_structure.md) — Folder layout and solution organization
-4. [G44 — Version Control](../G/G44_version_control.md) — Git setup, .gitignore, LFS for assets
+1. [E1 — Architecture Overview](../../monogame-arch/architecture/E1_architecture_overview.md) — Understand the composed stack philosophy
+2. [R1 — Library Stack](../../monogame-arch/reference/R1_library_stack.md) — Install all packages
+3. [R3 — Project Structure](../../monogame-arch/reference/R3_project_structure.md) — Folder layout and solution organization
+4. [G44 — Version Control](../../monogame-arch/guides/G44_version_control.md) — Git setup, .gitignore, LFS for assets
 
 **Project setup checklist:**
 
@@ -388,11 +388,11 @@ Now you write real code. But you set it up right from the start.
 - [ ] Configure Git LFS for binary assets (`.png`, `.aseprite`, `.ogg`, `.wav`)
 - [ ] Write the basic `GameApp` class with fixed timestep
 - [ ] Set up Arch ECS world
-- [ ] Create a minimal scene manager (see [G1 — Custom Code Recipes](../G/G1_custom_code_recipes.md))
+- [ ] Create a minimal scene manager (see [G1 — Custom Code Recipes](../../monogame-arch/guides/G1_custom_code_recipes.md))
 - [ ] Verify it compiles and runs (blank colored window = success)
 - [ ] Make your first commit: "Initial project setup"
 
-📚 **Also useful now:** [E5 — AI-Assisted Dev Workflow](../E/E5_ai_workflow.md) — If you're using AI coding assistants, structure your code for them from the start
+📚 **Also useful now:** [E5 — AI-Assisted Dev Workflow](../ai-workflow/E5_ai_workflow.md) — If you're using AI coding assistants, structure your code for them from the start
 
 ---
 
@@ -455,15 +455,15 @@ Build systems in dependency order. Each step below builds on the previous one.
 
 **1. Game Loop & Scene Management**
 
-📚 [G15 — Game Loop](../G/G15_game_loop.md) · [G38 — Scene Management](../G/G38_scene_management.md)
+📚 [G15 — Game Loop](../../monogame-arch/guides/G15_game_loop.md) · [G38 — Scene Management](../../monogame-arch/guides/G38_scene_management.md)
 
 - Fixed timestep game loop (MonoGame default handles this)
 - Scene manager with at least: `GameplayScene`, `PauseOverlay`
-- Scene transitions (even a simple fade — see [G42 — Screen Transitions](../G/G42_screen_transitions.md))
+- Scene transitions (even a simple fade — see [G42 — Screen Transitions](../../monogame-arch/guides/G42_screen_transitions.md))
 
 **2. Input System**
 
-📚 [G7 — Input Handling](../G/G7_input_handling.md)
+📚 [G7 — Input Handling](../../monogame-arch/guides/G7_input_handling.md)
 
 - Wire up Apos.Input
 - Map actions to inputs (Move, Jump, Attack, Interact, Pause)
@@ -472,12 +472,12 @@ Build systems in dependency order. Each step below builds on the previous one.
 
 **3. Player Movement & Character Controller**
 
-📚 [G52 — Character Controller](../G/G52_character_controller.md) (for platformers)
+📚 [G52 — Character Controller](../../monogame-arch/guides/G52_character_controller.md) (for platformers)
 
 Or implement movement appropriate to your perspective:
 - Side-scrolling → G52 (kinematic controller, variable jump, coyote time)
-- Top-down → [G28](../G/G28_top_down_perspective.md) (8-directional movement, collision response)
-- Isometric → [G49](../G/G49_isometric.md) (coordinate conversion, diamond movement)
+- Top-down → [G28](../../monogame-arch/guides/G28_top_down_perspective.md) (8-directional movement, collision response)
+- Isometric → [G49](../../monogame-arch/guides/G49_isometric.md) (coordinate conversion, diamond movement)
 
 **This is where "feel" starts.** Spend extra time here. If moving around isn't satisfying, nothing built on top will be either.
 
@@ -485,7 +485,7 @@ Or implement movement appropriate to your perspective:
 
 **4. Camera**
 
-📚 [G20 — Camera Systems](../G/G20_camera_systems.md)
+📚 [G20 — Camera Systems](../../monogame-arch/guides/G20_camera_systems.md)
 
 - Camera follow with smoothing
 - Camera bounds (don't show outside the level)
@@ -494,7 +494,7 @@ Or implement movement appropriate to your perspective:
 
 **5. Tilemap & Level Loading**
 
-📚 [G37 — Tilemap Systems](../G/G37_tilemap_systems.md) · [G8 — Content Pipeline](../G/G8_content_pipeline.md)
+📚 [G37 — Tilemap Systems](../../monogame-arch/guides/G37_tilemap_systems.md) · [G8 — Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md)
 
 - Load Tiled (.tmx) maps via MonoGame.Extended
 - Render tile layers (background, midground, foreground)
@@ -503,7 +503,7 @@ Or implement movement appropriate to your perspective:
 
 **6. Collision**
 
-📚 [G3 — Physics & Collision](../G/G3_physics_and_collision.md)
+📚 [G3 — Physics & Collision](../../monogame-arch/guides/G3_physics_and_collision.md)
 
 - Tile collision (for most games, AABB vs tilemap is enough)
 - Entity-vs-entity collision detection
@@ -523,7 +523,7 @@ This is unique to your game. Whatever you prototyped in Phase 1, now integrate i
 
 **8. First Enemy / First Hazard**
 
-📚 [G4 — AI Systems](../G/G4_ai_systems.md) (for enemy AI patterns)
+📚 [G4 — AI Systems](../../monogame-arch/guides/G4_ai_systems.md) (for enemy AI patterns)
 
 - One enemy type with basic behavior (patrol, chase, attack)
 - One hazard type (spikes, pits, projectiles)
@@ -544,7 +544,7 @@ Using Tiled, build one level that:
 
 **10. HUD (Minimal)**
 
-📚 [G5 — UI Framework](../G/G5_ui_framework.md)
+📚 [G5 — UI Framework](../../monogame-arch/guides/G5_ui_framework.md)
 
 - Health display
 - Any core mechanic indicator (ammo, mana, timer, score)
@@ -552,7 +552,7 @@ Using Tiled, build one level that:
 
 **11. Basic Audio**
 
-📚 [G6 — Audio](../G/G6_audio.md)
+📚 [G6 — Audio](../../monogame-arch/guides/G6_audio.md)
 
 - Placeholder sound effects for: jump, attack, hit, enemy death, pickup
 - One background music track (even a free loop)
@@ -560,7 +560,7 @@ Using Tiled, build one level that:
 
 **12. Basic Game Feel**
 
-📚 [G30 — Game Feel Tooling](../G/G30_game_feel_tooling.md) · [C2 — Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md)
+📚 [G30 — Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md) · [C2 — Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md)
 
 - Screen shake on big impacts
 - Hitstop/hitpause on damage
@@ -655,7 +655,7 @@ Build systems in this order. Each group can be parallelized, but the groups them
 
 **Entity Prefabs & Blueprints**
 
-📚 [G43 — Entity Prefabs](../G/G43_entity_prefabs.md)
+📚 [G43 — Entity Prefabs](../../monogame-arch/guides/G43_entity_prefabs.md)
 
 - Data-driven entity definitions (JSON blueprints)
 - Entity factory that spawns from blueprints
@@ -664,7 +664,7 @@ Build systems in this order. Each group can be parallelized, but the groups them
 
 **Animation System**
 
-📚 [G31 — Animation & Sprite State Machines](../G/G31_animation_state_machines.md) · [G59 — Skeletal Animation](../G/G59_skeletal_animation.md)
+📚 [G31 — Animation & Sprite State Machines](../../monogame-arch/guides/G31_animation_state_machines.md) · [G59 — Skeletal Animation](../../monogame-arch/guides/G59_skeletal_animation.md)
 
 - Aseprite integration via MonoGame.Aseprite
 - Animation state machines (Idle → Run → Jump → Attack → etc.)
@@ -673,7 +673,7 @@ Build systems in this order. Each group can be parallelized, but the groups them
 
 **Resource Management**
 
-📚 [G26 — Resource Loading & Caching](../G/G26_resource_loading_caching.md)
+📚 [G26 — Resource Loading & Caching](../../monogame-arch/guides/G26_resource_loading_caching.md)
 
 - Scoped content loading (per-scene, not all upfront)
 - Asset caching strategy
@@ -683,7 +683,7 @@ Build systems in this order. Each group can be parallelized, but the groups them
 
 **AI & Enemy Behaviors**
 
-📚 [G4 — AI Systems](../G/G4_ai_systems.md) · [G40 — Pathfinding](../G/G40_pathfinding.md)
+📚 [G4 — AI Systems](../../monogame-arch/guides/G4_ai_systems.md) · [G40 — Pathfinding](../../monogame-arch/guides/G40_pathfinding.md)
 
 - Expand from one enemy type to all planned types
 - Behavior patterns: patrol, chase, flee, attack, idle
@@ -692,7 +692,7 @@ Build systems in this order. Each group can be parallelized, but the groups them
 
 **UI Framework**
 
-📚 [G5 — UI Framework](../G/G5_ui_framework.md)
+📚 [G5 — UI Framework](../../monogame-arch/guides/G5_ui_framework.md)
 
 - Main menu (New Game, Continue, Settings, Quit)
 - Pause menu
@@ -702,7 +702,7 @@ Build systems in this order. Each group can be parallelized, but the groups them
 
 **Audio System (Full)**
 
-📚 [G6 — Audio](../G/G6_audio.md)
+📚 [G6 — Audio](../../monogame-arch/guides/G6_audio.md)
 
 - Music system with crossfading between tracks
 - Sound effect manager with variations (3 footstep sounds, randomly picked)
@@ -717,7 +717,7 @@ These depend entirely on your game. Build what your GDD says you need.
 
 **Save/Load System**
 
-📚 [G10 — Custom Game Systems](../G/G10_custom_game_systems.md) (save/load section)
+📚 [G10 — Custom Game Systems](../../monogame-arch/guides/G10_custom_game_systems.md) (save/load section)
 
 - Decide save strategy: save points, autosave, save anywhere
 - Serialize game state to JSON
@@ -726,7 +726,7 @@ These depend entirely on your game. Build what your GDD says you need.
 
 **Inventory & Items** (if applicable)
 
-📚 [G10 — Custom Game Systems](../G/G10_custom_game_systems.md) (inventory section)
+📚 [G10 — Custom Game Systems](../../monogame-arch/guides/G10_custom_game_systems.md) (inventory section)
 
 - Item data definitions
 - Inventory container (grid, list, or weight-based)
@@ -735,7 +735,7 @@ These depend entirely on your game. Build what your GDD says you need.
 
 **Dialogue System** (if applicable)
 
-📚 [G62 — Narrative & Branching Story](../G/G62_narrative_systems.md) · [G10](../G/G10_custom_game_systems.md) (dialogue section)
+📚 [G62 — Narrative & Branching Story](../../monogame-arch/guides/G62_narrative_systems.md) · [G10](../../monogame-arch/guides/G10_custom_game_systems.md) (dialogue section)
 
 - Dialogue data format (consider Yarn Spinner or Ink integration)
 - Dialogue UI (text box, portrait, name)
@@ -744,7 +744,7 @@ These depend entirely on your game. Build what your GDD says you need.
 
 **Quest / Progression System** (if applicable)
 
-📚 [G47 — Achievements & Progression](../G/G47_achievements.md) · [G10](../G/G10_custom_game_systems.md) (quests section)
+📚 [G47 — Achievements & Progression](../../monogame-arch/guides/G47_achievements.md) · [G10](../../monogame-arch/guides/G10_custom_game_systems.md) (quests section)
 
 - Quest state tracking
 - Objective completion events
@@ -755,7 +755,7 @@ These depend entirely on your game. Build what your GDD says you need.
 
 **Lighting** (if your game uses it)
 
-📚 [G39 — 2D Lighting & Shadows](../G/G39_2d_lighting.md)
+📚 [G39 — 2D Lighting & Shadows](../../monogame-arch/guides/G39_2d_lighting.md)
 
 - Lightmap rendering
 - Point and spot lights
@@ -764,7 +764,7 @@ These depend entirely on your game. Build what your GDD says you need.
 
 **Particles**
 
-📚 [G23 — Particles](../G/G23_particles.md)
+📚 [G23 — Particles](../../monogame-arch/guides/G23_particles.md)
 
 - Particle emitter system
 - Common effects: dust, sparks, blood/hit, smoke, magic
@@ -772,7 +772,7 @@ These depend entirely on your game. Build what your GDD says you need.
 
 **Settings Menu**
 
-📚 [G55 — Settings & Options Menu](../G/G55_settings_menu.md)
+📚 [G55 — Settings & Options Menu](../../monogame-arch/guides/G55_settings_menu.md)
 
 - Audio volume (Master, Music, SFX)
 - Display settings (fullscreen, resolution, vsync)
@@ -817,7 +817,7 @@ Before moving to Beta, verify:
 - **Polishing too early** — Don't spend 3 days on a particle effect when you haven't built the dialogue system yet. Get everything working first.
 - **Building systems you don't need** — If your GDD says "Won't," don't build it.
 - **Not making levels** — Systems without content are useless. Force yourself to build levels even when "just one more system" calls.
-- **Ignoring performance** — You don't need to optimize yet, but if you're at 15 FPS, something is architecturally wrong. Fix it now. See [G33 — Profiling](../G/G33_profiling_optimization.md).
+- **Ignoring performance** — You don't need to optimize yet, but if you're at 15 FPS, something is architecturally wrong. Fix it now. See [G33 — Profiling](../../monogame-arch/guides/G33_profiling_optimization.md).
 - **Feature creep** — Your GDD's "Could" list is whispering. Don't listen. Ship the "Must" and "Should" first.
 
 ---
@@ -849,7 +849,7 @@ Beta is about **depth**, not breadth. You're not building new systems. You're ma
 - Every enemy placed and balanced
 - Every item/pickup in the game
 - Every dialogue tree written
-- Every cutscene implemented → [G45 — Cutscenes](../G/G45_cutscenes.md)
+- Every cutscene implemented → [G45 — Cutscenes](../../monogame-arch/guides/G45_cutscenes.md)
 - Every sound effect and music track in place
 
 **Content freeze.** After this, no new content. Only improvements to existing content.
@@ -862,7 +862,7 @@ This is where your game comes alive. Polish is not optional — it's what separa
 
 **Game Feel & Juice**
 
-📚 [G30 — Game Feel Tooling](../G/G30_game_feel_tooling.md) · [C2 — Game Feel & Genre Craft](../C/C2_game_feel_and_genre_craft.md)
+📚 [G30 — Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md) · [C2 — Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md)
 
 The Juice Checklist:
 - [ ] Screen shake on impacts (calibrated — too much is worse than none)
@@ -876,7 +876,7 @@ The Juice Checklist:
 
 **Tweening & Animation**
 
-📚 [G41 — Tweening & Easing](../G/G41_tweening.md)
+📚 [G41 — Tweening & Easing](../../monogame-arch/guides/G41_tweening.md)
 
 - UI elements animate in/out (don't just appear/disappear)
 - Health bars tween smoothly
@@ -885,7 +885,7 @@ The Juice Checklist:
 
 **Screen Transitions**
 
-📚 [G42 — Screen Transitions](../G/G42_screen_transitions.md)
+📚 [G42 — Screen Transitions](../../monogame-arch/guides/G42_screen_transitions.md)
 
 - Level transitions (fade, wipe, iris, dissolve — pick what fits your style)
 - Scene transitions with loading (if levels are large)
@@ -893,7 +893,7 @@ The Juice Checklist:
 
 **Visual Effects**
 
-📚 [G60 — Trail & Line Rendering](../G/G60_trails_lines.md) · [G57 — Weather Effects](../G/G57_weather_effects.md)
+📚 [G60 — Trail & Line Rendering](../../monogame-arch/guides/G60_trails_lines.md) · [G57 — Weather Effects](../../monogame-arch/guides/G57_weather_effects.md)
 
 - Weapon/attack trails
 - Dash ghosts/afterimages
@@ -902,7 +902,7 @@ The Juice Checklist:
 
 **Tutorial & Onboarding**
 
-📚 [G61 — Tutorial & Onboarding](../G/G61_tutorial_onboarding.md)
+📚 [G61 — Tutorial & Onboarding](../../monogame-arch/guides/G61_tutorial_onboarding.md)
 
 - Teach mechanics through gameplay, not text walls
 - Contextual button prompts
@@ -915,7 +915,7 @@ The Juice Checklist:
 
 **Accessibility**
 
-📚 [G35 — Accessibility](../G/G35_accessibility.md)
+📚 [G35 — Accessibility](../../monogame-arch/guides/G35_accessibility.md)
 
 - [ ] Colorblind mode (or colorblind-safe default palette)
 - [ ] Input remapping (done in Alpha, verify it works everywhere)
@@ -926,7 +926,7 @@ The Juice Checklist:
 
 **Localization** (if shipping in multiple languages)
 
-📚 [G34 — Localization](../G/G34_localization.md)
+📚 [G34 — Localization](../../monogame-arch/guides/G34_localization.md)
 
 - All strings externalized (no hardcoded text)
 - Translation files for each language
@@ -936,7 +936,7 @@ The Juice Checklist:
 
 **Performance Profiling**
 
-📚 [G33 — Profiling & Optimization](../G/G33_profiling_optimization.md) · [G13 — C# Performance](../G/G13_csharp_performance.md)
+📚 [G33 — Profiling & Optimization](../../monogame-arch/guides/G33_profiling_optimization.md) · [G13 — C# Performance](../../monogame-arch/guides/G13_csharp_performance.md)
 
 - Profile every scene, find the bottlenecks
 - Target frame budget: 16.67ms (60 FPS) or 33.33ms (30 FPS)
@@ -1008,7 +1008,7 @@ Build for all target platforms, set up store pages, and verify everything works.
 
 ### Platform Builds
 
-📚 [G32 — Deployment & Platform Builds](../G/G32_deployment_platform_builds.md)
+📚 [G32 — Deployment & Platform Builds](../../monogame-arch/guides/G32_deployment_platform_builds.md)
 
 **For each target platform:**
 - [ ] `dotnet publish` with correct runtime identifier
@@ -1031,7 +1031,7 @@ Build for all target platforms, set up store pages, and verify everything works.
 
 ### Store Page & Marketing
 
-📚 [G36 — Publishing & Distribution](../G/G36_publishing_distribution.md)
+📚 [G36 — Publishing & Distribution](../../monogame-arch/guides/G36_publishing_distribution.md)
 
 **Steam:**
 - [ ] Steamworks account set up ($100 fee)
@@ -1052,7 +1052,7 @@ Build for all target platforms, set up store pages, and verify everything works.
 
 ### Achievement & Online Integration
 
-📚 [G47 — Achievements & Progression](../G/G47_achievements.md) · [G48 — Online Services](../G/G48_online_services.md)
+📚 [G47 — Achievements & Progression](../../monogame-arch/guides/G47_achievements.md) · [G48 — Online Services](../../monogame-arch/guides/G48_online_services.md)
 
 If shipping on Steam:
 - [ ] Steam achievements defined and integrated
@@ -1064,7 +1064,7 @@ If shipping on Steam:
 
 ### Crash Reporting
 
-📚 [G51 — Crash Reporting](../G/G51_crash_reporting.md)
+📚 [G51 — Crash Reporting](../../monogame-arch/guides/G51_crash_reporting.md)
 
 - [ ] Global exception handler catches unhandled exceptions
 - [ ] Crash dumps written to log file
@@ -1181,7 +1181,7 @@ Ship the game, support it post-launch, and learn from the experience.
 
 ### Community & Modding
 
-📚 [G46 — Modding Support](../G/G46_modding_support.md)
+📚 [G46 — Modding Support](../../monogame-arch/guides/G46_modding_support.md)
 
 If your game benefits from modding (and your architecture supports it):
 - Data-driven designs (JSON blueprints) make modding natural
@@ -1230,40 +1230,40 @@ Every system in the toolkit mapped to its guide, sorted by typical build order:
 
 | # | System | Guide | Phase |
 |---|--------|-------|-------|
-| 1 | Game Loop & Timestep | [G15](../G/G15_game_loop.md) | 2 (Vertical Slice) |
-| 2 | Scene Management | [G38](../G/G38_scene_management.md) | 2 |
-| 3 | Input Handling | [G7](../G/G7_input_handling.md) | 2 |
-| 4 | Character Movement | [G52](../G/G52_character_controller.md) | 2 |
-| 5 | Camera | [G20](../G/G20_camera_systems.md) | 2 |
-| 6 | Tilemap & Tiled | [G37](../G/G37_tilemap_systems.md) | 2 |
-| 7 | Collision & Physics | [G3](../G/G3_physics_and_collision.md) | 2 |
-| 8 | Content Pipeline | [G8](../G/G8_content_pipeline.md) | 2 |
-| 9 | Basic Audio | [G6](../G/G6_audio.md) | 2 |
-| 10 | Entity Prefabs | [G43](../G/G43_entity_prefabs.md) | 3 (Alpha) |
-| 11 | Animation | [G31](../G/G31_animation_state_machines.md) | 3 |
-| 12 | AI & Enemies | [G4](../G/G4_ai_systems.md) | 3 |
-| 13 | Pathfinding | [G40](../G/G40_pathfinding.md) | 3 |
-| 14 | UI Framework | [G5](../G/G5_ui_framework.md) | 3 |
-| 15 | Inventory | [G10](../G/G10_custom_game_systems.md) | 3 |
-| 16 | Dialogue | [G62](../G/G62_narrative_systems.md) | 3 |
-| 17 | Save/Load | [G10](../G/G10_custom_game_systems.md) | 3 |
-| 18 | Quests & Progression | [G47](../G/G47_achievements.md) | 3 |
-| 19 | Lighting | [G39](../G/G39_2d_lighting.md) | 3 |
-| 20 | Particles | [G23](../G/G23_particles.md) | 3 |
-| 21 | Settings Menu | [G55](../G/G55_settings_menu.md) | 3 |
-| 22 | Game Feel / Juice | [G30](../G/G30_game_feel_tooling.md), [C2](../C/C2_game_feel_and_genre_craft.md) | 4 (Beta) |
-| 23 | Tweening | [G41](../G/G41_tweening.md) | 4 |
-| 24 | Screen Transitions | [G42](../G/G42_screen_transitions.md) | 4 |
-| 25 | Trails & Lines | [G60](../G/G60_trails_lines.md) | 4 |
-| 26 | Weather Effects | [G57](../G/G57_weather_effects.md) | 4 |
-| 27 | Tutorial/Onboarding | [G61](../G/G61_tutorial_onboarding.md) | 4 |
-| 28 | Accessibility | [G35](../G/G35_accessibility.md) | 4 |
-| 29 | Localization | [G34](../G/G34_localization.md) | 4 |
-| 30 | Profiling & Optimization | [G33](../G/G33_profiling_optimization.md), [G13](../G/G13_csharp_performance.md) | 4 |
-| 31 | Deployment | [G32](../G/G32_deployment_platform_builds.md) | 5 (RC) |
-| 32 | Publishing | [G36](../G/G36_publishing_distribution.md) | 5 |
-| 33 | Achievements | [G47](../G/G47_achievements.md), [G48](../G/G48_online_services.md) | 5 |
-| 34 | Crash Reporting | [G51](../G/G51_crash_reporting.md) | 5 |
+| 1 | Game Loop & Timestep | [G15](../../monogame-arch/guides/G15_game_loop.md) | 2 (Vertical Slice) |
+| 2 | Scene Management | [G38](../../monogame-arch/guides/G38_scene_management.md) | 2 |
+| 3 | Input Handling | [G7](../../monogame-arch/guides/G7_input_handling.md) | 2 |
+| 4 | Character Movement | [G52](../../monogame-arch/guides/G52_character_controller.md) | 2 |
+| 5 | Camera | [G20](../../monogame-arch/guides/G20_camera_systems.md) | 2 |
+| 6 | Tilemap & Tiled | [G37](../../monogame-arch/guides/G37_tilemap_systems.md) | 2 |
+| 7 | Collision & Physics | [G3](../../monogame-arch/guides/G3_physics_and_collision.md) | 2 |
+| 8 | Content Pipeline | [G8](../../monogame-arch/guides/G8_content_pipeline.md) | 2 |
+| 9 | Basic Audio | [G6](../../monogame-arch/guides/G6_audio.md) | 2 |
+| 10 | Entity Prefabs | [G43](../../monogame-arch/guides/G43_entity_prefabs.md) | 3 (Alpha) |
+| 11 | Animation | [G31](../../monogame-arch/guides/G31_animation_state_machines.md) | 3 |
+| 12 | AI & Enemies | [G4](../../monogame-arch/guides/G4_ai_systems.md) | 3 |
+| 13 | Pathfinding | [G40](../../monogame-arch/guides/G40_pathfinding.md) | 3 |
+| 14 | UI Framework | [G5](../../monogame-arch/guides/G5_ui_framework.md) | 3 |
+| 15 | Inventory | [G10](../../monogame-arch/guides/G10_custom_game_systems.md) | 3 |
+| 16 | Dialogue | [G62](../../monogame-arch/guides/G62_narrative_systems.md) | 3 |
+| 17 | Save/Load | [G10](../../monogame-arch/guides/G10_custom_game_systems.md) | 3 |
+| 18 | Quests & Progression | [G47](../../monogame-arch/guides/G47_achievements.md) | 3 |
+| 19 | Lighting | [G39](../../monogame-arch/guides/G39_2d_lighting.md) | 3 |
+| 20 | Particles | [G23](../../monogame-arch/guides/G23_particles.md) | 3 |
+| 21 | Settings Menu | [G55](../../monogame-arch/guides/G55_settings_menu.md) | 3 |
+| 22 | Game Feel / Juice | [G30](../../monogame-arch/guides/G30_game_feel_tooling.md), [C2](../game-design/C2_game_feel_and_genre_craft.md) | 4 (Beta) |
+| 23 | Tweening | [G41](../../monogame-arch/guides/G41_tweening.md) | 4 |
+| 24 | Screen Transitions | [G42](../../monogame-arch/guides/G42_screen_transitions.md) | 4 |
+| 25 | Trails & Lines | [G60](../../monogame-arch/guides/G60_trails_lines.md) | 4 |
+| 26 | Weather Effects | [G57](../../monogame-arch/guides/G57_weather_effects.md) | 4 |
+| 27 | Tutorial/Onboarding | [G61](../../monogame-arch/guides/G61_tutorial_onboarding.md) | 4 |
+| 28 | Accessibility | [G35](../../monogame-arch/guides/G35_accessibility.md) | 4 |
+| 29 | Localization | [G34](../../monogame-arch/guides/G34_localization.md) | 4 |
+| 30 | Profiling & Optimization | [G33](../../monogame-arch/guides/G33_profiling_optimization.md), [G13](../../monogame-arch/guides/G13_csharp_performance.md) | 4 |
+| 31 | Deployment | [G32](../../monogame-arch/guides/G32_deployment_platform_builds.md) | 5 (RC) |
+| 32 | Publishing | [G36](../../monogame-arch/guides/G36_publishing_distribution.md) | 5 |
+| 33 | Achievements | [G47](../../monogame-arch/guides/G47_achievements.md), [G48](../../monogame-arch/guides/G48_online_services.md) | 5 |
+| 34 | Crash Reporting | [G51](../../monogame-arch/guides/G51_crash_reporting.md) | 5 |
 
 ---
 
@@ -1291,7 +1291,7 @@ What you need depends on what you're making. Here's a quick matrix:
 
 ✅ = Essential · △ = Optional/Genre-dependent · — = Not needed
 
-📚 **Full genre breakdown:** [C1 — Genre Reference](../C/C1_genre_reference.md)
+📚 **Full genre breakdown:** [C1 — Genre Reference](../game-design/C1_genre_reference.md)
 
 ---
 
@@ -1302,96 +1302,96 @@ Every document in the toolkit, organized by category:
 ### Reference Docs
 | Doc | Title |
 |-----|-------|
-| [R1](../R/R1_library_stack.md) | Library Stack & Install Commands |
-| [R2](../R/R2_capability_matrix.md) | Capability Matrix |
-| [R3](../R/R3_project_structure.md) | Project Structure |
-| [R4](../R/R4_game_design_resources.md) | Game Design Resources |
+| [R1](../../monogame-arch/reference/R1_library_stack.md) | Library Stack & Install Commands |
+| [R2](../../monogame-arch/reference/R2_capability_matrix.md) | Capability Matrix |
+| [R3](../../monogame-arch/reference/R3_project_structure.md) | Project Structure |
+| [R4](../game-design/R4_game_design_resources.md) | Game Design Resources |
 
 ### Explanation Docs
 | Doc | Title |
 |-----|-------|
-| [E1](../E/E1_architecture_overview.md) | Architecture Overview |
-| [E2](../E/E2_nez_dropped.md) | Why Nez Was Dropped |
-| [E3](../E/E3_engine_alternatives.md) | Engine Alternatives Evaluated |
-| [E4](../E/E4_project_management.md) | Solo Project Management |
-| [E5](../E/E5_ai_workflow.md) | AI-Assisted Dev Workflow |
-| [E6](../E/E6_game_design_fundamentals.md) | Game Design Fundamentals |
-| [E7](../E/E7_emergent_puzzle_design.md) | Emergent Puzzle Design |
+| [E1](../../monogame-arch/architecture/E1_architecture_overview.md) | Architecture Overview |
+| [E2](../../monogame-arch/architecture/E2_nez_dropped.md) | Why Nez Was Dropped |
+| [E3](../../monogame-arch/architecture/E3_engine_alternatives.md) | Engine Alternatives Evaluated |
+| [E4](E4_project_management.md) | Solo Project Management |
+| [E5](../ai-workflow/E5_ai_workflow.md) | AI-Assisted Dev Workflow |
+| [E6](../game-design/E6_game_design_fundamentals.md) | Game Design Fundamentals |
+| [E7](../game-design/E7_emergent_puzzle_design.md) | Emergent Puzzle Design |
 | [E8](../E/E8_monogamestudio_postmortem.md) | MonoGameStudio Post-Mortem |
-| [E9](../E/E9_solo_dev_playbook.md) | Solo Dev Playbook |
+| [E9](E9_solo_dev_playbook.md) | Solo Dev Playbook |
 
 ### Guide Docs
 | Doc | Title |
 |-----|-------|
-| [G1](../G/G1_custom_code_recipes.md) | Custom Code Recipes |
-| [G2](../G/G2_rendering_and_graphics.md) | Rendering & Graphics |
-| [G3](../G/G3_physics_and_collision.md) | Physics & Collision |
-| [G4](../G/G4_ai_systems.md) | AI Systems |
-| [G5](../G/G5_ui_framework.md) | UI Framework |
-| [G6](../G/G6_audio.md) | Audio |
-| [G7](../G/G7_input_handling.md) | Input Handling |
-| [G8](../G/G8_content_pipeline.md) | Content Pipeline |
-| [G9](../G/G9_networking.md) | Networking |
-| [G10](../G/G10_custom_game_systems.md) | Custom Game Systems |
-| [G11](../G/G11_programming_principles.md) | Programming Principles |
-| [G12](../G/G12_design_patterns.md) | Design Patterns |
-| [G13](../G/G13_csharp_performance.md) | C# Performance |
-| [G14](../G/G14_data_structures.md) | Data Structures |
-| [G15](../G/G15_game_loop.md) | Game Loop |
-| [G16](../G/G16_debugging.md) | Debugging |
-| [G17](../G/G17_testing.md) | Testing |
-| [G18](../G/G18_game_programming_patterns.md) | Game Programming Patterns |
-| [G19](../G/G19_display_resolution_viewports.md) | Display, Resolution & Viewports |
-| [G20](../G/G20_camera_systems.md) | Camera Systems |
-| [G21](../G/G21_coordinate_systems.md) | Coordinate Systems & Transforms |
-| [G22](../G/G22_parallax_depth_layers.md) | Parallax & Depth Layers |
-| [G23](../G/G23_particles.md) | Particles |
-| [G24](../G/G24_window_display_management.md) | Window & Display Management |
-| [G25](../G/G25_safe_areas_adaptive_layout.md) | Safe Areas & Adaptive Layout |
-| [G26](../G/G26_resource_loading_caching.md) | Resource Loading & Caching |
-| [G27](../G/G27_shaders_and_effects.md) | Shaders & Visual Effects |
-| [G28](../G/G28_top_down_perspective.md) | 3/4 Top-Down Perspective |
-| [G29](../G/G29_game_editor.md) | Game Editor |
-| [G30](../G/G30_game_feel_tooling.md) | Game Feel Tooling |
-| [G31](../G/G31_animation_state_machines.md) | Animation & Sprite State Machines |
-| [G32](../G/G32_deployment_platform_builds.md) | Deployment & Platform Builds |
-| [G33](../G/G33_profiling_optimization.md) | Profiling & Optimization |
-| [G34](../G/G34_localization.md) | Localization |
-| [G35](../G/G35_accessibility.md) | Accessibility |
-| [G36](../G/G36_publishing_distribution.md) | Publishing & Distribution |
-| [G37](../G/G37_tilemap_systems.md) | Tilemap Systems & Tiled |
-| [G38](../G/G38_scene_management.md) | Scene & Game State Management |
-| [G39](../G/G39_2d_lighting.md) | 2D Lighting & Shadows |
-| [G40](../G/G40_pathfinding.md) | Pathfinding |
-| [G41](../G/G41_tweening.md) | Tweening & Easing |
-| [G42](../G/G42_screen_transitions.md) | Screen Transitions |
-| [G43](../G/G43_entity_prefabs.md) | Entity Prefabs & Blueprints |
-| [G44](../G/G44_version_control.md) | Version Control |
-| [G45](../G/G45_cutscenes.md) | Cutscenes & Scripted Sequences |
-| [G46](../G/G46_modding_support.md) | Modding Support |
-| [G47](../G/G47_achievements.md) | Achievements & Progression |
-| [G48](../G/G48_online_services.md) | Online Services |
-| [G49](../G/G49_isometric.md) | Isometric Perspective |
-| [G50](../G/G50_hot_reload.md) | Hot Reload & Live Editing |
-| [G51](../G/G51_crash_reporting.md) | Crash Reporting |
-| [G52](../G/G52_character_controller.md) | 2D Platformer Character Controller |
-| [G53](../G/G53_procedural_generation.md) | Procedural Generation |
-| [G54](../G/G54_fog_of_war.md) | Fog of War & Visibility |
-| [G55](../G/G55_settings_menu.md) | Settings & Options Menu |
-| [G56](../G/G56_side_scrolling.md) | Side-Scrolling Perspective |
-| [G57](../G/G57_weather_effects.md) | Weather & Environmental Effects |
-| [G58](../G/G58_minimap.md) | Minimap Systems |
-| [G59](../G/G59_skeletal_animation.md) | 2D Skeletal Animation |
-| [G60](../G/G60_trails_lines.md) | Trail & Line Rendering |
-| [G61](../G/G61_tutorial_onboarding.md) | Tutorial & Onboarding |
-| [G62](../G/G62_narrative_systems.md) | Narrative & Branching Story |
-| [G63](../G/G63_water_simulation.md) | 2D Water Simulation |
+| [G1](../../monogame-arch/guides/G1_custom_code_recipes.md) | Custom Code Recipes |
+| [G2](../../monogame-arch/guides/G2_rendering_and_graphics.md) | Rendering & Graphics |
+| [G3](../../monogame-arch/guides/G3_physics_and_collision.md) | Physics & Collision |
+| [G4](../../monogame-arch/guides/G4_ai_systems.md) | AI Systems |
+| [G5](../../monogame-arch/guides/G5_ui_framework.md) | UI Framework |
+| [G6](../../monogame-arch/guides/G6_audio.md) | Audio |
+| [G7](../../monogame-arch/guides/G7_input_handling.md) | Input Handling |
+| [G8](../../monogame-arch/guides/G8_content_pipeline.md) | Content Pipeline |
+| [G9](../../monogame-arch/guides/G9_networking.md) | Networking |
+| [G10](../../monogame-arch/guides/G10_custom_game_systems.md) | Custom Game Systems |
+| [G11](../../monogame-arch/guides/G11_programming_principles.md) | Programming Principles |
+| [G12](../../monogame-arch/guides/G12_design_patterns.md) | Design Patterns |
+| [G13](../../monogame-arch/guides/G13_csharp_performance.md) | C# Performance |
+| [G14](../../monogame-arch/guides/G14_data_structures.md) | Data Structures |
+| [G15](../../monogame-arch/guides/G15_game_loop.md) | Game Loop |
+| [G16](../../monogame-arch/guides/G16_debugging.md) | Debugging |
+| [G17](../../monogame-arch/guides/G17_testing.md) | Testing |
+| [G18](../../monogame-arch/guides/G18_game_programming_patterns.md) | Game Programming Patterns |
+| [G19](../../monogame-arch/guides/G19_display_resolution_viewports.md) | Display, Resolution & Viewports |
+| [G20](../../monogame-arch/guides/G20_camera_systems.md) | Camera Systems |
+| [G21](../../monogame-arch/guides/G21_coordinate_systems.md) | Coordinate Systems & Transforms |
+| [G22](../../monogame-arch/guides/G22_parallax_depth_layers.md) | Parallax & Depth Layers |
+| [G23](../../monogame-arch/guides/G23_particles.md) | Particles |
+| [G24](../../monogame-arch/guides/G24_window_display_management.md) | Window & Display Management |
+| [G25](../../monogame-arch/guides/G25_safe_areas_adaptive_layout.md) | Safe Areas & Adaptive Layout |
+| [G26](../../monogame-arch/guides/G26_resource_loading_caching.md) | Resource Loading & Caching |
+| [G27](../../monogame-arch/guides/G27_shaders_and_effects.md) | Shaders & Visual Effects |
+| [G28](../../monogame-arch/guides/G28_top_down_perspective.md) | 3/4 Top-Down Perspective |
+| [G29](../../monogame-arch/guides/G29_game_editor.md) | Game Editor |
+| [G30](../../monogame-arch/guides/G30_game_feel_tooling.md) | Game Feel Tooling |
+| [G31](../../monogame-arch/guides/G31_animation_state_machines.md) | Animation & Sprite State Machines |
+| [G32](../../monogame-arch/guides/G32_deployment_platform_builds.md) | Deployment & Platform Builds |
+| [G33](../../monogame-arch/guides/G33_profiling_optimization.md) | Profiling & Optimization |
+| [G34](../../monogame-arch/guides/G34_localization.md) | Localization |
+| [G35](../../monogame-arch/guides/G35_accessibility.md) | Accessibility |
+| [G36](../../monogame-arch/guides/G36_publishing_distribution.md) | Publishing & Distribution |
+| [G37](../../monogame-arch/guides/G37_tilemap_systems.md) | Tilemap Systems & Tiled |
+| [G38](../../monogame-arch/guides/G38_scene_management.md) | Scene & Game State Management |
+| [G39](../../monogame-arch/guides/G39_2d_lighting.md) | 2D Lighting & Shadows |
+| [G40](../../monogame-arch/guides/G40_pathfinding.md) | Pathfinding |
+| [G41](../../monogame-arch/guides/G41_tweening.md) | Tweening & Easing |
+| [G42](../../monogame-arch/guides/G42_screen_transitions.md) | Screen Transitions |
+| [G43](../../monogame-arch/guides/G43_entity_prefabs.md) | Entity Prefabs & Blueprints |
+| [G44](../../monogame-arch/guides/G44_version_control.md) | Version Control |
+| [G45](../../monogame-arch/guides/G45_cutscenes.md) | Cutscenes & Scripted Sequences |
+| [G46](../../monogame-arch/guides/G46_modding_support.md) | Modding Support |
+| [G47](../../monogame-arch/guides/G47_achievements.md) | Achievements & Progression |
+| [G48](../../monogame-arch/guides/G48_online_services.md) | Online Services |
+| [G49](../../monogame-arch/guides/G49_isometric.md) | Isometric Perspective |
+| [G50](../../monogame-arch/guides/G50_hot_reload.md) | Hot Reload & Live Editing |
+| [G51](../../monogame-arch/guides/G51_crash_reporting.md) | Crash Reporting |
+| [G52](../../monogame-arch/guides/G52_character_controller.md) | 2D Platformer Character Controller |
+| [G53](../../monogame-arch/guides/G53_procedural_generation.md) | Procedural Generation |
+| [G54](../../monogame-arch/guides/G54_fog_of_war.md) | Fog of War & Visibility |
+| [G55](../../monogame-arch/guides/G55_settings_menu.md) | Settings & Options Menu |
+| [G56](../../monogame-arch/guides/G56_side_scrolling.md) | Side-Scrolling Perspective |
+| [G57](../../monogame-arch/guides/G57_weather_effects.md) | Weather & Environmental Effects |
+| [G58](../../monogame-arch/guides/G58_minimap.md) | Minimap Systems |
+| [G59](../../monogame-arch/guides/G59_skeletal_animation.md) | 2D Skeletal Animation |
+| [G60](../../monogame-arch/guides/G60_trails_lines.md) | Trail & Line Rendering |
+| [G61](../../monogame-arch/guides/G61_tutorial_onboarding.md) | Tutorial & Onboarding |
+| [G62](../../monogame-arch/guides/G62_narrative_systems.md) | Narrative & Branching Story |
+| [G63](../../monogame-arch/guides/G63_water_simulation.md) | 2D Water Simulation |
 
 ### Catalog Docs
 | Doc | Title |
 |-----|-------|
-| [C1](../C/C1_genre_reference.md) | Genre Reference |
-| [C2](../C/C2_game_feel_and_genre_craft.md) | Game Feel & Genre Design Craft |
+| [C1](../game-design/C1_genre_reference.md) | Genre Reference |
+| [C2](../game-design/C2_game_feel_and_genre_craft.md) | Game Feel & Genre Design Craft |
 
 ### Playbook Docs
 | Doc | Title |
@@ -1423,16 +1423,16 @@ Every document in the toolkit, organized by category:
 
 If you're new to MonoGame, ECS, or game dev in general, read these docs first:
 
-1. [E1 — Architecture Overview](../E/E1_architecture_overview.md) — *Why* the stack is structured this way
-2. [E6 — Game Design Fundamentals](../E/E6_game_design_fundamentals.md) — Design thinking before code
-3. [R1 — Library Stack](../R/R1_library_stack.md) — What you're installing and why
-4. [G11 — Programming Principles](../G/G11_programming_principles.md) — SOLID, composition over inheritance
-5. [G12 — Design Patterns](../G/G12_design_patterns.md) — Patterns you'll use daily
-6. [G18 — Game Programming Patterns](../G/G18_game_programming_patterns.md) — Game-specific patterns
-7. [G15 — Game Loop](../G/G15_game_loop.md) — How the frame cycle works
-8. [G1 — Custom Code Recipes](../G/G1_custom_code_recipes.md) — The glue code that ties it all together
-9. [E9 — Solo Dev Playbook](../E/E9_solo_dev_playbook.md) — Realistic expectations and productivity
-10. [R4 — Game Design Resources](../R/R4_game_design_resources.md) — Books, talks, and communities
+1. [E1 — Architecture Overview](../../monogame-arch/architecture/E1_architecture_overview.md) — *Why* the stack is structured this way
+2. [E6 — Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) — Design thinking before code
+3. [R1 — Library Stack](../../monogame-arch/reference/R1_library_stack.md) — What you're installing and why
+4. [G11 — Programming Principles](../../monogame-arch/guides/G11_programming_principles.md) — SOLID, composition over inheritance
+5. [G12 — Design Patterns](../../monogame-arch/guides/G12_design_patterns.md) — Patterns you'll use daily
+6. [G18 — Game Programming Patterns](../../monogame-arch/guides/G18_game_programming_patterns.md) — Game-specific patterns
+7. [G15 — Game Loop](../../monogame-arch/guides/G15_game_loop.md) — How the frame cycle works
+8. [G1 — Custom Code Recipes](../../monogame-arch/guides/G1_custom_code_recipes.md) — The glue code that ties it all together
+9. [E9 — Solo Dev Playbook](E9_solo_dev_playbook.md) — Realistic expectations and productivity
+10. [R4 — Game Design Resources](../game-design/R4_game_design_resources.md) — Books, talks, and communities
 
 ---
 

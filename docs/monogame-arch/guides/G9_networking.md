@@ -2,7 +2,7 @@
 
 ![](../img/space.png)
 
-> **Category:** Guide · **Related:** [R1 Library Stack](../R/R1_library_stack.md) · [R2 Capability Matrix](../R/R2_capability_matrix.md)
+> **Category:** Guide · **Related:** [R1 Library Stack](../reference/R1_library_stack.md) · [R2 Capability Matrix](../reference/R2_capability_matrix.md)
 
 > Deep dive into multiplayer networking for MonoGame 2D games using LiteNetLib, covering client-server architecture, prediction, rollback netcode, deterministic simulation, and Arch ECS integration.
 
