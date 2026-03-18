@@ -1,6 +1,5 @@
 # C2 — Game Feel & Genre Design Craft
 
-![](../img/physics.png)
 
 > **Category:** Catalog · **Related:** [C1 Genre Reference](./C1_genre_reference.md) · [G2 Rendering & Graphics](../../monogame-arch/guides/G2_rendering_and_graphics.md) · [G3 Physics & Collision](../../monogame-arch/guides/G3_physics_and_collision.md) · [G6 Audio](../../monogame-arch/guides/G6_audio.md) · [G7 Input Handling](../../monogame-arch/guides/G7_input_handling.md) · [G1 Custom Code Recipes](../../monogame-arch/guides/G1_custom_code_recipes.md) · [G30 Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md) · [R4 Game Design Resources](R4_game_design_resources.md)
 

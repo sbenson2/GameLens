@@ -1,6 +1,5 @@
 # G4 — AI Systems
 
-![](../img/networking.png)
 
 > **Category:** Guide · **Related:** [R2 Capability Matrix](../reference/R2_capability_matrix.md) · [C1 Genre Reference](../../core/game-design/C1_genre_reference.md)
 

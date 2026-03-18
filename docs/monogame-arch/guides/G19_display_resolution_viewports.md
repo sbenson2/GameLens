@@ -1,6 +1,5 @@
 # G19 — Display, Resolution & Viewports
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G15 Game Loop](./G15_game_loop.md) · [G20 Camera Systems](./G20_camera_systems.md) · [G24 Window & Display Management](./G24_window_display_management.md)
 

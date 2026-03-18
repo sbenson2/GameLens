@@ -1,6 +1,5 @@
 # G62 — Narrative & Branching Story Systems
 
-![](../img/topdown.png)
 
 
 > **Category:** Guide · **Related:** [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G45 Cutscenes](./G45_cutscenes.md) · [G5 UI Framework](./G5_ui_framework.md) · [G47 Achievements](./G47_achievements.md) · [E6 Game Design Fundamentals](../../core/game-design/E6_game_design_fundamentals.md)

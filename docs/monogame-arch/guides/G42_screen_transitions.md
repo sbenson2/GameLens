@@ -1,6 +1,5 @@
 # G42 — Screen Transitions & Loading Screens
 
-![](../img/topdown.png)
 
 
 > **Category:** Guide · **Related:** [G38 Scene Management](./G38_scene_management.md) · [G27 Shaders & Visual Effects](./G27_shaders_and_effects.md) · [G41 Tweening & Easing](./G41_tweening.md) · [G26 Resource Loading & Caching](./G26_resource_loading_caching.md)

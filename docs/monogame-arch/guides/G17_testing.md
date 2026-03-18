@@ -1,6 +1,5 @@
 # G17 — Testing
 
-![](../img/networking.png)
 
 > **Category:** Guide · **Related:** [G11 Programming Principles](./G11_programming_principles.md) · [G16 Debugging](./G16_debugging.md)
 

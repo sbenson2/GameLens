@@ -1,6 +1,5 @@
 # G54 — Fog of War & Visibility Systems
 
-![](../img/tilemap.png)
 
 
 > **Category:** Guide · **Related:** [G39 2D Lighting](./G39_2d_lighting.md) · [G37 Tilemap Systems](./G37_tilemap_systems.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G27 Shaders & Visual Effects](./G27_shaders_and_effects.md) · [G40 Pathfinding](./G40_pathfinding.md)

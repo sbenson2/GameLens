@@ -1,6 +1,5 @@
 # 15 · Polish & Juice Checklist
 
-![](../img/topdown.png)
 
 
 > *"Juice is the non-essential visual, audio, and haptic feedback that makes a game **feel** incredible."*

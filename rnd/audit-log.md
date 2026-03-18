@@ -1,5 +1,45 @@
 # Doc Quality Audit Log
 
+## 2026-03-18
+
+**FIXED: All 4 open doc issues from PROJECT_MEMORY.md**
+
+### 1. E8_monogamestudio_postmortem.md — CREATED + 9 links fixed
+
+Created `docs/monogame-arch/architecture/E8_monogamestudio_postmortem.md` (~6.4KB) — a comprehensive post-mortem covering:
+- What MonoGameStudio was (134-file 2D editor, v0.1–v0.9)
+- What went right (ImGui + docking, ECS scene model, knowledge extraction)
+- What went wrong (tool-building trap, invisible scope creep, no shipping pressure)
+- Decision to delete the source (sunk cost, knowledge > code)
+- Lessons applied to current project philosophy
+
+Fixed all 9 broken E8 links across these files:
+- `docs/core/project-management/P10_integration_map.md` — `../E/` → `../../monogame-arch/architecture/`
+- `docs/core/project-management/E9_solo_dev_playbook.md` — `./` → `../../monogame-arch/architecture/`
+- `docs/core/project-management/E4_project_management.md` — `./` → `../../monogame-arch/architecture/`
+- `docs/core/project-management/P0_master_playbook.md` — `../E/` → `../../monogame-arch/architecture/`
+- `docs/core/ai-workflow/E5_ai_workflow.md` — `./` → `../../monogame-arch/architecture/`
+- `docs/monogame-arch/guides/G29_game_editor.md` — `../E/` → `../architecture/`
+- `docs/monogame-arch/guides/G30_game_feel_tooling.md` — `../E/` → `../architecture/`
+- `docs/monogame-arch/architecture/E2_nez_dropped.md` — `./` already correct ✅
+- `docs/monogame-arch/architecture/E3_engine_alternatives.md` — `./` already correct ✅
+
+### 2. Missing images — REMOVED 79 broken refs across all docs
+
+No `img/` directories exist anywhere in the project. All 79 `![](../img/*.png)` references were decorative header images with no actual files. Removed all broken image lines from all 79 affected docs. Images referenced: `topdown.png` (24), `physics.png` (12), `tilemap.png` (10), `networking.png` (10), `ui-rpg.png` (7), `roguelike.png` (5), `camera.png` (4), `space.png` (3), `nature.png` (3), `rpg.png` (1).
+
+### 3. G3 API contradiction — FIXED
+
+`docs/monogame-arch/guides/G3_physics_and_collision.md` — updated the Aether.Physics2D code example in Section 4 (World Setup) to use fixture-level properties (`fixture.Restitution`, `fixture.Friction`) instead of the removed `Body.SetRestitution()`/`Body.SetFriction()` methods. The gotcha note at line 577 already documented the removal; now the code examples match.
+
+### 4. P12 misplacement — MOVED to monogame-arch
+
+Moved `docs/core/project-management/P12_performance_budget.md` → `docs/monogame-arch/guides/P12_performance_budget.md`. The doc is heavily MonoGame/C#-specific (SpriteBatch, Arch ECS, .NET GC, Content.Load). Fixed all internal links in the moved file (6× `../../monogame-arch/guides/G33` → `./G33`, plus G16, G3, G32 refs). Left a redirect stub at the old location.
+
+**Files changed: ~90 files total** (79 image removals + 7 E8 link fixes + 2 P12 files + 1 G3 fix + 1 new E8 doc)
+
+---
+
 Daily audit of 3-5 random docs for: outdated API references, broken internal doc links, consistency with current engine versions, formatting issues.
 
 ---

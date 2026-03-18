@@ -1,6 +1,5 @@
 # G50 — Hot Reload & Live Editing
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G26 Resource Loading & Caching](./G26_resource_loading_caching.md) · [G16 Debugging](./G16_debugging.md) · [G43 Entity Prefabs](./G43_entity_prefabs.md) · [G30 Game Feel Tooling](./G30_game_feel_tooling.md)
 

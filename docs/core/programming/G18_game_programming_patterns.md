@@ -1,6 +1,5 @@
 # G18 — Game Programming Patterns
 
-![](../img/physics.png)
 
 > **Category:** Guide · **Related:** [G12 Design Patterns](./G12_design_patterns.md) · [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G3 Physics & Collision](./G3_physics_and_collision.md) · [G11 Programming Principles](./G11_programming_principles.md) · [G13 C# Performance](./G13_csharp_performance.md) · [G15 Game Loop](./G15_game_loop.md)
 

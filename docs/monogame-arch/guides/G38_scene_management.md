@@ -1,6 +1,5 @@
 # G38 — Scene & Game State Management
 
-![](../img/topdown.png)
 
 
 > **Category:** Guide · **Related:** [G12 Design Patterns](./G12_design_patterns.md) · [G15 Game Loop](./G15_game_loop.md) · [G42 Screen Transitions](./G42_screen_transitions.md) · [G26 Resource Loading & Caching](./G26_resource_loading_caching.md)

@@ -1,6 +1,5 @@
 # G47 — Achievements & Progression Systems
 
-![](../img/space.png)
 
 > **Category:** Guide · **Related:** [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G36 Publishing & Distribution](./G36_publishing_distribution.md) · [G12 Design Patterns](./G12_design_patterns.md) · [G48 Online Services](./G48_online_services.md)
 

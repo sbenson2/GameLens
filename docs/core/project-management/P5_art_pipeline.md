@@ -1,6 +1,5 @@
 # 09 — Art Production Pipeline
 
-![](../img/tilemap.png)
 
 
 A practical guide to creating, organizing, and shipping 2D game art — aimed at solo developers and small teams who may be programmers first and artists second.

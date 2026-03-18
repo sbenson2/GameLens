@@ -125,18 +125,18 @@ export async function validateLicense(): Promise<{
   tier: Tier;
   message: string;
 }> {
-  const key = getLicenseKey();
-
-  if (!key) {
-    return { tier: "free", message: "[gamedev-mcp] Running in free tier" };
-  }
-
-  // Dev mode: skip remote validation
+  // Dev mode: skip remote validation (no key required)
   if (process.env.GAMEDEV_MCP_DEV === "true") {
     return {
       tier: "pro",
       message: "[gamedev-mcp] License: Pro (dev mode)",
     };
+  }
+
+  const key = getLicenseKey();
+
+  if (!key) {
+    return { tier: "free", message: "[gamedev-mcp] Running in free tier" };
   }
 
   // Check cache first

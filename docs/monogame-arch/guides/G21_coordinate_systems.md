@@ -1,6 +1,5 @@
 # G21 — Coordinate Systems & Transforms
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G19 Display & Resolution](./G19_display_resolution_viewports.md) · [G20 Camera Systems](./G20_camera_systems.md) · [G7 Input Handling](./G7_input_handling.md) · [G25 Safe Areas](./G25_safe_areas_adaptive_layout.md)
 

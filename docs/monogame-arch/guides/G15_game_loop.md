@@ -1,6 +1,5 @@
 # G15 — Game Loop
 
-![](../img/physics.png)
 
 > **Category:** Guide · **Related:** [G13 C# Performance](./G13_csharp_performance.md) · [G9 Networking](./G9_networking.md) · [G16 Debugging](./G16_debugging.md)
 

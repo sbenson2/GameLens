@@ -353,7 +353,7 @@ Every system in the toolkit falls into one of six layers. Higher layers depend o
 | E5 | AI Workflow | [E5](../ai-workflow/E5_ai_workflow.md) | Using AI tools in game dev |
 | E6 | Game Design Fundamentals | [E6](../game-design/E6_game_design_fundamentals.md) | Core design principles |
 | E7 | Emergent Puzzle Design | [E7](../game-design/E7_emergent_puzzle_design.md) | Systems-driven puzzle games |
-| E8 | MonoGameStudio Postmortem | [E8](../E/E8_monogamestudio_postmortem.md) | Lessons from a real project |
+| E8 | MonoGameStudio Postmortem | [E8](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md) | Lessons from a real project |
 | E9 | Solo Dev Playbook | [E9](E9_solo_dev_playbook.md) | Strategies for solo development |
 
 ### C-Series: Craft Guides (2 docs)

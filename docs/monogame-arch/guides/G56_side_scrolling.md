@@ -1,6 +1,5 @@
 # G56 — Side-Scrolling Perspective
 
-![](../img/tilemap.png)
 
 > **Category:** Guide · **Related:** [G28 3/4 Top-Down Perspective](./G28_top_down_perspective.md) · [G49 Isometric Perspective](./G49_isometric.md) · [G52 Character Controller](./G52_character_controller.md) · [G37 Tilemap Systems](./G37_tilemap_systems.md) · [G20 Camera Systems](./G20_camera_systems.md)
 

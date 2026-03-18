@@ -1,6 +1,5 @@
 # 18 · Marketing Timeline
 
-![](../img/networking.png)
 
 
 > A 12-month marketing plan for solo and small-team indie developers.

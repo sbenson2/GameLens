@@ -1,6 +1,5 @@
 # G8 — Content Pipeline
 
-![](../img/tilemap.png)
 
 > **Category:** Guide · **Related:** [R1 Library Stack](../reference/R1_library_stack.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G6 Audio](./G6_audio.md)
 

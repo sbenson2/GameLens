@@ -1,6 +1,5 @@
 # G6 — Audio
 
-![](../img/ui-rpg.png)
 
 > **Category:** Guide · **Related:** [R1 Library Stack](../reference/R1_library_stack.md) · [C1 Genre Reference](../../core/game-design/C1_genre_reference.md)
 

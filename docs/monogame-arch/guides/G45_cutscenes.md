@@ -1,6 +1,5 @@
 # G45 — Cutscenes & Scripted Sequences
 
-![](../img/topdown.png)
 
 
 > **Category:** Guide · **Related:** [G38 Scene Management](./G38_scene_management.md) · [G20 Camera Systems](./G20_camera_systems.md) · [G41 Tweening & Easing](./G41_tweening.md) · [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G31 Animation State Machines](./G31_animation_state_machines.md)

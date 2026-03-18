@@ -1,6 +1,5 @@
 # G46 — Modding Support
 
-![](../img/ui-rpg.png)
 
 
 > **Category:** Guide · **Related:** [G43 Entity Prefabs](./G43_entity_prefabs.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [G26 Resource Loading & Caching](./G26_resource_loading_caching.md) · [G34 Localization](./G34_localization.md)

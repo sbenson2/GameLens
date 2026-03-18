@@ -1,6 +1,5 @@
 # G34 — Localization & Internationalization
 
-![](../img/ui-rpg.png)
 
 > **Category:** Guide · **Related:** [G5 UI Framework](./G5_ui_framework.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [G26 Resource Loading & Caching](./G26_resource_loading_caching.md)
 

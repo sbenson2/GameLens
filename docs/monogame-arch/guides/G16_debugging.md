@@ -1,6 +1,5 @@
 # G16 — Debugging
 
-![](../img/camera.png)
 
 > **Category:** Guide · **Related:** [G15 Game Loop](./G15_game_loop.md) · [G17 Testing](./G17_testing.md) · [R1 Library Stack](../reference/R1_library_stack.md) · [G13 C# Performance](./G13_csharp_performance.md) · [G14 Data Structures](./G14_data_structures.md) · [G12 Design Patterns](./G12_design_patterns.md)
 

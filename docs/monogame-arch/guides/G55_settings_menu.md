@@ -1,6 +1,5 @@
 # G55 — Settings & Options Menu
 
-![](../img/nature.png)
 
 
 > **Category:** Guide · **Related:** [G5 UI Framework](./G5_ui_framework.md) · [G6 Audio](./G6_audio.md) · [G7 Input Handling](./G7_input_handling.md) · [G19 Display & Resolution](./G19_display_resolution_viewports.md) · [G35 Accessibility](./G35_accessibility.md) · [G24 Window & Display Management](./G24_window_display_management.md)

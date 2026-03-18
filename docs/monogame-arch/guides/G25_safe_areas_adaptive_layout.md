@@ -1,6 +1,5 @@
 # G25 — Safe Areas & Adaptive Layout
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G19 Display & Resolution](./G19_display_resolution_viewports.md) · [G24 Window & Display Management](./G24_window_display_management.md) · [G5 UI Framework](./G5_ui_framework.md) · [G21 Coordinate Systems](./G21_coordinate_systems.md)
 

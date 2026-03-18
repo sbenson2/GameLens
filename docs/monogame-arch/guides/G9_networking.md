@@ -1,6 +1,5 @@
 # G9 — Networking
 
-![](../img/space.png)
 
 > **Category:** Guide · **Related:** [R1 Library Stack](../reference/R1_library_stack.md) · [R2 Capability Matrix](../reference/R2_capability_matrix.md)
 

@@ -1,6 +1,5 @@
 # G36 — Publishing & Distribution
 
-![](../img/networking.png)
 
 > **Category:** Guide · **Related:** [G32 Deployment & Platform Builds](./G32_deployment_platform_builds.md) · [E4 Solo Project Management](../../core/project-management/E4_project_management.md) · [E9 Solo Dev Playbook](../../core/project-management/E9_solo_dev_playbook.md)
 

@@ -1,6 +1,5 @@
 # G27 — Shaders & Visual Effects
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G23 Particles](./G23_particles.md) · [G8 Content Pipeline](./G8_content_pipeline.md)
 

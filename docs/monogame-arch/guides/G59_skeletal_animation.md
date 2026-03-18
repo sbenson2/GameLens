@@ -1,6 +1,5 @@
 # G59 — 2D Skeletal Animation
 
-![](../img/roguelike.png)
 
 
 > **Category:** Guide · **Related:** [G31 Animation & Sprite State Machines](./G31_animation_state_machines.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [R1 Library Stack](../reference/R1_library_stack.md)

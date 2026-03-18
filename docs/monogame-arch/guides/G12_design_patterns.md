@@ -1,6 +1,5 @@
 # G12 — Design Patterns
 
-![](../img/ui-rpg.png)
 
 > **Category:** Guide · **Related:** [G11 Programming Principles](./G11_programming_principles.md) · [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G10 Custom Game Systems](./G10_custom_game_systems.md)
 

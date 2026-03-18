@@ -1,6 +1,5 @@
 # G22 — Parallax & Depth Layers
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G20 Camera Systems](./G20_camera_systems.md) · [G19 Display & Resolution](./G19_display_resolution_viewports.md)
 

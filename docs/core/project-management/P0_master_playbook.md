@@ -1,6 +1,5 @@
 # 🎮 How to Make a 2D Game: From Idea to Launch
 
-![](../img/physics.png)
 
 
 ## The Master Playbook
@@ -1317,7 +1316,7 @@ Every document in the toolkit, organized by category:
 | [E5](../ai-workflow/E5_ai_workflow.md) | AI-Assisted Dev Workflow |
 | [E6](../game-design/E6_game_design_fundamentals.md) | Game Design Fundamentals |
 | [E7](../game-design/E7_emergent_puzzle_design.md) | Emergent Puzzle Design |
-| [E8](../E/E8_monogamestudio_postmortem.md) | MonoGameStudio Post-Mortem |
+| [E8](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md) | MonoGameStudio Post-Mortem |
 | [E9](E9_solo_dev_playbook.md) | Solo Dev Playbook |
 
 ### Guide Docs

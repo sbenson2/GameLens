@@ -1,6 +1,5 @@
 # 08 — Playtesting Guide
 
-![](../img/networking.png)
 
 
 > *"You can't read the label from inside the bottle."*

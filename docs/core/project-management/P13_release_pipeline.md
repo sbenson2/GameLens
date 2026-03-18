@@ -1,6 +1,5 @@
 # 17 — Release Build Pipeline
 
-![](../img/networking.png)
 
 
 A step-by-step guide for building, testing, signing, and uploading release builds of your MonoGame DesktopGL game. This covers everything from `dotnet publish` to getting your game on Steam and itch.io.

@@ -1,6 +1,5 @@
 # E7 — Emergent Puzzle Design
 
-![](../img/physics.png)
 
 > **Category:** Explanation · **Related:** [C1 Genre Reference](C1_genre_reference.md) · [C2 Game Feel & Genre Craft](C2_game_feel_and_genre_craft.md) · [G10 Custom Game Systems](../../monogame-arch/guides/G10_custom_game_systems.md) · [G3 Physics & Collision](../../monogame-arch/guides/G3_physics_and_collision.md)
 

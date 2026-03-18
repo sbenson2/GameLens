@@ -1,6 +1,5 @@
 # G61 — Tutorial & Onboarding Systems
 
-![](../img/topdown.png)
 
 
 > **Category:** Guide · **Related:** [G5 UI Framework](./G5_ui_framework.md) · [G45 Cutscenes](./G45_cutscenes.md) · [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G7 Input Handling](./G7_input_handling.md) · [E6 Game Design Fundamentals](../../core/game-design/E6_game_design_fundamentals.md)

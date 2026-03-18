@@ -1,6 +1,5 @@
 # 19 — Post-Mortem Template
 
-![](../img/networking.png)
 
 
 > *You shipped a game. Or you walked away from one. Either way, you learned something — but only if you write it down.*

@@ -1,5 +1,5 @@
 # E9 — Solo Dev Playbook: AI Tools and Project Management
-> **Category:** Explanation · **Related:** [E4 Solo Project Management](./E4_project_management.md) · [E5 AI-Assisted Dev Workflow](./E5_ai_workflow.md) · [E8 MonoGameStudio Post-Mortem](./E8_monogamestudio_postmortem.md)
+> **Category:** Explanation · **Related:** [E4 Solo Project Management](./E4_project_management.md) · [E5 AI-Assisted Dev Workflow](./E5_ai_workflow.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
 
 ---
 

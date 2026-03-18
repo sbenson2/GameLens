@@ -1,6 +1,5 @@
 # 10 — Audio Production Pipeline
 
-![](../img/rpg.png)
 
 
 > Audio is half the experience. A game with great art and no audio feels like a silent film nobody asked for.

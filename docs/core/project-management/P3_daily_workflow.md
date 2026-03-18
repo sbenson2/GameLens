@@ -1,6 +1,5 @@
 # 07 — Daily Dev Workflow
 
-![](../img/networking.png)
 
 
 A practical daily routine for solo and small-team 2D game developers. Whether you have two evening hours or a full workday, a consistent workflow keeps you shipping instead of spinning.

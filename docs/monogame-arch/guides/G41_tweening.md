@@ -1,6 +1,5 @@
 # G41 — Tweening & Easing
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G30 Game Feel Tooling](./G30_game_feel_tooling.md) · [G5 UI Framework](./G5_ui_framework.md) · [G42 Screen Transitions](./G42_screen_transitions.md)
 

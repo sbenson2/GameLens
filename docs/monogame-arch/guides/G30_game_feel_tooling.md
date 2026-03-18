@@ -1,6 +1,5 @@
 # G30 — Game Feel Tooling
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [C2 Game Feel & Genre Craft](../../core/game-design/C2_game_feel_and_genre_craft.md) · [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G16 Debugging](./G16_debugging.md) · [G20 Camera Systems](./G20_camera_systems.md) · [E5 AI-Assisted Dev Workflow](../../core/ai-workflow/E5_ai_workflow.md) · [G5 UI Framework](./G5_ui_framework.md)
 
@@ -8,7 +7,7 @@
 
 **Game feel is the one area where AI can't replace human judgment.** But you can build tools that compress the iteration loop from "change code → recompile → test → repeat" to "drag slider → feel it instantly." This guide covers lightweight ImGui-based tooling for tuning game feel parameters at runtime, recording/comparing iterations, and exporting tuned values for production use.
 
-**Philosophy:** These tools exist to serve the game, not to become the game. Total budget: ~500-800 lines, 1-2 days of work. If you're spending more, you're falling into the [tool-building trap](../E/E8_monogamestudio_postmortem.md).
+**Philosophy:** These tools exist to serve the game, not to become the game. Total budget: ~500-800 lines, 1-2 days of work. If you're spending more, you're falling into the [tool-building trap](../architecture/E8_monogamestudio_postmortem.md).
 
 ---
 

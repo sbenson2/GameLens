@@ -1,6 +1,5 @@
 # G20 — Camera Systems
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G19 Display & Resolution](./G19_display_resolution_viewports.md) · [G21 Coordinate Systems](./G21_coordinate_systems.md) · [G22 Parallax & Depth Layers](./G22_parallax_depth_layers.md)
 

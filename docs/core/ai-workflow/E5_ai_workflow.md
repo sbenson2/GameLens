@@ -1,5 +1,5 @@
 # E5 — AI-Assisted Development Workflow
-> **Category:** Explanation · **Related:** [E4 Project Management](./E4_project_management.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [G11 Programming Principles](../../monogame-arch/guides/G11_programming_principles.md) · [E8 MonoGameStudio Post-Mortem](./E8_monogamestudio_postmortem.md)
+> **Category:** Explanation · **Related:** [E4 Project Management](./E4_project_management.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [G11 Programming Principles](../../monogame-arch/guides/G11_programming_principles.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
 
 ---
 

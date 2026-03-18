@@ -1,6 +1,5 @@
 # G23 — Particles
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G13 C# Performance](./G13_csharp_performance.md) · [G22 Parallax & Depth Layers](./G22_parallax_depth_layers.md)
 

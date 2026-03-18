@@ -1,6 +1,5 @@
 # G53 — Procedural Generation
 
-![](../img/tilemap.png)
 
 
 > **Category:** Guide · **Related:** [G37 Tilemap Systems](./G37_tilemap_systems.md) · [G14 Data Structures](./G14_data_structures.md) · [G40 Pathfinding](./G40_pathfinding.md) · [E7 Emergent Puzzle Design](../../core/game-design/E7_emergent_puzzle_design.md) · [G10 Custom Game Systems](./G10_custom_game_systems.md)

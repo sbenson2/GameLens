@@ -1,6 +1,5 @@
 # G44 — Version Control for Game Dev
 
-![](../img/camera.png)
 
 
 > **Category:** Guide · **Related:** [E4 Solo Project Management](../../core/project-management/E4_project_management.md) · [R3 Project Structure](../reference/R3_project_structure.md) · [G8 Content Pipeline](./G8_content_pipeline.md)

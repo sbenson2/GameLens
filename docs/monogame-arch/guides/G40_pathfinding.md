@@ -1,6 +1,5 @@
 # G40 — Pathfinding
 
-![](../img/tilemap.png)
 
 
 > **Category:** Guide · **Related:** [G4 AI Systems](./G4_ai_systems.md) · [G14 Data Structures](./G14_data_structures.md) · [G3 Physics & Collision](./G3_physics_and_collision.md) · [G37 Tilemap Systems](./G37_tilemap_systems.md)

@@ -1,6 +1,5 @@
 # G48 — Online Services
 
-![](../img/space.png)
 
 
 > **Category:** Guide · **Related:** [G9 Networking](./G9_networking.md) · [G36 Publishing & Distribution](./G36_publishing_distribution.md) · [G47 Achievements](./G47_achievements.md) · [G10 Custom Game Systems](./G10_custom_game_systems.md)

@@ -1,6 +1,5 @@
 # R2 — Capability Matrix
 
-![](../img/topdown.png)
 
 > **Category:** Reference · **Related:** [R1 Library Stack](./R1_library_stack.md) · [E1 Architecture Overview](../architecture/E1_architecture_overview.md)
 

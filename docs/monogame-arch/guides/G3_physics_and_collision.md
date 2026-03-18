@@ -1,6 +1,5 @@
 # G3 — Physics & Collision
 
-![](../img/physics.png)
 
 > **Category:** Guide · **Related:** [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [R2 Capability Matrix](../reference/R2_capability_matrix.md)
 
@@ -478,14 +477,14 @@ World physicsWorld = new World(new Vector2(0, 9.8f)); // gravity in m/s²
 
 // Create ground (static body)
 Body ground = physicsWorld.CreateBody(new Vector2(0, 6f), 0f, BodyType.Static);
-ground.CreateRectangle(20f, 0.5f, 1f, Vector2.Zero); // width, height in meters
-ground.SetRestitution(0.3f);
-ground.SetFriction(0.5f);
+Fixture groundFixture = ground.CreateRectangle(20f, 0.5f, 1f, Vector2.Zero); // width, height in meters
+groundFixture.Restitution = 0.3f;  // v2.2.0: use fixture-level properties
+groundFixture.Friction = 0.5f;     // (Body.SetRestitution/SetFriction were removed)
 
 // Create dynamic box
 Body box = physicsWorld.CreateBody(new Vector2(0, 0), 0f, BodyType.Dynamic);
-box.CreateRectangle(1f, 1f, 1f, Vector2.Zero);
-box.SetRestitution(0.2f);
+Fixture boxFixture = box.CreateRectangle(1f, 1f, 1f, Vector2.Zero);
+boxFixture.Restitution = 0.2f;
 box.Mass = 1f;
 ```
 

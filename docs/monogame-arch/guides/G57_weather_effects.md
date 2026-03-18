@@ -1,6 +1,5 @@
 # G57 — Weather & Environmental Effects
 
-![](../img/topdown.png)
 
 
 > **Category:** Guide · **Related:** [G23 Particles](./G23_particles.md) · [G27 Shaders & Visual Effects](./G27_shaders_and_effects.md) · [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G39 2D Lighting](./G39_2d_lighting.md) · [G22 Parallax & Depth Layers](./G22_parallax_depth_layers.md)

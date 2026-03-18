@@ -1,6 +1,5 @@
 # G37 — Tilemap Systems & Tiled Integration
 
-![](../img/tilemap.png)
 
 
 > **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [G3 Physics & Collision](./G3_physics_and_collision.md) · [G28 3/4 Top-Down Perspective](./G28_top_down_perspective.md)

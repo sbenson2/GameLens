@@ -1,6 +1,5 @@
 # 11 — Launch Checklist
 
-![](../img/networking.png)
 
 
 > **Your game is done (or close enough). Now what?**

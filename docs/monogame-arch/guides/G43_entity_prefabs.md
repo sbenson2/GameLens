@@ -1,6 +1,5 @@
 # G43 — Entity Prefabs & Blueprint System
 
-![](../img/tilemap.png)
 
 > **Category:** Guide · **Related:** [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G12 Design Patterns](./G12_design_patterns.md) · [G37 Tilemap Systems](./G37_tilemap_systems.md) · [G8 Content Pipeline](./G8_content_pipeline.md)
 

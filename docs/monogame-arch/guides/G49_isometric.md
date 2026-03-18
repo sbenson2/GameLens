@@ -1,6 +1,5 @@
 # G49 — Isometric Perspective
 
-![](../img/tilemap.png)
 
 > **Category:** Guide · **Related:** [G28 3/4 Top-Down Perspective](./G28_top_down_perspective.md) · [G37 Tilemap Systems](./G37_tilemap_systems.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G20 Camera Systems](./G20_camera_systems.md) · [G40 Pathfinding](./G40_pathfinding.md)
 

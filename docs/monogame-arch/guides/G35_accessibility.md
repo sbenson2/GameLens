@@ -1,6 +1,5 @@
 # G35 — Accessibility
 
-![](../img/ui-rpg.png)
 
 > **Category:** Guide · **Related:** [G5 UI Framework](./G5_ui_framework.md) · [G7 Input Handling](./G7_input_handling.md) · [G27 Shaders & Visual Effects](./G27_shaders_and_effects.md) · [G6 Audio](./G6_audio.md)
 

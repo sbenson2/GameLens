@@ -1,6 +1,5 @@
 # G51 — Crash Reporting & Production Error Handling
 
-![](../img/roguelike.png)
 
 
 > **Category:** Guide · **Related:** [G16 Debugging](./G16_debugging.md) · [G32 Deployment & Platform Builds](./G32_deployment_platform_builds.md) · [G36 Publishing & Distribution](./G36_publishing_distribution.md) · [G33 Profiling & Optimization](./G33_profiling_optimization.md)

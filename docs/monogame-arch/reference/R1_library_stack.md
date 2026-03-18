@@ -1,6 +1,5 @@
 # R1 — Library Stack & Install Commands
 
-![](../img/networking.png)
 
 > **Category:** Reference · **Related:** [E1 Architecture Overview](../architecture/E1_architecture_overview.md) · [R2 Capability Matrix](./R2_capability_matrix.md) · [R3 Project Structure](./R3_project_structure.md)
 

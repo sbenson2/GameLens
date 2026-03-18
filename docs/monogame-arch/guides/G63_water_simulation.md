@@ -1,6 +1,5 @@
 # G63 — 2D Water Simulation
 
-![](../img/physics.png)
 
 > **Category:** Guide · **Related:** [G3 Physics & Collision](./G3_physics_and_collision.md) · [G27 Shaders & Visual Effects](./G27_shaders_and_effects.md) · [G23 Particles](./G23_particles.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G57 Weather Effects](./G57_weather_effects.md)
 

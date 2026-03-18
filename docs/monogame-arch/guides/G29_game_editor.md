@@ -1,6 +1,5 @@
 # G29 — Game Editor
 
-![](../img/topdown.png)
 
 > **Category:** Guide · **Related:** [G16 Debugging](./G16_debugging.md) · [G30 Game Feel Tooling](./G30_game_feel_tooling.md) · [E1 Architecture Overview](../architecture/E1_architecture_overview.md)
 
@@ -209,7 +208,7 @@ Start with Phase 1. Ship a game using the MVP editor. Add Phase 2 features drive
 
 ## Implementation Notes from MonoGameStudio
 
-> These notes come from building MonoGameStudio — a 134-file 2D game editor (v0.1–v0.9) using MonoGame + Arch ECS + Hexa.NET.ImGui. The editor was built, the knowledge captured, and the source deleted. See [E8 — MonoGameStudio Post-Mortem](../E/E8_monogamestudio_postmortem.md) for the full story.
+> These notes come from building MonoGameStudio — a 134-file 2D game editor (v0.1–v0.9) using MonoGame + Arch ECS + Hexa.NET.ImGui. The editor was built, the knowledge captured, and the source deleted. See [E8 — MonoGameStudio Post-Mortem](../architecture/E8_monogamestudio_postmortem.md) for the full story.
 
 ### Hexa.NET.ImGui specifics (not ImGui.NET)
 

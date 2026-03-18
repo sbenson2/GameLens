@@ -1,6 +1,5 @@
 # G60 — Trail & Line Rendering
 
-![](../img/topdown.png)
 
 
 > **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G23 Particles](./G23_particles.md) · [G27 Shaders & Visual Effects](./G27_shaders_and_effects.md) · [G13 C# Performance](./G13_csharp_performance.md)
