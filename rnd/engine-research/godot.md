@@ -1,8 +1,8 @@
 # Godot Engine Research
 
-> **Status:** Phase 1 — Deep Research  
+> **Status:** Phase 2 — Prototyping (3/~20 docs complete)  
 > **Priority:** #1 (first engine expansion after MonoGame)  
-> **Last Updated:** 2026-03-18  
+> **Last Updated:** 2026-03-19  
 > **Current Version:** Godot 4.4+ (4.6 in dev snapshots)
 
 ---
@@ -413,4 +413,9 @@ Key rules to enforce:
 
 ## Research Log
 
+- **2026-03-19 1pm:** **Phase 2 STARTED.** Created `docs/godot-arch/` directory skeleton (architecture/, guides/, reference/). Wrote 3 docs totaling ~43.6KB:
+  - E1 Architecture Overview (15.6KB) — covers node tree, scenes, signals, autoloads, custom resources, state machine pattern, 2D vs 3D distinction, full Godot vs MonoGame comparison table, when-to-use honest assessment
+  - godot-rules.md (13.6KB) — AI code gen rules: comprehensive Godot 3→4 rename table (20+ entries), typed GDScript standards, @export patterns with groups, signal callback naming, platformer + top-down movement templates, custom resource patterns, object pooling, file boundaries, performance rules
+  - G1 Scene Composition (14.4KB) — full guide: three-questions design method, component scenes (HealthComponent, HitboxComponent, HurtboxComponent with full implementations), wiring components via signals, file system organization, runtime instancing + pooling, composition vs inheritance decision guide, common patterns (entity/interactable/projectile/UI), debugging checklist
+  - Next session: G2 State Machine, G3 Signal Architecture, E2 GDScript vs C#
 - **2026-03-18 1pm:** Initial deep research pass. Studied core architecture (node tree, signals, scenes), GDScript vs C#, design patterns (signal bus, state machine, resources, composition, object pooling, command, service locator), pain points (outdated resources, architecture confusion, pixel-perfect 2D, multiplayer complexity), addon ecosystem, genre mapping. Planned full doc structure mirroring MonoGame format. Research is now solid enough to begin Phase 2 prototyping.

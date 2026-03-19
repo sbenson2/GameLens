@@ -1,5 +1,5 @@
 # E9 — Solo Dev Playbook: AI Tools and Project Management
-> **Category:** Explanation · **Related:** [E4 Solo Project Management](./E4_project_management.md) · [E5 AI-Assisted Dev Workflow](./E5_ai_workflow.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
+> **Category:** Explanation · **Related:** [E4 Solo Project Management](./E4_project_management.md) · [E5 AI-Assisted Dev Workflow](../ai-workflow/E5_ai_workflow.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
 
 ---
 
@@ -21,7 +21,7 @@ The critical boundary: **AI handles the "how," humans must own the "why."** AI e
 
 **The numbers:** A CodeRabbit analysis (December 2025) found AI-co-authored pull requests contained **1.7x more issues** than human-only code, including 3x more readability problems and 2.74x more security vulnerabilities. Treat AI as a talented but over-eager junior developer who needs guardrails. Write lightweight specifications before prompting, invest in test coverage, and trace through every line of generated code.
 
-**MonoGame-specific caveat:** Smaller community than Unity/Unreal means less training data. Expect more errors with MonoGame-specific APIs. **Paste Arch ECS's README and key interface definitions into your LLM context** — this single step dramatically improves output quality for niche frameworks. See → [E5 CONTEXT.md](./E5_ai_workflow.md#contextmd)
+**MonoGame-specific caveat:** Smaller community than Unity/Unreal means less training data. Expect more errors with MonoGame-specific APIs. **Paste Arch ECS's README and key interface definitions into your LLM context** — this single step dramatically improves output quality for niche frameworks. See → [E5 CONTEXT.md](../ai-workflow/E5_ai_workflow.md#contextmd)
 
 ---
 

@@ -4,6 +4,81 @@ Functional, content, and integration test logs.
 
 ---
 
+## 2026-03-19 — Day A: Functional Testing (3pm)
+
+### Build Verification
+- **`npm run build` (tsc)**: ✅ PASS — Clean compilation, no errors, no warnings
+- **Compiled files**: `dist/` contains index.js, server.js, license.js, tiers.js + core/ + tools/ — all present
+- **Total source lines**: 530 lines across 4 main JS files
+
+### MCP Protocol Tests (Pro Tier, dev mode)
+
+| Test | Method | Expected | Actual | Result |
+|------|--------|----------|--------|--------|
+| Initialize | `initialize` | Protocol handshake | `protocolVersion: "2024-11-05"`, capabilities, serverInfo | ✅ PASS |
+| Tool listing | `tools/list` | 6 tools | 6 tools returned: search_docs, get_doc, list_docs, session, genre_lookup, license_info | ✅ PASS |
+| Search (basic) | `search_docs("character controller")` | Relevant results | Top hit: G52 (score 57.4), #2: character-controller-theory (54.1) | ✅ PASS |
+| List docs | `list_docs()` | All docs listed | 123 docs across core + monogame-arch (correct count) | ✅ PASS |
+| Get doc (valid) | `get_doc("P0")` | Full content returned | Complete P0 master playbook returned | ✅ PASS |
+| Get doc (invalid) | `get_doc("nonexistent-doc-xyz")` | Error message | "Doc not found. Use list_docs to see available docs." | ✅ PASS |
+| Session menu | `session("menu")` | Session briefing | Full session briefing with action menu | ✅ PASS |
+| Genre lookup | `genre_lookup("platformer")` | Full system mappings | Required systems, recommended docs, starter checklist | ✅ PASS |
+| License info | `license_info()` | Pro tier details | "Pro — all tools and modules fully unlocked" | ✅ PASS |
+
+**Protocol compliance: 9/9 PASS**
+
+### Search Quality Regression Tests
+
+| Query | Expected Behavior | Actual | Result |
+|-------|-------------------|--------|--------|
+| `"character controller"` (two words) | Match G52 + concept doc | G52 (57.4), character-controller-theory (54.1) | ✅ PASS |
+| `"character-controller"` (hyphenated) | Should also match | **"No docs found"** — hyphen tokenization bug | ❌ FAIL (known) |
+| `"godot scene composition"` (no godot module) | Only core/monogame results | G29, G26, E8, etc. — no Godot results (module not loaded) | ✅ PASS (expected) |
+
+**Hyphen tokenization bug confirmed still present.** Documented in `rnd/search-quality.md` as P1.
+
+### Godot Module Testing
+
+| Test | Expected | Actual | Result |
+|------|----------|--------|--------|
+| Load godot-arch module (`GAMEDEV_MODULES="monogame-arch,godot-arch"`) | 3 Godot docs loaded | 3 docs: godot-arch/E1, godot-rules, godot-arch/G1 | ✅ PASS |
+| Search with Godot module | Godot docs in results | godot-arch/E1 (50.4), godot-arch/G1 (40.6), godot-rules (38.2) all ranked high | ✅ PASS |
+| List docs (godot-arch filter) | Show only Godot docs | 3 docs: architecture/E1, reference/godot-rules, guide/G1 | ✅ PASS |
+| Get Godot doc (Pro) | Full content | Full godot-arch/G1 content returned | ✅ PASS |
+| Search Godot (Free tier) | Pro gate | "Searching non-core modules requires a Pro license" | ✅ PASS |
+| Get Godot doc (Free tier) | Pro gate | "requires a Pro license" | ✅ PASS |
+
+**Godot module: 6/6 PASS — fully functional when module is activated.**
+
+### Free vs Pro Tier Gating (regression)
+
+| Test | Free Tier | Pro Tier | Result |
+|------|-----------|----------|--------|
+| search_docs (core) | Returns core results | Returns all results | ✅ PASS |
+| search_docs (module filter) | Pro gate message | Returns module results | ✅ PASS |
+| get_doc (core doc) | Returns content | Returns content | ✅ PASS |
+| get_doc (module doc) | Pro gate message | Returns content | ✅ PASS |
+| session | Pro gate message | Full session briefing | ✅ PASS |
+| license_info | Free tier details | Pro tier details | ✅ PASS |
+
+**Tier gating: 6/6 PASS**
+
+### Issues Found
+
+1. **❌ Hyphen tokenization bug STILL OPEN** — `"character-controller"` returns 0 results. Known P1 issue from 2026-03-18. Fix in `rnd/search-quality.md`.
+2. **⚠️ Godot module not in default `GAMEDEV_MODULES`** — Only `monogame-arch` is default. Godot docs won't appear unless env var includes `godot-arch`. This is expected behavior for now (Godot is still in development), but should be added to defaults when content is ready.
+3. **⚠️ Doc count shows 123 (was 122 last test)** — Increased by 1 since Day 3. Likely from new Godot docs when testing with both modules, or a new doc added.
+
+### Summary
+- **Total test cases**: 21
+- **PASS**: 20
+- **FAIL**: 1 (known hyphen tokenization bug)
+- **Build**: Clean
+- **Protocol**: Compliant
+- **Godot module**: Fully functional
+- **Tier gating**: Working correctly
+- **No new bugs found**
+
 ## 2026-03-18 — Day C: Integration Testing (3pm)
 
 ### Build Verification

@@ -1136,50 +1136,38 @@ using Arch.Core;
 
 /// <summary>Point light emitting radially from the entity's position.</summary>
 public record struct PointLight(
-    float Radius,
-    Color Color,
-    float Intensity,
-    LightFalloff Falloff,
-    bool CastsShadows
+    float Radius = 200f,
+    Color? Color = null,
+    float Intensity = 1f,
+    LightFalloff Falloff = LightFalloff.Quadratic,
+    bool CastsShadows = false
 )
 {
-    public Radius = 200f;
-    public Color = Color.White;
-    public Intensity = 1f;
-    public Falloff = LightFalloff.Quadratic;
-    public CastsShadows = false;
+    public Color Color { get; set; } = Color ?? Microsoft.Xna.Framework.Color.White;
 }
 
 /// <summary>Spot light with cone direction.</summary>
 public record struct SpotLight(
-    float Radius,
-    Color Color,
-    float Intensity,
-    float DirectionRadians,
-    float InnerAngleDeg,
-    float OuterAngleDeg,
-    LightFalloff Falloff,
-    bool CastsShadows
+    float Radius = 300f,
+    Color? Color = null,
+    float Intensity = 1f,
+    float DirectionRadians = 0f,
+    float InnerAngleDeg = 15f,
+    float OuterAngleDeg = 30f,
+    LightFalloff Falloff = LightFalloff.Quadratic,
+    bool CastsShadows = false
 )
 {
-    public Radius = 300f;
-    public Color = Color.White;
-    public Intensity = 1f;
-    public DirectionRadians = 0f;
-    public InnerAngleDeg = 15f;
-    public OuterAngleDeg = 30f;
-    public Falloff = LightFalloff.Quadratic;
-    public CastsShadows = false;
+    public Color Color { get; set; } = Color ?? Microsoft.Xna.Framework.Color.White;
 }
 
 /// <summary>Global ambient light — attach to a singleton entity.</summary>
 public record struct AmbientLight(
-    Color Color,
-    float Intensity
+    Color? Color = null,
+    float Intensity = 1f
 )
 {
-    public Color = new Color(30, 30, 50);
-    public Intensity = 1f;
+    public Color Color { get; set; } = Color ?? new Color(30, 30, 50);
 }
 
 /// <summary>Marks an entity as a shadow occluder with edge geometry.</summary>
@@ -1187,17 +1175,12 @@ public record struct Occluder(Edge[] Edges);
 
 /// <summary>Flicker effect for lights (torches, candles).</summary>
 public record struct LightFlickerEffect(
-    float Speed,
-    float Strength,
-    int Seed,
-    float BaseIntensity,
-    float BaseRadius
-)
-{
-    public Speed = 3f;
-    public Strength = 0.15f;
-    public Seed = 0;
-}
+    float Speed = 3f,
+    float Strength = 0.15f,
+    int Seed = 0,
+    float BaseIntensity = 1f,
+    float BaseRadius = 200f
+);
 
 /// <summary>Light cookie/mask texture reference.</summary>
 public record struct LightCookie(

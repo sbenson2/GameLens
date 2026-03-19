@@ -12,13 +12,36 @@ export class SearchEngine {
   private docTermFreqs: Map<string, Map<string, number>> = new Map();
   private totalDocs: number = 0;
 
-  /** Tokenize text into lowercase terms */
+  private static STOP_WORDS = new Set([
+    "the", "is", "at", "which", "on", "an", "and", "or", "but",
+    "in", "with", "to", "for", "of", "by", "from", "how", "what",
+    "when", "where", "why", "do", "does", "did", "will", "would",
+    "should", "could", "can", "my", "your", "its", "this", "that",
+    "it", "be", "have", "has", "had", "was", "were", "are", "am",
+    "been", "being", "not", "no", "if", "then", "than", "so", "very",
+    "just", "about", "also", "way", "best", "make", "use",
+  ]);
+
+  /** Tokenize text into lowercase terms, splitting hyphens and handling special tokens */
   private tokenize(text: string): string[] {
-    return text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, " ")
-      .split(/\s+/)
-      .filter((t) => t.length > 1);
+    // Handle special tokens before stripping symbols
+    let processed = text.replace(/c#/gi, "csharp");
+    processed = processed.toLowerCase().replace(/[^a-z0-9\s-]/g, " ");
+
+    const tokens: string[] = [];
+    for (const word of processed.split(/\s+/)) {
+      if (word.length < 2) continue;
+      if (SearchEngine.STOP_WORDS.has(word)) continue;
+      tokens.push(word); // keep compound: "character-controller"
+      if (word.includes("-")) {
+        for (const part of word.split("-")) {
+          if (part.length > 1 && !SearchEngine.STOP_WORDS.has(part)) {
+            tokens.push(part); // also index individual parts
+          }
+        }
+      }
+    }
+    return tokens;
   }
 
   /** Build the index from a list of docs */
@@ -79,17 +102,28 @@ export class SearchEngine {
         score += 100;
       }
 
-      // Boost: query appears in title
+      // Boost: per-token title matching (more granular than single substring check)
       const lowerTitle = doc.title.toLowerCase();
       const lowerQuery = query.toLowerCase();
       if (lowerTitle.includes(lowerQuery)) {
-        score += 20;
+        score += 20; // full query in title — strong signal
+      }
+      for (const token of queryTokens) {
+        if (lowerTitle.includes(token)) {
+          score += 5; // per-token title boost
+        }
       }
 
       // Boost: all query tokens present
       const allPresent = queryTokens.every((t) => termFreq.has(t));
       if (allPresent) {
         score *= 1.5;
+      }
+
+      // Normalize by document length to prevent long docs from dominating
+      const docUniqueTerms = termFreq.size;
+      if (docUniqueTerms > 0) {
+        score /= Math.sqrt(docUniqueTerms);
       }
 
       if (score > 0) {

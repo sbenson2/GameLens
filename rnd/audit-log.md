@@ -42,6 +42,68 @@ Moved `docs/core/project-management/P12_performance_budget.md` → `docs/monogam
 
 Daily audit of 3-5 random docs for: outdated API references, broken internal doc links, consistency with current engine versions, formatting issues.
 
+## 2026-03-19
+
+### FIXED: Broken E5_ai_workflow.md links (7 files)
+
+`docs/core/ai-workflow/E5_ai_workflow.md` exists, but 7 files linked to it as `./E5_ai_workflow.md` (wrong directory). Fixed all:
+
+- `docs/core/project-management/P10_integration_map.md` — `./` → `../ai-workflow/`
+- `docs/core/project-management/E9_solo_dev_playbook.md` — `./` → `../ai-workflow/`
+- `docs/core/project-management/E4_project_management.md` — `./` → `../ai-workflow/`
+- `docs/core/project-management/P0_master_playbook.md` — `./` → `../ai-workflow/`
+- `docs/core/programming/G11_programming_principles.md` — `./` → `../ai-workflow/`
+- `docs/monogame-arch/guides/G30_game_feel_tooling.md` — `./` → `../../core/ai-workflow/`
+- `docs/monogame-arch/guides/G11_programming_principles.md` — `./` → `../../core/ai-workflow/`
+
+### FIXED: Invalid C# record struct syntax in G39 (1 file)
+
+`docs/monogame-arch/guides/G39_2d_lighting.md` — The ECS Components section had invalid C# syntax for record struct default values. `public Radius = 200f;` is not valid C#. Fixed `PointLight`, `SpotLight`, `AmbientLight`, and `LightFlickerEffect` to use proper primary constructor defaults and nullable `Color` pattern.
+
+### Audited 5 docs (3 core, 2 monogame-arch)
+
+**1. `core/project-management/E9_solo_dev_playbook.md`**
+- ✅ Content: Excellent quality, well-researched (Stardew/Balatro/Vampire Survivors case studies)
+- 🔴 FIXED: 2 broken E5_ai_workflow.md links (see above)
+- ✅ E4, E8 links verified correct
+- ✅ Formatting: Clean, good tables, consistent headers
+
+**2. `core/project-management/P4_playtesting.md`**
+- ✅ Content: Comprehensive playtesting guide with usability scale, templates, OBS setup
+- ✅ All 3 monogame-arch cross-links verified (G61, G35, G30)
+- ℹ️ NOTE: Title says `# 08 — Playtesting Guide` but filename is `P4_*`. This is systemic across all P-files (old chapter numbering vs new P-numbering). Not changing — would require coordinated update across all docs.
+- ✅ Formatting: Excellent — TOC, tables, checklists, form templates
+
+**3. `core/game-design/C1_genre_reference.md`**
+- ✅ Content: Thorough genre→system mapping for 17 genres
+- ✅ All internal links verified (R2, G10, E1, G1-G10 all exist)
+- ✅ API references: Arch ECS, Aether.Physics2D, MonoGame.Extended, FontStashSharp, BrainAI, FmodForFoxes — all valid
+- ✅ Formatting: Clean, consistent per-genre sections
+
+**4. `monogame-arch/guides/G39_2d_lighting.md`**
+- ✅ Content: Production-quality lighting guide (lightmap, point/spot, shadows, normal maps, cookies, ECS)
+- ✅ All links verified (G2, G27, G23, G22, G10)
+- 🔴 FIXED: Invalid C# record struct syntax in ECS Components section (see above)
+- ✅ HLSL shaders: Well-structured, correct cross-platform `#if OPENGL` guards
+- ✅ Formatting: Excellent — complete code examples, performance section, summary checklist
+
+**5. `monogame-arch/guides/G54_fog_of_war.md`**
+- ✅ Content: Complete fog of war implementation (visibility grid, shadowcasting, rendering, ECS)
+- ✅ All links verified (G39, G37, G2, G27, G40)
+- ✅ API: Arch ECS query patterns correct, shader code valid
+- ✅ Formatting: Clean, good performance budget section, strategy game patterns
+
+### Summary
+
+| Action | Files Changed |
+|--------|---------------|
+| Fixed broken E5 links | 7 files |
+| Fixed C# syntax in G39 | 1 file |
+| **Total files changed** | **8** |
+
+### Noted (not fixed)
+- P-file title numbering mismatch (systemic, cosmetic only)
+
 ---
 
 ## 2026-03-17

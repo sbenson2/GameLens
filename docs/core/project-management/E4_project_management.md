@@ -1,5 +1,5 @@
 # E4 — Solo Project Management
-> **Category:** Explanation · **Related:** [E5 AI Workflow](./E5_ai_workflow.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [E6 Game Design Fundamentals](./E6_game_design_fundamentals.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
+> **Category:** Explanation · **Related:** [E5 AI Workflow](../ai-workflow/E5_ai_workflow.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [E6 Game Design Fundamentals](./E6_game_design_fundamentals.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
 
 ---
 
@@ -67,7 +67,7 @@ Scope creep is the universal project killer. Every successful indie game documen
 - **Hard deadlines with cuts, not delays** — make cuts to meet the deadline instead of pushing back for more content
 - **A separate FUTURE_IDEAS.md** — when a cool idea strikes, write it down outside current scope. Acknowledged but deferred.
 - **Intentional constraints** — limit color palette, level count, mechanic count. Toby Fox's deliberately simple pixel art let one person handle all of Undertale's visuals
-- **AI amplifies scope creep** — when generating a new feature takes minutes, the temptation to add "just one more" is constant. Every AI-generated feature still needs testing, balancing, art, sound, UI, and bug fixing. See [E5](./E5_ai_workflow.md)
+- **AI amplifies scope creep** — when generating a new feature takes minutes, the temptation to add "just one more" is constant. Every AI-generated feature still needs testing, balancing, art, sound, UI, and bug fixing. See [E5](../ai-workflow/E5_ai_workflow.md)
 
 > **Deep dive:** [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) — scope creep as the universal killer, AI amplification risk, Polaris Framework for fix/polish phase, design pillars as filter
 
@@ -190,7 +190,7 @@ Monthly or biweekly, serves triple duty: external accountability, community buil
 
 Document your component and system design decisions. When an AI generates a system six months from now, you need to know why MovementSystem handles collision checking rather than a separate CollisionSystem, or why HealthComponent stores max health as a float rather than an int. These micro-decisions compound, and without a record, AI-generated code will slowly erode architectural coherence.
 
-Keep a CHANGELOG.md. Comment code with *why*, not *what*. Create a **CONTEXT.md** file in your project root for AI-assisted development → [E5](./E5_ai_workflow.md).
+Keep a CHANGELOG.md. Comment code with *why*, not *what*. Create a **CONTEXT.md** file in your project root for AI-assisted development → [E5](../ai-workflow/E5_ai_workflow.md).
 
 ---
 

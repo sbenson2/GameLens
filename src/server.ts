@@ -9,7 +9,7 @@ import { handleSearchDocs } from "./tools/search-docs.js";
 import { handleGetDoc } from "./tools/get-doc.js";
 import { handleListDocs } from "./tools/list-docs.js";
 import { handleSession } from "./tools/session.js";
-import { handleGenreLookup } from "./tools/genre-lookup.js";
+import { handleGenreLookup, formatGenreResult } from "./tools/genre-lookup.js";
 import { validateLicense } from "./license.js";
 import {
   Tier,
@@ -91,23 +91,27 @@ export async function createServer() {
       module: z.string().optional().describe("Filter by module (e.g. 'core', 'monogame-arch')"),
     },
     async (args) => {
-      const access = isToolAllowed(tier, "search_docs");
-      if (access === false) return proGateResponse();
+      try {
+        const access = isToolAllowed(tier, "search_docs");
+        if (access === false) return proGateResponse();
 
-      // Free tier: force module to 'core'
-      if (access === "limited") {
-        if (args.module && args.module !== "core") {
-          return {
-            content: [{
-              type: "text",
-              text: `Searching non-core modules requires a Pro license. ${PRO_GATE_MESSAGE}`,
-            }],
-          };
+        // Free tier: force module to 'core'
+        if (access === "limited") {
+          if (args.module && args.module !== "core") {
+            return {
+              content: [{
+                type: "text",
+                text: `Searching non-core modules requires a Pro license. ${PRO_GATE_MESSAGE}`,
+              }],
+            };
+          }
+          args.module = "core";
         }
-        args.module = "core";
-      }
 
-      return handleSearchDocs(args, docStore, searchEngine);
+        return handleSearchDocs(args, docStore, searchEngine);
+      } catch (err) {
+        return { content: [{ type: "text", text: `Search error: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
     }
   );
 
@@ -118,27 +122,31 @@ export async function createServer() {
       id: z.string().describe("Doc ID (e.g. 'G52', 'E6', 'P0', 'camera-theory')"),
     },
     async (args) => {
-      const access = isToolAllowed(tier, "get_doc");
-      if (access === false) return proGateResponse();
+      try {
+        const access = isToolAllowed(tier, "get_doc");
+        if (access === false) return proGateResponse();
 
-      if (access === "limited") {
-        // Check if doc belongs to a non-core module
-        const doc =
-          docStore.getDoc(args.id) ??
-          docStore.getAllDocs().find(
-            (d) => d.id.toLowerCase() === args.id.toLowerCase()
-          );
-        if (doc && !isModuleAllowed(tier, doc.module)) {
-          return {
-            content: [{
-              type: "text",
-              text: `The doc "${args.id}" is part of the ${doc.module} module, which requires a Pro license. ${PRO_GATE_MESSAGE}`,
-            }],
-          };
+        if (access === "limited") {
+          // Check if doc belongs to a non-core module
+          const doc =
+            docStore.getDoc(args.id) ??
+            docStore.getAllDocs().find(
+              (d) => d.id.toLowerCase() === args.id.toLowerCase()
+            );
+          if (doc && !isModuleAllowed(tier, doc.module)) {
+            return {
+              content: [{
+                type: "text",
+                text: `The doc "${args.id}" is part of the ${doc.module} module, which requires a Pro license. ${PRO_GATE_MESSAGE}`,
+              }],
+            };
+          }
         }
-      }
 
-      return handleGetDoc(args, docStore);
+        return handleGetDoc(args, docStore);
+      } catch (err) {
+        return { content: [{ type: "text", text: `Error fetching doc: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
     }
   );
 
@@ -149,7 +157,13 @@ export async function createServer() {
       category: z.enum(CATEGORIES).optional().describe("Filter by category"),
       module: z.string().optional().describe("Filter by module (e.g. 'core', 'monogame-arch')"),
     },
-    async (args) => handleListDocs(args, docStore)
+    async (args) => {
+      try {
+        return handleListDocs(args, docStore);
+      } catch (err) {
+        return { content: [{ type: "text", text: `Error listing docs: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
+    }
   );
 
   server.tool(
@@ -159,8 +173,12 @@ export async function createServer() {
       action: z.enum(SESSION_ACTIONS).describe("Session action to perform"),
     },
     async (args) => {
-      if (!isToolAllowed(tier, "session")) return proGateResponse();
-      return handleSession(args);
+      try {
+        if (!isToolAllowed(tier, "session")) return proGateResponse();
+        return handleSession(args);
+      } catch (err) {
+        return { content: [{ type: "text", text: `Session error: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
     }
   );
 
@@ -171,46 +189,33 @@ export async function createServer() {
       genre: z.string().describe("Game genre (e.g. 'platformer', 'roguelike', 'metroidvania', 'tower-defense', 'rpg')"),
     },
     async (args) => {
-      const access = isToolAllowed(tier, "genre_lookup");
-      if (access === false) return proGateResponse();
+      try {
+        const access = isToolAllowed(tier, "genre_lookup");
+        if (access === false) return proGateResponse();
 
-      const result = handleGenreLookup(args);
+        const result = handleGenreLookup(args);
 
-      // Free tier: strip recommended docs and system mappings
-      if (access === "limited") {
-        const text = result.content[0].text;
-        // Keep genre name, description, and starter checklist but strip system mappings and doc refs
-        const lines = text.split("\n");
-        const filtered: string[] = [];
-        let skip = false;
-        for (const line of lines) {
-          if (line.startsWith("## Required Systems")) {
-            filtered.push(line);
-            filtered.push("");
-            filtered.push(`_Full system mappings require a Pro license. ${PRO_GATE_MESSAGE}_`);
-            filtered.push("");
-            skip = true;
-            continue;
-          }
-          if (line.startsWith("## Recommended Docs")) {
-            filtered.push(line);
-            filtered.push("");
-            filtered.push(`_Doc recommendations require a Pro license. ${PRO_GATE_MESSAGE}_`);
-            filtered.push("");
-            skip = true;
-            continue;
-          }
-          if (line.startsWith("## ")) {
-            skip = false;
-          }
-          if (!skip) {
-            filtered.push(line);
-          }
+        if (!result.found) {
+          return {
+            content: [{
+              type: "text",
+              text: `Genre "${args.genre}" not found.\n\nAvailable genres: ${result.availableGenres.join(", ")}`,
+            }],
+          };
         }
-        return { content: [{ type: "text", text: filtered.join("\n") }] };
-      }
 
-      return result;
+        // Free tier: exclude Pro-only sections using structured data
+        const text = access === "limited"
+          ? formatGenreResult(result.info, {
+              excludeSections: ["requiredSystems", "recommendedDocs"],
+              gateMessage: PRO_GATE_MESSAGE,
+            })
+          : formatGenreResult(result.info);
+
+        return { content: [{ type: "text", text }] };
+      } catch (err) {
+        return { content: [{ type: "text", text: `Genre lookup error: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
     }
   );
 
@@ -219,6 +224,7 @@ export async function createServer() {
     "Show current license tier, what tools and modules are unlocked, and upgrade URL.",
     {},
     async () => {
+      try {
       const features = getTierFeatures(tier);
 
       let output = `# License Info\n\n`;
@@ -239,6 +245,9 @@ export async function createServer() {
       }
 
       return { content: [{ type: "text", text: output }] };
+      } catch (err) {
+        return { content: [{ type: "text", text: `License info error: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
     }
   );
 

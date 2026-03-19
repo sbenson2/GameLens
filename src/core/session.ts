@@ -82,6 +82,24 @@ const TOPIC_DOC_MAP: Record<string, string[]> = {
   deployment: ["G32"],
   localization: ["G34"],
   accessibility: ["G35"],
+  combat: ["G64", "character-controller-theory"],
+  "damage system": ["G64"],
+  "hitbox": ["G64"],
+  "knockback": ["G64"],
+  economy: ["G65"],
+  shop: ["G65"],
+  currency: ["G65"],
+  "loot": ["G65"],
+  building: ["G66"],
+  placement: ["G66"],
+  construction: ["G66"],
+  "tower placement": ["G66"],
+  // Godot docs
+  "godot": ["godot-arch/E1", "godot-arch/G1"],
+  "gdscript": ["godot-arch/E1"],
+  "scene composition": ["godot-arch/G1"],
+  "node tree": ["godot-arch/E1", "godot-arch/G1"],
+  "signals": ["godot-arch/E1"],
 };
 
 export function createDefaultState(): SessionState {

@@ -1,7 +1,7 @@
 # Content Gap Analysis
 
 Weekly comparison of genre-lookup system requirements vs available guides.
-Last updated: 2026-03-18
+Last updated: 2026-03-19
 
 ---
 
@@ -15,6 +15,7 @@ Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) agai
 |--------|----------------------|-------|
 | Combat & Damage (hitbox/hurtbox, health, knockback, projectiles) | roguelike, metroidvania, top-down-rpg, bullet-hell, survival, fighting, tower-defense, strategy (8/11) | **G64** (created 2026-03-17) |
 | Economy/Currency + Shop System | tower-defense, survival (2/11) | **G65** (created 2026-03-18) |
+| Building/Placement System | survival, strategy (2/11) | **G66** (created 2026-03-19) |
 | Character Controller | platformer, metroidvania, fighting | G52 |
 | Physics & Collision | platformer, bullet-hell, fighting | G3 |
 | Camera Systems | platformer, metroidvania, top-down-rpg, strategy, bullet-hell | G20 |
@@ -52,18 +53,18 @@ Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) agai
 |--------|-------------|----------|-------|
 | **Object Pooling (dedicated)** | bullet-hell, tower-defense | HIGH | G64 §9 covers combat pooling; G23 has particle pooling. No standalone guide for general pooling patterns (audio, spawn, VFX). |
 | ~~**Economy/Currency System**~~ | ~~tower-defense, survival~~ | ~~MEDIUM~~ | ✅ FILLED → G65 (2026-03-18) |
-| **Building/Placement System** | survival, strategy | MEDIUM | Grid-based placement, ghost preview, validation. Not covered anywhere. |
+| ~~**Building/Placement System**~~ | ~~survival, strategy~~ | ~~MEDIUM~~ | ✅ FILLED → G66 (2026-03-19) |
 | **Undo/Redo (puzzle-focused)** | puzzle | MEDIUM | G10 §8 covers command pattern. Could use a puzzle-specific extension with state snapshots. |
 | **Level Editor / Level Loading** | puzzle | LOW | G29 (Game Editor) exists but is for dev tools. Puzzle games need runtime level select + loading. |
 
 ## 📊 Coverage Summary
 
 - **Genres fully covered** (all required systems have guides): platformer, metroidvania, roguelike, top-down-rpg, visual-novel, fighting
-- **Genres mostly covered** (1-2 gaps): bullet-hell, puzzle, survival, tower-defense, strategy
-- **Overall**: ~90% of genre-referenced systems have dedicated documentation
+- **Genres mostly covered** (1-2 gaps): bullet-hell, puzzle
+- **Overall**: ~93% of genre-referenced systems have dedicated documentation
 
 ## 🎯 Next Priority
 
-1. **Building/Placement System** — Key for survival and strategy genres. Grid snapping, ghost preview, validation, placement rules.
-2. **General Object Pooling guide** — Consolidate patterns from G23 and G64 into a reusable reference
-3. **Undo/Redo (puzzle-focused)** — Extend G10 §8 command pattern with state snapshots for puzzle games
+1. **General Object Pooling guide** — Consolidate patterns from G23 and G64 into a reusable reference. Key for bullet-hell and tower-defense.
+2. **Undo/Redo (puzzle-focused)** — Extend G10 §8 command pattern with state snapshots for puzzle games
+3. **Level Editor / Level Loading (puzzle)** — Runtime level select + loading for puzzle games

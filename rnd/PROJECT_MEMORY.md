@@ -38,18 +38,24 @@ Every task should read this before starting and append learnings when done.
 ### Fixed (2026-03-18, 3pm)
 - ~~**DEV MODE BUG**: `GAMEDEV_MCP_DEV=true` didn't work without a license key~~: FIXED — Moved dev mode check before `getLicenseKey()` in `src/license.ts`. Dev mode now correctly enables Pro tier without any key.
 
+### Fixed (2026-03-19)
+- ~~**Broken E5_ai_workflow.md links (7 files)**~~: FIXED — 7 files across `core/project-management/`, `core/programming/`, and `monogame-arch/guides/` had `./E5_ai_workflow.md` links but the file lives in `core/ai-workflow/`. All corrected.
+- ~~**Invalid C# syntax in G39_2d_lighting.md**~~: FIXED — ECS Components section used invalid `public Radius = 200f;` syntax in record structs. Corrected to proper C# primary constructor defaults.
+
 ### Open
 - **Search quality issues (6 total)** — Hyphen tokenization bug (critical), no stop words, no stemming, C# token destruction, no doc length normalization, title scoring weakness. See `rnd/search-quality.md`. Top 3 fixes = ~30 min.
-- **Git push overdue** — Day 3 with all work local only. ~50+ modified files, multiple untracked.
+- **P-file title numbering mismatch** — All P-series files have old chapter numbers in titles (e.g., `P4_playtesting.md` titled `# 08 — Playtesting Guide`). Cosmetic only, links use filenames not titles.
+- **17 code improvements identified (2026-03-19)** — Full codebase audit found 2 bugs (ID collision hiding module docs, fragile genre free-tier filter), 5 robustness issues (no try/catch in handlers, cache shape validation, etc.), and 5 MCP tool improvements (section extraction for large docs, richer descriptions, summary mode). See `rnd/code-improvements.md`. Quick wins: ~30 min. Full list: ~3 hours.
 
-## Competitive Landscape (updated 2026-03-18)
+## Competitive Landscape (updated 2026-03-19)
 
-- Space dominated by engine integration tools (Godot-MCP 2.4K⭐, Unreal-MCP 1.6K⭐, Unity-MCP 1.4K⭐)
-- Only one docs competitor: `godot-mcp-docs` (50⭐) — Godot-only, very basic
-- First paid gamedev MCP server: **Godot MCP Pro** ($5 one-time, 162 tools, editor integration). Different niche (editor control vs knowledge).
-- New tools: `gdcli` (Rust CLI for headless Godot), `Ziva` (in-editor AI plugin), GameMaker MCP
-- Complementary positioning: our knowledge server pairs with engine integration MCPs
-- **NEW**: **Ref** (ref.tools) is first standalone paid MCP *documentation* server — closest analog. $9/mo credit-based, "thousands of weekly users, hundreds of subscribers" in 3 months. Proves paid docs-MCP works.
+- Space dominated by engine integration tools (Godot-MCP 2.5K⭐, Unreal-MCP 1.6K⭐, Unity-MCP 1.4K⭐, IvanMurzak Unity-MCP 1.4K⭐)
+- Only one docs competitor: `godot-mcp-docs` (51⭐) — **effectively dead** (no updates since July 2025)
+- **TWO paid Godot MCP servers now**: Godot MCP Pro ($5, 162 tools) + GDAI MCP ($19, 76⭐, ~30 tools). Both editor integration, not knowledge.
+- **Roblox going official with MCP** — first major engine company to build native MCP support + 3 community forks
+- **Godot MCP namespace getting crowded** — 5+ servers now. Differentiation via cross-engine knowledge is critical.
+- **Ref** (ref.tools) remains closest analog — $9/mo credit-based docs MCP. Proves paid docs-MCP works.
+- **Context window backlash is a marketing opportunity** — tool-heavy MCPs getting pushback (55K+ tokens for schemas). Our minimal-tools, rich-content model is the antidote.
 
 ## Market Sentiment (2026-03-17)
 
@@ -73,48 +79,68 @@ Every task should read this before starting and append learnings when done.
 ## 🚨 Needs Owner Attention
 _Cron agents: add urgent items here. Heartbeat will check and alert Wes. Clear items after acknowledged._
 
-- **🔴 2026-03-18 (DAY 3)**: **All work is still local only.** 3 full days of R&D — link fixes (908), G64 (52KB), G65 (54KB), E8 postmortem, 79 image fix, G3/P12 fixes, dev mode bug fix — NONE committed or pushed. ~50+ modified/untracked files. One disk failure loses everything. **Need to commit + push ASAP.**
-- **2026-03-16**: `rnd/` directory — decide: commit to repo or add to `.gitignore`? R&D files contain competitive intel and internal notes.
-- **2026-03-17**: npm still returns 404 — package not published. No external feedback loop. Day 3 with zero public presence.
+- **2026-03-19**: 12+ files uncommitted from today's work (G66, godot-arch/, audit fixes, rnd/). Need git commit & push.
+- **2026-03-17**: npm still returns 404 — package not published. Day 4. No external feedback loop.
+- **2026-03-19**: Search hyphen bug (P1) known for 2 days, ~15 min fix, still not done. Blocks `"character-controller"`, `"top-down"`, etc. — affects real user queries.
 
 ## Feedback & Direction Shifts
 
 _Append Wes's feedback and direction changes here._
 
 - **2026-03-16**: Initial R&D pipeline established. Wes wants full daily workday (9-5, hourly tasks). Be adaptive, reach further, identify new work streams.
+- **2026-03-19**: Alignment decisions:
+  - Fix genre filter bug BEFORE npm publish (don't ship leaky Pro content)
+  - Godot content stays in the 1pm hour only; 11am continues filling MonoGame gaps
+  - Server-side API: Cloudflare Workers (cheapest, easiest, comprehensive free tier)
+  - Pricing: $9/month
+  - npm package name: `gamedev-mcp-server` (confirmed)
+  - Phase 1 (code quality) before Phase 2 (ship) before Phase 3 (Godot expansion)
 
-## Yesterday's Progress (2026-03-18) — Day 3
+## Two Days Ago (2026-03-18) — Day 3
 
-1. ✅ Fixed ALL 4 open doc issues — E8 created (6.4KB postmortem), 79 broken image refs removed, G3 API contradiction resolved, P12 moved to correct location (~90 files touched)
-2. ✅ Created **G65 — Economy & Shop Systems** (~54KB) — filled #1 content gap
-3. ✅ **Pricing research complete** — Mapped 6+ MCP payment platforms, found Ref ($9/mo) as pricing template, dual-distribution strategy
-4. ✅ **Godot deep research COMPLETE** — 17KB comprehensive research doc. Ready for Phase 2 prototyping.
-5. ✅ **Search quality deep-dive** — Found critical hyphen tokenization bug + 5 other issues. 6 fixes proposed, top 3 = ~30 min.
-6. ✅ **Integration testing COMPLETE** — 14/15 tests PASS. Found & fixed dev mode license bug. Build verified clean.
-7. ❌ **Git push still not done** — Day 3 with all work local only. Critical.
+1. ✅ Fixed ALL 4 open doc issues — E8 created, 79 dead image refs removed, G3 API fixed, P12 moved
+2. ✅ Created G65 — Economy & Shop Systems (~54KB)
+3. ✅ Pricing research, Godot deep research, search quality deep-dive all complete
+4. ✅ Integration testing COMPLETE — 14/15 PASS, found & fixed dev mode bug
+5. ✅ Git push DONE (6fcab58, 104 files committed)
 
-## Two Days Ago (2026-03-17) — Day 2
+## Yesterday's Progress (2026-03-19) — Day 4
 
-1. ✅ Fixed ALL broken relative links (908 links, 46 files)
-2. ✅ Created G64 — Combat & Damage Systems (~52KB) — biggest content gap (8/11 genres)
-3. ✅ Full competitive intel deep dive — found Godot MCP Pro ($5, first paid gamedev MCP)
-4. ✅ Content gap analysis complete — 90% genre coverage
-5. ❌ No build/test, no git push, no Godot research
+1. ✅ **Godot Module Phase 2 STARTED** — Created `docs/godot-arch/` with 3 docs (~43.6KB): E1 Architecture Overview, godot-rules.md, G1 Scene Composition. Module functional and tested.
+2. ✅ **G66 Building & Placement Systems created** (~85KB) — Largest doc. Fills survival + strategy gaps → genre coverage now ~93%.
+3. ✅ **Functional testing COMPLETE** — 21 tests, 20 PASS, 1 FAIL (known hyphen bug). Godot module 6/6 pass. No new bugs.
+4. ✅ **Full codebase audit** — 17 improvements identified (2 bugs, 5 robustness, 5 MCP tool, 5 DX). See `rnd/code-improvements.md`.
+5. ✅ **Doc fixes** — 7 broken E5 links fixed, G39 invalid C# syntax fixed, 5 docs audited.
+6. ✅ **Competitive intel** — "Context Window Tax" going mainstream, star tracking updated.
+7. ❌ **Search bug fixes NOT done** — Day 2 of knowing about P1-P3. ~30 min total.
+8. ❌ **Git push NOT done** — New work not committed (G66, godot-arch/, fixes, rnd/).
+9. ❌ **npm still 404** — Day 4 with no external feedback.
 
-## Today's Priorities (2026-03-19) — Day 4
+## Today's Priorities (2026-03-20) — Day 5
 
-1. **🔴🔴 GIT COMMIT & PUSH** — EVERYTHING. Link fixes (51d13f9), E8, G64, G65, image cleanup, G3 fix, P12 move, dev mode fix, rnd/. **Day 4 local-only would be absurd.** This is the FIRST thing to do.
-2. **🔴 Search bug fixes (P1-P3)** — Hyphen tokenization, stop words, C# token. ~30 min total. See `rnd/search-quality.md` §5.
-3. **🟡 npm publish assessment** — What's actually blocking publish? Document the blockers and start clearing them.
-4. **🟡 Godot Phase 2** — Start prototyping the Godot module. Create `docs/godot/` skeleton based on the doc structure plan in `rnd/engine-research/godot.md`.
-5. **🟢 Content: Building/Placement System** — Next gap from gap analysis (survival + strategy genres).
-6. **🟢 Update metrics.md** — Refresh doc count (122), clear stale warnings.
+1. **🔴🔴 GIT COMMIT & PUSH** — G66, godot-arch/ (3 docs), 8 audit fixes, rnd/ updates. Do this FIRST.
+2. **🔴 Search bug fixes (P1-P3)** — Hyphen tokenization, stop words, C# token. Day 3 of knowing. ~30 min. No more excuses.
+3. **🟡 Code quick wins (~30 min)** — #5 better error msg, #6 log network errors, #12 update TOPIC_DOC_MAP for G64/G65/G66/Godot, #13 show descriptions in search results.
+4. **🟡 Godot Phase 2 continue** — G2 State Machine, G3 Signal Architecture, E2 GDScript vs C#.
+5. **🟢 npm publish assessment** — Day 5. At minimum document blockers.
+6. **🟢 Commit & push at EOD** — Pattern: commit at start AND end of day.
 
-**⚠️ Day 3→4 pattern:** Build/test gap is CLOSED (✅). Git/publish gap is WIDENING (❌). Tomorrow's agent: push before creating anything new.
+## Godot Module Progress (Phase 2 — Prototyping)
+
+- **Started:** 2026-03-19
+- **Directory:** `docs/godot-arch/` (architecture/, guides/, reference/)
+- **Docs completed:** 3 of ~20 planned
+  - ✅ `architecture/E1_architecture_overview.md` (15.6KB) — Node tree, scenes, signals philosophy, comparison with MonoGame/ECS, when-to-use assessment
+  - ✅ `godot-rules.md` (13.6KB) — AI code generation rules, Godot 3→4 migration table, movement patterns, naming conventions, resource patterns, performance rules
+  - ✅ `guides/G1_scene_composition.md` (14.4KB) — Component scenes pattern, hitbox/hurtbox/health composition, instancing, file organization, composition vs inheritance
+- **Next up:** G2 State Machine, G3 Signal Architecture, E2 GDScript vs C#
+- **Validated:** Module loads, indexes, searches, gates by tier. 6/6 functional tests PASS.
 
 ## Content Created
 
+- **2026-03-19 (1pm)**: Started **Godot Module Phase 2** — Created `docs/godot-arch/` skeleton + 3 docs: E1 Architecture Overview (15.6KB, covers node tree/scenes/signals/autoloads/resources/state machines/2D vs 3D/engine comparison), godot-rules.md (13.6KB, AI code gen rules with Godot 3→4 migration, typed GDScript standards, movement patterns, resource patterns), G1 Scene Composition (14.4KB, component scenes with health/hitbox/hurtbox examples, instancing patterns, file organization, composition vs inheritance guide). Total: ~43.6KB of Godot content.
 - **2026-03-18 (11am)**: Created **G65 — Economy & Shop Systems** (`docs/monogame-arch/guides/G65_economy_shop_systems.md`, ~54KB). Full implementation guide covering: currency definitions & registry, wallet & currency manager, transaction pipeline with modifiers, item pricing with dynamic modifiers (supply/demand, time-of-day, reputation), shop system with stock management & restocking, tower defense economy (bounties, interest, tower cost/upgrade/sell), survival barter system, reputation & unlock system, loot & drop tables (weighted random), economy sinks & faucets monitoring, save/load integration, UI integration (animated HUD counters, shop display helpers), and comprehensive tuning reference tables for TD/survival/RPG. Fills the #1 priority gap — economy was referenced by tower-defense and survival genres.
+- **2026-03-19 (11am)**: Created **G66 — Building & Placement Systems** (`docs/monogame-arch/guides/G66_building_placement_systems.md`, ~85KB). Full implementation guide covering: building definition registry with costs/rules/tags, grid system with occupancy tracking and terrain layers, ghost preview with green/red validity tinting, placement validation pipeline (terrain rules, occupied check, path-blocking prevention, tech requirements, max count, adjacency), placement execution with resource deduction and ECS entity creation, free-form radius-based placement, construction system with build timers and worker assignment, construction queues, building upgrades with tier progression, building health/damage/destruction with combat system integration, repair system with cost scaling, wall auto-connect using 4-bit bitmask (16 sprite variants), pathfinding integration (nav grid updates + TD path preview), save/load serialization, build menu UI and building info panels, health bars and construction progress bars, and genre-specific patterns for survival (base building, campfires, doors), tower defense (tower placement with path-block prevention), and strategy/RTS (tech tree requirements, worker construction). Includes tuning reference tables for all three genres.
 - **2026-03-17 (11am)**: Created **G64 — Combat & Damage Systems** (`docs/monogame-arch/guides/G64_combat_damage_systems.md`, ~52KB). Full implementation guide covering: health/armor components, hitbox/hurtbox system, damage pipeline, i-frames, knockback (impulse + curve-based), hitstop & screen shake, projectile system, object pooling (generic + ECS entity pool), melee attack system with frame data, damage types & resistances, critical hits & variance, turn-based combat adapter, death & respawn, damage numbers, and tuning reference tables. This was the highest-priority gap — combat systems were referenced by 8/11 genres but had no guide. Updated `rnd/gaps.md` with full coverage analysis (~90% genre system coverage now).
 
 ## Lessons Learned
@@ -134,3 +160,5 @@ _Append operational lessons here._
 - **2026-03-18**: TF-IDF is adequate for 122-doc corpus but has structural weaknesses: no stop words (natural language queries are noisy), no stemming ("animations" ≠ "animation"), no doc length normalization (52KB docs dominate), `"C#"` → `"c"` → filtered out. The search works for power users who know doc IDs but struggles with how real MCP users actually phrase queries.
 - **2026-03-18**: **Integration testing validates the full product flow**: MCP protocol compliance (initialize → tools/list → tools/call), free/pro tier gating, license validation with LemonSqueezy API, dev mode, and graceful degradation. The server is production-ready from a protocol standpoint.
 - **2026-03-18**: **Dev mode bug pattern**: Guard clauses that return early can skip later conditional branches. When adding bypass/override flags (like `GAMEDEV_MCP_DEV`), always put them FIRST in the function — before any early returns. Caught because integration tests covered this flow.
+- **2026-03-19**: **Full codebase audit completed** (13 files, all of `src/`). Key findings: (1) `boolean | "limited"` return type from `isToolAllowed` is error-prone — should be a proper `'full' | 'limited' | 'denied'` enum. (2) Genre free-tier filtering parses formatted output text by line — extremely fragile, will break silently if output format changes. Should filter structured data before formatting. (3) No error handling in any tool handler — a single throw crashes the MCP response. (4) `TOPIC_DOC_MAP` in session.ts is stale — doesn't reference G64/G65/G66 or any Godot docs. (5) Large docs (50-85KB) consume massive context windows — `get_doc` should support section extraction and `maxLength` to be context-efficient. This directly supports the "minimal tokens" competitive advantage.
+- **2026-03-19**: **Most impactful improvement for competitive positioning**: Adding `section` and `maxLength` params to `get_doc`. The market research shows "context window backlash" against tool-heavy MCPs. Our advantage should be delivering *precise* knowledge, not dumping 85KB into context. This is a real differentiator vs Ref and other docs-MCPs.

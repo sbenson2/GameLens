@@ -4,6 +4,101 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-19 — Day A: Competitor Scan
+
+### 🔥 HEADLINE: "Context Window Tax" Goes Mainstream — MCP Backlash Accelerating, But Knowledge Servers Are The Antidote
+
+Multiple articles this week highlight MCP tool bloat eating context windows (55K+ tokens just for tool schemas). This is actually *good* for us — a knowledge server with minimal tools but rich content is the exact opposite of the bloat problem.
+
+### Star Count Tracker (vs 2026-03-16 baseline)
+
+| Repo | Stars (03-16) | Stars (03-19) | Δ | Last Push |
+|------|--------------|--------------|---|-----------|
+| Coding-Solo/godot-mcp | 2,392 | 2,465 | +73 | 2026-03-18 |
+| chongdashu/unreal-mcp | 1,565 | 1,589 | +24 | 2025-04-22 (stale) |
+| CoderGamester/mcp-unity | 1,421 | 1,432 | +11 | 2026-03-10 |
+| IvanMurzak/Unity-MCP | 1,313 | 1,366 | +53 | 2026-03-19 |
+| flopperam/unreal-engine-mcp | 596 | 608 | +12 | 2026-02-15 |
+| 3ddelano/GDAI MCP | — | 76 | NEW | 2026-03-07 |
+| Nihilantropy/godot-mcp-docs | 50 | 51 | +1 | 2025-07-25 (stale) |
+
+**Trends:**
+- **Coding-Solo/godot-mcp** still growing fast (+73 in 3 days). Actively maintained (pushed yesterday).
+- **IvanMurzak/Unity-MCP** gaining momentum (+53 in 3 days), actively updated. Now marketing "AI Skills" + runtime in-game support + Discord community. Positioned as the "full AI develop and test loop."
+- **unreal-mcp** (chongdashu) is effectively dead — no push since April 2025, but still gaining stars on inertia.
+- **godot-mcp-docs** (our closest competitor) is completely stale — no updates since July 2025, only +1 star. Essentially abandoned.
+
+### 🆕 NEW Entrants Since Last Scan
+
+#### 1. **GDAI MCP** ($19 paid, 76⭐) — `3ddelano/gdai-mcp-plugin-godot`
+- **Paid Godot editor integration** — $19 one-time at gdaimcp.com
+- ~30 tools: scene creation, node manipulation, debugger integration, filesystem search, GDScript context
+- **NEW: Screenshot capability** — AI can visually understand editor and running game
+- Reddit reception mixed: one commenter said "$19 for a plugin that doesn't work"
+- Interesting as 2nd paid gamedev MCP after Godot MCP Pro
+- **Different from us**: Editor control, not knowledge/docs
+
+#### 2. **Claude-GoDot-MCP** (2⭐) — `DaRealDaHoodie/Claude-GoDot-MCP`
+- New Godot MCP server listed on LobeHub this week
+- Python-based, requires Godot MCP Enhanced plugin
+- Very early/small — 2 stars, just appeared on registries
+- Another editor integration, not docs
+
+#### 3. **Roblox Studio MCP** — Multiple new entries!
+- **Official Roblox MCP** — Roblox announced MCP server updates + external LLM support for their Assistant (~1 month ago)
+- **3+ community forks** on LobeHub: `zubeidhendricks`, `hashirastudios`, `afraicat` (Rust-based, adds batch ops + DataStore + Rojo integration)
+- Roblox is now officially supporting the MCP ecosystem — first major engine company to do so
+- **Implication**: Validates MCP as THE protocol for game engine integration
+
+#### 4. **GoPeak** — New Godot MCP server
+- Listed on LobeHub as alternative to godot-mcp
+- "Run, inspect, modify, and debug real projects end-to-end"
+- Appears in LobeHub related servers frequently
+
+### Godot MCP Pro Update
+- **Still $5 one-time**, now at v1.4 with 162 tools across 23 categories
+- Posting actively on Godot Forum (3 days ago) and r/ClaudeCode
+- Claims Claude can "build a 3D game, walk the character around, and playtest it autonomously"
+- Positioned against GDAI MCP ($19) and free godot-mcp as the sweet spot
+
+### 🔑 "Context Window Tax" — Major Industry Narrative
+
+Multiple articles this week (Apideck, Junia.ai, DEV Community) are highlighting "MCP is eating your context window":
+- **55,000 tokens** consumed by just 3 MCP servers (GitHub, Slack, Sentry) before any user message
+- Each MCP tool costs **550-1,400 tokens** for schema definitions
+- One team reported **72% of 200K context** burned on tool definitions alone
+- Benchmark: MCP costs **4-32x more tokens** than CLI for identical operations
+- Industry converging on three responses: compress schemas, code execution, or CLI alternatives
+
+**Why this matters for us:** Knowledge MCP servers are the *opposite* of this problem. We have ~5-6 tools max, with rich content returned on demand. Our tool schemas are tiny; the value is in the response content. This is a marketing angle: "Unlike tool-heavy MCP servers that eat your context, gamedev-mcp-server adds knowledge without the bloat."
+
+### Medium Article: "The Game Dev Roadmap No One Tells You About in 2026"
+- Explicitly mentions MCP as important for game dev
+- Key quote: "AI code without architecture is spaghetti... Treat AI like a junior developer who codes fast but needs clear instructions"
+- Validates our thesis perfectly — structured architectural knowledge is what makes AI useful, not more tools
+
+### Registry Check Summary
+- **LobeHub**: GameDev MCP Hub and game-dev-mcp still listed (low traction). New Roblox entries proliferating.
+- **mcp.so**: GDAI MCP now listed
+- **glama.ai**: Still no gamedev-specific results surfacing
+- **mcpmarket.com**: Covered the "context window eating" story, increasing editorial focus on MCP quality
+
+### Key Takeaways
+
+1. **Paid Godot MCP market is now a 2-player race** — Godot MCP Pro ($5) vs GDAI MCP ($19). Both are editor integration, not docs. Our knowledge server occupies a completely different niche.
+
+2. **Roblox going official with MCP** is a major validation signal. First major engine company to build native MCP support. Could foreshadow Unity/Epic doing the same.
+
+3. **Context window backlash is OUR marketing opportunity**. "Tool-heavy" MCP servers are getting pushback. Knowledge servers with minimal tools + rich content are the antidote. We should lean into this: "5 tools, infinite knowledge" or similar positioning.
+
+4. **godot-mcp-docs (our only direct competitor) is effectively dead** — no updates in 8 months, only 51 stars. We have a wide-open lane in the knowledge/docs MCP space.
+
+5. **IvanMurzak/Unity-MCP is the most interesting competitor to watch** — growing fast, building community (Discord), adding runtime AI support. If they add docs/knowledge features, they could encroach on our space. Currently pure editor integration though.
+
+6. **The "Godot MCP" namespace is getting crowded** — at least 5 Godot MCP servers now (Coding-Solo, GDAI, Godot MCP Pro, Claude-GoDot-MCP, GoPeak, godot-mcp-docs). Differentiation matters more than ever. Our cross-engine + knowledge positioning is unique.
+
+---
+
 ## 2026-03-18 — Day C: Pricing & Monetization Research
 
 ### 🔥 HEADLINE: MCP Monetization Infrastructure is Exploding — 6+ Payment Platforms Now Compete
