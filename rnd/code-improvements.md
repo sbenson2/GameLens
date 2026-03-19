@@ -4,6 +4,48 @@ Specific code suggestions from the 2pm Code & Search Quality reviews.
 
 ---
 
+## ✅ Fixes Applied — 2026-03-19 (bugfix sprint)
+
+**Commit:** 8f6c63a — pushed to origin/main
+
+### 1. Genre free-tier filter refactored (Bug #3 — P0)
+- `handleGenreLookup` now returns structured `GenreLookupResult` (discriminated union with `found: boolean`)
+- New `formatGenreResult()` accepts `excludeSections` array for tier gating
+- server.ts filters on structured data THEN formats — no more fragile line-by-line text parsing
+- **Pro content leak risk eliminated**
+
+### 2. Search quality P1-P3 (from search-quality.md §5)
+- **P1 Hyphen tokenization**: `tokenize()` now splits hyphens into parts while keeping compound as bonus token. `"character-controller"` → `["character-controller", "character", "controller"]`. Queries like `"character controller"` now match hyphenated content.
+- **P2 Stop words**: Added 50+ stop words (the, is, how, what, should, my, etc.) filtered during tokenization. Reduces noise in natural language queries.
+- **P3 C# token**: `c#` replaced with `csharp` before tokenization. `"C# performance"` now properly matches G13.
+
+### 3. ID collision fix (Bug #1)
+- `handleGetDoc` now: (1) exact match first, (2) case-insensitive + suffix match, (3) if multiple matches and one is exact, return it with a note about alternatives, (4) if ambiguous, list all matches for disambiguation.
+- Extracted `formatDocResult()` helper to reduce duplication.
+
+### 4. try/catch on all tool handlers (Bug #4)
+- All 6 tool handlers (`search_docs`, `get_doc`, `list_docs`, `session`, `genre_lookup`, `license_info`) wrapped in try/catch
+- Errors return `{ content: [{ type: "text", text: "... error message" }] }` instead of crashing
+
+### 5. TOPIC_DOC_MAP updated (Bug #12)
+- Added: combat/G64, damage system/G64, hitbox/G64, knockback/G64, economy/G65, shop/G65, currency/G65, loot/G65, building/G66, placement/G66, construction/G66, tower placement/G66
+- Added Godot docs: godot/E1+G1, gdscript/E1, scene composition/G1, node tree/E1+G1, signals/E1
+
+### 6. Doc length normalization (P5 from search-quality.md)
+- After TF-IDF scoring, score divided by `Math.sqrt(termFreq.size)` (unique term count)
+- Prevents 50-85KB docs from dominating just by having more terms
+
+### 7. Per-token title boost (P6 from search-quality.md)
+- Each query token matching in the doc title gets +5 boost
+- Stacks with existing +20 full-query substring boost
+- `"camera shake"` now boosts "Camera Systems" (+5 for "camera") even without full substring match
+
+**Build:** Clean (`npx tsc` — no errors)
+**Smoke test:** MCP initialize responds correctly
+**All changes in single commit, pushed to origin/main**
+
+---
+
 ## Review 1 — Full Codebase Audit (2026-03-19)
 
 **Files reviewed:** All 13 TypeScript source files  
