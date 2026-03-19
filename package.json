@@ -17,12 +17,24 @@
     "gamedev",
     "game-development",
     "monogame",
+    "godot",
     "ecs",
+    "ai",
     "claude",
     "cursor",
-    "windsurf"
+    "windsurf",
+    "model-context-protocol"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbenson2/gamedev-mcp-server.git"
+  },
+  "homepage": "https://sbenson2.github.io/gamedev-mcp-server/",
+  "bugs": {
+    "url": "https://github.com/sbenson2/gamedev-mcp-server/issues"
+  },
+  "author": "sbenson2",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1"
   },
@@ -32,7 +44,8 @@
   },
   "files": [
     "dist",
-    "docs"
+    "docs/core",
+    "docs/monogame-arch"
   ],
   "engines": {
     "node": ">=18"

@@ -1,99 +1,27 @@
 # GameDev MCP Server
 
-An MCP (Model Context Protocol) server that provides game development knowledge, structured dev session workflows, and engine-specific implementation guidance. Connect from any AI coding tool — Claude Code, Cursor, Windsurf, and more.
+> Give your AI permanent game development knowledge. No more context loss mid-project.
 
-## Features
+An MCP (Model Context Protocol) server that provides 120+ curated game dev docs, structured session workflows, and engine-specific implementation guidance. Works with Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible tool.
 
-- **Doc Search** — TF-IDF search across all game dev docs (concepts, guides, references)
-- **Session Co-Pilot** — Structured workflows: Plan, Decide, Feature, Debug, Scope
-- **Genre Lookup** — Instant genre → required systems mapping with starter checklists
-- **Modular Architecture** — Core engine-agnostic knowledge + engine-specific modules
-- **No External Deps** — All search and logic built-in, no database required
+## Quick Start
 
-## Available Modules
-
-| Module | Description |
-|--------|-------------|
-| `core` | Engine-agnostic game dev knowledge — design, patterns, algorithms, project management |
-| `monogame-arch` | MonoGame + Arch ECS implementation guides, architecture, library references |
-
-Future modules: `godot`, `unity`, `bevy`, etc.
-
-## MCP Tools
-
-| Tool | Free | Pro | Description |
-|------|------|-----|-------------|
-| `list_docs` | Yes | Yes | Browse available docs by category and module |
-| `search_docs` | Core only | All modules | Search across docs with optional category/module filters |
-| `get_doc` | Core only | All modules | Fetch a specific doc by ID (e.g. `G52`, `camera-theory`) |
-| `session` | — | Yes | Dev session co-pilot (start, plan, decide, feature, debug, scope) |
-| `genre_lookup` | Limited | Full | Genre → systems mapping (platformer, roguelike, metroidvania, etc.) |
-| `license_info` | Yes | Yes | Show current tier, unlocked features, and upgrade URL |
-
-## Installation
-
-### Claude Code
-
-Add to your project's `.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "gamedev": {
-      "command": "node",
-      "args": ["/path/to/gamedev-mcp-server/dist/index.js"],
-      "env": {
-        "GAMEDEV_MODULES": "monogame-arch"
-      }
-    }
-  }
-}
+```bash
+npm install -g gamedev-mcp-server
 ```
 
-Or use npx (after publishing):
+Or use directly with npx — no install needed.
+
+### Claude Code / Cursor / Windsurf
+
+Add to your MCP config (`.mcp.json`, `.cursor/mcp.json`, or `~/.windsurf/mcp.json`):
 
 ```json
 {
   "mcpServers": {
     "gamedev": {
       "command": "npx",
-      "args": ["gamedev-mcp-server"],
-      "env": {
-        "GAMEDEV_MODULES": "monogame-arch"
-      }
-    }
-  }
-}
-```
-
-### Cursor
-
-Add to `.cursor/mcp.json` in your project root:
-
-```json
-{
-  "mcpServers": {
-    "gamedev": {
-      "command": "node",
-      "args": ["/path/to/gamedev-mcp-server/dist/index.js"],
-      "env": {
-        "GAMEDEV_MODULES": "monogame-arch"
-      }
-    }
-  }
-}
-```
-
-### Windsurf
-
-Add to your Windsurf MCP config (`~/.windsurf/mcp.json`):
-
-```json
-{
-  "mcpServers": {
-    "gamedev": {
-      "command": "node",
-      "args": ["/path/to/gamedev-mcp-server/dist/index.js"],
+      "args": ["-y", "gamedev-mcp-server"],
       "env": {
         "GAMEDEV_MODULES": "monogame-arch"
       }
@@ -110,8 +38,8 @@ Add to `claude_desktop_config.json`:
 {
   "mcpServers": {
     "gamedev": {
-      "command": "node",
-      "args": ["/path/to/gamedev-mcp-server/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "gamedev-mcp-server"],
       "env": {
         "GAMEDEV_MODULES": "monogame-arch"
       }
@@ -119,6 +47,41 @@ Add to `claude_desktop_config.json`:
   }
 }
 ```
+
+## Features
+
+- **120+ Docs** — Curated game dev knowledge: design, patterns, algorithms, implementation guides
+- **Doc Search** — TF-IDF search across all docs (concepts, guides, references)
+- **Session Co-Pilot** — Structured workflows: Plan, Decide, Feature, Debug, Scope
+- **Genre Lookup** — Instant genre → required systems mapping with starter checklists
+- **Modular Architecture** — Core engine-agnostic knowledge + engine-specific modules
+- **Zero External Deps** — All search and logic built-in, no database required
+
+## Available Modules
+
+| Module | Description |
+|--------|-------------|
+| `core` | Engine-agnostic game dev knowledge — design, patterns, algorithms, project management |
+| `monogame-arch` | MonoGame + Arch ECS implementation guides, architecture, library references |
+
+Future modules: `godot`, `unity`, `bevy`, etc.
+
+## MCP Tools
+
+| Tool | Free | Pro | Description |
+|------|------|-----|-------------|
+| `list_docs` | ✅ | ✅ | Browse available docs by category and module |
+| `search_docs` | Core only | All modules | Search across docs with optional category/module filters |
+| `get_doc` | Core only | All modules | Fetch a specific doc by ID (e.g. `G52`, `camera-theory`) |
+| `session` | — | ✅ | Dev session co-pilot (start, plan, decide, feature, debug, scope) |
+| `genre_lookup` | Limited | Full | Genre → systems mapping (platformer, roguelike, metroidvania, etc.) |
+| `license_info` | ✅ | ✅ | Show current tier, unlocked features, and upgrade URL |
+
+### Free vs Pro
+
+The server works out of the box with a generous free tier — all core (engine-agnostic) docs, search, and genre lookups are free. **Pro** unlocks engine-specific modules (MonoGame, Godot, etc.), the session co-pilot, and full genre details.
+
+Get a Pro license at [gamedev-mcp.lemonsqueezy.com](https://gamedev-mcp.lemonsqueezy.com).
 
 ## Configuration
 

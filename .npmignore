@@ -1,0 +1,23 @@
+# Source (ship compiled only)
+src/
+tsconfig.json
+
+# Internal R&D
+rnd/
+OPENCLAW_RND_BRIEF.md
+PRICING.md
+SPEC.md
+
+# Godot docs (not ready yet)
+docs/godot-arch/
+
+# Build artifacts & misc
+*.tsbuildinfo
+.DS_Store
+.git/
+node_modules/
+
+# Site
+index.html
+docs-site/
+scripts/
