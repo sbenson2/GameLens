@@ -1,7 +1,7 @@
 # Content Gap Analysis
 
 Weekly comparison of genre-lookup system requirements vs available guides.
-Last updated: 2026-03-19
+Last updated: 2026-03-20
 
 ---
 
@@ -16,6 +16,7 @@ Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) agai
 | Combat & Damage (hitbox/hurtbox, health, knockback, projectiles) | roguelike, metroidvania, top-down-rpg, bullet-hell, survival, fighting, tower-defense, strategy (8/11) | **G64** (created 2026-03-17) |
 | Economy/Currency + Shop System | tower-defense, survival (2/11) | **G65** (created 2026-03-18) |
 | Building/Placement System | survival, strategy (2/11) | **G66** (created 2026-03-19) |
+| Object Pooling & Recycling (general) | bullet-hell, tower-defense (2/11) | **G67** (created 2026-03-20) |
 | Character Controller | platformer, metroidvania, fighting | G52 |
 | Physics & Collision | platformer, bullet-hell, fighting | G3 |
 | Camera Systems | platformer, metroidvania, top-down-rpg, strategy, bullet-hell | G20 |
@@ -51,7 +52,7 @@ Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) agai
 
 | System | Referenced By | Priority | Notes |
 |--------|-------------|----------|-------|
-| **Object Pooling (dedicated)** | bullet-hell, tower-defense | HIGH | G64 §9 covers combat pooling; G23 has particle pooling. No standalone guide for general pooling patterns (audio, spawn, VFX). |
+| ~~**Object Pooling (dedicated)**~~ | ~~bullet-hell, tower-defense~~ | ~~HIGH~~ | ✅ FILLED → G67 (2026-03-20) |
 | ~~**Economy/Currency System**~~ | ~~tower-defense, survival~~ | ~~MEDIUM~~ | ✅ FILLED → G65 (2026-03-18) |
 | ~~**Building/Placement System**~~ | ~~survival, strategy~~ | ~~MEDIUM~~ | ✅ FILLED → G66 (2026-03-19) |
 | **Undo/Redo (puzzle-focused)** | puzzle | MEDIUM | G10 §8 covers command pattern. Could use a puzzle-specific extension with state snapshots. |
@@ -59,12 +60,13 @@ Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) agai
 
 ## 📊 Coverage Summary
 
-- **Genres fully covered** (all required systems have guides): platformer, metroidvania, roguelike, top-down-rpg, visual-novel, fighting
-- **Genres mostly covered** (1-2 gaps): bullet-hell, puzzle
-- **Overall**: ~93% of genre-referenced systems have dedicated documentation
+- **Genres fully covered** (all required systems have guides): platformer, metroidvania, roguelike, top-down-rpg, visual-novel, fighting, bullet-hell
+- **Genres mostly covered** (1-2 gaps): puzzle
+- **Overall**: ~95% of genre-referenced systems have dedicated documentation
 
 ## 🎯 Next Priority
 
-1. **General Object Pooling guide** — Consolidate patterns from G23 and G64 into a reusable reference. Key for bullet-hell and tower-defense.
-2. **Undo/Redo (puzzle-focused)** — Extend G10 §8 command pattern with state snapshots for puzzle games
-3. **Level Editor / Level Loading (puzzle)** — Runtime level select + loading for puzzle games
+1. **Undo/Redo (puzzle-focused)** — Extend G10 §8 command pattern with state snapshots for puzzle games
+2. **Level Editor / Level Loading (puzzle)** — Runtime level select + loading for puzzle games
+3. **Networking Deep Dive** — G9 exists but could use genre-specific patterns (co-op survival, PvP fighting, shared tower defense)
+4. **Accessibility Systems** — Colorblind modes, screen reader support, remappable inputs, subtitle systems
