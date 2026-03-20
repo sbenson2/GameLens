@@ -5,7 +5,7 @@
 
 ---
 
-20 game programming patterns from Robert Nystrom's *Game Programming Patterns*, adapted for MonoGame + Arch ECS development. Each pattern includes intent, how it works, game application, and ECS considerations. For concrete C# implementations of overlapping patterns (Observer, Command, State, Flyweight, Service Locator), see [G12 Design Patterns](./G12_design_patterns.md).
+19 game programming patterns from Robert Nystrom's *Game Programming Patterns*, adapted for MonoGame + Arch ECS development. Each pattern includes intent, how it works, game application, and ECS considerations. For concrete C# implementations of overlapping patterns (Observer, Command, State, Flyweight, Service Locator), see [G12 Design Patterns](./G12_design_patterns.md).
 
 ---
 
@@ -383,4 +383,4 @@ Every guideline has legitimate exceptions. Singleton is sometimes the right choi
 
 ---
 
-*Source: Game Programming Patterns by Robert Nystrom — gameprogrammingpatterns.com*
+*Source: [Game Programming Patterns](https://gameprogrammingpatterns.com) by Robert Nystrom*

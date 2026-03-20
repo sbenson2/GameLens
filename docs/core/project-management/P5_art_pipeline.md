@@ -163,10 +163,18 @@ YourGame/
 ```
 
 **Setup:**
-1. Add `MonoGame.Aseprite` NuGet package
-2. Reference `.aseprite` files in your Content project
-3. The pipeline processor reads tags, layers, and frame data automatically
-4. In code, load via `Content.Load<AsepriteFile>("Sprites/player")`
+1. Add `MonoGame.Aseprite` NuGet package (v6.x+)
+2. Load `.aseprite` files at runtime — no content pipeline step needed
+3. The library reads tags, layers, and frame data automatically
+4. In code, load and create a sprite sheet:
+
+```csharp
+// Load the Aseprite file
+AsepriteFile aseFile = AsepriteFile.Load("Content/Sprites/player.aseprite");
+
+// Create a SpriteSheet from it (includes all tagged animations)
+SpriteSheet spriteSheet = aseFile.CreateSpriteSheet(GraphicsDevice);
+```
 
 See [G8 — Content Pipeline](../../monogame-arch/guides/G8_content_pipeline.md) for full content pipeline configuration, including custom processors and build actions.
 

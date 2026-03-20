@@ -119,7 +119,7 @@ for ty in range(min_ty, max_ty + 1):
 
 ### Slope Tiles
 
-See physics-theory.md for slope collision details.
+See [physics-theory.md](./physics-theory.md) for slope collision details.
 
 ---
 
@@ -195,4 +195,4 @@ Two common orientations: flat-top and pointy-top. Use axial or cube coordinates 
 
 ---
 
-*Implementation examples are available in engine-specific modules.*
+*For MonoGame implementation, see [G37 — Tilemap Systems](../../monogame-arch/guides/G37_tilemap_systems.md). Implementation examples for other engines are available in their respective modules.*

@@ -295,3 +295,48 @@ Uses `../R/R1_library_stack.md` and `../G/G1_custom_code_recipes.md` patterns. F
 | ⚠️ **Medium** | P12 is MonoGame-specific but lives in `core/` | P12 | Move to `monogame-arch/guides/` or split into theory + engine-specific |
 | ℹ️ **Low** | MonoGame 3.8.5+ referenced in E1 but hasn't shipped | E1 | Note as target/planned version |
 | ℹ️ **Low** | camera-theory.md missing category front-matter | camera-theory | Add `> **Category:** Concept` line for consistency |
+
+---
+
+## Audit #6 — 2026-03-20 (7am cron)
+
+**Docs audited:** 5 random docs
+
+### 1. `docs/core/concepts/tilemap-theory.md`
+- **Issue (link):** Plain-text reference `See physics-theory.md` instead of clickable markdown link
+- **Fix:** Changed to `[physics-theory.md](./physics-theory.md)`
+- **Issue (cross-ref):** No link to MonoGame implementation guide at bottom
+- **Fix:** Added link to G37 Tilemap Systems in footer
+- **Code/content:** Solid — pseudocode is correct, autotiling bitmask explanation is accurate, chunk-based loading is well-covered
+
+### 2. `docs/monogame-arch/guides/G22_parallax_depth_layers.md`
+- **Status:** ✅ Clean — all 4 internal links verified (G2, G1, G20, G19, G15). Code examples are correct MonoGame C#. Y-sort + Z-index + parallax combination guide is well-structured. No issues found.
+
+### 3. `docs/core/concepts/scene-management-theory.md`
+- **Issue (cross-ref):** No link to MonoGame implementation guide at bottom — just generic "see engine-specific modules"
+- **Fix:** Added link to G38 Scene Management in footer
+- **Content:** Clean — scene stack model, lifecycle, transitions, pause system all well-covered
+
+### 4. `docs/core/project-management/P5_art_pipeline.md`
+- **Issue (outdated API):** MonoGame.Aseprite integration described `Content.Load<AsepriteFile>()` which is the pre-v6 API. Current v6.x uses `AsepriteFile.Load()` + `CreateSpriteSheet()` pattern (no content pipeline step needed).
+- **Fix:** Updated Setup section with correct v6.x API including code sample
+- **Links:** All 7 cross-references to MonoGame guides verified (G8, G31, G37, G5, G23, G22, G33) — all resolve correctly via `../../monogame-arch/guides/`
+- **Note:** Title says "09" but filename is P5 — known cosmetic issue (PROJECT_MEMORY acknowledges this)
+
+### 5. `docs/core/programming/G18_game_programming_patterns.md`
+- **Issue (count error):** Intro text says "20 game programming patterns" but only 19 are listed in the overview table and documented
+- **Fix:** Changed to "19 game programming patterns"
+- **Issue (link):** Source attribution `gameprogrammingpatterns.com` was plain text, not a clickable link
+- **Fix:** Changed to `[Game Programming Patterns](https://gameprogrammingpatterns.com)`
+- **Content:** Excellent — all 19 patterns have correct ECS/MonoGame context. Mermaid diagram is valid. Priority matrix is useful.
+
+### Summary
+
+| Doc | Issues Found | Issues Fixed |
+|-----|-------------|-------------|
+| tilemap-theory.md | 2 (plain-text link, missing cross-ref) | 2 |
+| G22_parallax_depth_layers.md | 0 | 0 |
+| scene-management-theory.md | 1 (missing cross-ref) | 1 |
+| P5_art_pipeline.md | 1 (outdated API) | 1 |
+| G18_game_programming_patterns.md | 2 (wrong count, plain-text link) | 2 |
+| **Total** | **6** | **6** |
