@@ -1,5 +1,44 @@
 # Doc Quality Audit Log
 
+## Core Docs Rotation Log
+
+| Date | Rotation | Action |
+|------|----------|--------|
+| 2026-03-20 | A (New concept) | Created `networking-theory.md` (~21KB) |
+
+---
+
+## 2026-03-20 (2am — Core Docs Cron)
+
+### Rotation A: New Concept Theory Doc
+
+**Created: `docs/core/concepts/networking-theory.md`** (~21KB)
+
+Networking was the biggest gap in the concepts library — referenced by genre docs, project management, and programming patterns but had no dedicated theory doc. The 17 existing concept docs covered rendering, physics, animation, audio, etc. but nothing on multiplayer.
+
+**Covers:**
+- Network architectures (client-server, P2P, relay)
+- Latency fundamentals with real-world numbers
+- State synchronization (full state, delta compression, quantization, interest management)
+- Client-side prediction and server reconciliation
+- Entity interpolation and extrapolation (dead reckoning)
+- Lag compensation with server-side rewind
+- Rollback netcode (full loop, state save/load, input delay trade-offs)
+- Tick rate and deterministic simulation
+- Transport protocols (UDP vs TCP, reliable UDP, channel multiplexing)
+- Connection management (handshake, heartbeat, reconnection)
+- Matchmaking (Elo, match quality scoring, lobby vs queue)
+- Security (validation, common cheats, rate limiting)
+- Bandwidth optimization (bit packing, priority accumulator)
+- Clock synchronization (NTP-style)
+- Architecture decision tree
+
+All pseudocode, fully engine-agnostic. Follows the established concept doc format.
+
+**Next rotation:** B (Expand thin core doc) — candidates: `ui-theory.md` (5KB), `lighting-2d-theory.md` (6KB), `camera-theory.md` (6KB), `tilemap-theory.md` (6KB).
+
+---
+
 ## 2026-03-18
 
 **FIXED: All 4 open doc issues from PROJECT_MEMORY.md**
