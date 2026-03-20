@@ -117,9 +117,11 @@ export async function createServer() {
 
   server.tool(
     "get_doc",
-    "Fetch a specific game development doc by ID. Use list_docs or search_docs to find IDs.",
+    "Fetch a specific game development doc by ID. Returns the full document content. For large docs (50KB+), use `section` to extract a specific heading or `maxLength` to limit output size — this keeps your context window efficient. Use list_docs or search_docs to find IDs.",
     {
       id: z.string().describe("Doc ID (e.g. 'G52', 'E6', 'P0', 'camera-theory')"),
+      section: z.string().optional().describe("Extract a specific section by heading substring (e.g. 'Combat System', 'Knockback', 'Save/Load'). Case-insensitive. Returns the matched heading and all content until the next heading of equal or higher level."),
+      maxLength: z.number().optional().describe("Maximum characters to return. Content is truncated at the nearest paragraph boundary. Useful for previewing large docs without consuming full context window."),
     },
     async (args) => {
       try {

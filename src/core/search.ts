@@ -22,6 +22,35 @@ export class SearchEngine {
     "just", "about", "also", "way", "best", "make", "use",
   ]);
 
+  /** Lightweight stemmer — strips common English suffixes for better recall */
+  private stem(word: string): string {
+    if (word.length < 5) return word;
+    // Order: longest suffix first to avoid partial matches
+    if (word.endsWith("ation") && word.length > 6) return word.slice(0, -5);
+    if (word.endsWith("ment") && word.length > 6) return word.slice(0, -4);
+    if (word.endsWith("ness") && word.length > 6) return word.slice(0, -4);
+    if (word.endsWith("able") && word.length > 6) return word.slice(0, -4);
+    if (word.endsWith("ible") && word.length > 6) return word.slice(0, -4);
+    if (word.endsWith("ying")) return word.slice(0, -4) + "y"; // applying → apply
+    if (word.endsWith("ling") && word.length > 5) return word.slice(0, -3); // handling → handl
+    if (word.endsWith("ning") && word.length > 5) return word.slice(0, -4) + "n"; // running → runn... just strip ing
+    if (word.endsWith("ting") && word.length > 5) return word.slice(0, -4) + "t"; // setting → sett... strip ing
+    if (word.endsWith("ing") && word.length > 5) return word.slice(0, -3);
+    if (word.endsWith("ies") && word.length > 4) return word.slice(0, -3) + "y";
+    if (word.endsWith("tion") && word.length > 5) return word.slice(0, -4);
+    if (word.endsWith("sion") && word.length > 5) return word.slice(0, -4);
+    if (word.endsWith("ally") && word.length > 5) return word.slice(0, -4);
+    if (word.endsWith("ful") && word.length > 5) return word.slice(0, -3);
+    if (word.endsWith("ous") && word.length > 5) return word.slice(0, -3);
+    if (word.endsWith("ive") && word.length > 5) return word.slice(0, -3);
+    if (word.endsWith("ed") && word.length > 4) return word.slice(0, -2);
+    if (word.endsWith("er") && word.length > 4) return word.slice(0, -2);
+    if (word.endsWith("es") && word.length > 4) return word.slice(0, -2);
+    if (word.endsWith("ly") && word.length > 4) return word.slice(0, -2);
+    if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3) return word.slice(0, -1);
+    return word;
+  }
+
   /** Tokenize text into lowercase terms, splitting hyphens and handling special tokens */
   private tokenize(text: string): string[] {
     // Handle special tokens before stripping symbols
@@ -32,11 +61,22 @@ export class SearchEngine {
     for (const word of processed.split(/\s+/)) {
       if (word.length < 2) continue;
       if (SearchEngine.STOP_WORDS.has(word)) continue;
+
+      // Add both original and stemmed form for better recall
       tokens.push(word); // keep compound: "character-controller"
+      const stemmed = this.stem(word);
+      if (stemmed !== word && stemmed.length > 1) {
+        tokens.push(stemmed);
+      }
+
       if (word.includes("-")) {
         for (const part of word.split("-")) {
           if (part.length > 1 && !SearchEngine.STOP_WORDS.has(part)) {
             tokens.push(part); // also index individual parts
+            const partStemmed = this.stem(part);
+            if (partStemmed !== part && partStemmed.length > 1) {
+              tokens.push(partStemmed);
+            }
           }
         }
       }
@@ -110,7 +150,7 @@ export class SearchEngine {
       }
       for (const token of queryTokens) {
         if (lowerTitle.includes(token)) {
-          score += 5; // per-token title boost
+          score += 8; // per-token title boost
         }
       }
 
@@ -120,11 +160,15 @@ export class SearchEngine {
         score *= 1.5;
       }
 
-      // Normalize by document length to prevent long docs from dominating
-      const docUniqueTerms = termFreq.size;
-      if (docUniqueTerms > 0) {
-        score /= Math.sqrt(docUniqueTerms);
+      // Penalize redirect stubs / very short docs (< 500 chars content)
+      if (doc.content.length < 500) {
+        score *= 0.3;
       }
+
+      // Normalize by document length to prevent long docs from dominating
+      // Floor at 50 unique terms to prevent tiny docs from getting inflated scores
+      const docUniqueTerms = Math.max(termFreq.size, 50);
+      score /= Math.sqrt(docUniqueTerms);
 
       if (score > 0) {
         results.push({

@@ -42,10 +42,20 @@ Every task should read this before starting and append learnings when done.
 - ~~**Broken E5_ai_workflow.md links (7 files)**~~: FIXED — 7 files across `core/project-management/`, `core/programming/`, and `monogame-arch/guides/` had `./E5_ai_workflow.md` links but the file lives in `core/ai-workflow/`. All corrected.
 - ~~**Invalid C# syntax in G39_2d_lighting.md**~~: FIXED — ECS Components section used invalid `public Radius = 200f;` syntax in record structs. Corrected to proper C# primary constructor defaults.
 
+### Fixed (2026-03-19 evening — Phase 1 complete)
+- ~~**Search P1-P3**~~: FIXED — Hyphen tokenization, stop words, C# token
+- ~~**Genre filter bug**~~: FIXED — Structured data filtering, no more Pro content leak
+- ~~**ID collision**~~: FIXED — get-doc handles prefixed IDs
+- ~~**Try/catch all handlers**~~: FIXED — All 6 tools wrapped
+- ~~**TOPIC_DOC_MAP**~~: FIXED — G64-G66 + Godot docs added
+- ~~**Doc length normalization + title scoring**~~: FIXED
+
 ### Open
-- **Search quality issues (6 total)** — Hyphen tokenization bug (critical), no stop words, no stemming, C# token destruction, no doc length normalization, title scoring weakness. See `rnd/search-quality.md`. Top 3 fixes = ~30 min.
-- **P-file title numbering mismatch** — All P-series files have old chapter numbers in titles (e.g., `P4_playtesting.md` titled `# 08 — Playtesting Guide`). Cosmetic only, links use filenames not titles.
-- **17 code improvements identified (2026-03-19)** — Full codebase audit found 2 bugs (ID collision hiding module docs, fragile genre free-tier filter), 5 robustness issues (no try/catch in handlers, cache shape validation, etc.), and 5 MCP tool improvements (section extraction for large docs, richer descriptions, summary mode). See `rnd/code-improvements.md`. Quick wins: ~30 min. Full list: ~3 hours.
+- **P-file title numbering mismatch** — Cosmetic only, low priority
+- **Remaining code improvements (from audit)**: Cache shape validation, section extraction for large docs, summary mode for list_docs, random_doc tool, richer tool descriptions. See `rnd/code-improvements.md`.
+- **Search P4 (stemming)** — Not yet implemented. Medium impact, needs careful testing.
+- **npm v1.0.0 published** — need to set up GitHub Actions OIDC trusted publishing for future releases
+- **MCP registry submissions pending** — mcp.so, mcpmarket.com, smithery.ai, Cline marketplace
 
 ## Competitive Landscape (updated 2026-03-19)
 
@@ -79,9 +89,18 @@ Every task should read this before starting and append learnings when done.
 ## 🚨 Needs Owner Attention
 _Cron agents: add urgent items here. Heartbeat will check and alert Wes. Clear items after acknowledged._
 
-- **2026-03-19**: 12+ files uncommitted from today's work (G66, godot-arch/, audit fixes, rnd/). Need git commit & push.
-- **2026-03-17**: npm still returns 404 — package not published. Day 4. No external feedback loop.
-- **2026-03-19**: Search hyphen bug (P1) known for 2 days, ~15 min fix, still not done. Blocks `"character-controller"`, `"top-down"`, etc. — affects real user queries.
+_(empty — nothing urgent pending)_
+
+### Resolved
+- ~~**Git push overdue**~~: ✅ DONE 2026-03-19 — multiple commits pushed
+- ~~**npm 404**~~: ✅ DONE 2026-03-19 — `gamedev-mcp-server@1.0.0` published to npm (177 files, 992KB)
+- ~~**Search bugs P1-P3**~~: ✅ DONE 2026-03-19 — Hyphen tokenization, stop words, C# token all fixed
+- ~~**Genre filter Pro content leak**~~: ✅ DONE 2026-03-19 — Refactored to structured data filtering
+- ~~**ID collision bug**~~: ✅ DONE 2026-03-19 — get-doc now handles prefixed IDs
+- ~~**No try/catch in handlers**~~: ✅ DONE 2026-03-19 — All 6 tool handlers wrapped
+- ~~**TOPIC_DOC_MAP stale**~~: ✅ DONE 2026-03-19 — G64-G66 + Godot docs added
+- ~~**Doc length normalization**~~: ✅ DONE 2026-03-19 — sqrt(unique terms) normalization
+- ~~**Title scoring**~~: ✅ DONE 2026-03-19 — Per-token +5 boost
 
 ## Feedback & Direction Shifts
 
@@ -95,6 +114,7 @@ _Append Wes's feedback and direction changes here._
   - Pricing: $9/month
   - npm package name: `gamedev-mcp-server` (confirmed)
   - Phase 1 (code quality) before Phase 2 (ship) before Phase 3 (Godot expansion)
+- **2026-03-19 evening**: Phase 1 COMPLETE. Phase 2 COMPLETE (npm published). Expanded to 24-hour cron schedule (every hour, every day). Wes wants maximum autonomous progress.
 
 ## Two Days Ago (2026-03-18) — Day 3
 
@@ -129,11 +149,13 @@ _Append Wes's feedback and direction changes here._
 
 - **Started:** 2026-03-19
 - **Directory:** `docs/godot-arch/` (architecture/, guides/, reference/)
-- **Docs completed:** 3 of ~20 planned
+- **Docs completed:** 5 of ~20 planned
   - ✅ `architecture/E1_architecture_overview.md` (15.6KB) — Node tree, scenes, signals philosophy, comparison with MonoGame/ECS, when-to-use assessment
   - ✅ `godot-rules.md` (13.6KB) — AI code generation rules, Godot 3→4 migration table, movement patterns, naming conventions, resource patterns, performance rules
   - ✅ `guides/G1_scene_composition.md` (14.4KB) — Component scenes pattern, hitbox/hurtbox/health composition, instancing, file organization, composition vs inheritance
-- **Next up:** G2 State Machine, G3 Signal Architecture, E2 GDScript vs C#
+  - ✅ `guides/G2_state_machine.md` (38KB) — 4 patterns (enum FSM, node-based FSM, HSM, pushdown automaton), animation integration, debug tools, enemy AI, anti-patterns
+  - ✅ `guides/G3_signal_architecture.md` (19KB) — Signal fundamentals, connection patterns, signal bus, groups, advanced patterns (relay, typed events, reactive data, async chains), anti-patterns, architecture decision guide
+- **Next up:** E2 GDScript vs C#, G4 Input Handling, G5 Physics, G6 Camera, G7 TileMap
 - **Validated:** Module loads, indexes, searches, gates by tier. 6/6 functional tests PASS.
 
 ## Content Created
@@ -161,4 +183,13 @@ _Append operational lessons here._
 - **2026-03-18**: **Integration testing validates the full product flow**: MCP protocol compliance (initialize → tools/list → tools/call), free/pro tier gating, license validation with LemonSqueezy API, dev mode, and graceful degradation. The server is production-ready from a protocol standpoint.
 - **2026-03-18**: **Dev mode bug pattern**: Guard clauses that return early can skip later conditional branches. When adding bypass/override flags (like `GAMEDEV_MCP_DEV`), always put them FIRST in the function — before any early returns. Caught because integration tests covered this flow.
 - **2026-03-19**: **Full codebase audit completed** (13 files, all of `src/`). Key findings: (1) `boolean | "limited"` return type from `isToolAllowed` is error-prone — should be a proper `'full' | 'limited' | 'denied'` enum. (2) Genre free-tier filtering parses formatted output text by line — extremely fragile, will break silently if output format changes. Should filter structured data before formatting. (3) No error handling in any tool handler — a single throw crashes the MCP response. (4) `TOPIC_DOC_MAP` in session.ts is stale — doesn't reference G64/G65/G66 or any Godot docs. (5) Large docs (50-85KB) consume massive context windows — `get_doc` should support section extraction and `maxLength` to be context-efficient. This directly supports the "minimal tokens" competitive advantage.
+- **2026-03-20**: State machines are the highest-leverage Godot guide after scene composition — they're referenced by every genre and every character system. Writing it second (G2) was the right call. The 4-pattern structure (enum → node-based → HSM → pushdown) gives AI agents a clear "use this when" decision tree instead of just dumping one pattern.
+- **2026-03-20**: HSM and Pushdown Automaton are rarely covered well in Godot tutorials — most stop at basic node-based FSM. These advanced patterns are high-value differentiators for Pro content.
 - **2026-03-19**: **Most impactful improvement for competitive positioning**: Adding `section` and `maxLength` params to `get_doc`. The market research shows "context window backlash" against tool-heavy MCPs. Our advantage should be delivering *precise* knowledge, not dumping 85KB into context. This is a real differentiator vs Ref and other docs-MCPs.
+- **2026-03-20 (10pm)**: Created **G2 State Machines** (`docs/godot-arch/guides/G2_state_machine.md`, ~38KB). Covers 4 patterns: Enum FSM (simple objects), Node-Based FSM (full platformer with Idle/Run/Jump/Fall/WallSlide/Attack states), Hierarchical State Machine (Grounded/Airborne parent states with shared behavior), and Pushdown Automaton (game flow state stack with pause/resume). Includes animation integration, debug overlay + transition history, enemy AI FSM example, common mistakes/anti-patterns, and performance considerations. All typed GDScript for Godot 4.4+. Committed and pushed.
+- **2026-03-20 (12am)**: Created **G67 — Object Pooling & Recycling** (`docs/monogame-arch/guides/G67_object_pooling.md`, ~87KB). The #1 remaining gap from gaps.md. Comprehensive guide covering: generic ObjectPool<T>, keyed multi-type pools, ECS entity recycling with Pooled tag, struct pools for high-count value types, audio source pooling with spatial audio, VFX/particle burst integration, wave-aware spawn pooling with staggered pre-warming, UI element pooling (virtualized lists, inventory slots), pool warming strategies, diagnostics overlay + GC monitor, adaptive auto-sizing pools, thread-safe variants, and genre-specific patterns (bullet hell, tower defense, survival, roguelike). Includes anti-patterns section and tuning reference tables. Genre coverage now ~95% (bullet-hell fully covered). Committed and pushed (805b4b5).
+- **2026-03-20 (12am lesson)**: Object pooling is a cross-cutting concern that touches nearly every system. Writing it as a standalone guide rather than leaving it scattered across G64 §9 and G23 was the right call — it allows each genre section (bullet hell, TD, survival) to link back to the same reference rather than duplicating pool code. The keyed pool pattern (one API, multiple sub-pools) is particularly reusable and wasn't covered anywhere in existing docs.
+- **2026-03-20 (1am)**: Created **G3 Signal Architecture** (`docs/godot-arch/guides/G3_signal_architecture.md`, ~19KB). Covers signal fundamentals, connection patterns (lambda/one-shot/deferred/bind/await), signal bus architecture with scaling recommendations, groups for broadcasting, advanced patterns (relay facades, typed event objects, reactive data models, async chains), anti-patterns (spaghetti, ping-pong, god bus), performance characteristics, debug overlay, and architecture decision guide. First draft was 50KB — trimmed to 19KB by cutting redundancy and merging sections. Lesson: write the full version first, then ruthlessly trim. The "call DOWN, signal UP, bus ACROSS, group BROADCAST" flow rules summary is a high-value quick reference that should appear in other guides.
+- **2026-03-20 (2am)**: Created **networking-theory.md** (`docs/core/concepts/networking-theory.md`, ~21KB). First core docs cron rotation (A = new concept). Networking was the biggest gap — 17 concept docs existed but none on multiplayer. Covers client-server/P2P/relay architectures, state sync (delta compression, quantization, interest management), client prediction + reconciliation, interpolation/extrapolation, lag compensation (server rewind), rollback netcode, tick rate + determinism, UDP/TCP + reliable UDP, connection management, matchmaking (Elo + quality scoring), security, bandwidth optimization (bit packing, priority accumulator), clock sync. Added rotation log to audit-log.md for tracking. Committed and pushed (df7a22d).
+- **2026-03-20 (2am lesson)**: Networking theory is a special case among concept docs — it's more of an "architecture guide" than a single-system theory doc like camera or particles. The decision tree at the end (competitive? → client-server; frame-perfect? → rollback; etc.) is the highest-value section because it's the first question every dev asks. Future concept docs for complex topics should include a decision tree or "choosing your approach" section.
+- **2026-03-20**: **Pricing analysis completed**. $9/mo confirmed as the convergence point across MCP docs servers, indie dev tools, and competitive benchmarks. Key decisions: (1) Hybrid free tier (daily search limit + module gating) beats credit ledger for simplicity. (2) Annual pricing at $79/yr (27% savings) is industry standard. (3) LemonSqueezy remains primary payment platform despite Stripe acquisition — Creem.io as backup. (4) MCP-Hive is a new monetization marketplace (per-call pricing) launched Feb 2026 — worth monitoring. (5) Ludo.ai entered gamedev MCP space with credit-based subscription, further validating the model. (6) We're the ONLY subscription-priced gamedev MCP server — editor integration tools are one-time purchases because their value is static; our value grows (new docs, engines, search improvements), justifying recurring pricing.
