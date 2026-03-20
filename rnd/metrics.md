@@ -1,17 +1,18 @@
 # Metrics
 
-## Git Stats — 2026-03-20 (10:00 AM)
+## Git Stats — 2026-03-20 (4:00 PM)
 
 | Metric | Value |
 |---|---|
-| Last commit | `9055ce1` — docs: audit #6 — fix 6 issues across 5 docs |
-| Total commits | 20 |
-| Files tracked | 186+ |
-| Repo size (.git) | 4.5M |
+| Last commit | `6448449` — docs: README overhaul + CHANGELOG update + registry drafts |
+| Total commits | 24 |
+| Files tracked | 190+ |
+| Repo size (.git) | 4.7M |
 | Working tree (docs/) | 3.5M |
-| Uncommitted changes | 4 files (PROJECT_MEMORY.md, competitor-log.md, gaps.md, triage.md) |
+| Uncommitted changes | version bump (1.1.0) + CHANGELOG date + metrics + PROJECT_MEMORY |
 | Branch | main |
-| Build (tsc --noEmit) | ✅ Clean |
+| Build (tsc) | ✅ Clean |
+| Tests | ✅ 36/36 pass |
 
 ## Content Stats — 2026-03-20 (10:00 AM)
 
@@ -54,6 +55,7 @@
 | 2026-03-18 (Day 3) | ~122 | 0 | G65 Economy, E8, image fix |
 | 2026-03-19 (Day 4) | ~126 | 3 | G66 Building, Godot E1/rules/G1 |
 | 2026-03-20 (Day 5 AM) | 130 | 5 | G67 Pooling, Godot G2/G3, networking-theory, Workers scaffold |
+| 2026-03-20 (Day 5 PM) | 130 | 5 | v1.1.0 prepped, module auto-discovery, CI/CD, README overhaul |
 
 ---
 
@@ -67,13 +69,25 @@
 - **Total files:** 177
 - **Build:** ✅ Clean
 
-### Blocker for v1.1.0
-- Need to publish updated version with Godot module, section extraction, G64-G67, Workers
-- npm auth status: needs verification
+## v1.1.0 — Prepped (2026-03-20)
 
-### v1.1.0 would include
-- `docs/godot-arch/` — 5 Godot docs (E1, rules, G1-G3)
-- Section extraction + maxLength for get_doc
-- G64-G67 MonoGame guides
-- networking-theory.md
+- **Version:** 1.1.0
+- **Status:** Version bumped, CHANGELOG dated, build + tests pass. Ready for `npm publish`.
+- **Build:** ✅ Clean
+- **Tests:** ✅ 36/36 pass (0 fail)
+- **Smoke test:** ✅ Server starts, discovers 2 modules (130 docs)
+- **CI:** 3 GitHub Actions workflows (ci.yml, publish.yml, release.yml)
+- **Release method:** Use `release.yml` workflow dispatch → creates GitHub Release → triggers `publish.yml` → npm publish with OIDC provenance
+
+### What's in v1.1.0
+- Module auto-discovery + `list_modules` tool
+- Section extraction + `maxLength` for `get_doc`
+- `docs/godot-arch/` — 5 Godot 4.4+ docs (E1, rules, G1-G3)
+- MonoGame G64-G67 (Combat, Economy, Building, Object Pooling)
+- Core networking-theory.md
+- Cloudflare Workers API scaffold
+- CI/CD pipeline (GitHub Actions)
+- 36 tests (node:test)
 - All search quality fixes (P1-P3)
+- README overhaul (marketing-ready)
+- 908 broken links fixed, dev mode bug fixed, error handling for all tool handlers
