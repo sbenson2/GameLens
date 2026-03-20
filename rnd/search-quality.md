@@ -247,3 +247,68 @@ for (const token of queryTokens) {
 - [ ] Build automated test harness: 20 queries + expected top-3 results → run after each search change
 - [ ] Re-evaluate after fixes (next Day A rotation)
 - [ ] Consider: should we add tag/keyword metadata to Doc interface for explicit searchability?
+
+---
+
+## 2026-03-20 — Rotation B: Search Quality (20 queries, 5am cron)
+
+### Test Setup
+- **Corpus**: 130 docs across 3 modules (core, monogame-arch, godot-arch)
+- **Engine**: TF-IDF with stop words, stemming, hyphen splitting, C# token handling
+- **Test script**: `rnd/search-quality-test.ts` (reusable, `npx tsx rnd/search-quality-test.ts`)
+
+### Results: 20/20 queries PASS (48/48 points, 100%)
+
+| Category | Query | Top 3 Results | Score |
+|----------|-------|---------------|-------|
+| core | "character controller" | character-controller-theory(4.7), G52(3.2), P10(1.5) | ✅ 100% |
+| hyphen | "character-controller" | character-controller-theory(2.3), G52(1.6), P10(1.0) | ✅ 100% |
+| special-token | "C# game architecture" | monogame-arch-rules(1.2), E8(1.2), E1(1.1) | ✅ 100% |
+| natural-lang | "how to make a platformer" | G52(1.2), character-controller-theory(0.8), P10(0.6) | ✅ 100% |
+| core | "camera systems follow player" | camera-theory(3.5), G20(3.3), G58(2.0) | ✅ 100% |
+| genre | "tower defense game" | G65(1.8), G66(1.6), C1(1.3) | ✅ |
+| genre | "roguelike dungeon generation" | procedural-generation-theory(1.7), G53(1.3), godot-rules(1.0) | ✅ |
+| genre | "survival crafting game" | G10(1.5), C1(1.4), G65(1.4) | ✅ |
+| genre | "bullet hell patterns" | G12(1.1), monogame-arch/G12(1.1), G67(1.1) | ✅ |
+| system | "collision detection physics" | physics-theory(4.5), G3(3.3), C1(1.6) | ✅ 100% |
+| system | "game loop update draw" | game-loop-theory(2.1), G15(2.0), monogame-arch-rules(1.6) | ✅ 100% |
+| system | "object pooling performance" | G67(2.1), G43(1.3), monogame-arch/P12(1.1) | ✅ 100% |
+| system | "combat damage health" | G64(1.8), godot-arch/G3(1.0), godot-rules(0.9) | ✅ 100% |
+| system | "building placement grid" | G66(3.6), G58(0.8), G29(0.8) | ✅ 100% |
+| system | "economy shop currency" | G65(2.7), C1(0.9), G66(0.4) | ✅ 100% |
+| godot | "godot scene composition nodes" | godot-arch/G1(4.4), godot-arch/E1(3.2), godot-rules(2.9) | ✅ 100% |
+| godot | "godot state machine" | godot-arch/G2(2.3), godot-rules(1.5), godot-arch/E1(1.3) | ✅ 100% |
+| godot | "godot signals architecture" | godot-arch/G3(3.3), godot-arch/E1(2.8), godot-rules(2.5) | ✅ 100% |
+| concept | "networking multiplayer" | networking-theory(2.9), G9(1.6), P10(1.2) | ✅ 100% |
+| system | "tilemap systems tiled" | tilemap-theory(3.7), G37(3.0), G43(1.9) | ✅ 100% |
+
+### P1-P3 Bug Status (all FIXED)
+- ✅ **P1 Hyphen tokenization**: "character-controller" now correctly matches (score 2.3 vs 0 before fix)
+- ✅ **P2 Stop words**: Natural language queries ("how to make a platformer") work well — stop words filtered
+- ✅ **P3 C# token**: "C# game architecture" → E1 in top 3 (C# → csharp substitution working)
+
+### Analysis & Observations
+
+**Strengths:**
+1. **Concept docs rank excellently** — theory docs (camera-theory, physics-theory, networking-theory) consistently top results for their topics
+2. **Godot module search is strong** — all 3 Godot queries hit correct docs in top 1
+3. **Hyphen handling works** — "character-controller" finds the same docs as "character controller"
+4. **New docs (G64-G67) are well-indexed** — combat, economy, building, pooling all rank correctly
+5. **Doc length normalization working** — large docs (G67 at 87KB) don't dominate; small, focused theory docs rank well
+
+**Weaknesses / Areas for improvement:**
+1. **Genre queries rely on C1 (genre reference)** — No dedicated genre guide docs exist (e.g., no "Tower Defense Guide"). Queries like "tower defense game" land on C1/G65/G66 which mention TD in subsections. The `genre_lookup` tool handles this better than `search_docs`.
+2. **Duplicate IDs across modules** — G12 appears as both `G12` (core) and `monogame-arch/G12`, splitting rank. Same for G18, G11. This is by design (ID collision handling) but fragments search scores.
+3. **Score magnitudes are low** — Most scores are 0.5-5.0 range after normalization. This could make it harder to distinguish "good match" from "mediocre match" for borderline queries.
+4. **No semantic understanding** — "survival crafting game" returns G10 (Inventory Systems) first, which is relevant but not the most direct match. A semantic search would rank C1's survival section higher.
+
+### Recommendations
+1. **P4 (stemming) still not implemented** — Current lightweight stemmer handles common suffixes but misses irregular forms. Medium priority.
+2. **Consider `genre_lookup` as fallback** — When search_docs returns low scores for genre-like queries, the agent should use genre_lookup instead. Document this in tool descriptions.
+3. **Save/load guide is a content gap** — No dedicated doc for game save/serialization. "save load game state" returns G30 (Game Feel Tooling) which is wrong. Potential new doc: G68 Save System & Serialization.
+
+### Compared to Previous Test (2026-03-18)
+- **Before P1-P3 fixes**: "character-controller" returned 0 results ❌ → Now returns correct docs ✅
+- **Before stop words**: Natural language queries were noisy → Now filtered cleanly ✅
+- **Before normalization**: Large docs (50-85KB) dominated → Now balanced ✅
+- **Corpus grew**: 122 → 130 docs (Godot module + networking-theory + G67)
