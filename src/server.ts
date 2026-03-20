@@ -5,6 +5,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { DocStore } from "./core/docs.js";
 import { SearchEngine } from "./core/search.js";
+import { discoverModules, resolveActiveModules, ModuleMetadata } from "./core/modules.js";
 import { handleSearchDocs } from "./tools/search-docs.js";
 import { handleGetDoc } from "./tools/get-doc.js";
 import { handleListDocs } from "./tools/list-docs.js";
@@ -54,12 +55,16 @@ function proGateResponse(): ToolResult {
 }
 
 export async function createServer() {
-  const activeModules = (process.env.GAMEDEV_MODULES ?? "monogame-arch")
-    .split(",")
-    .map((m) => m.trim())
-    .filter(Boolean);
-
   const docsRoot = findDocsRoot();
+
+  // Auto-discover modules from docs directory
+  const discoveredModules = discoverModules(docsRoot);
+  const activeModuleMeta = resolveActiveModules(
+    discoveredModules,
+    process.env.GAMEDEV_MODULES
+  );
+  const activeModules = activeModuleMeta.map((m) => m.id);
+
   const docStore = new DocStore(docsRoot);
   docStore.load(activeModules);
 
@@ -71,8 +76,13 @@ export async function createServer() {
   // Validate license
   const { tier, message: licenseMessage } = await validateLicense();
 
+  const discoveredNames = discoveredModules.map((m) => `${m.id} (${m.label}, ${m.docCount} docs)`);
+  const activeNames = activeModuleMeta.map((m) => m.id);
   console.error(
-    `[gamedev-mcp] Loaded ${allDocs.length} docs from ${docsRoot} (modules: ${activeModules.join(", ")})`
+    `[gamedev-mcp] Discovered ${discoveredModules.length} modules: ${discoveredNames.join(", ")}`
+  );
+  console.error(
+    `[gamedev-mcp] Active modules: ${activeNames.join(", ")} (${allDocs.length} docs from ${docsRoot})`
   );
   console.error(licenseMessage);
 
@@ -289,6 +299,84 @@ export async function createServer() {
       return { content: [{ type: "text", text: output }] };
       } catch (err) {
         return { content: [{ type: "text", text: `License info error: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
+    }
+  );
+
+  server.tool(
+    "list_modules",
+    "List all discovered engine modules with metadata — labels, doc counts, engines, and sections. Use to understand what knowledge is available across engines and find the right module for a project.",
+    {
+      engine: z.string().optional().describe("Filter by engine name (e.g. 'Godot', 'MonoGame', 'Unity')"),
+    },
+    async (args) => {
+      try {
+        let modules = discoveredModules;
+
+        if (args.engine) {
+          const lowerEngine = args.engine.toLowerCase();
+          modules = modules.filter((m) =>
+            m.engine.toLowerCase().includes(lowerEngine) ||
+            m.id.toLowerCase().includes(lowerEngine)
+          );
+        }
+
+        if (modules.length === 0) {
+          const available = discoveredModules.map((m) => m.engine).join(", ");
+          return {
+            content: [{
+              type: "text",
+              text: args.engine
+                ? `No modules found for engine "${args.engine}".\n\nAvailable engines: ${available}`
+                : "No modules discovered. Ensure docs/ directory contains engine module subdirectories.",
+            }],
+          };
+        }
+
+        let output = `# Discovered Modules (${modules.length})\n\n`;
+
+        for (const mod of modules) {
+          const active = activeModules.includes(mod.id);
+          const statusIcon = active ? "✅" : "⬚";
+          const accessNote = tier === "free" && mod.id !== "core"
+            ? " _(Pro required)_"
+            : "";
+
+          output += `## ${statusIcon} ${mod.label}${accessNote}\n\n`;
+          output += `- **Module ID:** \`${mod.id}\`\n`;
+          output += `- **Engine:** ${mod.engine}\n`;
+          output += `- **Docs:** ${mod.docCount} documents\n`;
+          if (mod.sections.length > 0) {
+            output += `- **Sections:** ${mod.sections.join(", ")}\n`;
+          }
+          if (mod.description) {
+            output += `- **Description:** ${mod.description}\n`;
+          }
+          if (mod.hasRules) {
+            output += `- **AI Rules:** Available (engine-specific code generation rules)\n`;
+          }
+          output += "\n";
+        }
+
+        // Always show core module info
+        output += `## ✅ Core (engine-agnostic)\n\n`;
+        output += `- **Module ID:** \`core\`\n`;
+        const corePath = path.join(docsRoot, "core");
+        const coreCount = allDocs.filter((d) => d.module === "core").length;
+        output += `- **Docs:** ${coreCount} documents\n`;
+        output += `- **Description:** Engine-agnostic game development concepts, patterns, and workflows\n`;
+        output += `- **Always active:** Core docs are available on all tiers\n\n`;
+
+        output += `---\n\n`;
+        output += `**Total:** ${allDocs.length} docs loaded across ${activeModules.length + 1} active modules (core + ${activeModules.length} engine modules)\n`;
+
+        if (tier === "free") {
+          output += `\n_Free tier: core module only. Upgrade to Pro for engine-specific modules: ${UPGRADE_URL}_\n`;
+        }
+
+        return { content: [{ type: "text", text: output }] };
+      } catch (err) {
+        return { content: [{ type: "text", text: `Module listing error: ${err instanceof Error ? err.message : String(err)}` }] };
       }
     }
   );
