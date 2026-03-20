@@ -1,0 +1,20 @@
+{
+  "name": "gamedev-mcp-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloudflare Workers API for gamedev-mcp-server Pro content delivery",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "type-check": "tsc --noEmit",
+    "upload-docs": "tsx scripts/upload-docs.ts --write",
+    "upload-docs:preview": "tsx scripts/upload-docs.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250313.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.7.3"
+  }
+}

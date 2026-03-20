@@ -1,0 +1,32 @@
+name = "gamedev-mcp-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+API_VERSION = "1.0.0"
+LEMONSQUEEZY_STORE_ID = ""
+
+# KV Namespace bindings
+# For local dev, use placeholder IDs. Replace with real IDs after:
+#   wrangler kv namespace create DOCS_KV
+#   wrangler kv namespace create CACHE_KV
+[[kv_namespaces]]
+binding = "DOCS_KV"
+id = "placeholder-docs-kv"
+preview_id = "placeholder-docs-kv-preview"
+
+[[kv_namespaces]]
+binding = "CACHE_KV"
+id = "placeholder-cache-kv"
+preview_id = "placeholder-cache-kv-preview"
+
+# For local dev, wrangler dev will create local KV automatically
+# Production KV namespaces must be created via:
+#   wrangler kv namespace create DOCS_KV
+#   wrangler kv namespace create CACHE_KV
+# Then paste the IDs above.
+
+[dev]
+port = 8787
+local_protocol = "http"
