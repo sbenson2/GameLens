@@ -5,192 +5,225 @@
 [![Node.js](https://img.shields.io/node/v/gamedev-mcp-server)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> Give your AI permanent game development knowledge. No more context loss mid-project.
+**Your AI forgets everything mid-project. Give it permanent game development knowledge.**
 
-An MCP (Model Context Protocol) server that provides 120+ curated game dev docs, structured session workflows, and engine-specific implementation guidance. Works with Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible tool.
+GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 130+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
+
+> Works with **Claude Code**, **Claude Desktop**, **Cursor**, **Windsurf**, **Cline**, and any MCP-compatible tool.
+
+## The Problem
+
+Every game dev using AI hits the same wall: your assistant starts strong, then forgets your architecture mid-session. It suggests deprecated APIs. It doesn't know the difference between a state machine and a behavior tree. It writes Unity 5 code when you're on Unity 6.
+
+**GameDev MCP Server solves this** by giving your AI a persistent, searchable knowledge base of curated game dev expertise — not raw docs, but structured implementation guidance that actually helps you build.
+
+## What's Inside
+
+| Category | Examples | Docs |
+|----------|----------|------|
+| 🎮 **Game Design** | Genre systems, game feel, balancing, progression | 12 |
+| 🏗️ **Architecture** | ECS, state machines, scene management, signals | 18 |
+| 💻 **Programming** | Design patterns, data structures, algorithms | 15 |
+| 🎯 **Engine Guides** | MonoGame (68 guides), Godot (5+), Unity (planned) | 86+ |
+| 🔧 **Core Concepts** | Camera, physics, pathfinding, networking, particles | 18 |
+| 📋 **Project Mgmt** | Scope control, sprint planning, art pipeline | 7 |
+
+**130+ docs. 2.5MB+ of curated knowledge. Zero external dependencies.**
 
 ## Quick Start
 
 ```bash
-npm install -g gamedev-mcp-server
+npx gamedev-mcp-server
 ```
 
-Or use directly with npx — no install needed.
+That's it. No install required. Add it to your MCP config and your AI has instant game dev knowledge.
 
-### Claude Code / Cursor / Windsurf
+### Claude Code
 
-Add to your MCP config (`.mcp.json`, `.cursor/mcp.json`, or `~/.windsurf/mcp.json`):
+```bash
+claude mcp add gamedev -- npx -y gamedev-mcp-server
+```
+
+### Claude Desktop / Cursor / Windsurf / Cline
+
+Add to your MCP config file:
 
 ```json
 {
   "mcpServers": {
     "gamedev": {
       "command": "npx",
-      "args": ["-y", "gamedev-mcp-server"],
-      "env": {
-        "GAMEDEV_MODULES": "monogame-arch"
-      }
+      "args": ["-y", "gamedev-mcp-server"]
     }
   }
 }
 ```
 
-### Claude Desktop
+Config file locations:
+- **Claude Desktop:** `claude_desktop_config.json`
+- **Cursor:** `.cursor/mcp.json`
+- **Windsurf:** `~/.windsurf/mcp.json`
+- **Cline:** VS Code settings → Cline MCP Servers
 
-Add to `claude_desktop_config.json`:
+## Engine Modules
+
+GameDev MCP Server uses a modular architecture. Core knowledge (design, patterns, algorithms) is always available. Engine-specific modules add implementation guides for your stack.
+
+| Module | Status | Docs | Description |
+|--------|--------|------|-------------|
+| `core` | ✅ Stable | 52 | Engine-agnostic game dev knowledge |
+| `monogame-arch` | ✅ Stable | 73 | MonoGame + Arch ECS — guides G1–G67, architecture, library reference |
+| `godot-arch` | 🚧 Active | 5 | Godot 4.4+ — architecture, scene composition, state machines, signals |
+| `unity-arch` | 📋 Planned | — | Unity 6 — URP, ECS, modern patterns |
+| `bevy-arch` | 📋 Planned | — | Bevy ECS — Rust game dev |
+
+Modules are auto-discovered. To filter which modules load:
 
 ```json
 {
-  "mcpServers": {
-    "gamedev": {
-      "command": "npx",
-      "args": ["-y", "gamedev-mcp-server"],
-      "env": {
-        "GAMEDEV_MODULES": "monogame-arch"
-      }
-    }
+  "env": {
+    "GAMEDEV_MODULES": "monogame-arch,godot-arch"
   }
 }
 ```
 
-## Features
-
-- **120+ Docs** — Curated game dev knowledge: design, patterns, algorithms, implementation guides
-- **Doc Search** — TF-IDF search across all docs (concepts, guides, references)
-- **Session Co-Pilot** — Structured workflows: Plan, Decide, Feature, Debug, Scope
-- **Genre Lookup** — Instant genre → required systems mapping with starter checklists
-- **Modular Architecture** — Core engine-agnostic knowledge + engine-specific modules
-- **Zero External Deps** — All search and logic built-in, no database required
-
-## Available Modules
-
-| Module | Description |
-|--------|-------------|
-| `core` | Engine-agnostic game dev knowledge — design, patterns, algorithms, project management |
-| `monogame-arch` | MonoGame + Arch ECS implementation guides, architecture, library references |
-
-Future modules: `godot`, `unity`, `bevy`, etc.
+Without `GAMEDEV_MODULES`, all available modules load automatically.
 
 ## MCP Tools
 
-| Tool | Free | Pro | Description |
-|------|------|-----|-------------|
-| `list_docs` | ✅ | ✅ | Browse available docs by category and module |
-| `search_docs` | Core only | All modules | Search across docs with optional category/module filters |
-| `get_doc` | Core only | All modules | Fetch a specific doc by ID (e.g. `G52`, `camera-theory`) |
-| `session` | — | ✅ | Dev session co-pilot (start, plan, decide, feature, debug, scope) |
-| `genre_lookup` | Limited | Full | Genre → systems mapping (platformer, roguelike, metroidvania, etc.) |
-| `license_info` | ✅ | ✅ | Show current tier, unlocked features, and upgrade URL |
+| Tool | Description |
+|------|-------------|
+| **`search_docs`** | Full-text search across all docs with TF-IDF ranking, category/module filters |
+| **`get_doc`** | Fetch a doc by ID with optional `section` extraction and `maxLength` for context efficiency |
+| **`list_docs`** | Browse docs by category and module |
+| **`list_modules`** | Discover available engine modules and their status |
+| **`genre_lookup`** | Genre → required systems mapping (platformer, roguelike, tower defense, etc.) |
+| **`session`** | Dev session co-pilot — structured workflows for planning, debugging, scoping |
+| **`license_info`** | Show current tier and features |
 
-### Free vs Pro
+### Context-Efficient by Design
 
-The server works out of the box with a generous free tier — all core (engine-agnostic) docs, search, and genre lookups are free. **Pro** unlocks engine-specific modules (MonoGame, Godot, etc.), the session co-pilot, and full genre details.
+Unlike tool-heavy MCP servers that dump 50K+ tokens of schemas into your context window, GameDev MCP Server is built for precision:
 
-Get a Pro license at [gamedev-mcp.lemonsqueezy.com](https://gamedev-mcp.lemonsqueezy.com).
+- **Section extraction** — `get_doc("G64", section: "Knockback")` returns just the knockback section, not the full 52KB doc
+- **`maxLength` param** — Cap any response to fit your context budget
+- **6 focused tools** — Minimal schema overhead, maximum utility
+- **stdio transport** — No network exposure, no attack surface ([MCP security is a real concern](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/))
 
-## Configuration
+## Free vs Pro
 
-### Environment Variables
+The server works fully out of the box with a generous free tier.
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GAMEDEV_MODULES` | `monogame-arch` | Comma-separated list of active engine modules |
-| `GAMEDEV_MCP_LICENSE` | — | Pro license key (from [gamedev-mcp.lemonsqueezy.com](https://gamedev-mcp.lemonsqueezy.com)) |
-| `GAMEDEV_MCP_DEV` | — | Set to `true` to skip license validation (local dev only) |
+| Feature | Free | Pro |
+|---------|------|-----|
+| Core docs (design, patterns, algorithms) | ✅ | ✅ |
+| Search | Core docs | All modules |
+| Engine modules (MonoGame, Godot, etc.) | — | ✅ |
+| Session co-pilot | — | ✅ |
+| Genre lookup | Summary | Full details |
+| `get_doc` section extraction | ✅ | ✅ |
 
-### License Key Setup
+**Pro** unlocks engine-specific implementation guides — the stuff that turns "I know game design theory" into "here's exactly how to build it in Godot/MonoGame/Unity."
 
-**Option 1:** Set the `GAMEDEV_MCP_LICENSE` env var in your MCP config:
+Get a Pro license → [gamedev-mcp.lemonsqueezy.com](https://gamedev-mcp.lemonsqueezy.com)
+
+### License Setup
+
+Add your key to the MCP config:
 
 ```json
 {
-  "mcpServers": {
-    "gamedev": {
-      "command": "npx",
-      "args": ["gamedev-mcp-server"],
-      "env": {
-        "GAMEDEV_MODULES": "monogame-arch",
-        "GAMEDEV_MCP_LICENSE": "your-license-key"
-      }
-    }
+  "env": {
+    "GAMEDEV_MCP_LICENSE": "your-license-key"
   }
 }
 ```
 
-**Option 2:** Create a config file at `~/.gamedev-mcp/license.json`:
+Or create `~/.gamedev-mcp/license.json`:
 
 ```json
-{
-  "key": "your-license-key"
-}
+{ "key": "your-license-key" }
 ```
 
-The server validates the key against LemonSqueezy on startup and caches the result for 24 hours. If offline, a cached validation within 7 days is accepted. Without a valid key, the server runs in free tier (it never crashes).
+The server validates on startup, caches for 24h, and gracefully falls back to free tier if anything goes wrong. It never crashes.
 
-See [PRICING.md](./PRICING.md) for a full tier comparison.
+## What Makes This Different
 
-### Module Selection
+There are [14,000+ MCP servers](https://mcp.so) out there. Here's why this one matters for game dev:
 
-Set `GAMEDEV_MODULES` to control which engine-specific docs are loaded:
+- **Knowledge, not integration.** Godot-MCP, Unity-MCP, and Unreal-MCP give your AI buttons to press in the editor. This gives your AI *understanding* of how to architect and build games. They're complementary — use both.
+- **Cross-engine.** One server, multiple engines. Learn a pattern once in core theory, then get the engine-specific implementation. No need to install separate MCPs per engine.
+- **Curated, not scraped.** Every doc is hand-written with AI code generation in mind — typed examples, anti-pattern warnings, decision trees, and "when to use" guidance. This isn't a docs mirror.
+- **Grows with you.** New docs and engines added continuously. Your AI gets smarter over time without you changing anything.
 
-```bash
-# MonoGame + Arch ECS only (default)
-GAMEDEV_MODULES=monogame-arch
+## Genre Coverage
 
-# Core only (no engine-specific docs)
-GAMEDEV_MODULES=
+The `genre_lookup` tool maps any genre to its required systems with implementation priorities:
 
-# Multiple modules (future)
-GAMEDEV_MODULES=monogame-arch,godot
-```
+Platformer · Metroidvania · Roguelike · Tower Defense · Survival · RPG · Bullet Hell · Top-Down Shooter · Side-Scrolling · Fighting · Puzzle
+
+Each genre profile includes: required systems, optional enhancements, suggested doc reading order, and a starter checklist.
 
 ## Development
 
 ```bash
-# Install dependencies
+git clone https://github.com/sbenson2/gamedev-mcp-server.git
+cd gamedev-mcp-server
 npm install
-
-# Build
 npm run build
+npm test          # 36 tests, Node.js built-in test runner
+npm run dev       # Watch mode
+```
 
-# Run
-node dist/index.js
+### Dev Mode
 
-# Watch mode
-npm run dev
+Skip license validation for local development:
+
+```json
+{
+  "env": {
+    "GAMEDEV_MCP_DEV": "true"
+  }
+}
 ```
 
 ## Doc Structure
 
 ```
 docs/
-├── core/                    # Engine-agnostic
-│   ├── game-design/         # Design fundamentals, genres, game feel
-│   ├── project-management/  # Sprints, scope, playbooks
+├── core/                    # Engine-agnostic (always loaded)
+│   ├── game-design/         # Genre profiles, game feel, balancing
 │   ├── programming/         # Patterns, principles, data structures
-│   ├── ai-workflow/         # AI code generation rules
-│   ├── concepts/            # Universal theory (camera, physics, pathfinding, etc.)
-│   └── session/             # Session co-pilot prompts
-└── monogame-arch/           # MonoGame + Arch ECS
-    ├── reference/           # Library stack, capabilities, project structure
-    ├── architecture/        # Architecture overview, migration notes
-    └── guides/              # G1-G63 implementation guides
+│   ├── concepts/            # Camera, physics, pathfinding, networking, particles
+│   ├── project-management/  # Scope, sprints, pipelines
+│   ├── ai-workflow/         # AI code generation best practices
+│   └── session/             # Co-pilot workflow prompts
+├── monogame-arch/           # MonoGame + Arch ECS
+│   ├── architecture/        # ECS overview, migration notes
+│   ├── guides/              # G1–G67 implementation guides
+│   └── reference/           # Library stack, project structure
+└── godot-arch/              # Godot 4.4+
+    ├── architecture/        # Node tree, scenes, signals philosophy
+    ├── guides/              # Scene composition, state machines, signals
+    └── reference/           # (coming soon)
 ```
 
 ## MCP Resources
 
-The server also exposes docs as MCP resources:
+Docs are also available as MCP resources for clients that support them:
 
-- `gamedev://docs/core/{id}` — Core docs
-- `gamedev://docs/monogame-arch/{id}` — MonoGame docs
+- `gamedev://docs/{module}/{id}` — Any doc by module and ID
 - `gamedev://prompts/session` — Session co-pilot prompt
 - `gamedev://prompts/code-rules` — AI code generation rules
-- `gamedev://prompts/monogame-arch` — MonoGame-specific rules
 
-## Landing Page
+## Contributing
 
-View the project landing page at [sbenson2.github.io/gamedev-mcp-server](https://sbenson2.github.io/gamedev-mcp-server/) — or run it locally from the `site/` directory.
+Found a bug? Have a doc suggestion? [Open an issue](https://github.com/sbenson2/gamedev-mcp-server/issues).
 
 ## License
 
-MIT
+MIT — see [LICENSE](./LICENSE).
+
+---
+
+**Built for game devs who use AI.** Stop fighting context loss. Start building.
