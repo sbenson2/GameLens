@@ -11,6 +11,7 @@ import { handleListDocs } from "./tools/list-docs.js";
 import { handleSession } from "./tools/session.js";
 import { handleGenreLookup, formatGenreResult } from "./tools/genre-lookup.js";
 import { validateLicense } from "./license.js";
+import { checkSearchLimit, checkGetDocLimit, getUsageStats } from "./rate-limit.js";
 import {
   Tier,
   isToolAllowed,
@@ -108,7 +109,26 @@ export async function createServer() {
           args.module = "core";
         }
 
-        return handleSearchDocs(args, docStore, searchEngine);
+        // Daily rate limit for free tier
+        const rateLimit = checkSearchLimit(tier);
+        if (!rateLimit.allowed) {
+          return {
+            content: [{
+              type: "text",
+              text: `Daily search limit reached (${rateLimit.limit}/day). Resets at ${rateLimit.resetsAt}.\n\nUpgrade to Pro for unlimited searches: ${UPGRADE_URL}`,
+            }],
+          };
+        }
+
+        const result = handleSearchDocs(args, docStore, searchEngine);
+
+        // Append usage info for free tier when getting low
+        if (tier === "free" && rateLimit.remaining <= 10 && rateLimit.remaining > 0) {
+          const text = result.content[0].text;
+          result.content[0].text = text + `\n\n---\n_${rateLimit.remaining} searches remaining today (resets at midnight). Upgrade to Pro for unlimited: ${UPGRADE_URL}_`;
+        }
+
+        return result;
       } catch (err) {
         return { content: [{ type: "text", text: `Search error: ${err instanceof Error ? err.message : String(err)}` }] };
       }
@@ -143,6 +163,17 @@ export async function createServer() {
               }],
             };
           }
+        }
+
+        // Daily rate limit for free tier
+        const docRateLimit = checkGetDocLimit(tier);
+        if (!docRateLimit.allowed) {
+          return {
+            content: [{
+              type: "text",
+              text: `Daily doc fetch limit reached (${docRateLimit.limit}/day). Resets at ${docRateLimit.resetsAt}.\n\nUpgrade to Pro for unlimited access: ${UPGRADE_URL}`,
+            }],
+          };
         }
 
         return handleGetDoc(args, docStore);
@@ -228,10 +259,19 @@ export async function createServer() {
     async () => {
       try {
       const features = getTierFeatures(tier);
+      const usage = getUsageStats(tier);
 
       let output = `# License Info\n\n`;
-      output += `**Current tier:** ${tier === "pro" ? "Pro" : "Free"}\n`;
+      output += `**Current tier:** ${tier === "pro" ? "Pro ✅" : "Free"}\n`;
       output += `**Description:** ${features.description}\n\n`;
+
+      // Usage stats
+      if (tier === "free") {
+        output += `## Today's Usage\n\n`;
+        output += `- **Searches:** ${usage.searches.used}/${usage.searches.limit} (resets at midnight)\n`;
+        output += `- **Doc fetches:** ${usage.getDocs.used}/${usage.getDocs.limit} (resets at midnight)\n\n`;
+      }
+
       output += `## Tool Access\n\n`;
       for (const [tool, status] of Object.entries(features.tools)) {
         output += `- **${tool}**: ${status}\n`;
@@ -242,7 +282,7 @@ export async function createServer() {
       }
 
       if (tier === "free") {
-        output += `\n---\n\n**Upgrade to Pro:** ${UPGRADE_URL}\n`;
+        output += `\n---\n\n**Upgrade to Pro for unlimited access:** ${UPGRADE_URL}\n`;
         output += `Set your license key via \`GAMEDEV_MCP_LICENSE\` env var or \`~/.gamedev-mcp/license.json\`\n`;
       }
 

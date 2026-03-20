@@ -4,6 +4,114 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-20 — Day A: Competitor Scan
+
+### 🔥 HEADLINE: GodotIQ Emerges as New Premium Godot MCP Competitor + MCP Security Crisis Hitting Mainstream Press
+
+New entrant GodotIQ (35 tools, freemium model with 22 free / 13 paid "intelligence layer" tools) is the most sophisticated Godot MCP server yet. Meanwhile, MCP security vulnerabilities are front-page news (CVE on AWS MCP, Azure MCP RCE at RSAC, 7,000 exposed servers). The security narrative could hurt MCP adoption broadly but benefits quality servers with good security practices.
+
+### Star Count Tracker (vs 2026-03-19 baseline)
+
+| Repo | Stars (03-19) | Stars (03-20) | Δ | Last Push |
+|------|--------------|--------------|---|-----------|
+| Coding-Solo/godot-mcp | 2,465 | 2,487 | +22 | 2026-03-18 |
+| chongdashu/unreal-mcp | 1,589 | 1,597 | +8 | 2025-04-22 (stale) |
+| CoderGamester/mcp-unity | 1,432 | 1,433 | +1 | 2026-03-10 |
+| IvanMurzak/Unity-MCP | 1,366 | 1,383 | +17 | 2026-03-20 (TODAY) |
+| flopperam/unreal-engine-mcp | 608 | 611 | +3 | 2026-02-15 |
+| 3ddelano/GDAI MCP | 76 | 76 | 0 | 2026-03-07 |
+| Nihilantropy/godot-mcp-docs | 51 | 51 | 0 | 2025-07-25 (stale) |
+| salvo10f/godotiq | NEW | 8 | NEW | 2026-03-19 |
+
+**Trends:**
+- **IvanMurzak/Unity-MCP** pushed TODAY — most actively maintained competitor. +17 stars in 1 day. Continuing strong momentum.
+- **Coding-Solo/godot-mcp** still steady growth (+22/day). The Godot MCP king.
+- **godot-mcp-docs** (our closest docs competitor) remains completely dead. 0 star change. Still at 51.
+- **GDAI MCP** stalled at 76 stars, no push in 2 weeks. May be losing momentum.
+
+### 🆕 NEW Entrants
+
+#### 1. **GodotIQ** (8⭐, NEW) — `salvo10f/godotiq`
+- **"Intelligent MCP server for AI-assisted Godot 4 development"**
+- **35 tools total**: 22 free + 13 paid "intelligence layer"
+- Free tools: scene editing, run game, screenshots, input simulation, error checking
+- Paid tools: **spatial analysis, dependency graphs, signal flow tracing, convention validation**
+- Pip installable: `pip install godotiq`
+- Works with Claude Code, Cursor, Windsurf, VS Code Copilot
+- Promoted on Godot Forum AND DEV Community (with a viral "built a living city" article)
+- **Freemium model** — closest to our pricing approach among Godot MCPs
+- **Key differentiator**: "Spatial intelligence" — AI can see and reason about game scenes visually
+- **Threat level: MEDIUM** — different niche (editor integration + spatial analysis) but the freemium model with "intelligence layer" is the same playbook we're using (free core + paid premium knowledge)
+
+#### 2. **Another free Godot MCP** (Godot Forum, ~4 weeks ago)
+- Open-source server + addon for connecting AI to Godot projects
+- Explicit disclaimer: "can't 1-shot an entire game from a single prompt"
+- Focus on giving AI better answers by reading project context
+- Early/small but another entry in the crowded Godot MCP space
+
+### 📰 Notable Article: "Why AI Writes Better Game Code in Godot Than in Unity" (DEV Community, TODAY)
+- Published TODAY on dev.to by mistyhx
+- Argues Godot's text-based file formats (.gd, .tscn, .tres) make it fundamentally more AI-readable than Unity's binary/GUID-heavy formats
+- Specifically mentions Claude Code as the AI tool used
+- Key insight: "Everything Is a Text File" — Godot scenes are human-readable, Unity scenes are YAML soup with numeric fileIDs
+- **Why this matters for us**: Validates our Godot-first strategy. Godot's readability advantage means AI+Godot will grow faster than AI+Unity, increasing our Godot module's TAM. Also: this article may drive more devs to explore Godot MCP tools, benefiting the whole ecosystem.
+
+### 🔒 MCP Security Crisis — New Narrative Emerging
+
+Multiple major security stories this week:
+1. **SC Media: "MCP is the backdoor your zero-trust architecture forgot to close"** (2 days ago)
+   - ~7,000 internet-exposed MCP servers catalogued, roughly half of all known deployments
+   - Many operating with NO authorization controls
+2. **CVE-2026-4270: AWS API MCP File Access Restriction Bypass** (4 days ago)
+   - Actual CVE assigned to an AWS MCP server vulnerability
+   - Patched in v1.3.9 — shows even AWS gets MCP security wrong
+3. **"MCPwned" talk at RSAC 2026** (next month)
+   - Token Security presenting RCE flaw in Azure MCP servers
+   - Could compromise entire Azure tenants via MCP
+4. **XM Cyber adding MCP server exposure to attack path analysis**
+   - Enterprise security tools now treating MCP as an attack surface
+5. **Aembit publishing "Complete Guide to MCP Security Vulnerabilities 2026"**
+
+**Strategic implications:**
+- MCP security FUD could slow adoption broadly — but benefits quality servers
+- Our server is local-only (stdio transport), not network-exposed — this is a security advantage worth marketing
+- Consider adding a "Security" section to README highlighting our architecture doesn't expose network ports
+- The "7,000 exposed servers" stat is for remote/HTTP MCP servers — irrelevant to stdio-based servers like ours
+
+### 🏢 Enterprise MCP Adoption Accelerating
+- **Godot 4.5.2 released TODAY** — maintenance release with Android debug symbols and Direct3D 12 shader improvements. Not MCP-related but shows Godot's continued active development.
+- **airSlate SignNow launched MCP server** — enterprise SaaS companies now building MCP servers as features
+- **Amazon Ads MCP server in open beta** — Amazon joining the MCP ecosystem
+- **Lens (Kubernetes) adding built-in MCP** — DevOps tools getting MCP integration
+- **14,274 MCP servers listed** on registries (up from 11,400+ last scan) — growth rate ~25% in under a week
+
+### Apideck Context Window Article Update (March 17)
+- Still being referenced and reshared 3 days later
+- "55,000+ tokens before a single user message" stat becoming the go-to citation
+- Our positioning as minimal-tools, rich-content continues to be validated by this narrative
+
+### Vibe Coding Community Pulse
+- "500 Hours of Vibe Coding Broke Me" still trending on r/gamedev (1 week old, still active)
+- r/vibecoding very active: "3-hour loop" problem (35 upvotes), "analyzed 50+ vibe coding projects" (25 upvotes), methodology posts
+- **New pattern: "I vibecoded a game in Unity"** posts appearing — vibe coding + game dev intersection growing
+- Consistent theme: vibe coding works for MVPs but collapses at scale without architecture — our exact thesis
+
+### Key Takeaways
+
+1. **GodotIQ is the most interesting new competitor** — freemium model with spatial intelligence tools. Not a docs server but the premium-tools-on-top pattern mirrors our approach. Watch closely.
+
+2. **Godot MCP namespace now has 7+ servers**: Coding-Solo, GDAI, Godot MCP Pro, Claude-GoDot-MCP, GoPeak, godot-mcp-docs, GodotIQ, + the new free one. Extreme fragmentation benefits our "one knowledge server" positioning.
+
+3. **MCP security crisis is double-edged**: Could slow adoption but benefits quality servers. Our stdio architecture is inherently safer than remote HTTP MCP servers. Marketing opportunity.
+
+4. **14,274 registered MCP servers** (up from ~11,400) — market growing ~25% in days. Explosive growth phase.
+
+5. **DEV Community article validating Godot-first AI strategy** — published today, argues AI fundamentally works better with Godot's text-based formats. Supports our decision to prioritize Godot module.
+
+6. **IvanMurzak/Unity-MCP remains the hottest competitor** — pushed today, +17 stars/day. If they add docs/knowledge features, they'd be the biggest threat.
+
+---
+
 ## 2026-03-19 — Day A: Competitor Scan
 
 ### 🔥 HEADLINE: "Context Window Tax" Goes Mainstream — MCP Backlash Accelerating, But Knowledge Servers Are The Antidote

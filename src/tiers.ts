@@ -51,27 +51,27 @@ export function getTierFeatures(tier: Tier): {
     return {
       tools: {
         list_docs: "Full access",
-        search_docs: "All modules",
-        get_doc: "All modules",
+        search_docs: "All modules, unlimited",
+        get_doc: "All modules, unlimited, section extraction",
         session: "Full session co-pilot",
         genre_lookup: "Full system mappings + recommended docs",
         license_info: "Available",
       },
-      modules: ["core", "monogame-arch", "future premium modules"],
-      description: "Pro — all tools and modules fully unlocked",
+      modules: ["core", "monogame-arch", "godot-arch", "future premium modules"],
+      description: "Pro ($9/mo) — all tools and modules fully unlocked",
     };
   }
 
   return {
     tools: {
       list_docs: "Full access",
-      search_docs: "Core module only",
-      get_doc: "Core module only",
+      search_docs: "Core module only (50/day)",
+      get_doc: "Core module only (30/day)",
       session: "Locked (Pro)",
       genre_lookup: "Generic info only (Pro for full mappings)",
       license_info: "Available",
     },
     modules: ["core"],
-    description: "Free tier — core docs and limited tools",
+    description: "Free tier — core docs with daily limits",
   };
 }

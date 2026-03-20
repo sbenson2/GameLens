@@ -57,15 +57,18 @@ Every task should read this before starting and append learnings when done.
 - **npm v1.0.0 published** — need to set up GitHub Actions OIDC trusted publishing for future releases
 - **MCP registry submissions pending** — mcp.so, mcpmarket.com, smithery.ai, Cline marketplace
 
-## Competitive Landscape (updated 2026-03-19)
+## Competitive Landscape (updated 2026-03-20)
 
 - Space dominated by engine integration tools (Godot-MCP 2.5K⭐, Unreal-MCP 1.6K⭐, Unity-MCP 1.4K⭐, IvanMurzak Unity-MCP 1.4K⭐)
 - Only one docs competitor: `godot-mcp-docs` (51⭐) — **effectively dead** (no updates since July 2025)
-- **TWO paid Godot MCP servers now**: Godot MCP Pro ($5, 162 tools) + GDAI MCP ($19, 76⭐, ~30 tools). Both editor integration, not knowledge.
+- **THREE paid/freemium Godot MCP servers now**: Godot MCP Pro ($5, 162 tools), GDAI MCP ($19, 76⭐), GodotIQ (8⭐, 35 tools, 22 free + 13 paid intelligence layer). All editor integration, not knowledge.
+- **GodotIQ (NEW)** — most interesting new competitor. Freemium model with "spatial intelligence" paid tier. Pip-installable. Promoted on Godot Forum + DEV Community viral article. Watch closely.
 - **Roblox going official with MCP** — first major engine company to build native MCP support + 3 community forks
-- **Godot MCP namespace getting crowded** — 5+ servers now. Differentiation via cross-engine knowledge is critical.
+- **Godot MCP namespace now has 7+ servers** — extreme fragmentation benefits our "one knowledge server" positioning.
 - **Ref** (ref.tools) remains closest analog — $9/mo credit-based docs MCP. Proves paid docs-MCP works.
-- **Context window backlash is a marketing opportunity** — tool-heavy MCPs getting pushback (55K+ tokens for schemas). Our minimal-tools, rich-content model is the antidote.
+- **Context window backlash + MCP security crisis** — tool-heavy MCPs getting pushback (55K+ tokens for schemas). Meanwhile, 7,000 exposed MCP servers catalogued, CVEs being assigned (AWS MCP, Azure MCP RCE at RSAC). Our minimal-tools model + stdio architecture (no network exposure) = double advantage.
+- **14,274 registered MCP servers** (up from ~11,400 on 3/19) — market in explosive growth phase.
+- **DEV Community article (today)**: "Why AI Writes Better Game Code in Godot Than in Unity" — validates our Godot-first strategy. AI + Godot growing faster than AI + Unity due to text-based file formats.
 
 ## Market Sentiment (2026-03-17)
 
@@ -136,14 +139,23 @@ _Append Wes's feedback and direction changes here._
 8. ❌ **Git push NOT done** — New work not committed (G66, godot-arch/, fixes, rnd/).
 9. ❌ **npm still 404** — Day 4 with no external feedback.
 
-## Today's Priorities (2026-03-20) — Day 5
+## Today's Priorities (2026-03-20) — Day 5 (UPDATED 9am standup)
 
-1. **🔴🔴 GIT COMMIT & PUSH** — G66, godot-arch/ (3 docs), 8 audit fixes, rnd/ updates. Do this FIRST.
-2. **🔴 Search bug fixes (P1-P3)** — Hyphen tokenization, stop words, C# token. Day 3 of knowing. ~30 min. No more excuses.
-3. **🟡 Code quick wins (~30 min)** — #5 better error msg, #6 log network errors, #12 update TOPIC_DOC_MAP for G64/G65/G66/Godot, #13 show descriptions in search results.
-4. **🟡 Godot Phase 2 continue** — G2 State Machine, G3 Signal Architecture, E2 GDScript vs C#.
-5. **🟢 npm publish assessment** — Day 5. At minimum document blockers.
-6. **🟢 Commit & push at EOD** — Pattern: commit at start AND end of day.
+✅ ~~GIT COMMIT & PUSH~~ — Done overnight (8 commits, all pushed)
+✅ ~~Search bug fixes P1-P3~~ — Done, 20/20 search quality
+✅ ~~Code improvement #14 (section extraction)~~ — Done
+✅ ~~G2 State Machine, G3 Signal Architecture~~ — Done
+✅ ~~G67 Object Pooling~~ — Done
+✅ ~~Cloudflare Workers scaffold~~ — Done
+
+### Remaining Today
+1. **🔴 npm v1.1.0 publish** — v1.0.0 is stale, missing Godot module, section extraction, G64-G67, Workers
+2. **🔴 MCP registry submissions** — mcp.so, smithery.ai, mcpmarket.com. This is the #1 discovery channel.
+3. **🟡 README overhaul** — Marketing-ready. Current README is developer-focused, needs user-facing pitch.
+4. **🟡 Godot Phase 2 continue** — E2 GDScript vs C#, G4 Input Handling, G5 Physics
+5. **🟡 Remaining code improvements** — See code-improvements.md
+6. **🟢 Workers API local testing** — Validate before deploy
+7. **🟢 Commit uncommitted files** — PROJECT_MEMORY.md, competitor-log.md
 
 ## Godot Module Progress (Phase 2 — Prototyping)
 
@@ -201,4 +213,8 @@ _Append operational lessons here._
 - **2026-03-20 (4am lesson)**: Pro content gating on the API returns metadata + section list but NO content for unauthorized requests. This is intentionally generous — it lets free users discover what Pro offers (sections visible = they can see the value) while protecting the actual content. This is better UX than a flat "403 Forbidden" which gives no information.
 - **2026-03-20 (5am)**: **Search quality test (Rotation B)** — 20 queries, 20/20 PASS (100%). P1-P3 fixes (hyphen tokenization, stop words, C# token) are all verified working. Key findings: (1) Genre queries are the weakest category — no dedicated genre guide docs exist, so "tower defense game" lands on C1/G65/G66 which mention TD in subsections. The `genre_lookup` tool is the correct tool for genre queries, not `search_docs`. (2) Save/load is a content gap — no dedicated serialization guide. (3) Godot search is excellent — all 5 Godot docs rank correctly. (4) Doc length normalization prevents large docs from dominating. Created reusable test script at `rnd/search-quality-test.ts`.
 - **2026-03-20 (5am lesson)**: When writing search quality tests, verify expected doc IDs against actual file names first. Initial test had 6 false failures because I assumed G56=Tower Defense when it's actually Side-Scrolling Perspective. Always `head -3` the file to confirm title before writing expectations. The reusable test script eliminates this problem for future runs.
+- **2026-03-20 (7am doc audit)**: Audited 5 random docs, found and fixed 6 issues. Most common issue type: missing cross-references between theory docs (core/concepts/) and their MonoGame implementation guides. The concept docs all end with a generic "see engine-specific modules" but don't link to the actual guides. This is a systemic pattern worth fixing across all concept docs. Also caught an outdated MonoGame.Aseprite API in P5 (pre-v6 `Content.Load<AsepriteFile>` → v6.x `AsepriteFile.Load()` + processors). Lesson: third-party library APIs in docs should note the version they target — libraries evolve and examples silently become wrong.
+- **2026-03-20 (8am competitor scan)**: GodotIQ is the first Godot MCP to use a freemium model (22 free tools + 13 paid "intelligence layer" — spatial analysis, dependency graphs, signal flow tracing). This is the closest pricing model to ours in the gamedev MCP space. MCP security crisis emerging (7K exposed servers, CVEs on AWS/Azure MCP, RSAC talk). Our stdio-only architecture is a security advantage worth highlighting in marketing. Also: "Why AI Writes Better Game Code in Godot Than in Unity" published today on DEV Community — argues Godot's text-based formats make it fundamentally more AI-readable, validates our Godot-first strategy.
+- **2026-03-20 (10am content gap audit)**: Full content gap analysis completed. 130 total docs across 3 modules. MonoGame is nearly complete (~95% genre coverage, only puzzle undo/redo + level loading missing). **Godot is the biggest gap at 25% (5/20 planned)**. Core theory has 6 missing topics — combat-theory is highest priority (referenced by 8/11 genres). The content imbalance is stark: MonoGame has 76 docs (2.4M), Godot has 5 docs (108K) — 15:1 ratio. Reaching even 50% Godot completion (10 docs) should be the near-term goal. Also identified that 6 core theory topics lack engine-agnostic docs despite having MonoGame implementation guides — these theory gaps mean Godot/Bevy users get no conceptual foundation before diving into engine-specific content.
 - **2026-03-20 (6am git sync)**: Repo clean. 3 uncommitted files found (search-quality-test.ts, search-quality.md update, PROJECT_MEMORY.md update) — committed and pushed. Build passes (tsc --noEmit clean). 19 total commits, 186 tracked files, 4.4M .git size. All 8 commits from today's cron sessions pushed successfully. No merge conflicts. Metrics logged to rnd/metrics.md.
+- **2026-03-20 (11am engine research — Unity rotation)**: Deep research on Unity's current state. Key findings: (1) **HDRP declared "no new features"** — BIRP deprecated in 6.5, URP is the only future. Hottest topic in r/Unity3D right now. (2) **Unity MCP space has 6+ editor-integration servers** but ZERO knowledge-layer MCPs — `unity-api-mcp` is closest but still API reference, not curated guides. Our niche is wide open. (3) **"Why AI Writes Better Game Code in Godot Than in Unity"** viral DEV Community article — argues C#'s breadth + binary scene files = AI confusion. This means Unity devs need our knowledge MCP MORE than Godot devs (higher pain = higher value). (4) **Unity AI Beta 2026** at GDC — "prompt-to-game", mixed reception. Complementary to us. (5) **ECS becoming core in 6.4** but community frustrated, docs incomplete. (6) **unity-rules.md should be #1 priority** when starting Unity module — constraining AI to Unity 6 patterns is highest-value doc. (7) C# overlap with MonoGame = faster content creation. Created comprehensive `rnd/engine-research/unity.md` (17KB) with pain points, competitive landscape, community resources, and 12-doc module plan across 3 phases.

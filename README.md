@@ -1,5 +1,10 @@
 # GameDev MCP Server
 
+[![CI](https://github.com/sbenson2/gamedev-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/sbenson2/gamedev-mcp-server/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/gamedev-mcp-server)](https://www.npmjs.com/package/gamedev-mcp-server)
+[![Node.js](https://img.shields.io/node/v/gamedev-mcp-server)](https://nodejs.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 > Give your AI permanent game development knowledge. No more context loss mid-project.
 
 An MCP (Model Context Protocol) server that provides 120+ curated game dev docs, structured session workflows, and engine-specific implementation guidance. Works with Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible tool.

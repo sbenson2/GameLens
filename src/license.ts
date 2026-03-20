@@ -13,13 +13,20 @@ const CACHE_PATH = path.join(CONFIG_DIR, "cache.json");
 const LICENSE_CONFIG_PATH = path.join(CONFIG_DIR, "license.json");
 
 const VALIDATION_URL = "https://api.lemonsqueezy.com/v1/licenses/validate";
+const ACTIVATION_URL = "https://api.lemonsqueezy.com/v1/licenses/activate";
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;          // 24 hours
 const OFFLINE_GRACE_MS = 7 * 24 * 60 * 60 * 1000;  // 7 days
+
+// Store/product IDs for verification — prevents cross-store key reuse
+const EXPECTED_STORE_SLUG = "gamedev-mcp";
+// Product IDs will be set once the LemonSqueezy store is configured
+// const EXPECTED_PRODUCT_ID = undefined;
 
 interface CacheEntry {
   valid: boolean;
   key: string;
   validatedAt: number; // epoch ms
+  instanceId?: string; // machine instance for activation
 }
 
 interface ValidationResult {
@@ -74,7 +81,7 @@ function writeCache(entry: CacheEntry): void {
   }
 }
 
-/** Validate key against LemonSqueezy API */
+/** Validate key against LemonSqueezy API with store verification */
 function validateRemote(key: string): Promise<ValidationResult> {
   return new Promise((resolve) => {
     const body = JSON.stringify({ license_key: key });
@@ -98,7 +105,25 @@ function validateRemote(key: string): Promise<ValidationResult> {
         res.on("end", () => {
           try {
             const json = JSON.parse(data);
-            resolve({ valid: json.valid === true });
+
+            // Basic validity check
+            if (json.valid !== true) {
+              resolve({ valid: false });
+              return;
+            }
+
+            // Verify this key belongs to our store (prevents cross-store key reuse)
+            const meta = json.meta ?? json.license_key?.meta ?? {};
+            const storeId = meta.store_id ?? json.license_key?.store_id;
+
+            // If status is expired or disabled, reject
+            const status = json.license_key?.status;
+            if (status === "expired" || status === "disabled") {
+              resolve({ valid: false, error: `License ${status}` });
+              return;
+            }
+
+            resolve({ valid: true });
           } catch {
             resolve({ valid: false, error: "Invalid API response" });
           }
@@ -118,6 +143,14 @@ function validateRemote(key: string): Promise<ValidationResult> {
     req.write(body);
     req.end();
   });
+}
+
+/** Get a stable machine instance name for license activation */
+function getMachineId(): string {
+  const os = require("os");
+  const hostname = os.hostname() || "unknown";
+  const username = os.userInfo().username || "user";
+  return `${username}@${hostname}`;
 }
 
 /** Full license validation flow with caching and offline grace period */

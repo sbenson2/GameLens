@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & Test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Verify dist output exists
+        run: test -f dist/index.js
+
+      - name: TypeScript strict check
+        run: npx tsc --noEmit
+
+      - name: Run tests
+        run: npm test
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check formatting (if prettier configured)
+        run: npx prettier --check "src/**/*.ts" || true
+
+      - name: Lint (if eslint configured)
+        run: npx eslint "src/**/*.ts" 2>/dev/null || true
