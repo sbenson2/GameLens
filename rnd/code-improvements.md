@@ -247,20 +247,9 @@ const lines = results.map((r, i) => {
 });
 ```
 
-#### 14. `get_doc` Should Truncate Large Docs with a Warning (get-doc.ts)
+#### ✅ 14. `get_doc` Section Extraction + maxLength (get-doc.ts) — DONE 2026-03-20
 
-**Problem:** Some docs are 50-85KB. When an AI agent fetches one, it consumes a massive chunk of context window. The MCP tool should warn about size and optionally support section extraction.
-
-**Suggestion:** Add `section` parameter:
-```typescript
-{
-  id: z.string().describe("Doc ID"),
-  section: z.string().optional().describe("Optional heading to extract (e.g. '## Combat System')"),
-  maxLength: z.number().optional().describe("Max chars to return (default: full doc)"),
-}
-```
-
-This directly addresses the "context window backlash" from market research — be the MCP that's *efficient* with context.
+**Implemented:** `section` param (heading substring match, case-insensitive, extracts until next equal/higher heading) + `maxLength` param (truncates at paragraph boundary). Large docs (>20KB) show warning tip. Section not found returns available sections list. Both params composable. Tool description updated with usage guidance. 7/7 tests pass. Commit: cbd15eb.
 
 #### 15. `list_docs` Should Include Doc Count Per Category (list-docs.ts)
 
