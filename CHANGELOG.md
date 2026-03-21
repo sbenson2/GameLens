@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Dependabot** — Automated dependency updates for npm packages and GitHub Actions (weekly, Mondays)
+- **CodeQL security scanning** — Weekly static analysis for JavaScript/TypeScript vulnerabilities
+- **Branch protection on `main`** — Required status checks (CI build matrix + lint), no force pushes, no deletions
+- **Security audit job** in CI — `npm audit` runs on every push/PR
+- **Concurrency control** in CI — Duplicate runs auto-cancel on the same branch
+- **`npm pack --dry-run` verification** in CI — Ensures package is publishable on every build
+- **README badges** — Added CodeQL status and npm monthly downloads badges
+
+### Changed
+- CI matrix now uses `fail-fast: false` — all Node versions test even if one fails
+
 ## [1.1.0] - 2026-03-20
 
 ### Added

@@ -1,7 +1,9 @@
 # GameDev MCP Server
 
 [![CI](https://github.com/sbenson2/gamedev-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/sbenson2/gamedev-mcp-server/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/sbenson2/gamedev-mcp-server/actions/workflows/codeql.yml/badge.svg)](https://github.com/sbenson2/gamedev-mcp-server/actions/workflows/codeql.yml)
 [![npm version](https://img.shields.io/npm/v/gamedev-mcp-server)](https://www.npmjs.com/package/gamedev-mcp-server)
+[![npm downloads](https://img.shields.io/npm/dm/gamedev-mcp-server)](https://www.npmjs.com/package/gamedev-mcp-server)
 [![Node.js](https://img.shields.io/node/v/gamedev-mcp-server)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
