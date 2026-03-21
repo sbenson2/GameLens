@@ -123,38 +123,50 @@ Validate a license key. Returns tier and expiry info.
 - [x] CORS support (preflight + response headers)
 - [x] All endpoints tested locally with 130 docs loaded into KV
 
-### Phase 4: Client-Side Caching
-- [ ] Add HTTP client to MCP server for remote doc fetching
-- [ ] Local disk cache with TTL
-- [ ] Fallback to bundled docs if API unreachable
-- [ ] Hybrid mode: free docs bundled, Pro docs fetched from API
+### Phase 4: Client-Side Caching ✅
+- [x] HTTP client for remote doc fetching (`src/core/remote-client.ts`) — supports health, list, get, search endpoints
+- [x] Local disk cache with TTL (`src/core/doc-cache.ts`) — 6h doc TTL, 1h manifest TTL, eviction, stale fallback
+- [x] Fallback chain: cache → remote → stale cache → local bundle
+- [x] Hybrid provider (`src/core/hybrid-provider.ts`) — integrates remote client + cache + local DocStore
+- [x] Free/core docs always served locally (no API call), Pro docs fetched remotely when API configured
+- [x] `GAMEDEV_MCP_API_URL` env var to enable hybrid mode
+- [x] Cache stats in `license_info` tool output
+- [x] Source annotations on fetched docs (local/cache/remote/stale-cache)
+- [x] Health check caching (5 min interval) to avoid hammering API
+- [x] 16 new tests (doc-cache: 9, hybrid-provider: 7), 58/58 total pass
 
 ### Phase 5: Integration Testing
 - [ ] End-to-end test: MCP client → Workers API → KV → response
-- [ ] Tier gating validation
-- [ ] Offline fallback testing
-- [ ] Rate limit testing
-- [ ] Performance benchmarks
+- [ ] Tier gating validation (Pro doc → 403 without key → 200 with key)
+- [ ] Offline fallback testing (kill API → verify stale cache → verify local fallback)
+- [ ] Rate limit testing (exhaust free quota → verify 429 → verify Pro bypass)
+- [ ] Cache lifecycle testing (fresh → stale → evict → refetch)
+- [ ] Performance benchmarks (cold fetch vs cached fetch latency)
 
-## Current Phase: 4 (Client-Side Caching)
+## Current Phase: 5 (Integration Testing)
 
 ## File Structure
 
 ```
-workers/
+workers/                          # Cloudflare Workers API (server-side)
 ├── src/
-│   ├── index.ts          # Entry point, router registration, fetch handler
-│   ├── types.ts          # Env bindings, DocMeta, SearchIndexEntry, etc.
-│   ├── router.ts         # Minimal path-param router
-│   ├── handlers.ts       # Route handlers (health, list, get, search, validate)
-│   ├── helpers.ts        # JSON response helpers, section extraction, truncation
-│   ├── license.ts        # LemonSqueezy validation + KV cache
-│   ├── rate-limit.ts     # KV-backed sliding window rate limiter
-│   └── search.ts         # TF-IDF search engine (mirrors src/core/search.ts)
+│   ├── index.ts                  # Entry point, router registration, fetch handler
+│   ├── types.ts                  # Env bindings, DocMeta, SearchIndexEntry, etc.
+│   ├── router.ts                 # Minimal path-param router
+│   ├── handlers.ts               # Route handlers (health, list, get, search, validate)
+│   ├── helpers.ts                # JSON response helpers, section extraction, truncation
+│   ├── license.ts                # LemonSqueezy validation + KV cache
+│   ├── rate-limit.ts             # KV-backed sliding window rate limiter
+│   └── search.ts                 # TF-IDF search engine (mirrors src/core/search.ts)
 ├── scripts/
-│   └── upload-docs.ts    # Generates kv-bulk.json for wrangler kv bulk put
-├── wrangler.toml         # Cloudflare Workers config
+│   └── upload-docs.ts            # Generates kv-bulk.json for wrangler kv bulk put
+├── wrangler.toml                 # Cloudflare Workers config
 ├── tsconfig.json
 ├── package.json
 └── .gitignore
+
+src/core/                          # Client-side hybrid caching (Phase 4)
+├── remote-client.ts              # HTTP client for Workers API (health, list, get, search)
+├── doc-cache.ts                  # Disk cache with TTL (~/.gamedev-mcp/cache/)
+└── hybrid-provider.ts            # Fallback chain: cache → remote → stale → local
 ```

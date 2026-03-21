@@ -6,12 +6,13 @@ import * as fs from "fs";
 import { DocStore } from "./core/docs.js";
 import { SearchEngine } from "./core/search.js";
 import { discoverModules, resolveActiveModules, ModuleMetadata } from "./core/modules.js";
+import { HybridProvider } from "./core/hybrid-provider.js";
 import { handleSearchDocs } from "./tools/search-docs.js";
-import { handleGetDoc } from "./tools/get-doc.js";
+import { handleGetDoc, handleGetDocHybrid } from "./tools/get-doc.js";
 import { handleListDocs } from "./tools/list-docs.js";
 import { handleSession } from "./tools/session.js";
 import { handleGenreLookup, formatGenreResult } from "./tools/genre-lookup.js";
-import { validateLicense } from "./license.js";
+import { validateLicense, getLicenseKey } from "./license.js";
 import { checkSearchLimit, checkGetDocLimit, getUsageStats } from "./rate-limit.js";
 import {
   Tier,
@@ -76,6 +77,14 @@ export async function createServer() {
   // Validate license
   const { tier, message: licenseMessage } = await validateLicense();
 
+  // Initialize hybrid provider for remote Pro content
+  const apiUrl = process.env.GAMEDEV_MCP_API_URL || null;
+  const licenseKey = getLicenseKey();
+  const hybridProvider = new HybridProvider(docStore, {
+    apiUrl,
+    licenseKey,
+  });
+
   const discoveredNames = discoveredModules.map((m) => `${m.id} (${m.label}, ${m.docCount} docs)`);
   const activeNames = activeModuleMeta.map((m) => m.id);
   console.error(
@@ -85,6 +94,9 @@ export async function createServer() {
     `[gamedev-mcp] Active modules: ${activeNames.join(", ")} (${allDocs.length} docs from ${docsRoot})`
   );
   console.error(licenseMessage);
+  if (hybridProvider.isHybridEnabled) {
+    console.error(`[gamedev-mcp] Hybrid mode: enabled (API: ${apiUrl})`);
+  }
 
   const server = new McpServer({
     name: "gamedev-mcp-server",
@@ -186,6 +198,10 @@ export async function createServer() {
           };
         }
 
+        // Use hybrid provider if enabled, otherwise pure local
+        if (hybridProvider.isHybridEnabled) {
+          return await handleGetDocHybrid(args, docStore, hybridProvider);
+        }
         return handleGetDoc(args, docStore);
       } catch (err) {
         return { content: [{ type: "text", text: `Error fetching doc: ${err instanceof Error ? err.message : String(err)}` }] };
@@ -290,6 +306,18 @@ export async function createServer() {
       output += `\n## Accessible Modules\n\n`;
       for (const mod of features.modules) {
         output += `- ${mod}\n`;
+      }
+
+      // Hybrid/cache info
+      if (hybridProvider.isHybridEnabled) {
+        const cacheStats = hybridProvider.getCacheStats();
+        output += `\n## Remote API\n\n`;
+        output += `- **API URL:** ${cacheStats.apiUrl}\n`;
+        output += `- **Status:** ${cacheStats.apiAvailable === null ? "Unknown" : cacheStats.apiAvailable ? "Reachable ✅" : "Unreachable ⚠️"}\n`;
+        output += `- **Cached docs:** ${cacheStats.cache.docCount}\n`;
+        if (cacheStats.cache.totalSizeBytes > 0) {
+          output += `- **Cache size:** ${Math.round(cacheStats.cache.totalSizeBytes / 1024)}KB\n`;
+        }
       }
 
       if (tier === "free") {
