@@ -107,11 +107,13 @@ export async function createServer() {
 
   server.tool(
     "search_docs",
-    "Search across all game development docs (core + active engine modules). Returns matching doc snippets with IDs and relevance scores.",
+    "Search across all game development docs (core + active engine modules). Returns matching doc snippets with IDs and relevance scores. Use `engine` to filter by engine (e.g. 'Godot', 'MonoGame'). When results span multiple engines, they're grouped by engine for easy comparison.",
     {
       query: z.string().describe("Search query (e.g. 'camera follow', 'A* pathfinding', 'ECS architecture')"),
       category: z.enum(CATEGORIES).optional().describe("Filter by category"),
-      module: z.string().optional().describe("Filter by module (e.g. 'core', 'monogame-arch')"),
+      module: z.string().optional().describe("Filter by module ID (e.g. 'core', 'monogame-arch', 'godot-arch')"),
+      engine: z.string().optional().describe("Filter by engine name (e.g. 'Godot', 'MonoGame', 'Unity'). Also includes core docs. Use list_modules to see available engines."),
+      crossEngine: z.boolean().optional().describe("When true, always group results by engine even if only one engine matches. Useful for comparing how different engines handle the same concept."),
     },
     async (args) => {
       try {
@@ -125,6 +127,14 @@ export async function createServer() {
               content: [{
                 type: "text",
                 text: `Searching non-core modules requires a Pro license. ${PRO_GATE_MESSAGE}`,
+              }],
+            };
+          }
+          if (args.engine) {
+            return {
+              content: [{
+                type: "text",
+                text: `Searching by engine requires a Pro license. Free tier searches core docs only. ${PRO_GATE_MESSAGE}`,
               }],
             };
           }
@@ -142,7 +152,7 @@ export async function createServer() {
           };
         }
 
-        const result = handleSearchDocs(args, docStore, searchEngine);
+        const result = handleSearchDocs(args, docStore, searchEngine, discoveredModules);
 
         // Append usage info for free tier when getting low
         if (tier === "free" && rateLimit.remaining <= 10 && rateLimit.remaining > 0) {
