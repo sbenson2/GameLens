@@ -100,6 +100,14 @@ const TOPIC_DOC_MAP: Record<string, string[]> = {
   "scene composition": ["godot-arch/G1"],
   "node tree": ["godot-arch/E1", "godot-arch/G1"],
   "signals": ["godot-arch/E1"],
+  "stitch": ["G_stitch_ui_workflow"],
+  "stitch ui": ["G_stitch_ui_workflow"],
+  "vibe design": ["G_stitch_ui_workflow"],
+  "ui prototyping": ["G_stitch_ui_workflow", "G5"],
+  "ui design": ["G_stitch_ui_workflow", "G5"],
+  "game ui": ["G_stitch_ui_workflow", "G5"],
+  "voice canvas": ["G_stitch_ui_workflow"],
+  "design.md": ["G_stitch_ui_workflow"],
 };
 
 export function createDefaultState(): SessionState {

@@ -4,6 +4,119 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-20 (6pm) — Community Research Deep Dive: Common Questions, Pain Points & AI+Gamedev Sentiment
+
+### 🔥 HEADLINE: GDC 2026 Fallout Reshapes AI+Gamedev Landscape — Godogen Goes Viral on HN, Anti-AI Sentiment Hits Record High, GDC Attendance Down 30%
+
+This week's GDC 2026 was a defining moment for the industry. Anti-AI sentiment among game developers hit a record high (>50% say AI is harming the industry per the 2026 State of the Game Industry report), GDC attendance dropped 30% due to layoffs and travel restrictions, and yet AI tooling for gamedev is accelerating faster than ever. The disconnect between developer sentiment and corporate investment creates a nuanced positioning opportunity for us.
+
+### 📊 Community Question Analysis: What Devs Actually Struggle With
+
+**Sourced from: r/gamedev, r/godot, r/vibecoding, Godot Forum, Hacker News (week of 2026-03-14 to 2026-03-20)**
+
+#### Top 5 Pain Points (ranked by frequency across all communities)
+
+1. **AI context loss / architectural collapse (STILL #1)**
+   - "500 Hours of Vibe Coding Broke Me" still active on r/gamedev after 1 week
+   - r/vibecoding: "Vibe coding is a myth. If you're building complex systems with AI, you actually have to over-engineer your specs" (5 days ago, highly upvoted)
+   - r/vibecoding: "AI coding has honestly been working well for me. What is going wrong for everyone else?" — revealing split: devs who provide architecture docs succeed, those who don't fail
+   - Forbes (TODAY): "Why Vibe Coders Still Need To Think Like Software Engineers" — mainstream press now covering this
+   - **KEY INSIGHT**: The devs succeeding with AI coding are the ones writing requirements docs, architecture guides, and design docs FIRST. This is literally what our MCP server provides — structured knowledge that prevents the architectural collapse.
+
+2. **Godot 3→4 migration / AI hallucinating Godot 3 syntax**
+   - HN (14hrs ago): Godogen creator confirms "GDScript's ~850 classes" cause LLMs to "hallucinate Python idioms that fail to compile"
+   - HN commenter: "I also kept running into the Godot 3 vs 4 issue before adding specific guidance about this into CLAUDE.md"
+   - Godot Forum (3 days ago): Devs still confused about syntax differences across languages they know
+   - **Our godot-rules.md directly solves this** — it's the exact document HN commenters are manually creating in their CLAUDE.md files
+
+3. **Save/load systems (Godot-specific)**
+   - Godot Forum (2 DAYS AGO): "Loading and Saving for Runtime-node" — Godot 4.6 user can't figure out complex save systems
+   - DeepWiki: JSON can't directly represent Vector2, Vector3, Color, Rect2, Quaternion — a constant source of confusion
+   - **CONTENT GAP CONFIRMED**: We have no save/load guide for Godot (or even a general serialization theory doc). This is the #2 most common Godot help request.
+
+4. **C# performance in Godot vs GDScript**
+   - r/godot "What's wrong with Godot?" (1 week ago): "_Process and _PhysicsProcess are drastically less performant if you use C#" — dev had to switch from node-based state machine to resource-based one
+   - Multiple inheritance workarounds frequently mentioned
+   - **Our planned E2 (GDScript vs C#) directly addresses this** — high priority
+
+5. **Scope creep / finishing games / finding audience**
+   - r/gamedev: "20 Years Pro Dev… My First Game Still Took 4 Years" — even experienced devs struggle with scope
+   - r/gamedev: "Genuine concern: How to find my game's audience" — 5-year dev worried about marketing
+   - r/gamedev: "why does everyone think making a game is just having a good idea" — design vs implementation gap
+   - Not directly our domain, but our project management docs (core/project-management/) address scope management
+
+### 🆕 NEW Competitor: Godogen (htdt/godogen) — The Most Relevant New Entry
+
+**Godogen hit HN front page TODAY** — "Claude Code skills that build complete Godot games"
+
+- **What it is**: Open-source Claude Code skills that generate complete Godot 4 projects from a text description
+- **Architecture**: Custom GDScript reference + full API docs (converted from Godot's XML source) + quirks database + lazy-loaded docs
+- **Cost**: ~$5-8 per generated game ($1-3 LLM + $3 assets via Tripo3D/image gen)
+- **HN reception**: Front page, active discussion. Mixed on quality — "lifeless" demos, "no actual gameplay mechanics" — but impressive as a pipeline
+- **Key technical insight from creator**: "Getting LLMs to reliably generate functional games required solving three specific engineering bottlenecks: (1) Training data scarcity for GDScript, (2) 850+ classes that explode context windows, (3) [implied: architecture patterns]"
+- **Why it matters for us**: Godogen's creator spent "a year and four rewrites" building a custom GDScript reference because existing docs weren't sufficient. **Our Godot module solves the same problem as a reusable MCP server, not a one-off skills file.** The fact that Godogen had to build custom docs from scratch validates our approach — devs need curated, structured Godot knowledge, and there's no good existing source.
+- **Strategic implication**: Godogen is complementary, not competitive. It generates games; we provide knowledge. A user could theoretically use both — Godogen for scaffolding + our MCP for ongoing development knowledge. Worth reaching out for cross-promotion.
+
+### 📰 GDC 2026: The Industry Context
+
+Key takeaways from this week's GDC:
+
+1. **Attendance down 30%** (SF Chronicle) — layoffs + travel restrictions hit hard
+2. **>50% of game devs say AI is harming the industry** (2026 State of the Game Industry report)
+3. **EA laid off people THE DAY GDC started** — job insecurity dominated the mood
+4. **AI was inescapable** — Tencent alone had ~12 AI talks. C-suites want AI regardless of developer sentiment
+5. **RAM crisis emerging** — Polygon reported on how memory constraints could reshape development
+6. **Indie devs still committed** despite the doom — the "floor was full of job seekers" but also passionate indie exhibitors
+
+**Strategic implications for us:**
+- Anti-AI sentiment is about AI **replacing** developers, not AI **assisting** them. Our positioning as "knowledge infrastructure" (like a reference book) rather than "AI agent" sidesteps the backlash.
+- Indie devs are the primary audience for our server, and they're still building despite industry turmoil. They need tools that make them more efficient — that's us.
+- The "AI works when you give it architecture docs" narrative emerging from r/vibecoding is our EXACT value proposition.
+
+### 🔧 AI Coding Tool Updates
+
+1. **"Best AI Code Editors for Vibe Coding in 2026"** (NexaSphere, 1 week ago) — Tested all major tools. Copilot "struggles with agentic, multi-file workflows." Cursor Composer and Claude Code lead for autonomous editing.
+2. **"Claude Code vs Cursor: What I Learned Using Both for 30 Days"** (DEV Community, 4 days ago) — Ongoing comparison content showing the AI coding tool market is still fragmented and developers are actively evaluating.
+3. **Google Colab MCP Server launched** (Google Developers Blog, 4 days ago) — Google officially entering MCP ecosystem with notebook execution MCP. Shows big tech commitment to MCP protocol.
+4. **Azure DevOps Remote MCP Server** (Microsoft, 3 days ago) — Public preview. Azure DevOps data accessible via MCP. Another enterprise MCP entry.
+5. **Qualys TotalAI now scans for MCP servers** (TODAY) — Enterprise security treating MCP as "shadow IT." MCP is now a security surface that enterprises actively monitor. Reinforces our stdio security advantage.
+6. **"Godot GDScript Patterns" skill** appeared on LobeHub Skills Marketplace (~3 weeks ago) — Two separate listings. Covers architecture patterns, scene design, signal usage, state machines, GDScript perf optimization. **Direct overlap with our Godot module content.** These are free Claude Code skills files, not MCP servers, but they show demand for exactly the knowledge we provide.
+
+### 📊 MCP Ecosystem Update
+
+- **14,274 servers** still the latest count (Descope article, 4 days ago confirms)
+- **"50+ Best MCP Servers for Claude Code in 2026"** curated list published (claudefa.st, yesterday) — gamedev-mcp-server NOT listed. **This is a submission opportunity.**
+- **MCP security narrative intensifying**: Qualys TotalAI, Stacklok access control guides, Lunar.dev MCPX — enterprise security tooling growing around MCP. Our stdio-only architecture continues to be an advantage.
+- **Streamable HTTP** emerging as newest MCP transport — mentioned in FastMCP article as the future
+
+### 🎯 Content Gaps Identified (Actionable)
+
+Based on this community research, these are the highest-demand topics we DON'T cover:
+
+| Gap | Community Evidence | Priority | Notes |
+|-----|-------------------|----------|-------|
+| **Save/Load Systems (Godot)** | Godot Forum thread 2 days ago, DeepWiki coverage | 🔴 HIGH | JSON limitations with Godot types is a constant confusion point |
+| **GDScript vs C# performance** | r/godot "What's wrong" thread, multiple mentions | 🔴 HIGH | Already planned as E2, should be prioritized |
+| **AI workflow rules / CLAUDE.md patterns** | HN Godogen discussion, r/vibecoding | 🟡 MEDIUM | Our godot-rules.md does this; could be promoted as "drop this in your CLAUDE.md" |
+| **Serialization theory (engine-agnostic)** | Identified in search quality test | 🟡 MEDIUM | No core/concepts/serialization-theory.md exists |
+| **Scope management / MVP patterns** | r/gamedev multiple threads | 🟢 LOW | Covered in project-management docs, but could be more prominent |
+
+### Key Takeaways
+
+1. **Godogen validates our Godot module** — its creator spent a year building custom GDScript docs because nothing good existed. We're building the reusable version of what Godogen had to create from scratch.
+
+2. **GDC 2026 anti-AI backlash is about replacement, not assistance.** Our "knowledge infrastructure" positioning avoids the backlash. We're a reference book, not an agent trying to replace anyone.
+
+3. **Save/load systems are a confirmed high-demand content gap** — both for Godot specifically and as an engine-agnostic concept. Should be prioritized.
+
+4. **The "architecture docs make AI coding work" narrative is going mainstream** (Forbes, DEV Community, r/vibecoding). This is literally our product thesis. Marketing should explicitly connect: "Your AI forgets everything? Give it permanent gamedev architecture knowledge."
+
+5. **Claude Code skills/patterns for Godot are proliferating** on LobeHub and GitHub — demand for structured Godot knowledge is proven. Our MCP server is the scalable, searchable version of these one-off skills files.
+
+6. **claudefa.st "50+ Best MCP Servers" list** is a submission opportunity — we're not listed, but we should be.
+
+---
+
 ## 2026-03-20 — Day A: Competitor Scan
 
 ### 🔥 HEADLINE: GodotIQ Emerges as New Premium Godot MCP Competitor + MCP Security Crisis Hitting Mainstream Press

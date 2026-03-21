@@ -543,6 +543,27 @@ The danger zone is between placeholder and final art. Here lives **programmer ar
 
 UI is the most-seen art in your game. Players stare at health bars, menus, and inventories constantly. Get it right.
 
+### UI/UX Design Phase — Prototyping with Google Stitch
+
+Before creating any UI art assets, prototype your layouts in [Google Stitch](https://stitch.withgoogle.com/) — a free AI-native design canvas that generates high-fidelity UI mockups from text or voice prompts.
+
+**Stitch in the art pipeline:**
+
+```
+Concept → Stitch Prototype → Art Asset Creation → Engine Implementation
+          (layout/colors)    (sprites/9-slice)    (Gum/Godot UI)
+```
+
+1. **Describe your screen** in Stitch to establish layout, color palette, and typography hierarchy
+2. **Use vibe design** to explore aesthetics: "dark souls inventory feel", "cozy farm shop", "retro arcade scoreboard"
+3. **Extract the design system** — Colors, spacing, sizes, border styles → feeds directly into your asset creation
+4. **Create art assets** to match — Now you know the exact dimensions for 9-slice panels, icon sizes, and font choices
+5. **Implement in engine** with both the Stitch layout specs and the art assets you created
+
+This front-loads design decisions before you spend time drawing pixel art or crafting 9-slice panels. Changing a Stitch prompt costs seconds; redrawing UI sprites costs hours.
+
+See [G — Stitch UI Workflow](../game-design/G_stitch_ui_workflow.md) for the complete guide with prompt templates and engine integration details.
+
 ### UI Element Sizing
 
 - **Design at native resolution** — UI at your game's base resolution, not the display resolution. A button that's 40×12 pixels at 320×180 base will scale up with the rest of the game.

@@ -257,3 +257,37 @@ For touch: Gum handles touch input as mouse input on mobile platforms — no spe
 
 ---
 
+### 9 UI Prototyping with Google Stitch
+
+Before writing any Gum code, consider prototyping your UI layouts in [Google Stitch](https://stitch.withgoogle.com/) — a free AI-native design canvas that generates high-fidelity UI mockups from natural language prompts.
+
+**Why prototype first:**
+- Changing a text prompt is faster than refactoring Gum layout code
+- See your entire UI system (menus, HUD, inventory, settings) on an infinite canvas
+- Extract exact colors, spacing, and sizing values from the generated HTML/CSS
+- Test screen flows (Main Menu → Settings → Gameplay → Pause) as interactive prototypes
+
+**Stitch → Gum translation quick reference:**
+
+| Stitch (HTML/CSS) | Gum Equivalent |
+|---|---|
+| `<div>` container | `ContainerRuntime` |
+| `flex-direction: column` | `ChildrenLayout = TopToBottomStack` |
+| `flex-direction: row` | `ChildrenLayout = LeftToRightStack` |
+| `width: 50%` | `Width = 50, WidthUnits = RelativeToContainer` |
+| `gap: 8px` | `StackSpacing = 8` |
+| `overflow: scroll` | `ScrollViewer` (Forms control) |
+
+**Workflow:**
+1. Describe your screen in Stitch ("dark fantasy RPG inventory with 6x4 item grid, equipment paper doll on left, tooltip at bottom")
+2. Iterate with voice or text refinements until the layout is right
+3. Export the HTML/CSS and extract layout values (positions, sizes, colors, spacing)
+4. Implement in Gum using the extracted specifications
+5. Screenshot your Gum implementation, upload to Stitch, and ask it to compare — it'll flag visual differences
+
+**Note:** Stitch generates web UI, not game engine UI. Use it for *layout design and visual specification*, then implement the behavior (drag-and-drop, gamepad navigation, tooltips) in Gum code.
+
+See [G — Stitch UI Workflow](../../core/game-design/G_stitch_ui_workflow.md) for the complete guide with prompt templates, DESIGN.md integration, and detailed Stitch-to-Gum translation examples.
+
+---
+

@@ -5,6 +5,7 @@
 | Date | Rotation | Action |
 |------|----------|--------|
 | 2026-03-20 | A (New concept) | Created `networking-theory.md` (~21KB) |
+| 2026-03-21 | B (Strategic — Feature Roadmap) | Created `rnd/marketing/feature-roadmap.md` — v1.1/v1.2/v2.0/v3.0 roadmap |
 
 ---
 
