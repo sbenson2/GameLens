@@ -1,5 +1,5 @@
 # E4 — Solo Project Management
-> **Category:** Explanation · **Related:** [E5 AI Workflow](../ai-workflow/E5_ai_workflow.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [E6 Game Design Fundamentals](./E6_game_design_fundamentals.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
+> **Category:** Explanation · **Related:** [E5 AI Workflow](../ai-workflow/E5_ai_workflow.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
 
 ---
 

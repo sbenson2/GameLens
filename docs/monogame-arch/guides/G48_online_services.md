@@ -594,11 +594,23 @@ public class SteamAuth
     private HAuthTicket _ticketHandle;
     private byte[] _ticketData;
 
-    public byte[] GetAuthTicket()
+    /// <summary>
+    /// Get an auth ticket for validation. Steamworks SDK 1.55+ (Dec 2023)
+    /// requires a SteamNetworkingIdentity parameter.
+    /// Pass the remote server/peer identity for targeted tickets,
+    /// or use a default identity for Web API validation.
+    /// </summary>
+    public byte[] GetAuthTicket(CSteamID remoteId = default)
     {
         _ticketData = new byte[1024];
+
+        var identity = new SteamNetworkingIdentity();
+        if (remoteId.m_SteamID != 0)
+            identity.SetSteamID(remoteId);
+
         _ticketHandle = SteamUser.GetAuthSessionTicket(
-            _ticketData, _ticketData.Length, out uint ticketLength);
+            _ticketData, _ticketData.Length, out uint ticketLength,
+            ref identity);
         Array.Resize(ref _ticketData, (int)ticketLength);
         return _ticketData;
     }
@@ -807,7 +819,7 @@ public class QueuedAction
 
 ### The Interface
 
-Same pattern as [G12 Service Locator](./G12_service_locator.md). Define what platform services your game needs, then swap implementations:
+Same pattern as [G12 Design Patterns § Service Locator](./G12_design_patterns.md). Define what platform services your game needs, then swap implementations:
 
 ```csharp
 public interface IPlatformServices

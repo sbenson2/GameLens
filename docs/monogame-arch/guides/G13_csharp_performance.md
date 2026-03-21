@@ -1,7 +1,7 @@
 # G13 — C# Performance
 
 
-> **Category:** Guide · **Related:** [G15 Game Loop](./G15_game_loop.md) · [G14 Data Structures](./G14_data_structures.md) · [E1 Architecture Overview](../architecture/E1_architecture_overview.md)
+> **Category:** Guide · **Related:** [G15 Game Loop](./G15_game_loop.md) · [G14 Data Structures](./G14_data_structures.md) · [E1 Architecture Overview](../architecture/E1_architecture_overview.md) · [P12 Performance Budget](./P12_performance_budget.md) · [G33 Profiling & Optimization](./G33_profiling_optimization.md)
 
 ---
 

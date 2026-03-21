@@ -342,3 +342,45 @@ Uses `../R/R1_library_stack.md` and `../G/G1_custom_code_recipes.md` patterns. F
 | P5_art_pipeline.md | 1 (outdated API) | 1 |
 | G18_game_programming_patterns.md | 2 (wrong count, plain-text link) | 2 |
 | **Total** | **6** | **6** |
+
+---
+
+## Audit 3 — 2026-03-21 (7am cron)
+
+**5 random docs audited. 6 issues found, 6 fixed.**
+
+### 1. `docs/core/project-management/E4_project_management.md`
+- **Issue (broken link):** Header Related section linked `[E6 Game Design Fundamentals](./E6_game_design_fundamentals.md)` — E6 lives in `../game-design/`, not in the same PM directory.
+- **Fix:** Changed to `(../game-design/E6_game_design_fundamentals.md)`. Other PM files (P1, P0, P9, P10) already had the correct path.
+- **Content:** Excellent — recently expanded to 43.5KB. All 14 other cross-references verified. Code-free doc, no API concerns.
+
+### 2. `docs/monogame-arch/guides/G13_csharp_performance.md`
+- **Issue (missing cross-ref):** No link to P12 Performance Budget or G33 Profiling & Optimization — natural pairings for a C# performance guide.
+- **Fix:** Added P12 and G33 to the Related header.
+- **Content:** All code examples use correct modern C# (readonly structs, Span<T>, stackalloc, CollectionsMarshal, FrozenDictionary .NET 8+, record structs C# 10+). No API issues.
+
+### 3. `docs/monogame-arch/guides/G19_display_resolution_viewports.md`
+- **Status:** ✅ Clean — all 6 internal links verified (G2, G15, G20, G24, G21, G25). VirtualResolution expand-mode implementation is correct. iOS device table is current (iPhone 15 Pro series). Aspect ratio decision tree is well-structured. No issues found.
+
+### 4. `docs/monogame-arch/guides/G48_online_services.md`
+- **Issue (broken link):** Section 10 referenced `[G12 Service Locator](./G12_service_locator.md)` — no such file. The file is `G12_design_patterns.md` which covers service locator among other patterns.
+- **Fix:** Changed to `[G12 Design Patterns § Service Locator](./G12_design_patterns.md)`.
+- **Issue (outdated API):** `SteamUser.GetAuthSessionTicket()` in Section 7 used the pre-SDK 1.55 signature (3 params). Steamworks SDK 1.55+ (Dec 2023) added a required `SteamNetworkingIdentity` parameter.
+- **Fix:** Updated to 4-param signature with `SteamNetworkingIdentity`, added XML doc comment explaining the change. Backward-compatible default parameter for Web API usage.
+- **Content:** All other Steamworks.NET APIs (leaderboards, cloud saves, lobbies, rich presence) verified as current.
+
+### 5. `docs/monogame-arch/guides/P12_performance_budget.md`
+- **Issue (wrong title):** Heading was `# 16 — Performance Budget Template` instead of `# P12 — Performance Budget Template`. This is the known P-file title numbering mismatch from PROJECT_MEMORY, now fixed for P12.
+- **Fix:** Changed to `# P12 — Performance Budget Template`.
+- **Content:** All 4 internal links verified (G33, G16, G3, G32). Frame budget diagrams, entity guidelines, and platform-specific budgets (Steam Deck, mobile, web) are comprehensive and current.
+
+### Summary
+
+| Doc | Issues Found | Issues Fixed |
+|-----|-------------|-------------|
+| E4_project_management.md | 1 (broken link to E6) | 1 |
+| G13_csharp_performance.md | 1 (missing cross-refs) | 1 |
+| G19_display_resolution_viewports.md | 0 | 0 |
+| G48_online_services.md | 2 (broken link, outdated API) | 2 |
+| P12_performance_budget.md | 1 (wrong title) | 1 |
+| **Total** | **6** | **6** |
