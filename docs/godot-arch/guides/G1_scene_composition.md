@@ -1,6 +1,6 @@
 # G1 — Scene Composition
 > **Category:** Guide · **Engine:** Godot 4.4+ · **Language:** GDScript  
-> **Related:** [E1 Architecture Overview](../architecture/E1_architecture_overview.md) · [G3 Signal Architecture](./G3_signal_architecture.md) · [G4 Custom Resources](./G4_custom_resources.md)
+> **Related:** [E1 Architecture Overview](../architecture/E1_architecture_overview.md) · [G3 Signal Architecture](./G3_signal_architecture.md) · [G4 Input Handling](./G4_input_handling.md)
 
 ---
 
