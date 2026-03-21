@@ -1,16 +1,18 @@
 # Metrics
 
-## Git Stats — 2026-03-21 (10:00 AM)
+## Git Stats — 2026-03-21 (4:00 PM)
 
 | Metric | Value |
 |---|---|
-| Last commit | `1cbf847` — docs: morning standup Day 6 |
-| Total commits | 43+ |
-| Files tracked | 209+ |
-| Repo size (.git) | 5.7M |
+| Last commit | `ff2898e` — release: finalize v1.1.0 |
+| Total commits | 55+ (since v1.0.0: 31) |
+| Files tracked | 216 |
+| Repo size (.git) | 6.3M |
 | Branch | main |
 | Build (tsc) | ✅ Clean |
-| Tests | ✅ 58/58 pass |
+| Tests | ✅ 84/84 pass |
+| npm (published) | v1.0.0 (v1.1.0 prepped, NOT published) |
+| npm pack | 225 files verified |
 
 ## Content Stats — 2026-03-21 (10:00 AM)
 
