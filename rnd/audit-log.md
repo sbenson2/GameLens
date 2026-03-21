@@ -6,6 +6,7 @@
 |------|----------|--------|
 | 2026-03-20 | A (New concept) | Created `networking-theory.md` (~21KB) |
 | 2026-03-21 | B (Strategic — Feature Roadmap) | Created `rnd/marketing/feature-roadmap.md` — v1.1/v1.2/v2.0/v3.0 roadmap |
+| 2026-03-21 | C (Improve PM doc) | Expanded E4_project_management.md (12.9KB → 43.5KB) — added 6 new sections |
 
 ---
 
