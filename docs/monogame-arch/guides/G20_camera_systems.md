@@ -1,7 +1,63 @@
 # G20 — Camera Systems
 
 
-> **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G19 Display & Resolution](./G19_display_resolution_viewports.md) · [G21 Coordinate Systems](./G21_coordinate_systems.md) · [G22 Parallax & Depth Layers](./G22_parallax_depth_layers.md)
+> **Category:** Guide · **Engine:** MonoGame + Arch ECS · **Tier:** Free (core) / Pro (advanced patterns)
+> **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G19 Display & Resolution](./G19_display_resolution_viewports.md) · [G21 Coordinate Systems](./G21_coordinate_systems.md) · [G22 Parallax & Depth Layers](./G22_parallax_depth_layers.md) · [Camera Theory (engine-agnostic)](../../core/concepts/camera-theory.md)
+
+> Comprehensive implementation guide covering all 2D camera patterns for MonoGame: follow modes, deadzone, look-ahead, multi-target framing, cinematic sequences, shake, zoom, split screen, transitions, and ECS integration.
+
+---
+
+## Table of Contents
+
+1. [MonoGame.Extended OrthographicCamera](#monogameextended-orthographiccamera)
+2. [Camera Follow Patterns](#camera-follow-patterns)
+3. [Camera Limits (Clamping)](#camera-limits-clamping-to-map-bounds)
+4. [Camera Shake](#camera-shake)
+5. [Camera Zoom](#camera-zoom)
+6. [Multi-Target Camera](#multi-target-camera)
+7. [Cinematic Camera](#cinematic-camera)
+8. [Camera Transitions](#camera-transitions)
+9. [Split Screen](#split-screen-multiple-cameras)
+10. [Frustum Culling](#frustum-culling-with-camera)
+11. [Camera Priority Stack](#camera-priority-stack)
+12. [ECS Integration](#ecs-integration)
+13. [Troubleshooting](#troubleshooting)
+14. [See Also](#see-also)
+
+---
+
+## Camera Pipeline Overview
+
+Every frame, the camera processes inputs through a pipeline. Understanding this order prevents the most common camera bugs:
+
+```
+┌─────────────────────────────────────────────────────┐
+│                 Camera Update Pipeline                │
+├─────────────────────────────────────────────────────┤
+│                                                       │
+│  1. Resolve Target  ─── Who/what to follow?           │
+│         │                (player, multi-target,       │
+│         │                 cinematic waypoint)          │
+│         ▼                                             │
+│  2. Apply Follow   ─── Lerp / deadzone / look-ahead  │
+│         │                                             │
+│         ▼                                             │
+│  3. Clamp to Bounds ── Keep view inside map           │
+│         │                                             │
+│         ▼                                             │
+│  4. Apply Shake    ─── Offset from shake system       │
+│         │                                             │
+│         ▼                                             │
+│  5. Snap Pixels    ─── Round for pixel-art (optional) │
+│         │                                             │
+│         ▼                                             │
+│  6. Build Matrix   ─── camera.GetViewMatrix()         │
+│                                                       │
+└─────────────────────────────────────────────────────┘
+```
+
+> **Critical:** Shake MUST come after clamping. If you shake before clamp, the clamp eats the shake offset at map edges and the screen feels "stuck."
 
 ---
 
@@ -49,6 +105,10 @@ World-space objects (entities, tiles, particles) use the camera transform. Scree
 | `camera.WorldToScreen(worldPos)` | Convert world coordinate to screen pixel |
 | `camera.BoundingRectangle` | Visible world-space rectangle (for frustum culling) |
 
+### Coordinate System Reminder
+
+`OrthographicCamera.Position` is the **center** of the view. Setting it to `(0, 0)` means the view spans from `(-halfWidth, -halfHeight)` to `(halfWidth, halfHeight)`. This catches many developers off guard — see [G21 Coordinate Systems](./G21_coordinate_systems.md) for the full conversion chain.
+
 ---
 
 ## Camera Follow Patterns
@@ -84,13 +144,32 @@ public void UpdateCamera(OrthographicCamera camera, Vector2 targetPosition, floa
 
 ```csharp
 // Frame-rate independent exponential smoothing
-float t = 1f - MathF.Pow(0.01f, dt); // 0.01 = smoothing factor (lower = smoother)
+// smoothingFactor: lower = smoother (0.001 = very smooth, 0.1 = snappy)
+float t = 1f - MathF.Pow(0.01f, dt);
 camera.Position = Vector2.Lerp(current, targetPosition, t);
 ```
+
+> **Why exponential decay?** Linear lerp (`smoothSpeed * dt`) can overshoot when `dt` is large (lag spike). Exponential decay (`1 - base^dt`) is mathematically guaranteed to never overshoot — it asymptotically approaches the target. Use exponential decay for any production camera. See [Camera Theory](../../core/concepts/camera-theory.md) for the derivation.
 
 ### 3. Deadzone (Only Move When Target Exits Region)
 
 Define an inner rectangle around the screen center. The camera doesn't move until the target exits this region. This prevents micro-movements from causing camera jitter.
+
+```
+  ┌──────────────────────────────────┐
+  │         Screen / View            │
+  │                                  │
+  │     ┌──────────────────┐         │
+  │     │    DEADZONE      │         │
+  │     │                  │         │
+  │     │      ☺ player    │         │
+  │     │                  │         │
+  │     └──────────────────┘         │
+  │                                  │
+  │  Camera doesn't move while       │
+  │  player stays inside deadzone    │
+  └──────────────────────────────────┘
+```
 
 ```csharp
 /// <summary>Camera with deadzone — only scrolls when target exits inner rectangle.</summary>
@@ -131,6 +210,14 @@ public sealed class DeadzoneCamera
 
 **Best for:** Platformers, top-down RPGs — any game where slight player movement shouldn't move the camera.
 
+**Tuning guide:**
+| Genre | Deadzone Width | Deadzone Height | Notes |
+|-------|---------------|----------------|-------|
+| Platformer | 40-80px | 20-40px | Narrow vertical — show more above/below |
+| Top-down RPG | 60-100px | 60-100px | Square — equal movement freedom |
+| Metroidvania | 80-120px | 30-60px | Wide horizontal for exploration |
+| Strategy | 0px | 0px | No deadzone — follow cursor directly |
+
 ### 4. Look-Ahead (Offset in Movement Direction)
 
 Shift the camera ahead of the player's movement direction so they can see what's coming.
@@ -157,6 +244,84 @@ public void UpdateWithLookAhead(OrthographicCamera camera, Vector2 targetPositio
 ```
 
 **Best for:** Platformers (look ahead horizontally), shooters (look toward cursor/aim direction).
+
+### 5. Platformer-Style Vertical Snap
+
+In platformers, vertical camera movement should be different from horizontal. The camera should:
+- Smoothly track horizontal movement
+- Only snap vertically when the player **lands** (not while airborne)
+
+This prevents the camera from bobbing up and down during jumps, which causes motion sickness.
+
+```csharp
+/// <summary>
+/// Platformer camera: smooth horizontal follow + vertical snap on land.
+/// Vertical position only updates when the player is grounded.
+/// </summary>
+public sealed class PlatformerCamera
+{
+    private readonly OrthographicCamera _camera;
+    private float _verticalTarget;
+    private bool _verticalLocked;
+
+    public PlatformerCamera(OrthographicCamera camera)
+    {
+        _camera = camera;
+        _verticalTarget = camera.Position.Y;
+        _verticalLocked = true;
+    }
+
+    public void Update(Vector2 targetPos, bool isGrounded, float dt)
+    {
+        // Horizontal: always smooth follow
+        float tx = 1f - MathF.Pow(0.005f, dt);
+        float newX = MathHelper.Lerp(_camera.Position.X, targetPos.X, tx);
+
+        // Vertical: only update target when grounded
+        if (isGrounded)
+        {
+            _verticalTarget = targetPos.Y;
+            _verticalLocked = true;
+        }
+
+        // Smooth vertical follow toward the locked target
+        float ty = _verticalLocked ? 1f - MathF.Pow(0.01f, dt) : 0f;
+        float newY = MathHelper.Lerp(_camera.Position.Y, _verticalTarget, ty);
+
+        // Emergency snap: if player falls too far below camera, unlock and follow
+        if (targetPos.Y > _camera.Position.Y + 200f)
+        {
+            _verticalTarget = targetPos.Y;
+            _verticalLocked = true;
+        }
+
+        _camera.Position = new Vector2(newX, newY);
+    }
+}
+```
+
+**Tuning:** The 200px emergency threshold should be ~1.5× your max jump height. Too low = camera jitters on double-jumps. Too high = player disappears off-screen during falls.
+
+### Combining Patterns
+
+Real games combine multiple follow behaviors. A platformer typically uses deadzone + look-ahead + vertical snap. Apply them in order:
+
+```csharp
+// 1. Deadzone (coarse movement)
+_deadzoneCamera.Update(playerPos);
+
+// 2. Look-ahead (shift toward velocity)
+Vector2 lookOffset = GetLookAheadOffset(playerVelocity);
+
+// 3. Smooth the combined result
+Vector2 desired = _camera.Position + lookOffset;
+float t = 1f - MathF.Pow(0.01f, dt);
+_camera.Position = Vector2.Lerp(_camera.Position, desired, t);
+
+// 4. Clamp, then shake (pipeline order!)
+ClampToMapBounds(_camera, _mapBounds, viewWidth, viewHeight);
+_camera.Position += _shake.Offset;
+```
 
 ---
 
@@ -217,13 +382,41 @@ public static void ClampToMapBounds(OrthographicCamera camera, Rectangle mapBoun
 }
 ```
 
+### Small Maps (View Larger Than Map)
+
+When the visible area is larger than the map, clamping produces negative ranges and the camera oscillates. Handle this by centering instead:
+
+```csharp
+public static void ClampOrCenter(OrthographicCamera camera, Rectangle mapBounds,
+    int viewWidth, int viewHeight)
+{
+    float x, y;
+
+    if (mapBounds.Width <= viewWidth)
+        x = mapBounds.Center.X - viewWidth / 2f;  // Center horizontally
+    else
+        x = MathHelper.Clamp(camera.Position.X,
+            mapBounds.Left, mapBounds.Right - viewWidth);
+
+    if (mapBounds.Height <= viewHeight)
+        y = mapBounds.Center.Y - viewHeight / 2f;  // Center vertically
+    else
+        y = MathHelper.Clamp(camera.Position.Y,
+            mapBounds.Top, mapBounds.Bottom - viewHeight);
+
+    camera.Position = new Vector2(x, y);
+}
+```
+
 **Call order:** Update camera follow first, then clamp. If the map is smaller than the visible area, center the camera on the map instead of clamping.
 
 ---
 
 ## Camera Shake
 
-Screen shake adds impact to hits, explosions, and environmental events. The approach: add a random offset to the camera position each frame, decaying over time.
+Screen shake adds impact to hits, explosions, and environmental events.
+
+### Basic Shake (Random Offset + Decay)
 
 ```csharp
 /// <summary>Simple camera shake with decay.</summary>
@@ -240,7 +433,7 @@ public sealed class CameraShake
     /// <summary>Trigger a shake.</summary>
     public void Start(float intensity, float duration)
     {
-        _intensity = intensity;
+        _intensity = MathF.Max(intensity, _intensity); // Don't reduce active shake
         _duration = duration;
         _elapsed = 0f;
     }
@@ -251,6 +444,7 @@ public sealed class CameraShake
         if (_elapsed >= _duration)
         {
             Offset = Vector2.Zero;
+            _intensity = 0f;
             return;
         }
 
@@ -268,14 +462,101 @@ public sealed class CameraShake
 **Usage:**
 
 ```csharp
-// In your camera update:
+// In your camera update (AFTER follow + clamp):
 _shake.Update(dt);
-camera.Position = followPosition + _shake.Offset;
+camera.Position += _shake.Offset;
+```
+
+### Perlin Noise Shake (Smooth, Cinematic Feel)
+
+Random shake feels violent and jittery. Perlin noise shake feels like an earthquake — smooth oscillations with organic variation. Better for sustained effects (explosions, boss stomps, environmental rumble).
+
+```csharp
+/// <summary>
+/// Smooth camera shake using Perlin-style noise.
+/// Produces natural-feeling oscillations instead of random jitter.
+/// </summary>
+public sealed class PerlinShake
+{
+    private float _intensity;
+    private float _duration;
+    private float _elapsed;
+    private float _seed;
+    private readonly Random _rng = new();
+
+    public Vector2 Offset { get; private set; }
+
+    public void Start(float intensity, float duration)
+    {
+        _intensity = MathF.Max(intensity, _intensity);
+        _duration = duration;
+        _elapsed = 0f;
+        _seed = (float)_rng.NextDouble() * 1000f;
+    }
+
+    public void Update(float dt)
+    {
+        if (_elapsed >= _duration)
+        {
+            Offset = Vector2.Zero;
+            _intensity = 0f;
+            return;
+        }
+
+        _elapsed += dt;
+        float progress = _elapsed / _duration;
+        float decay = 1f - progress * progress; // Quadratic decay (fast start, slow end)
+
+        // Sample noise at different offsets for X and Y
+        float frequency = 25f; // Higher = more oscillations per second
+        float noiseX = SampleNoise(_seed + _elapsed * frequency);
+        float noiseY = SampleNoise(_seed + 100f + _elapsed * frequency);
+
+        Offset = new Vector2(noiseX, noiseY) * _intensity * decay;
+    }
+
+    /// <summary>Simple sine-based noise approximation. Replace with real Perlin for better results.</summary>
+    private static float SampleNoise(float t)
+    {
+        // Layer multiple sine waves at different frequencies for organic feel
+        return MathF.Sin(t * 1.0f) * 0.5f
+             + MathF.Sin(t * 2.3f) * 0.3f
+             + MathF.Sin(t * 4.7f) * 0.2f;
+    }
+}
+```
+
+### Shake Comparison
+
+| Type | Feel | Best For |
+|------|------|----------|
+| Random | Violent, jittery | Impact hits, gunfire, small explosions |
+| Perlin/Sine | Smooth, rolling | Earthquakes, boss stomps, sustained effects |
+| Directional | Focused impact | Knockback, directional explosions |
+
+### Directional Shake
+
+For impacts that come from a specific direction (sword hit from the left, explosion to the right):
+
+```csharp
+/// <summary>Shake biased in a specific direction.</summary>
+public void StartDirectional(float intensity, float duration, Vector2 direction)
+{
+    _intensity = intensity;
+    _duration = duration;
+    _elapsed = 0f;
+    _direction = Vector2.Normalize(direction);
+}
+
+// In Update: bias the offset toward _direction
+float biasStrength = 0.7f; // 0 = no bias (random), 1 = fully directional
+Vector2 randomOffset = new Vector2(
+    ((float)_rng.NextDouble() * 2f - 1f),
+    ((float)_rng.NextDouble() * 2f - 1f));
+Offset = Vector2.Lerp(randomOffset, _direction, biasStrength) * currentIntensity;
 ```
 
 **Shake in screen-space vs world-space:** The above applies shake in world-space (moves the camera). For screen-space shake (offset the final render), apply the offset to the SpriteBatch transform instead. World-space shake is simpler and looks correct with parallax layers.
-
-**Perlin noise shake:** For smoother, more natural-feeling shake, replace the random offsets with Perlin noise sampled at increasing time values. Random shake feels violent; Perlin shake feels like an earthquake.
 
 ---
 
@@ -287,8 +568,11 @@ camera.Position = followPosition + _shake.Offset;
 /// <summary>Smoothly zoom toward a target zoom level.</summary>
 public void UpdateZoom(OrthographicCamera camera, float targetZoom, float dt)
 {
-    float zoomSpeed = 5f;
-    camera.Zoom = MathHelper.Lerp(camera.Zoom, targetZoom, zoomSpeed * dt);
+    float t = 1f - MathF.Pow(0.001f, dt); // Exponential decay
+    camera.Zoom = MathHelper.Lerp(camera.Zoom, targetZoom, t);
+
+    // Clamp to prevent extreme values
+    camera.Zoom = MathHelper.Clamp(camera.Zoom, 0.25f, 4f);
 }
 ```
 
@@ -327,6 +611,315 @@ public void ZoomToPoint(OrthographicCamera camera, Vector2 worldPoint, float new
 }
 ```
 
+### Zoom Levels for Genre
+
+| Genre | Min Zoom | Default | Max Zoom | Notes |
+|-------|----------|---------|----------|-------|
+| Platformer | 0.8 | 1.0 | 1.5 | Narrow range, pixel-perfect |
+| Top-down RPG | 0.5 | 1.0 | 2.0 | Zoom out for exploration |
+| Strategy/RTS | 0.25 | 0.5 | 2.0 | Wide range, overview to detail |
+| Editor/Level design | 0.1 | 1.0 | 4.0 | Full range for tooling |
+
+---
+
+## Multi-Target Camera
+
+Frame multiple entities (players in co-op, player + boss, group of enemies). The camera calculates a bounding box around all targets, then positions and zooms to fit them.
+
+```
+  ┌─────────────────────────────────┐
+  │                                 │
+  │    ☺ Player 1                   │
+  │         ┌───────────────┐       │
+  │         │  Bounding Box │       │
+  │         │    (padded)   │       │
+  │         │           ☠   │       │
+  │         │         Boss  │       │
+  │         └───────────────┘       │
+  │                   ☺ Player 2    │
+  │                                 │
+  │  Camera zooms to fit all targets│
+  └─────────────────────────────────┘
+```
+
+```csharp
+/// <summary>
+/// Camera that frames multiple targets by adjusting position and zoom.
+/// Useful for co-op, boss fights, or any scene with multiple points of interest.
+/// </summary>
+public sealed class MultiTargetCamera
+{
+    private readonly OrthographicCamera _camera;
+    private readonly int _viewWidth;
+    private readonly int _viewHeight;
+    private readonly float _padding;
+    private readonly float _minZoom;
+    private readonly float _maxZoom;
+
+    public MultiTargetCamera(OrthographicCamera camera, int viewWidth, int viewHeight,
+        float padding = 80f, float minZoom = 0.3f, float maxZoom = 1.5f)
+    {
+        _camera = camera;
+        _viewWidth = viewWidth;
+        _viewHeight = viewHeight;
+        _padding = padding;
+        _minZoom = minZoom;
+        _maxZoom = maxZoom;
+    }
+
+    /// <summary>Update camera to frame all target positions.</summary>
+    public void Update(ReadOnlySpan<Vector2> targets, float dt)
+    {
+        if (targets.Length == 0) return;
+        if (targets.Length == 1)
+        {
+            // Single target: just follow
+            float t = 1f - MathF.Pow(0.01f, dt);
+            _camera.Position = Vector2.Lerp(_camera.Position, targets[0], t);
+            return;
+        }
+
+        // Calculate bounding box of all targets
+        Vector2 min = targets[0];
+        Vector2 max = targets[0];
+        for (int i = 1; i < targets.Length; i++)
+        {
+            min = Vector2.Min(min, targets[i]);
+            max = Vector2.Max(max, targets[i]);
+        }
+
+        // Center point
+        Vector2 center = (min + max) * 0.5f;
+
+        // Required size (with padding)
+        float requiredWidth = (max.X - min.X) + _padding * 2f;
+        float requiredHeight = (max.Y - min.Y) + _padding * 2f;
+
+        // Calculate zoom to fit
+        float zoomX = _viewWidth / requiredWidth;
+        float zoomY = _viewHeight / requiredHeight;
+        float targetZoom = MathHelper.Clamp(MathF.Min(zoomX, zoomY), _minZoom, _maxZoom);
+
+        // Smooth interpolation
+        float t2 = 1f - MathF.Pow(0.005f, dt);
+        _camera.Position = Vector2.Lerp(_camera.Position, center, t2);
+        _camera.Zoom = MathHelper.Lerp(_camera.Zoom, targetZoom, t2);
+    }
+}
+```
+
+**Usage in a boss fight:**
+
+```csharp
+// Frame both the player and the boss
+Span<Vector2> targets = stackalloc Vector2[2];
+targets[0] = playerPosition;
+targets[1] = bossPosition;
+_multiTargetCamera.Update(targets, dt);
+```
+
+**Weighted targets:** To keep the player more centered than the boss, use a weighted average instead of a simple center:
+
+```csharp
+// 70% weight on player, 30% on boss
+Vector2 weightedCenter = playerPos * 0.7f + bossPos * 0.3f;
+```
+
+---
+
+## Cinematic Camera
+
+Scripted camera movements for cutscenes, intros, and dramatic moments. Uses waypoints with easing curves for smooth paths.
+
+```csharp
+/// <summary>A waypoint along a cinematic camera path.</summary>
+public readonly record struct CameraWaypoint(
+    Vector2 Position,
+    float Zoom,
+    float Duration,     // Seconds to travel to this waypoint
+    EaseType Easing     // How to interpolate (see G41 Tweening)
+);
+
+/// <summary>Plays a sequence of camera waypoints for cinematic sequences.</summary>
+public sealed class CinematicCamera
+{
+    private readonly OrthographicCamera _camera;
+    private CameraWaypoint[] _waypoints = Array.Empty<CameraWaypoint>();
+    private int _currentIndex;
+    private float _elapsed;
+    private Vector2 _startPosition;
+    private float _startZoom;
+
+    public bool IsPlaying { get; private set; }
+
+    /// <summary>Fires when the cinematic sequence completes.</summary>
+    public event Action? OnComplete;
+
+    public CinematicCamera(OrthographicCamera camera)
+    {
+        _camera = camera;
+    }
+
+    /// <summary>Start a cinematic sequence from the camera's current position.</summary>
+    public void Play(CameraWaypoint[] waypoints)
+    {
+        _waypoints = waypoints;
+        _currentIndex = 0;
+        _elapsed = 0f;
+        _startPosition = _camera.Position;
+        _startZoom = _camera.Zoom;
+        IsPlaying = true;
+    }
+
+    public void Stop()
+    {
+        IsPlaying = false;
+    }
+
+    public void Update(float dt)
+    {
+        if (!IsPlaying || _currentIndex >= _waypoints.Length) return;
+
+        ref readonly var wp = ref _waypoints[_currentIndex];
+        _elapsed += dt;
+
+        float t = MathHelper.Clamp(_elapsed / wp.Duration, 0f, 1f);
+        float eased = Ease.Apply(wp.Easing, t); // See G41 Tweening for easing functions
+
+        _camera.Position = Vector2.Lerp(_startPosition, wp.Position, eased);
+        _camera.Zoom = MathHelper.Lerp(_startZoom, wp.Zoom, eased);
+
+        if (t >= 1f)
+        {
+            // Move to next waypoint
+            _startPosition = _camera.Position;
+            _startZoom = _camera.Zoom;
+            _elapsed = 0f;
+            _currentIndex++;
+
+            if (_currentIndex >= _waypoints.Length)
+            {
+                IsPlaying = false;
+                OnComplete?.Invoke();
+            }
+        }
+    }
+}
+```
+
+**Example: Boss intro cinematic**
+
+```csharp
+var cinematic = new CinematicCamera(camera);
+cinematic.Play(new[]
+{
+    // Pan from player to boss over 2 seconds
+    new CameraWaypoint(bossPosition, 1.0f, 2.0f, EaseType.CubicInOut),
+    // Zoom in on boss face
+    new CameraWaypoint(bossPosition, 1.8f, 1.0f, EaseType.CubicOut),
+    // Hold for 1 second
+    new CameraWaypoint(bossPosition, 1.8f, 1.0f, EaseType.Linear),
+    // Pull back to gameplay view
+    new CameraWaypoint(playerPosition, 1.0f, 1.5f, EaseType.CubicInOut),
+});
+cinematic.OnComplete += () => _gameState = GameState.Playing;
+```
+
+For easing functions, see [G41 Tweening & Interpolation](./G41_tweening.md).
+
+---
+
+## Camera Transitions
+
+Smooth transitions between camera modes or between rooms/scenes.
+
+### Fade Transition
+
+```csharp
+/// <summary>Fades the screen to black and back during camera repositioning.</summary>
+public sealed class FadeTransition
+{
+    private float _alpha;       // 0 = clear, 1 = black
+    private float _fadeSpeed;
+    private TransitionPhase _phase;
+    private Action? _onMidpoint; // Called at peak darkness
+
+    private enum TransitionPhase { None, FadeOut, FadeIn }
+
+    /// <summary>Start a fade transition. midpointAction runs when screen is fully black.</summary>
+    public void Start(float duration, Action midpointAction)
+    {
+        _fadeSpeed = 2f / duration; // Half duration fade out, half fade in
+        _phase = TransitionPhase.FadeOut;
+        _onMidpoint = midpointAction;
+        _alpha = 0f;
+    }
+
+    public void Update(float dt)
+    {
+        switch (_phase)
+        {
+            case TransitionPhase.FadeOut:
+                _alpha += _fadeSpeed * dt;
+                if (_alpha >= 1f)
+                {
+                    _alpha = 1f;
+                    _onMidpoint?.Invoke(); // Reposition camera, load room, etc.
+                    _phase = TransitionPhase.FadeIn;
+                }
+                break;
+
+            case TransitionPhase.FadeIn:
+                _alpha -= _fadeSpeed * dt;
+                if (_alpha <= 0f)
+                {
+                    _alpha = 0f;
+                    _phase = TransitionPhase.None;
+                }
+                break;
+        }
+    }
+
+    /// <summary>Draw the fade overlay LAST, on top of everything.</summary>
+    public void Draw(SpriteBatch spriteBatch, Texture2D pixel, int screenWidth, int screenHeight)
+    {
+        if (_alpha <= 0f) return;
+        spriteBatch.Draw(pixel,
+            new Rectangle(0, 0, screenWidth, screenHeight),
+            Color.Black * _alpha);
+    }
+}
+```
+
+**Usage (room transition):**
+
+```csharp
+_fade.Start(duration: 0.6f, midpointAction: () =>
+{
+    _currentRoom = nextRoom;
+    camera.Position = nextRoom.SpawnPoint;
+});
+```
+
+### Smooth Camera Cut (Instant Reposition with Smoothing)
+
+For seamless room transitions without a fade (Metroidvania-style):
+
+```csharp
+/// <summary>
+/// Instantly reposition the camera but smooth the transition so it
+/// doesn't look like a hard cut. The camera slides to the new position.
+/// </summary>
+public void SmoothCut(OrthographicCamera camera, Vector2 newTarget, float slideDuration = 0.4f)
+{
+    // Store as a "slide" — the camera follow system smooths to it automatically
+    // if using exponential smoothing. Just set a faster smoothing factor temporarily.
+    _overrideTarget = newTarget;
+    _overrideSmoothFactor = 0.0001f; // Very aggressive smoothing
+    _overrideTimer = slideDuration;
+}
+```
+
 ---
 
 ## Split Screen (Multiple Cameras)
@@ -361,6 +954,21 @@ public void DrawSplitScreen(SpriteBatch spriteBatch,
 }
 ```
 
+**4-player split screen:** Same pattern but divide into quadrants: `(0,0)`, `(halfW,0)`, `(0,halfH)`, `(halfW,halfH)`.
+
+**Dynamic split/merge:** When both players are close enough, merge to a single camera (like Lego games). Use the multi-target camera above when distance < threshold, split screen when distance > threshold + hysteresis.
+
+```csharp
+float distance = Vector2.Distance(player1Pos, player2Pos);
+const float SplitThreshold = 400f;
+const float MergeThreshold = 300f; // Hysteresis prevents flickering
+
+if (_isSplit && distance < MergeThreshold)
+    _isSplit = false; // Merge to single camera
+else if (!_isSplit && distance > SplitThreshold)
+    _isSplit = true;  // Split into two cameras
+```
+
 ---
 
 ## Frustum Culling with Camera
@@ -369,6 +977,10 @@ Use the camera's bounding rectangle to skip rendering objects outside the view:
 
 ```csharp
 RectangleF visibleArea = camera.BoundingRectangle;
+
+// Pad the visible area slightly to prevent pop-in at edges
+float cullPadding = 32f; // One tile width
+visibleArea.Inflate(cullPadding, cullPadding);
 
 // In your render system query:
 world.Query(in renderQuery, (ref Position pos, ref Sprite sprite) =>
@@ -383,7 +995,106 @@ world.Query(in renderQuery, (ref Position pos, ref Sprite sprite) =>
 });
 ```
 
-This typically eliminates 50-80% of draw calls. See [G15 Game Loop](./G15_game_loop.md) for more on culling and batching.
+This typically eliminates 50-80% of draw calls. The padding prevents objects from "popping" in at screen edges as the camera moves. See [G15 Game Loop](./G15_game_loop.md) for more on culling and batching.
+
+---
+
+## Camera Priority Stack
+
+Production games need multiple systems fighting for camera control: gameplay follow, cinematic sequences, zoom triggers, boss arenas. A priority stack resolves conflicts cleanly.
+
+```csharp
+/// <summary>
+/// Camera behavior with a priority level.
+/// Higher priority behaviors override lower ones.
+/// </summary>
+public abstract class CameraBehavior : IComparable<CameraBehavior>
+{
+    public int Priority { get; init; }
+    public bool IsActive { get; set; }
+
+    public abstract Vector2 GetDesiredPosition(float dt);
+    public abstract float GetDesiredZoom(float dt);
+
+    public int CompareTo(CameraBehavior? other) =>
+        (other?.Priority ?? 0).CompareTo(Priority); // Descending
+}
+
+/// <summary>
+/// Manages camera behaviors by priority. The highest-priority active behavior
+/// controls the camera. Supports smooth blending between behaviors.
+/// </summary>
+public sealed class CameraStack
+{
+    private readonly OrthographicCamera _camera;
+    private readonly SortedSet<CameraBehavior> _behaviors = new();
+    private CameraBehavior? _activeBehavior;
+    private float _blendTimer;
+    private float _blendDuration = 0.3f;
+    private Vector2 _blendStartPos;
+    private float _blendStartZoom;
+
+    public CameraStack(OrthographicCamera camera) => _camera = camera;
+
+    public void Add(CameraBehavior behavior) => _behaviors.Add(behavior);
+    public void Remove(CameraBehavior behavior) => _behaviors.Remove(behavior);
+
+    public void Update(float dt)
+    {
+        // Find highest-priority active behavior
+        CameraBehavior? best = null;
+        foreach (var b in _behaviors)
+        {
+            if (b.IsActive) { best = b; break; }
+        }
+
+        if (best != _activeBehavior)
+        {
+            // Behavior changed — start blend
+            _blendStartPos = _camera.Position;
+            _blendStartZoom = _camera.Zoom;
+            _blendTimer = 0f;
+            _activeBehavior = best;
+        }
+
+        if (_activeBehavior == null) return;
+
+        Vector2 targetPos = _activeBehavior.GetDesiredPosition(dt);
+        float targetZoom = _activeBehavior.GetDesiredZoom(dt);
+
+        if (_blendTimer < _blendDuration)
+        {
+            // Blending between old and new behavior
+            _blendTimer += dt;
+            float t = MathHelper.Clamp(_blendTimer / _blendDuration, 0f, 1f);
+            float eased = t * t * (3f - 2f * t); // Smoothstep
+
+            _camera.Position = Vector2.Lerp(_blendStartPos, targetPos, eased);
+            _camera.Zoom = MathHelper.Lerp(_blendStartZoom, targetZoom, eased);
+        }
+        else
+        {
+            _camera.Position = targetPos;
+            _camera.Zoom = targetZoom;
+        }
+    }
+}
+```
+
+**Example behaviors:**
+
+```csharp
+// Normal gameplay: priority 0
+var followBehavior = new FollowBehavior { Priority = 0, IsActive = true };
+
+// Boss arena lock: priority 10 (overrides follow)
+var arenaLock = new ArenaCameraBehavior(arenaCenter, arenaZoom) { Priority = 10 };
+arenaLock.IsActive = false; // Activate when boss fight starts
+
+// Cinematic: priority 100 (overrides everything)
+var cinematic = new CinematicBehavior(waypoints) { Priority = 100 };
+cinematic.IsActive = false; // Activate during cutscene
+```
 
 ---
 
@@ -397,6 +1108,14 @@ public struct PlayerTag { }
 
 /// <summary>Which direction the entity is facing (for camera look-ahead).</summary>
 public struct FacingDirection { public float X; public float Y; }
+
+/// <summary>Tag: entity defines a camera zone (boss arena, trigger region).</summary>
+public struct CameraZone
+{
+    public Rectangle Bounds;   // Zone area
+    public float Zoom;         // Override zoom (0 = no override)
+    public bool LockToCenter;  // Lock camera to zone center?
+}
 ```
 
 ### CameraFollowSystem
@@ -455,27 +1174,129 @@ public partial class CameraFollowSystem : BaseSystem<World, float>
 
 > **Key pattern:** Don't put view dimensions in a component or cache them. Pass `VirtualResolution` to the system constructor and read `VirtualWidth`/`VirtualHeight` in the query method. This guarantees correct bounds after every window resize.
 
----
+### CameraZoneSystem
 
-## Common Pitfalls
-
-**Camera position vs camera center:** `OrthographicCamera.Position` is the **center** of the view, not the top-left corner. If you set it to (0,0), you'll see from (-halfWidth, -halfHeight) to (halfWidth, halfHeight).
-
-**Integer positions for pixel art:** If your game uses pixel art, round the camera position to whole numbers to prevent sub-pixel jitter:
+Detects when the player enters a camera zone and overrides camera behavior:
 
 ```csharp
-camera.Position = new Vector2(MathF.Round(camera.Position.X), MathF.Round(camera.Position.Y));
+/// <summary>Checks if the player is inside any camera zone and applies overrides.</summary>
+public partial class CameraZoneSystem : BaseSystem<World, float>
+{
+    private readonly OrthographicCamera _camera;
+    private CameraZone? _activeZone;
+
+    public CameraZoneSystem(World world, OrthographicCamera camera) : base(world)
+    {
+        _camera = camera;
+    }
+
+    [Query]
+    [All<PlayerTag>]
+    private void CheckZones([Data] in float dt, in Position playerPos)
+    {
+        CameraZone? newZone = null;
+
+        // Find the zone the player is inside
+        World.Query(in _zoneQuery, (ref CameraZone zone) =>
+        {
+            if (zone.Bounds.Contains((int)playerPos.X, (int)playerPos.Y))
+                newZone = zone;
+        });
+
+        if (newZone.HasValue)
+        {
+            var zone = newZone.Value;
+            if (zone.LockToCenter)
+            {
+                float t = 1f - MathF.Pow(0.01f, dt);
+                Vector2 center = zone.Bounds.Center.ToVector2();
+                _camera.Position = Vector2.Lerp(_camera.Position, center, t);
+            }
+            if (zone.Zoom > 0f)
+            {
+                float t = 1f - MathF.Pow(0.01f, dt);
+                _camera.Zoom = MathHelper.Lerp(_camera.Zoom, zone.Zoom, t);
+            }
+        }
+    }
+}
 ```
 
-**Shake before clamp:** Always apply camera shake after clamping to bounds, or the shake will be eaten at map edges. Or apply shake as a screen-space offset instead.
+---
 
-**Zoom affects visible area:** Zooming out means the `BoundingRectangle` grows, which means more objects pass frustum culling. At extreme zoom-out, you may need to limit draw distance or LOD.
+## Troubleshooting
+
+### Camera jitters or vibrates
+
+**Symptom:** Camera shakes slightly every frame, especially during movement.
+
+**Causes & fixes:**
+1. **Sub-pixel rendering on pixel art** → Round camera position to integers: `camera.Position = new Vector2(MathF.Round(x), MathF.Round(y));`
+2. **Frame-rate dependent smoothing** → Use exponential decay (`1 - base^dt`) instead of `speed * dt`
+3. **Follow + clamp fighting** → Ensure follow and clamp don't alternate dominance. If the target is near map edge, the follow pushes one way and clamp pushes back every frame. Solution: apply follow, then clamp, and don't re-follow after clamp.
+4. **Floating point accumulation** → After many hours of gameplay, camera position may lose precision. Periodically recenter the world origin for infinite-world games.
+
+### Camera shows black/empty space at edges
+
+**Symptom:** Pulling the camera past the map edge reveals empty space.
+
+**Fix:** Ensure `ClampToMapBounds` is called AFTER follow logic. If using VirtualResolution expand mode, make sure you're reading `VirtualWidth`/`VirtualHeight` (not hardcoded values) — they change on window resize.
+
+### Camera shake doesn't work at map edges
+
+**Symptom:** Shake is weak or absent when the player is near map boundaries.
+
+**Fix:** Apply shake AFTER clamping (see pipeline diagram above). If clamp runs after shake, it undoes the shake offset. Alternatively, apply shake as a screen-space offset on the SpriteBatch transform matrix:
+
+```csharp
+// Screen-space shake (immune to clamping)
+Matrix shakeMatrix = Matrix.CreateTranslation(_shake.Offset.X, _shake.Offset.Y, 0f);
+spriteBatch.Begin(transformMatrix: camera.GetViewMatrix() * shakeMatrix);
+```
+
+### Zoom changes visible area unexpectedly
+
+**Symptom:** After zooming, frustum culling misses objects or the clamp bounds are wrong.
+
+**Fix:** Recalculate the visible area dimensions after every zoom change. `BoundingRectangle` updates automatically, but any cached view dimensions need refreshing. Frustum culling padding should account for the zoom level.
+
+### Split screen performance is poor
+
+**Symptom:** Frame rate drops by more than 50% with split screen.
+
+**Fix:** Each viewport renders the full scene — double the draw calls for two players. Solutions:
+1. Use frustum culling per viewport (each camera's `BoundingRectangle` is different)
+2. Reduce particle counts in split screen mode
+3. Lower the render resolution per viewport
+4. See [G33 Profiling & Optimization](./G33_profiling_optimization.md) for detailed draw call reduction
+
+### Camera snaps when entering new room/zone
+
+**Symptom:** Hard visual cut when transitioning between camera zones.
+
+**Fix:** Use smooth blending when entering/exiting zones. The `CameraStack` (above) handles this with its blend timer. Alternatively, use a fade transition to hide the repositioning.
+
+### Integer vs float position confusion
+
+**Symptom:** Camera is off by half a pixel, or objects appear to shift when the camera moves.
+
+**Fix:** Be consistent. If your game uses integer tile positions but float camera positions, rounding mismatches cause shimmer. Either:
+- Use float everywhere and round only at the final render step
+- Use integer positions everywhere and accept the constraint
+- See [G21 Coordinate Systems](./G21_coordinate_systems.md) for the full conversion chain
 
 ---
 
 ## See Also
 
-- [G19 Display, Resolution & Viewports](./G19_display_resolution_viewports.md) — virtual resolution interacts with camera
-- [G21 Coordinate Systems & Transforms](./G21_coordinate_systems.md) — full conversion chain from screen to world
-- [G22 Parallax & Depth Layers](./G22_parallax_depth_layers.md) — parallax layers use camera position
-- [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) — render pipeline overview
+- **Theory:** [Camera Theory (engine-agnostic)](../../core/concepts/camera-theory.md) — Mathematical foundations, smoothing derivations, pattern catalog
+- **Resolution:** [G19 Display, Resolution & Viewports](./G19_display_resolution_viewports.md) — Virtual resolution interacts with camera
+- **Coordinates:** [G21 Coordinate Systems & Transforms](./G21_coordinate_systems.md) — Full conversion chain from screen to world
+- **Parallax:** [G22 Parallax & Depth Layers](./G22_parallax_depth_layers.md) — Parallax layers use camera position
+- **Rendering:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) — Render pipeline overview
+- **Tweening:** [G41 Tweening & Interpolation](./G41_tweening.md) — Easing functions for cinematic camera
+- **Game Feel:** [G30 Game Feel & Juice](./G30_game_feel_tooling.md) — Camera shake as game feel tool
+- **Tilemaps:** [G37 Tilemap Systems](./G37_tilemap_systems.md) — Map bounds for camera clamping
+- **Side-Scrolling:** [G56 Side-Scrolling Perspective](./G56_side_scrolling.md) — Platformer camera patterns in context
+- **Top-Down:** [G28 Top-Down Perspective](./G28_top_down_perspective.md) — Top-down camera patterns in context
+- **Profiling:** [G33 Profiling & Optimization](./G33_profiling_optimization.md) — Camera-related performance (culling, split screen)
