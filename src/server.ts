@@ -195,10 +195,11 @@ export async function createServer() {
 
   server.tool(
     "list_docs",
-    "Browse available game development docs. Filter by category and/or module.",
+    "Browse available game development docs. Filter by category and/or module. Use summary=true to get compact counts and IDs only (saves tokens). Use full mode (default) for titles and descriptions.",
     {
       category: z.enum(CATEGORIES).optional().describe("Filter by category"),
       module: z.string().optional().describe("Filter by module (e.g. 'core', 'monogame-arch')"),
+      summary: z.boolean().optional().describe("If true, return compact counts and IDs only instead of full titles and descriptions. Recommended for initial discovery."),
     },
     async (args) => {
       try {
