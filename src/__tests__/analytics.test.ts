@@ -130,6 +130,13 @@ describe("Analytics", () => {
   });
 
   it("should flush to disk and reload", () => {
+    // Clear any existing analytics file for today so test is isolated
+    // (previous tests in this suite may have flushed to the same temp dir)
+    const today = new Date().toISOString().slice(0, 10);
+    const analyticsDir = path.join(tempDir, ".gamedev-mcp", "analytics");
+    const todayFile = path.join(analyticsDir, `${today}.json`);
+    try { fs.unlinkSync(todayFile); } catch { /* may not exist */ }
+
     const analytics = new Analytics();
     analytics.recordToolCall("search_docs", 100);
     analytics.recordSearch({ resultCount: 5 });
