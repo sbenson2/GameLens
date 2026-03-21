@@ -251,18 +251,9 @@ const lines = results.map((r, i) => {
 
 **Implemented:** `section` param (heading substring match, case-insensitive, extracts until next equal/higher heading) + `maxLength` param (truncates at paragraph boundary). Large docs (>20KB) show warning tip. Section not found returns available sections list. Both params composable. Tool description updated with usage guidance. 7/7 tests pass. Commit: cbd15eb.
 
-#### 15. `list_docs` Should Include Doc Count Per Category (list-docs.ts)
+#### ✅ 15. `list_docs` Summary Mode (list-docs.ts) — DONE 2026-03-21
 
-**Problem:** `list_docs` returns every doc with full descriptions. With 120+ docs, this is a lot of tokens. Add summary counts and support pagination.
-
-**Suggestion:**
-```typescript
-{
-  category: z.enum(CATEGORIES).optional(),
-  module: z.string().optional(),
-  summary: z.boolean().optional().describe("If true, return counts only instead of full list"),
-}
-```
+**Implemented:** `summary` boolean param. When true, returns compact counts per module/category with doc IDs (up to 10 per category, then "+N more"). Full mode unchanged (default). Updated tool description with usage guidance. 6 new tests, 42/42 total pass. Commit: b722f52.
 
 #### 16. Add a `random_doc` Tool for Discovery
 
