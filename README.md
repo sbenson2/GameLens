@@ -9,7 +9,7 @@
 
 **Your AI forgets everything mid-project. Give it permanent game development knowledge.**
 
-GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 130+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
+GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 134+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
 
 > Works with **Claude Code**, **Claude Desktop**, **Cursor**, **Windsurf**, **Cline**, and any MCP-compatible tool.
 
@@ -26,11 +26,11 @@ Every game dev using AI hits the same wall: your assistant starts strong, then f
 | 🎮 **Game Design** | Genre systems, game feel, balancing, progression | 12 |
 | 🏗️ **Architecture** | ECS, state machines, scene management, signals | 18 |
 | 💻 **Programming** | Design patterns, data structures, algorithms | 15 |
-| 🎯 **Engine Guides** | MonoGame (68 guides), Godot (5+), Unity (planned) | 86+ |
+| 🎯 **Engine Guides** | MonoGame (77 guides), Godot (7+), Unity (planned) | 86+ |
 | 🔧 **Core Concepts** | Camera, physics, pathfinding, networking, particles | 18 |
 | 📋 **Project Mgmt** | Scope control, sprint planning, art pipeline | 7 |
 
-**130+ docs. 2.5MB+ of curated knowledge. Zero external dependencies.**
+**134+ docs. 2.8MB+ of curated knowledge. Zero external dependencies.**
 
 ## Quick Start
 
@@ -74,8 +74,8 @@ GameDev MCP Server uses a modular architecture. Core knowledge (design, patterns
 | Module | Status | Docs | Description |
 |--------|--------|------|-------------|
 | `core` | ✅ Stable | 52 | Engine-agnostic game dev knowledge |
-| `monogame-arch` | ✅ Stable | 73 | MonoGame + Arch ECS — guides G1–G67, architecture, library reference |
-| `godot-arch` | 🚧 Active | 5 | Godot 4.4+ — architecture, scene composition, state machines, signals |
+| `monogame-arch` | ✅ Stable | 77 | MonoGame + Arch ECS — guides G1–G68, architecture, library reference |
+| `godot-arch` | 🚧 Active | 7 | Godot 4.4+ — architecture, GDScript/C#, scene composition, state machines, signals, input handling |
 | `unity-arch` | 📋 Planned | — | Unity 6 — URP, ECS, modern patterns |
 | `bevy-arch` | 📋 Planned | — | Bevy ECS — Rust game dev |
 
@@ -95,7 +95,7 @@ Without `GAMEDEV_MODULES`, all available modules load automatically.
 
 | Tool | Description |
 |------|-------------|
-| **`search_docs`** | Full-text search across all docs with TF-IDF ranking, category/module filters |
+| **`search_docs`** | Full-text search across all docs with TF-IDF ranking, category/module/engine filters, cross-engine grouping |
 | **`get_doc`** | Fetch a doc by ID with optional `section` extraction and `maxLength` for context efficiency |
 | **`list_docs`** | Browse docs by category and module |
 | **`list_modules`** | Discover available engine modules and their status |
@@ -109,7 +109,7 @@ Unlike tool-heavy MCP servers that dump 50K+ tokens of schemas into your context
 
 - **Section extraction** — `get_doc("G64", section: "Knockback")` returns just the knockback section, not the full 52KB doc
 - **`maxLength` param** — Cap any response to fit your context budget
-- **6 focused tools** — Minimal schema overhead, maximum utility
+- **7 focused tools** — Minimal schema overhead, maximum utility
 - **stdio transport** — No network exposure, no attack surface ([MCP security is a real concern](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/))
 
 ## Free vs Pro
@@ -173,7 +173,7 @@ git clone https://github.com/sbenson2/gamedev-mcp-server.git
 cd gamedev-mcp-server
 npm install
 npm run build
-npm test          # 36 tests, Node.js built-in test runner
+npm test          # 58 tests, Node.js built-in test runner
 npm run dev       # Watch mode
 ```
 
