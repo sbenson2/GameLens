@@ -139,23 +139,28 @@ _Append Wes's feedback and direction changes here._
 8. ❌ **Git push NOT done** — New work not committed (G66, godot-arch/, fixes, rnd/).
 9. ❌ **npm still 404** — Day 4 with no external feedback.
 
-## Today's Priorities (2026-03-20) — Day 5 (UPDATED 9am standup)
+## Yesterday (2026-03-20) — Day 5 Recap
 
-✅ ~~GIT COMMIT & PUSH~~ — Done overnight (8 commits, all pushed)
-✅ ~~Search bug fixes P1-P3~~ — Done, 20/20 search quality
-✅ ~~Code improvement #14 (section extraction)~~ — Done
-✅ ~~G2 State Machine, G3 Signal Architecture~~ — Done
-✅ ~~G67 Object Pooling~~ — Done
-✅ ~~Cloudflare Workers scaffold~~ — Done
+18 commits, 77 files changed, +11,964/-446 lines. Most productive day yet.
+✅ Section extraction + maxLength (competitive differentiator)
+✅ Module auto-discovery + list_modules tool
+✅ CI/CD infrastructure (3 workflows, 36 tests)
+✅ Cloudflare Workers API scaffold (5 endpoints)
+✅ G67 Object Pooling (87KB), G3 Signal Architecture (19KB), networking-theory (21KB)
+✅ G20 Camera deep polish (17KB → 46KB)
+✅ README overhaul, CHANGELOG, registry submission drafts
+✅ v1.1.0 prepped (not published)
+❌ npm v1.1.0 NOT published, MCP registries NOT submitted, Godot E2-G7 NOT started
 
-### Remaining Today
-1. **🔴 npm v1.1.0 publish** — v1.0.0 is stale, missing Godot module, section extraction, G64-G67, Workers
-2. **🔴 MCP registry submissions** — mcp.so, smithery.ai, mcpmarket.com. This is the #1 discovery channel.
-3. **🟡 README overhaul** — Marketing-ready. Current README is developer-focused, needs user-facing pitch.
-4. **🟡 Godot Phase 2 continue** — E2 GDScript vs C#, G4 Input Handling, G5 Physics
-5. **🟡 Remaining code improvements** — See code-improvements.md
-6. **🟢 Workers API local testing** — Validate before deploy
-7. **🟢 Commit uncommitted files** — PROJECT_MEMORY.md, competitor-log.md
+## Today's Priorities (2026-03-21) — Day 6 (Saturday)
+
+1. **🔴 npm v1.1.0 publish** — v1.0.0 is stale. Trigger release workflow or manual publish.
+2. **🔴 MCP registry submissions** — mcp.so, smithery.ai, mcpmarket.com, Cline. Needs Wes for accounts.
+3. **🟡 Godot E2 GDScript vs C#** — critical for Unity devs exploring Godot
+4. **🟡 Godot G4 Input Handling** — universally needed, high search volume
+5. **🟡 Workers API deploy to Cloudflare** — get Pro content API live
+6. **🟢 Save/load guide** — confirmed community gap (Godot Forum thread, 2 days old)
+7. **🟢 claudefa.st "50+ Best MCP Servers" submission** — discovery opportunity
 
 ## Godot Module Progress (Phase 2 — Prototyping)
 
@@ -224,5 +229,9 @@ _Append operational lessons here._
 - **2026-03-20 (3pm marketing)**: README overhaul — the old README was developer-focused (install, config, env vars). New README leads with the problem ("your AI forgets everything mid-project"), shows the solution, and positions competitively. Key structural changes: (1) Quick Start is ONE command (`npx gamedev-mcp-server`), not a wall of JSON. (2) Engine module table shows status at a glance (✅ Stable / 🚧 Active / 📋 Planned). (3) "What Makes This Different" section explicitly contrasts with editor-integration MCPs. (4) Context-efficiency is a headline feature, not buried in tool docs. (5) Free vs Pro is a clean table, not paragraph text. Marketing-facing READMEs should answer "why should I care?" before "how do I install?"
 - **2026-03-20 (3pm marketing)**: CHANGELOG — the existing one was just a 1.0.0 stub. Built a comprehensive [Unreleased] section covering all Day 4-5 work. This is critical for the v1.1.0 release — the CHANGELOG IS the release notes. Structured by Added/Fixed/Changed following Keep a Changelog format. Lesson: maintain the CHANGELOG incrementally (each commit session should add its changes) rather than reconstructing history from git log.
 - **2026-03-20 (3pm marketing)**: Registry submission drafts created for mcp.so, smithery.ai, mcpmarket.com, and Cline marketplace. Key insight: each registry has slightly different requirements (some are PR-based, some form-based, some auto-index from GitHub) but they all need the same core info: name, description, install command, tags, and tool list. Having pre-written drafts means Wes can submit to all 4 in one sitting without context-switching. The submission checklist also flags pre-requisites (npm keywords, GitHub repo description, MCP topic tag) that should be set before submitting.
+- **2026-03-20 (6pm community research)**: Deep dive across r/gamedev, r/godot, r/vibecoding, Godot Forum, HN. Key findings: (1) **Godogen** (htdt/godogen) hit HN front page — Claude Code skills that generate complete Godot 4 games. Creator spent a year building custom GDScript docs because nothing adequate existed. Validates our Godot module approach; we're building the reusable MCP version of what Godogen had to create from scratch. (2) **GDC 2026 attendance down 30%**, anti-AI sentiment at record high (>50% of devs say AI harms industry per State of Game Industry report). But the backlash is about replacement, not assistance — our "knowledge infrastructure" positioning sidesteps it. (3) **Save/load systems confirmed as top content gap** — Godot Forum thread from 2 DAYS AGO asking how to save complex levels, JSON limitations with Godot types (Vector2, Color etc.) is a constant confusion point. No save/load guide exists in our Godot module. (4) **"Architecture docs make AI coding work" narrative going mainstream** — Forbes TODAY, r/vibecoding, DEV Community all converging on: devs who write requirements + architecture docs succeed with AI, those who don't fail. This is literally our value prop. (5) **Claude Code Godot skills proliferating** on LobeHub — two separate "GDScript Patterns" listings covering exactly what our Godot module covers. Demand proven; our MCP is the scalable searchable version. (6) **claudefa.st "50+ Best MCP Servers" list** published yesterday — we're not on it. Submission opportunity. Written to competitor-log.md.
+- **2026-03-20 (6pm lesson)**: The HN Godogen discussion reveals a critical insight: developers building AI+Godot workflows are independently recreating the same documents we're building (GDScript rules, API references, pattern guides). The fact that multiple people are solving the same problem independently proves strong demand. Our advantage: they build one-off files for their own use; we build a searchable, versioned, cross-engine MCP server. The next marketing angle should be: "Stop writing your own CLAUDE.md for Godot — install the MCP server that already has it."
+- **2026-03-20 (7pm doc polish)**: Deep polished **G20 Camera Systems** (17KB → 46KB, 481 → 1323 lines). Added 8 new sections: multi-target camera (co-op/boss framing), cinematic camera (waypoint sequences with easing), camera transitions (fade + smooth cut), camera priority stack (behavior blending), platformer vertical snap, Perlin noise shake, directional shake, camera zones (ECS trigger regions). Added pipeline overview diagram, deadzone/zoom/shake tuning tables by genre, combining patterns example, dynamic split/merge, small-map centering, comprehensive troubleshooting (7 common issues with fixes), and cross-references to 11 related guides. The camera guide was the smallest of the high-traffic docs (17KB vs 30-87KB for the others) and had the most room for production-quality additions.
+- **2026-03-20 (7pm lesson)**: When deep-polishing docs, the highest-value additions are: (1) pipeline diagrams showing execution order (prevents the #1 class of bugs), (2) troubleshooting sections (directly answers the questions devs actually Google), (3) tuning tables by genre (saves hours of experimentation), and (4) combining patterns examples (real games never use one pattern in isolation). Pure code additions are good but the meta-knowledge around WHEN and WHY to use each pattern is what makes a doc truly production-grade.
 - **2026-03-20 (5pm EOD git sync)**: Clean EOD sync. Only uncommitted change was `package-lock.json` (minor version bump, 4 lines). Committed, pushed, verified remote matches local (0a85733). Build clean (`tsc --noEmit` passes), 36/36 tests pass in 558ms, no temp files to clean. No merge conflicts. Day 5 total: 21 commits, repo in excellent shape for v1.1.0 publish.
 - **2026-03-20 (4pm version prep)**: v1.1.0 prepped successfully. 17 commits since v1.0.0, all meaningful: new features (module auto-discovery, section extraction, list_modules), content (5 Godot docs, 4 MonoGame guides, networking theory), infrastructure (CI/CD, Workers scaffold, 36 tests), and quality fixes (search P1-P3, genre filter, error handling). Build clean, 36/36 tests pass, server smoke test passes (discovers 2 modules, 130 docs). CHANGELOG dated, version bumped in package.json, metrics updated. Did NOT run `npm publish` — release.yml workflow dispatch is the intended publish path (creates GitHub Release → triggers publish.yml → npm publish with OIDC provenance). Lesson: having a release workflow means version prep is just bump + changelog + commit — the actual publish is a one-click GitHub action.

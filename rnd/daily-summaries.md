@@ -4,6 +4,71 @@ End-of-day wrap-ups compiled by the 4pm EOD review task.
 
 ---
 
+## 2026-03-20 (Day 5) — The Infrastructure Day
+
+### 📊 Key Metrics
+- **18 commits** pushed (most productive day yet)
+- **77 files changed** | **+11,964 lines** | **-446 lines**
+- **130 total docs** across 3 modules (3.5MB)
+- **36/36 tests pass** (19 new tests added today)
+- **v1.1.0 prepped** — version bumped, CHANGELOG dated, ready to publish
+- **5 new docs created** (G67, G3, networking-theory, G20 deep polish, registry drafts)
+- **~170KB of new content** written
+
+### ✅ Done
+
+**Features (code)**
+- Section extraction + maxLength for `get_doc` — context-efficient doc delivery (competitive differentiator)
+- Module auto-discovery (`src/core/modules.ts`) + `list_modules` tool — zero-config engine onboarding
+- CI/CD infrastructure — 3 GitHub Actions workflows (CI, publish w/ OIDC, release), test matrix Node 18/20/22
+- Cloudflare Workers API scaffold — 5 endpoints, rate limiting, tier gating, KV upload script
+
+**Content**
+- G67 Object Pooling & Recycling (~87KB) — genre coverage now ~95%
+- G3 Signal Architecture (19KB) — connection patterns, signal bus, anti-patterns
+- Networking theory (21KB) — first multiplayer/netcode concept doc
+- G20 Camera Systems deep polish (17KB → 46KB) — 8 new sections, +842 lines
+- G2 State Machine (38KB, committed overnight from Day 4 evening)
+
+**Quality & Operations**
+- Search quality: 20/20 PASS (100%) — P1-P3 fixes verified
+- Doc audit #6: 6 issues fixed across 5 docs
+- README overhaul — marketing-focused rewrite
+- CHANGELOG comprehensive update for v1.1.0
+- Registry submission drafts (mcp.so, smithery.ai, mcpmarket.com, Cline)
+
+**Research & Intel**
+- Unity engine deep research — 17KB report, 12-doc module plan, competitive landscape
+- Pricing analysis finalized — $9/mo confirmed, annual $79/yr
+- Community research — Godogen HN discussion, GDC attendance down 30%, save/load gap confirmed
+- Content gap audit — Godot at 25% (5/20), identified 6 missing core theory topics
+- Competitor scan — GodotIQ freemium model, MCP security crisis (7K exposed servers), 14,274 total MCP servers
+
+### ❌ Not Done / Failed
+- **npm v1.1.0 NOT published** — prepped but not shipped. Release workflow is ready, just needs manual trigger
+- **MCP registry submissions NOT submitted** — drafts written, Wes needs to submit (accounts required)
+- **Godot Phase 2 progress slower than planned** — only G3 added today (G2 was overnight from Day 4). E2 GDScript vs C#, G4-G7 not started
+- **Search P4 (stemming)** — still not implemented
+- **Workers API not deployed to Cloudflare** — scaffolded and tested locally only
+
+### 🎯 Tomorrow Priorities (Day 6 — Saturday)
+
+1. **🔴 npm v1.1.0 publish** — trigger release workflow or manual publish. v1.0.0 is stale
+2. **🔴 MCP registry submissions** — submit to all 4 registries (this IS the discovery channel)
+3. **🟡 Godot E2 GDScript vs C#** — critical for Unity devs exploring Godot
+4. **🟡 Godot G4 Input Handling** — universally needed, high search volume
+5. **🟡 Workers API deploy** — get the Pro content API live on Cloudflare
+6. **🟢 Save/load guide** — confirmed gap from community research (Godot Forum thread 2 days ago)
+7. **🟢 claudefa.st "50+ Best MCP Servers" submission** — new discovery opportunity
+
+### 🚨 Needs Attention
+- **v1.1.0 is ready but not shipped** — every day it sits unpublished, the npm package stays stale (v1.0.0 missing Godot module, section extraction, 8+ doc additions)
+- **Registry submissions blocked on Wes** — accounts/auth needed for mcp.so, smithery.ai etc.
+- **Godot module at 25%** (5/20 docs) — the content imbalance with MonoGame (76 docs vs 5) is stark. Need sustained focus
+- **GodotIQ watch** — freemium spatial intelligence model is the closest competitor to our approach. Monitor adoption
+
+---
+
 ## 2026-03-19 — Day 4: Godot Module Launched, Biggest Content Day, Full Test Coverage
 
 ### What Was Accomplished
