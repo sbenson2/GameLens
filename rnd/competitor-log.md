@@ -4,6 +4,134 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-21 (8am) — Competitor Scan: MCP Existential Debate Erupts, Claude Code Channels Launches, Godogen Goes Viral
+
+### 🔥 HEADLINE: MCP Faces Its First Real Existential Challenge — Perplexity & YC CEO Both Publicly Abandon It, While Anthropic Ships Claude Code Channels as an OpenClaw Competitor
+
+This was a pivotal week. The MCP protocol, which has been on a pure growth trajectory, hit its first major credibility challenge: Perplexity CTO Denis Yarats announced at Ask 2026 (March 11) that Perplexity is moving away from MCP internally, citing context window overhead and authentication friction. YC CEO Garry Tan followed up calling MCP "sucks honestly" and sharing his own Claude Code skills repo ("gstack") as an alternative. Meanwhile, Anthropic shipped Claude Code Channels — direct Telegram/Discord integration for Claude Code — positioning it as a direct competitor to OpenClaw.
+
+### Star Count Tracker (vs 2026-03-20 baseline)
+
+| Repo | Stars (03-20) | Stars (03-21) | Δ | Last Push |
+|------|--------------|--------------|---|-----------|
+| Coding-Solo/godot-mcp | 2,487 | 2,508 | +21 | 2026-03-18 |
+| chongdashu/unreal-mcp | 1,597 | 1,605 | +8 | 2025-04-22 (stale) |
+| CoderGamester/mcp-unity | 1,433 | 1,437 | +4 | 2026-03-10 |
+| IvanMurzak/Unity-MCP | 1,383 | 1,404 | +21 | 2026-03-21 (TODAY) |
+| htdt/godogen | — | 1,588 | **NEW** | 2026-03-17 |
+| 3ddelano/GDAI MCP | 76 | 76 | 0 | 2026-03-07 |
+| Nihilantropy/godot-mcp-docs | 51 | 51 | 0 | 2025-07-25 (stale) |
+| salvo10f/godotiq | 8 | 10 | +2 | 2026-03-21 (TODAY) |
+
+**Trends:**
+- **htdt/godogen EXPLODED** — 1,588⭐ in 5 days since March 16 launch. Hit HN front page, daily.dev, PromptZone. This is the fastest-growing gamedev AI project this week by far.
+- **IvanMurzak/Unity-MCP** still the most active competitor — pushed TODAY, +21 stars. Consistent growth.
+- **Coding-Solo/godot-mcp** steady at +21/day.
+- **godot-mcp-docs** remains dead (51⭐, no push since July 2025).
+- **GodotIQ** ticking up slowly (+2), pushed today — actively developing.
+
+### 🆕 MAJOR DEVELOPMENT: Godogen (1,588⭐ in 5 days)
+
+Godogen went from 0 to 1,588 stars in under a week. Key details:
+- **What**: Claude Code skills pipeline that generates complete Godot 4 games from text descriptions
+- **Cost**: ~$5-8 per generated game ($1-3 LLM + $3 for Tripo3D assets)
+- **Creator spent 4 rewrites over a year** building custom GDScript reference docs because nothing adequate existed
+- **HN front page discussion** (item #47400868) — highly engaged, multiple articles analyzing the approach
+- **Key technical insight**: 850+ Godot classes explode context windows → solved with hand-written GDScript spec + lazy-loaded API docs
+- **Threat level: LOW (complementary)** — generates games, doesn't provide ongoing development knowledge. BUT validates our exact thesis: devs need curated GDScript knowledge because LLMs don't have enough training data.
+- **Strategic implication**: Godogen's 4 rewrites and custom doc creation prove the pain point our Godot module solves. We should reach out for cross-promotion: "Use Godogen for scaffolding, gamedev-mcp-server for ongoing development."
+
+### 🆕 MAJOR DEVELOPMENT: Claude Code Channels (Launched March 20)
+
+Anthropic shipped "Claude Code Channels" — a research preview that lets you control a Claude Code session via Telegram or Discord. VentureBeat called it "an OpenClaw killer."
+- **How it works**: Messages to/from a running Claude Code session via Telegram/Discord bots
+- **Full access**: Filesystem, MCP servers, git — everything Claude Code can do
+- **Plugin architecture**: Starting with Telegram/Discord, more channels coming
+- **r/ClaudeCode announcement**: "Vibe coding from your phone is now a reality!!!"
+- **Implications for gamedev-mcp-server**: Positive — more people using Claude Code via messaging = more potential users for our MCP server. Claude Code + our MCP = structured gamedev knowledge on your phone.
+- **Implications for OpenClaw**: Direct competition to OpenClaw's core value prop. But Claude Code Channels is research preview, single-user, no multi-agent orchestration.
+
+### 🔥 MCP EXISTENTIAL DEBATE — The Biggest Story This Week
+
+**Perplexity CTO Denis Yarats (Ask 2026, March 11):**
+- Moving away from MCP internally, replacing with direct REST APIs and CLIs
+- Two reasons: (1) tool descriptions consume 40-50% of context windows, (2) authentication friction
+- NOT abandoning MCP entirely — still supporting consumer-facing MCP connections
+- Launched multi-model Agent API as their alternative approach
+
+**YC CEO Garry Tan (X post, same week):**
+- "MCP sucks honestly" — pointed to context window consumption and poor auth UX
+- Shared "gstack" — his opinionated Claude Code skills as practical MCP alternative
+- This is the most high-profile MCP criticism to date
+
+**Multiple analysis articles followed:**
+- Medium: "MCP Isn't Dead. But It's Not the Default Answer Anymore"
+- DEV Community: "MCP Won. MCP Might Also Be Dead."
+- Repello AI: "MCP vs CLI: What Perplexity's Move Actually Means"
+
+**Why this HELPS us:**
+1. The criticism is about **tool-heavy** MCP servers eating context windows (40-50% for tool schemas). Our server has ~5 tools — minimal schema overhead.
+2. The "CLI vs MCP" debate doesn't apply to knowledge servers — you can't CLI-query a curated knowledge base the same way.
+3. MCP skeptics are pushing for "fewer, better tools" — literally our positioning.
+4. The debate drives attention to context efficiency, which is our competitive advantage.
+
+**Why to monitor:**
+- If the "MCP sucks" narrative gets louder, it could slow MCP adoption overall
+- Some devs may avoid installing ANY new MCP server
+- Our marketing should preemptively address this: "5 tools, zero bloat, pure knowledge"
+
+### 📊 MCP Ecosystem Stats Update
+
+- **97 million monthly SDK downloads** (February 2026) — massive adoption regardless of Perplexity criticism
+- MCP spec hasn't changed since November 2025
+- **2026 Roadmap** (published March 9): 4 focus areas:
+  1. Streamable HTTP transport for horizontal scaling
+  2. Tasks primitive lifecycle gaps
+  3. Enterprise readiness (audit trails, SSO)
+  4. Standard metadata format for registry discovery
+- **Figma entering MCP** — AI credit limits + pay-as-you-go plan starting March 2026. Figma MCP server connects design context directly to code agents. Validates MCP for design→code workflows.
+- **WordPress.com launched AI agent publishing via MCP** (March 20, TechCrunch) — CMS platforms adopting MCP
+
+### 📰 AI Coding Tool Rankings (March 2026)
+
+Per LogRocket March 2026 power rankings + DEV Community AI Weekly:
+- **Claude Opus 4.6**: #1 model, 75.6% SWE-bench, 1M context window beta
+- **Claude Sonnet 4.6**: New default free model, preferred over Opus 4.5 in Claude Code 59% of the time
+- **Windsurf**: Top AI dev tool (Wave 13 with Arena Mode + Plan Mode)
+- **GPT-5.3-Codex**: 77% Terminal-Bench 2.0, best for polyglot/CLI workflows
+- **Gemini 3.1 Pro**: 77.1% ARC-AGI-2, double predecessor, same pricing — best performance-per-dollar
+- **Agent architecture convergence**: Every major tool (Claude Code, Codex, Copilot, Cursor, Windsurf) now uses the same core pattern: explore codebases, long-running loops, multi-agent teams. "Era of single-turn autocomplete is over."
+
+### 🎮 Community Sentiment This Week
+
+**Reddit highlights:**
+- r/artificial: Godogen thread active — mixed reception on quality but impressive as pipeline
+- r/godot: "Godot games look even better using new AI GPU tech" (2.4K upvotes) — Godot community engaged with AI topics
+- r/godot: Anti-AI sentiment in browser-based 3D tool post — "Delete this. Go actually learn to program." AI backlash in r/godot is real but targeted at low-effort AI-generated content, not AI-assisted development.
+- r/vibecoding: "Vibe coding is a myth" still resonating (5 days old, still being referenced). Reinforces our positioning.
+- r/ClaudeCode: Claude Code Channels announcement = highly active
+
+**Japan adoption signal:**
+- Japanese blog post about using Godot MCP with Claude Code (kojirooooocks.hatenablog.com, March 18) — international adoption of Godot+AI workflow growing.
+
+### Key Takeaways
+
+1. **Godogen at 1,588⭐ is the week's breakout** — validates that devs desperately need curated GDScript knowledge. Our Godot module is the reusable MCP version of what Godogen had to build from scratch.
+
+2. **MCP existential debate is actually good for us** — criticism targets tool-heavy servers (40-50% context window). We're the opposite: 5 tools, rich content. Lean into "zero bloat knowledge server" messaging.
+
+3. **Claude Code Channels makes our server MORE accessible** — devs can now use our MCP through Telegram/Discord via Claude Code. More entry points = more potential users.
+
+4. **97M monthly MCP SDK downloads** proves the protocol is entrenched regardless of Perplexity's move. The debate is about HOW to use MCP, not WHETHER to use it.
+
+5. **IvanMurzak/Unity-MCP pushed today** — still the most active gamedev MCP competitor. No knowledge-layer moves detected yet.
+
+6. **Figma + WordPress + Amazon Ads all shipping MCP** — enterprise adoption accelerating. MCP as protocol is winning even as individual implementations get criticized.
+
+7. **Anti-AI sentiment in r/godot is real** but targeted at lazy AI-generated content, not AI development tools. Our positioning as "knowledge infrastructure" (like a reference book) remains safe from backlash.
+
+---
+
 ## 2026-03-20 (6pm) — Community Research Deep Dive: Common Questions, Pain Points & AI+Gamedev Sentiment
 
 ### 🔥 HEADLINE: GDC 2026 Fallout Reshapes AI+Gamedev Landscape — Godogen Goes Viral on HN, Anti-AI Sentiment Hits Record High, GDC Attendance Down 30%
