@@ -116,15 +116,66 @@ Smithery typically auto-indexes from GitHub. Ensure:
 
 ---
 
+## 5. mcpservers.org (Awesome MCP Servers)
+
+**URL:** https://mcpservers.org/submit (form-based, powers wong2/awesome-mcp-servers 83K⭐)
+
+### Notes
+- wong2/awesome-mcp-servers repo says "We do not accept PRs. Please submit on the website."
+- Form at mcpservers.org/submit — likely GitHub URL + description
+- This powers the largest awesome-mcp-servers list (83K stars)
+- HIGH priority — largest single discovery surface
+
+---
+
+## 6. LobeHub MCP Marketplace
+
+**URL:** https://lobehub.com/mcp (PR-based)
+
+### Notes
+- LobeHub is a popular AI chat client with built-in MCP support
+- Submit via PR to their marketplace repo
+- Listing shows install instructions + tool descriptions
+- Medium-High priority — growing user base
+
+---
+
+## 7. punkpeye/awesome-mcp-servers
+
+**URL:** https://github.com/punkpeye/awesome-mcp-servers (PR-based)
+
+### Notes
+- Second major awesome list
+- PR with entry in appropriate category
+- Category: "Knowledge & Data" or "Development Tools"
+
+---
+
+## 8. appcypher/awesome-mcp-servers
+
+**URL:** https://github.com/appcypher/awesome-mcp-servers (PR-based)
+
+### Notes
+- Third major awesome list
+- PR-based submission
+
+---
+
 ## Submission Checklist
 
-- [ ] mcp.so — Submit listing (check if PR-based or form-based)
-- [ ] smithery.ai — Connect GitHub repo or submit
+- [ ] mcpservers.org — Form submission (mcpservers.org/submit) — **HIGHEST PRIORITY** (powers 83K⭐ awesome list)
+- [ ] mcp.so — GitHub issue on their repo
+- [ ] smithery.ai — GitHub integration (auto-indexes from npm/GitHub)
+- [ ] Cline marketplace — PR to github.com/cline/mcp-marketplace
+- [ ] LobeHub MCP Marketplace — PR to their marketplace repo
+- [ ] punkpeye/awesome-mcp-servers — GitHub PR
+- [ ] appcypher/awesome-mcp-servers — GitHub PR
 - [ ] mcpmarket.com — Submit via their form
-- [ ] Cline marketplace — Check submission process
+- [ ] claudefa.st — Submit for "50+ Best MCP Servers" list
 - [ ] Verify npm package has correct metadata (`description`, `keywords`, `repository`)
 - [ ] Ensure GitHub repo description matches listing
 - [ ] Add "MCP" topic to GitHub repo
+- [ ] Add AGENTS.md to repo root
 - [ ] Screenshot of tool usage for visual listings
 
 ---
