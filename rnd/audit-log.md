@@ -422,3 +422,22 @@ Uses `../R/R1_library_stack.md` and `../G/G1_custom_code_recipes.md` patterns. F
 | G48_online_services.md | 2 (broken link, outdated API) | 2 |
 | P12_performance_budget.md | 1 (wrong title) | 1 |
 | **Total** | **6** | **6** |
+
+### Audit #4 — 2026-03-22 (7am cron)
+
+**Docs audited:** G17_testing.md, G5_physics_and_collision.md (Godot), R2_capability_matrix.md, G56_side_scrolling.md, fog-of-war-theory.md
+
+| Doc | Issues Found | Issues Fixed |
+|-----|-------------|-------------|
+| G56_side_scrolling.md | 1 (broken link to G22_render_pipeline.md — file is G22_parallax_depth_layers.md) | 1 |
+| R2_capability_matrix.md | 1 (Apos.Input listed as v2.5.0, NuGet latest is 2.4.2) | 1 |
+| G17_testing.md | 2 (missing cross-refs to G3/G13/P12 despite covering collision & benchmarks; CI actions outdated v4 → v6) | 2 |
+| fog-of-war-theory.md | 1 (no cross-references to engine-specific guides despite "see engine-specific modules" closing line) | 1 |
+| G5_physics_and_collision.md | 0 (clean — recently created) | 0 |
+| **Total** | **5** | **5** |
+
+**Patterns observed:**
+- Capability matrix (R2) version numbers drift as NuGet packages update — should be periodically verified against NuGet
+- Core theory docs consistently lack cross-references to engine implementation guides (same pattern found in audit #2 with other concept docs)
+- G17 Testing covers collision testing and benchmarks extensively but never links to the actual physics or performance guides — topical cross-refs should be added when a guide deeply covers another guide's domain
+- Recently created docs (G5, created 2026-03-22) are clean; older docs accumulate link rot and version drift
