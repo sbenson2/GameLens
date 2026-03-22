@@ -15,6 +15,7 @@ import {
   handleSearch,
   handleLicenseValidate,
 } from "./handlers.js";
+import { handleLemonSqueezyWebhook } from "./webhooks.js";
 
 const router = new Router();
 
@@ -24,6 +25,7 @@ router.get("/v1/docs", handleListDocs as any);
 router.get("/v1/docs/:id", handleGetDoc as any);
 router.get("/v1/search", handleSearch as any);
 router.post("/v1/license/validate", handleLicenseValidate as any);
+router.post("/v1/webhooks/lemonsqueezy", handleLemonSqueezyWebhook as any);
 
 export default {
   async fetch(

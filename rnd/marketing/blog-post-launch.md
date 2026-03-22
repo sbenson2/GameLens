@@ -24,7 +24,7 @@ AI assistants are stateless. Every prompt starts from zero. They have broad trai
 npx gamedev-mcp-server
 ```
 
-One command. 134+ curated docs. Your AI now knows:
+One command. 138+ curated docs. Your AI now knows:
 
 - How to architect a state machine that scales (not the tutorial version that falls apart at 8 states)
 - The difference between client prediction and server reconciliation in multiplayer
@@ -38,7 +38,7 @@ These aren't raw API docs or scraped tutorials. Every doc is hand-written with A
 
 MCP is a protocol that lets AI tools (Claude Code, Cursor, Windsurf, Cline) connect to external knowledge sources. Instead of cramming everything into a system prompt, your AI can *search* for what it needs, *fetch* specific sections, and get targeted guidance without blowing up your context window.
 
-GameDev MCP Server has 7 tools:
+GameDev MCP Server has 9 tools:
 
 | Tool | What it does |
 |------|-------------|
@@ -46,6 +46,8 @@ GameDev MCP Server has 7 tools:
 | `get_doc` | Fetch a doc with optional section extraction — get just "Knockback" from a 52KB combat guide |
 | `list_docs` | Browse by category, module, or summary mode |
 | `list_modules` | See available engine modules |
+| `compare_engines` | "How does Godot handle camera vs MonoGame?" — side-by-side engine comparison |
+| `random_doc` | Discover docs you didn't know existed — great for exploration |
 | `genre_lookup` | "I'm building a roguelike" → here are the 14 systems you need, in priority order |
 | `session` | Structured dev workflows (plan, debug, scope, decide) |
 | `license_info` | Current tier |
@@ -55,8 +57,8 @@ The `section` and `maxLength` params on `get_doc` are the key differentiator. Mo
 ## What's Covered
 
 **Engine modules:**
-- **MonoGame/Arch ECS** — 77 implementation guides (G1–G68), fully stable, 100% genre coverage across 11 genres
-- **Godot 4.4+** — 7 docs and growing: architecture, GDScript vs C#, scene composition, state machines, signal architecture, input handling
+- **MonoGame/Arch ECS** — 78 implementation guides (G1–G69), fully stable, 100% genre coverage across 11 genres
+- **Godot 4.4+** — 9 docs and growing: architecture, GDScript vs C#, scene composition, state machines, signals, input handling, physics & collision, camera systems
 - **Unity 6** — Planned (research complete, zero knowledge-layer competitors exist)
 - **Bevy** — Planned (highest AI hallucination rate of any engine = highest value for knowledge MCP)
 
@@ -93,7 +95,11 @@ get_doc("G64", section: "Knockback")
 → Instead of 52KB (the entire combat guide)
 ```
 
-**5 tools, zero bloat, pure knowledge.** That's the pitch in the MCP criticism era.
+**9 tools, zero bloat, pure knowledge.** Compare that to Godot MCP servers with 95+ tools. That's the pitch in the MCP criticism era.
+
+## Secure by Design
+
+While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/) with no auth, GameDev MCP Server runs entirely local via stdio transport. No ports, no network exposure, no attack surface. RSAC 2026 declared MCP security "can't be patched away" — but that applies to remote HTTP servers, not stdio. Your knowledge stays on your machine.
 
 ## Free Tier
 

@@ -1,6 +1,6 @@
 # MCP Registry Submission Drafts
 
-Prepared: 2026-03-20
+Prepared: 2026-03-20 | Updated: 2026-03-22
 
 ---
 
@@ -11,7 +11,7 @@ Prepared: 2026-03-20
 ### Listing Details
 
 - **Name:** GameDev MCP Server
-- **Short description:** Permanent game development knowledge for AI coding assistants. 130+ curated docs covering design patterns, engine architecture, and implementation guides for MonoGame, Godot, and Unity.
+- **Short description:** Permanent game development knowledge for AI coding assistants. 138+ curated docs covering design patterns, engine architecture, and implementation guides for MonoGame, Godot, and Unity.
 - **Category:** Development Tools / Game Development
 - **Tags:** `game-development`, `gamedev`, `godot`, `monogame`, `unity`, `game-design`, `mcp`, `knowledge-base`
 - **npm package:** `gamedev-mcp-server`
@@ -25,14 +25,16 @@ Prepared: 2026-03-20
 
 GameDev MCP Server gives your AI assistant permanent game development knowledge — design patterns, architecture guides, and engine-specific implementation details delivered through MCP.
 
-**130+ curated docs** covering:
+**138+ curated docs** covering:
 - Game design (genres, game feel, balancing, progression)
 - Architecture (ECS, state machines, scene management, signals)
 - Programming patterns (19 game-specific patterns with implementation)
-- Engine guides: MonoGame/Arch ECS (68 guides), Godot 4.4+ (5 docs, growing), Unity (planned)
-- Core concepts (camera, physics, pathfinding, networking, particles)
+- Engine guides: MonoGame/Arch ECS (78 guides), Godot 4.4+ (9 docs, growing), Unity (planned)
+- Core concepts (camera, physics, pathfinding, networking, combat, particles)
 
-**Context-efficient:** Section extraction and maxLength params mean your AI gets precisely the knowledge it needs without burning your context window. 6 focused tools, not 50.
+**Context-efficient:** Section extraction and maxLength params mean your AI gets precisely the knowledge it needs without burning your context window. 9 focused tools, not 50.
+
+**Cross-engine comparison:** `compare_engines("camera")` shows how Godot and MonoGame each approach the same topic, with engine-agnostic theory as foundation.
 
 **Free tier included.** Core docs are always free. Pro unlocks engine-specific modules and the session co-pilot.
 
@@ -48,7 +50,7 @@ Works with Claude Code, Claude Desktop, Cursor, Windsurf, and Cline.
 
 - **Name:** gamedev-mcp-server
 - **Display Name:** GameDev MCP Server
-- **Description:** Your AI forgets everything mid-project. Give it permanent game development knowledge. 130+ curated docs — design patterns, architecture, engine-specific guides for MonoGame, Godot, and more.
+- **Description:** Your AI forgets everything mid-project. Give it permanent game development knowledge. 138+ curated docs — design patterns, architecture, engine-specific guides for MonoGame, Godot, and more. Secure stdio-only transport.
 - **Category:** Developer Tools
 - **Tags:** `gamedev`, `game-development`, `godot`, `monogame`, `knowledge`, `documentation`
 - **Install:**
@@ -62,7 +64,7 @@ Works with Claude Code, Claude Desktop, Cursor, Windsurf, and Cline.
     }
   }
   ```
-- **Tools:** search_docs, get_doc, list_docs, list_modules, genre_lookup, session, license_info
+- **Tools:** search_docs, get_doc, list_docs, list_modules, compare_engines, random_doc, genre_lookup, session, license_info
 - **Resources:** gamedev://docs/{module}/{id}, gamedev://prompts/session, gamedev://prompts/code-rules
 
 ### Smithery-Specific Notes
@@ -81,7 +83,7 @@ Smithery typically auto-indexes from GitHub. Ensure:
 ### Listing Details
 
 - **Title:** GameDev MCP Server — AI Game Dev Knowledge Base
-- **Subtitle:** 130+ curated game development docs for AI coding assistants
+- **Subtitle:** 138+ curated game development docs for AI coding assistants
 - **Category:** Development / Game Development
 - **Pricing:** Free tier + Pro ($9/mo)
 - **Platform compatibility:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline
@@ -89,13 +91,14 @@ Smithery typically auto-indexes from GitHub. Ensure:
 
 ### Feature Highlights (for listing)
 
-1. **130+ curated docs** — not scraped, hand-written with AI code generation in mind
-2. **Multi-engine** — MonoGame (68 guides), Godot (5+), Unity (planned), plus engine-agnostic core
-3. **Context-efficient** — section extraction + maxLength params, 6 focused tools (not 50)
-4. **Genre system** — 11 genre profiles mapping to required systems with starter checklists
-5. **Session co-pilot** — structured workflows for planning, debugging, and scoping
-6. **Zero deps** — all search and logic built-in, no database, no network exposure (stdio only)
-7. **Free tier** — core docs always free, no signup required
+1. **138+ curated docs** — not scraped, hand-written with AI code generation in mind
+2. **Multi-engine** — MonoGame (78 guides), Godot (9 docs), Unity (planned), plus engine-agnostic core
+3. **Cross-engine comparison** — `compare_engines` tool shows how different engines approach the same topic
+4. **Context-efficient** — section extraction + maxLength params, 9 focused tools (not 50)
+5. **Genre system** — 11 genre profiles mapping to required systems with starter checklists
+6. **Session co-pilot** — structured workflows for planning, debugging, and scoping
+7. **Secure by design** — stdio-only transport, no network exposure, no open ports
+8. **Free tier** — core docs always free, no signup required
 
 ---
 
@@ -104,7 +107,7 @@ Smithery typically auto-indexes from GitHub. Ensure:
 ### Listing Details
 
 - **Name:** GameDev MCP Server
-- **Description:** Permanent game dev knowledge for your AI. 130+ curated docs on design, architecture, and engine-specific implementation. MonoGame, Godot, Unity. Context-efficient with section extraction.
+- **Description:** Permanent game dev knowledge for your AI. 138+ curated docs on design, architecture, and engine-specific implementation. MonoGame, Godot, Unity. Cross-engine comparison, context-efficient section extraction, stdio-only security.
 - **Install:** Add to Cline MCP Servers in VS Code settings
 - **Config:**
   ```json
@@ -184,7 +187,7 @@ Smithery typically auto-indexes from GitHub. Ensure:
 
 Current: (check and update if needed)
 
-**Suggested:** `🎮 AI game dev knowledge server (MCP). 130+ curated docs — design patterns, architecture, MonoGame, Godot, Unity. Give your AI permanent gamedev expertise.`
+**Suggested:** `🎮 AI game dev knowledge server (MCP). 138+ curated docs — design patterns, architecture, MonoGame, Godot, Unity. Cross-engine comparison. Give your AI permanent gamedev expertise.`
 
 ## npm Keywords (verify in package.json)
 

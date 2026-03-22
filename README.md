@@ -9,7 +9,7 @@
 
 **Your AI forgets everything mid-project. Give it permanent game development knowledge.**
 
-GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 134+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
+GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 138+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
 
 > Works with **Claude Code**, **Claude Desktop**, **Cursor**, **Windsurf**, **Cline**, and any MCP-compatible tool.
 
@@ -23,14 +23,16 @@ Every game dev using AI hits the same wall: your assistant starts strong, then f
 
 | Category | Examples | Docs |
 |----------|----------|------|
+| Category | Examples | Docs |
+|----------|----------|------|
 | 🎮 **Game Design** | Genre systems, game feel, balancing, progression | 12 |
 | 🏗️ **Architecture** | ECS, state machines, scene management, signals | 18 |
 | 💻 **Programming** | Design patterns, data structures, algorithms | 15 |
-| 🎯 **Engine Guides** | MonoGame (77 guides), Godot (7+), Unity (planned) | 86+ |
-| 🔧 **Core Concepts** | Camera, physics, pathfinding, networking, particles | 18 |
+| 🎯 **Engine Guides** | MonoGame (78 guides), Godot (9 docs), Unity (planned) | 87+ |
+| 🔧 **Core Concepts** | Camera, physics, pathfinding, networking, combat, particles | 19 |
 | 📋 **Project Mgmt** | Scope control, sprint planning, art pipeline | 7 |
 
-**134+ docs. 2.8MB+ of curated knowledge. Zero external dependencies.**
+**138+ docs. 3MB+ of curated knowledge. Zero external dependencies.**
 
 ## Quick Start
 
@@ -74,8 +76,8 @@ GameDev MCP Server uses a modular architecture. Core knowledge (design, patterns
 | Module | Status | Docs | Description |
 |--------|--------|------|-------------|
 | `core` | ✅ Stable | 52 | Engine-agnostic game dev knowledge |
-| `monogame-arch` | ✅ Stable | 77 | MonoGame + Arch ECS — guides G1–G68, architecture, library reference |
-| `godot-arch` | 🚧 Active | 7 | Godot 4.4+ — architecture, GDScript/C#, scene composition, state machines, signals, input handling |
+| `monogame-arch` | ✅ Stable | 78 | MonoGame + Arch ECS — guides G1–G69, architecture, library reference |
+| `godot-arch` | 🚧 Active | 9 | Godot 4.4+ — architecture, GDScript/C#, scene composition, state machines, signals, input, physics, camera |
 | `unity-arch` | 📋 Planned | — | Unity 6 — URP, ECS, modern patterns |
 | `bevy-arch` | 📋 Planned | — | Bevy ECS — Rust game dev |
 
@@ -97,8 +99,10 @@ Without `GAMEDEV_MODULES`, all available modules load automatically.
 |------|-------------|
 | **`search_docs`** | Full-text search across all docs with TF-IDF ranking, category/module/engine filters, cross-engine grouping |
 | **`get_doc`** | Fetch a doc by ID with optional `section` extraction and `maxLength` for context efficiency |
-| **`list_docs`** | Browse docs by category and module |
+| **`list_docs`** | Browse docs by category and module, with compact `summary` mode |
 | **`list_modules`** | Discover available engine modules and their status |
+| **`compare_engines`** | Compare how different engines approach the same topic (e.g., camera, physics, input) |
+| **`random_doc`** | Discover docs serendipitously — great for exploration and learning |
 | **`genre_lookup`** | Genre → required systems mapping (platformer, roguelike, tower defense, etc.) |
 | **`session`** | Dev session co-pilot — structured workflows for planning, debugging, scoping |
 | **`license_info`** | Show current tier and features |
@@ -109,7 +113,7 @@ Unlike tool-heavy MCP servers that dump 50K+ tokens of schemas into your context
 
 - **Section extraction** — `get_doc("G64", section: "Knockback")` returns just the knockback section, not the full 52KB doc
 - **`maxLength` param** — Cap any response to fit your context budget
-- **7 focused tools** — Minimal schema overhead, maximum utility
+- **9 focused tools** — Minimal schema overhead, maximum utility
 - **stdio transport** — No network exposure, no attack surface ([MCP security is a real concern](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/))
 
 ## Free vs Pro
@@ -154,8 +158,9 @@ The server validates on startup, caches for 24h, and gracefully falls back to fr
 There are [14,000+ MCP servers](https://mcp.so) out there. Here's why this one matters for game dev:
 
 - **Knowledge, not integration.** Godot-MCP, Unity-MCP, and Unreal-MCP give your AI buttons to press in the editor. This gives your AI *understanding* of how to architect and build games. They're complementary — use both.
-- **Cross-engine.** One server, multiple engines. Learn a pattern once in core theory, then get the engine-specific implementation. No need to install separate MCPs per engine.
+- **Cross-engine.** One server, multiple engines. Learn a pattern once in core theory, then get the engine-specific implementation. `compare_engines("camera")` shows you how Godot and MonoGame each handle it. No need to install separate MCPs per engine.
 - **Curated, not scraped.** Every doc is hand-written with AI code generation in mind — typed examples, anti-pattern warnings, decision trees, and "when to use" guidance. This isn't a docs mirror.
+- **Secure by design.** stdio-only transport — no network exposure, no open ports, no attack surface. While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/), this runs entirely local.
 - **Grows with you.** New docs and engines added continuously. Your AI gets smarter over time without you changing anything.
 
 ## Genre Coverage
@@ -173,7 +178,7 @@ git clone https://github.com/sbenson2/gamedev-mcp-server.git
 cd gamedev-mcp-server
 npm install
 npm run build
-npm test          # 58 tests, Node.js built-in test runner
+npm test          # 164 tests, Node.js built-in test runner
 npm run dev       # Watch mode
 ```
 
@@ -202,11 +207,11 @@ docs/
 │   └── session/             # Co-pilot workflow prompts
 ├── monogame-arch/           # MonoGame + Arch ECS
 │   ├── architecture/        # ECS overview, migration notes
-│   ├── guides/              # G1–G67 implementation guides
+│   ├── guides/              # G1–G69 implementation guides
 │   └── reference/           # Library stack, project structure
 └── godot-arch/              # Godot 4.4+
-    ├── architecture/        # Node tree, scenes, signals philosophy
-    ├── guides/              # Scene composition, state machines, signals
+    ├── architecture/        # Node tree philosophy, GDScript vs C# decision guide
+    ├── guides/              # Scene composition, state machines, signals, input, physics, camera
     └── reference/           # (coming soon)
 ```
 

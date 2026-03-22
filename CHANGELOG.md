@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-03-22
+
+### Added
+- **`compare_engines` tool** — Compare how different engines approach the same topic (e.g., camera, physics, input). Auto-links engine-agnostic theory docs, shows per-engine results with previews, and generates quick comparison tables. Includes topic synonym expansion and partial engine name matching. Pro-only.
+- **`random_doc` tool** — Serendipitous doc discovery with category/module/engine filters. Returns metadata + 500-char preview. Free tier restricted to core module.
+- **Phase 5 integration testing** — 60 new tests covering Workers API logic, caching, rate limiting, and end-to-end flows. 164 total tests.
+- **Godot docs:**
+  - `G5` Physics & Collision (~33KB) — Body type decision tree, collision layers/masks, CharacterBody2D platformer + top-down, RigidBody2D, Area2D patterns, raycasting, one-way/moving platforms
+  - `G6` Camera Systems (~50KB) — Follow modes, deadzone, look-ahead, Perlin shake, zoom, multi-target, cinematic, transitions, camera zones, pixel-perfect, split screen, camera state machine
+- **Core concept:**
+  - `combat-theory.md` (~34KB) — Engine-agnostic combat & damage theory: 10-stage damage pipeline, hitbox/hurtbox model, knockback, projectiles, melee frame data, critical hits (PRD), armor models, status effects, combo systems, turn-based combat, difficulty scaling, combat feel
+- **MonoGame:**
+  - `G69` Save/Load Serialization (~113KB) — Comprehensive save system guide elevated from G10 subsection
+
+### Changed
+- G4 AI Systems deep polished (30KB → 89KB) — Added squad tactics, DDA, AI debugging, pushdown automaton, expanded steering/perception/influence maps, 7 common mistakes
+- README updated: 138+ docs, 9 Godot docs, 9 tools (added compare_engines + random_doc), security positioning
+- CI matrix includes Node 24; all workflows updated to actions/checkout@v6, setup-node@v6, codeql-action@v4
+- 164 tests, all passing
+
+### Fixed
+- G56 broken link to G22 (renamed file), R2 outdated Apos.Input version, G17 missing cross-references, G17 outdated CI action versions, fog-of-war-theory missing engine guide links
+- Dependabot PRs merged: checkout@v6, setup-node@v6, codeql-action@v4, @types/node@25.5.0
+
 ## [1.1.0] - 2026-03-21
 
 ### Added

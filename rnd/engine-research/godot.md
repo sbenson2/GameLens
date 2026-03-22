@@ -1,9 +1,9 @@
 # Godot Engine Research
 
-> **Status:** Phase 2 — Prototyping (3/~20 docs complete)  
+> **Status:** Phase 2 — Prototyping (9/~20 docs complete, 45%)  
 > **Priority:** #1 (first engine expansion after MonoGame)  
-> **Last Updated:** 2026-03-19  
-> **Current Version:** Godot 4.4+ (4.6 in dev snapshots)
+> **Last Updated:** 2026-03-22  
+> **Current Version:** Godot 4.6.1 stable (4.6.2 RC 2 out, 4.5.2 also just released)
 
 ---
 
@@ -17,6 +17,7 @@
 - **2D-first design** — 2D isn't a flattened 3D plane (unlike Unity/Unreal). Dedicated 2D physics, rendering, coordinate system
 - **Cross-platform:** Windows, macOS, Linux, Android, iOS, Web (GDScript only for web currently)
 - **Lightweight:** ~40MB editor download, <30 second project startup
+- **LibGodot** (4.6+) — engine can be built as a standalone library, enabling embedding in other apps
 
 ### What Godot is NOT
 - Not ECS-based (node tree, not entity-component-system)
@@ -181,7 +182,7 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 
 ### 4.1 Physics
 - **2D:** Built-in physics engine (lightweight, good for most 2D games)
-- **3D:** Godot Physics (improving) or **Jolt Physics** (4.6+ default, much better)
+- **3D:** Jolt Physics is default since 4.4 (much better than old Godot Physics)
 - Node types: `CharacterBody2D/3D`, `RigidBody2D/3D`, `StaticBody2D/3D`, `Area2D/3D`
 - `move_and_slide()` — the workhorse for platformer/top-down movement
 - Collision layers/masks for fine-grained collision control
@@ -196,11 +197,12 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 - Full UI toolkit built-in (unlike MonoGame where you need Gum)
 - `Control` → `Container` → `HBoxContainer`/`VBoxContainer`/`GridContainer`
 - Anchors & margins for responsive layout
-- Theme system for consistent styling
+- Theme system for consistent styling (new default theme in 4.6)
 - `RichTextLabel` with BBCode support
 
 ### 4.4 Tilemaps
 - `TileMapLayer` (Godot 4.3+, replaces old `TileMap`)
+- 4.5 reworked TileMapLayer collision — merges placed cell shapes into bigger collision shapes
 - Terrain system for auto-tiling
 - Physics, navigation, and occlusion per tile
 - Multiple layers supported natively
@@ -224,11 +226,13 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 
 ## 5. Common Pain Points (What Devs Struggle With)
 
-### 5.1 Outdated Resources (CRITICAL)
+### 5.1 Outdated Resources (CRITICAL — STILL #1 in March 2026)
 - Godot 3 → 4 was a **massive breaking change** (renamed nodes, new syntax, removed features)
 - Most YouTube tutorials and StackOverflow answers are still Godot 3
+- **Godot 3 tutorials STILL being published** — as of Mar 20, 2026, new "Mastering 3D in Godot 3" content is appearing online
 - AI assistants frequently generate Godot 3 code (KinematicBody2D instead of CharacterBody2D, yield instead of await, etc.)
-- **MCP opportunity:** Up-to-date Godot 4.x patterns are extremely valuable
+- **Godogen creator** spent 4 rewrites and a year building custom GDScript docs because "LLMs barely know GDScript — 850 classes and Python-like syntax that lets models hallucinate Python idioms that fail to compile"
+- **MCP opportunity:** Up-to-date Godot 4.x patterns are extremely valuable — multiple projects are independently solving this same problem
 
 ### 5.2 Architecture Confusion
 - Unity devs try to use inheritance hierarchies (Godot prefers composition via scenes)
@@ -245,8 +249,9 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 ### 5.4 3D Limitations
 - 3D tooling still maturing (mesh editing, terrain — use external tools)
 - No built-in terrain system (addons: Terrain3D, HTerrain)
-- Lighting/shadows less polished than Unity/Unreal
+- Lighting/shadows less polished than Unity/Unreal (improving — Jolt physics default in 4.4 is a big step)
 - Import pipeline quirks with Blender models
+- Voxel ray tracing now demonstrated possible (r/godot "Can Godot do Teardown? Yes" — Mar 2026)
 
 ### 5.5 Multiplayer Complexity
 - High-level API (MultiplayerSynchronizer, MultiplayerSpawner) is powerful but poorly documented
@@ -267,6 +272,19 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 - Subpixel rendering issues
 - Camera smoothing vs pixel snapping conflicts
 
+### 5.8 AI-Generated PR Spam (NEW — Feb/Mar 2026)
+- Godot maintainers overwhelmed with low-quality AI-generated pull requests
+- Maintainer called it "a total shitshow" on social media (Feb 16, 2026)
+- Coverage: WN Hub, mxdwn Games — "Godot Developer Says AI is Becoming a Big Problem"
+- This is about AI-generated contributions, NOT AI-assisted dev tools — but it colors community sentiment
+- Our positioning as "knowledge infrastructure" (helping individual devs) vs "code generation" (replacing devs) is the safe side
+
+### 5.9 Console Export Gap
+- No official console export — requires third-party (W4 Games partnership)
+- Forum user (Mar 2026): "The only complaint: no official video game console support"
+- Console market is declining though, which reduces the urgency
+- Slay the Spire 2 likely has console planned via W4 Games
+
 ---
 
 ## 6. Essential Addons & Ecosystem
@@ -282,13 +300,15 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 | **SmartShape2D** | 2D terrain/shapes | Popular |
 | **Godot Mod Loader** | Mod support framework | Niche but active |
 | **Panku Console** | In-game debug console | QoL essential |
+| **GodotAI** | In-editor AI chat panel (free, supports Claude/ChatGPT/OpenRouter) | NEW — Mar 2026 |
 
 ### Community Resources
 - **GDQuest** — highest quality tutorials (YouTube + written)
 - **KidsCanCode** — beginner-friendly
-- **Godot official docs** — comprehensive but can be dense
-- **r/godot** — 400K+ members, very active
+- **Godot official docs** — comprehensive but can be dense; new search feature getting feedback (Mar 2026)
+- **r/godot** — 400K+ members, very active, strong anti-AI-content sentiment
 - **Godot Discord** — real-time help
+- **Godot Forum** — increasingly active, good for nuanced technical discussions
 
 ---
 
@@ -299,6 +319,7 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 | **2D Platformer** | ⭐⭐⭐⭐⭐ | CharacterBody2D + move_and_slide() is purpose-built |
 | **Top-down RPG** | ⭐⭐⭐⭐⭐ | TileMap + Navigation + Signals = natural fit |
 | **Visual Novel** | ⭐⭐⭐⭐⭐ | Dialogic 2 addon, or built-in RichTextLabel |
+| **Card Game / Deckbuilder** | ⭐⭐⭐⭐⭐ | **Slay the Spire 2 proves this at scale** (3M+ sales, Mar 2026) |
 | **Turn-based Strategy** | ⭐⭐⭐⭐ | Resource system great for unit data |
 | **Tower Defense** | ⭐⭐⭐⭐ | Path2D for paths, Area2D for tower range |
 | **Metroidvania** | ⭐⭐⭐⭐ | Strong 2D physics + animation system |
@@ -310,19 +331,132 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 
 ---
 
-## 8. Godot-Specific Patterns for MCP Docs
+## 8. Godot MCP Competitive Landscape (Updated 2026-03-22)
+
+### Editor-Integration Servers (ALL competitors are this type)
+
+| Server | Tools | Model | Stars | Notes |
+|--------|-------|-------|-------|-------|
+| **Coding-Solo/godot-mcp (GoPeak)** | 95+ | Free | ~2,528+ | MASSIVE expansion from ~84→95+ tools. Now includes GDScript LSP diagnostics, DAP debugger, screenshot capture, input injection, ClassDB introspection, CC0 asset library. HN Show HN post. Most feature-rich Godot MCP. |
+| **Godot MCP Pro** | 162 | $5 | — | Premium, AI-controlled editor/playtesting |
+| **GDAI MCP** | — | $19 | ~76 | Paid, specialized |
+| **GodotIQ** | 35 (22 free + 13 paid) | Freemium | ~10 | "Intelligence layer" — spatial analysis, dependency graphs, signal flow tracing. Posted on Godot Forum (Mar 2026). Closest to our model. |
+| **godot-mcp-docs** | — | Free | ~51 | **Effectively dead** — no updates since Jul 2025. Only docs-focused competitor. |
+| **godot-mcp (Godot MCP Server)** | — | Free | — | Basic editor integration, LobeHub listed |
+| **Claude-GoDot-MCP** | 95+ | Free | — | LobeHub listing, appears to be GoPeak rebadge |
+| **leanderm99/godotmcp** | — | Free | — | LobeHub listed, smaller |
+| **ricky-yosh/godot-mcp-server** | — | Free | — | LobeHub listed |
+
+### Knowledge-Layer Servers (OUR niche)
+- **godot-mcp-docs** (51⭐, dead) — the ONLY knowledge-layer Godot MCP, and it's abandoned
+- **Us (gamedev-mcp-server)** — 9 Godot docs (276KB), growing toward 20. Cross-engine. The only active knowledge MCP.
+
+### AI-Adjacent Godot Tools (Complementary, NOT competitive)
+| Tool | Type | Notes |
+|------|------|-------|
+| **Godogen** | Claude Code Skills | Generates complete Godot 4 games from text prompts. HN viral (~1,699+ ⭐ and growing). Creator spent 4 rewrites building custom docs — validates our thesis. MIT license. |
+| **GodotAI plugin** | In-editor AI chat | Free, open-source, supports Claude/ChatGPT/OpenRouter. r/godot reception mixed but positive. Complementary — it's the chat interface that needs our knowledge. |
+| **Context7 MCP** | Docs MCP (general) | Referenced on LobeHub alongside Godot MCPs. Provides "up-to-date, version-specific documentation" for libraries. Potential competitor if they add Godot-specific content. |
+
+### Key Competitive Insights (March 2026)
+1. **GoPeak's 95+ tools expansion is significant** — it's now the clear #1 editor-integration Godot MCP. BUT 95 tools = massive context window overhead, which is exactly the problem Perplexity CTO criticized. Our "5 tools, zero bloat" positioning is the counterpoint.
+2. **godot-mcp-docs being dead for 8+ months** means the knowledge-layer niche is completely uncontested. No one else is building curated Godot knowledge for MCP.
+3. **Godogen proves extreme demand** for curated GDScript knowledge. Its creator independently built the exact type of docs we're building — but as one-off files for a single tool, not a reusable MCP server.
+4. **GodotIQ's freemium model** (22 free + 13 paid) is the closest to ours in the Godot space, but they're spatial intelligence, not knowledge docs.
+5. **The Godot MCP namespace has 9+ servers now** — extreme fragmentation benefits "one knowledge server" positioning.
+
+---
+
+## 9. Slay the Spire 2 — Godot's Breakout Moment (NEW — March 2026)
+
+**The single most important event for Godot's commercial credibility.**
+
+- **3M+ copies sold** in first two weeks of Early Access (launched Mar 2026)
+- **Surpassed Hades 2 AND Hollow Knight: Silksong** in revenue
+- Built on Godot after switching from Unity (post-Unity pricing crisis, 2023)
+- MegaCrit converted ~2 years of Unity work to Godot
+- ComicBook.com: game is being pirated due to open-source Godot code, devs don't care
+- **Most successful indie game launch using Godot, ever**
+
+### Why This Matters for Us
+1. **Proves Godot can ship AAA-indie commercial titles** — silences "Godot is just for prototyping" narrative
+2. **Card game/deckbuilder genre** added to Godot genre mapping (⭐⭐⭐⭐⭐)
+3. **Will drive massive influx of new Godot developers** — all needing documentation and AI assistance
+4. **Validates Unity→Godot migration path** — our E2 GDScript vs C# and migration tables are timely
+5. **Forum discussion**: "For Godot to improve, it must get professional users to identify all the ways in which things don't work right" — STS2 IS that professional stress test
+
+---
+
+## 10. Version Timeline (Updated)
+
+| Version | Release | Key Features |
+|---------|---------|--------------|
+| 4.0 | Mar 2023 | Vulkan, GDScript 2.0, complete rewrite |
+| 4.1 | Jul 2023 | Stability, performance fixes |
+| 4.2 | Nov 2023 | GDScript improvements, Android editor |
+| 4.3 | Aug 2024 | TileMapLayer, interactive music, dotnet 8 |
+| 4.4 | Mar 2025 | Jolt physics integration (default), Wayland, WebSocket |
+| 4.5 | Sep 2025 | Stencil buffer, TileMapLayer collision rework (shape merging) |
+| 4.5.2 | **Mar 20, 2026** | Android debug symbols, D3D12 shader compile time fix, rendering fixes |
+| 4.6 | Jan 2026 | **LibGodot** (engine as standalone library), new default theme, GDScript type improvements |
+| 4.6.1 | ~Mar 2026 | Current stable |
+| 4.6.2 | **RC 2: Mar 21, 2026** | Crash fixes (empty strings, memory buffer overread), core stability |
+
+### Doc Version Targeting
+- Our docs target **Godot 4.4+** (covers 4.4, 4.5, 4.6)
+- Key 4.5 change for our docs: TileMapLayer collision merging (mention in G7 TileMap when written)
+- Key 4.6 change: LibGodot enables new embedding workflows — not relevant for gameplay docs yet
+- **Action item**: When 4.6.2 stable releases, verify our docs are compatible (likely no changes needed — these are bugfixes)
+
+---
+
+## 11. Community Sentiment Snapshot (March 2026)
+
+### Positive Signals
+- "Tried EVERY Game Engine Available, Godot Engine v4.6.1+ Is What We Always Come Back To" (Godot Forum, Mar 21)
+- "For years I bounced off of gamedev projects in other engines, never managing to understand the workflow or features in a way that made sense to me. When I first tried Godot, it just 'clicked.'" (r/godot, Mar 22)
+- STS2 success generating mainstream press coverage + developer interest
+- Active Starter Kit ecosystem (Match-3, Racing kits published this week on r/godot)
+- Technical showcases pushing boundaries (Teardown-style voxel destruction in Godot, souls-like combat with mesh slicing)
+
+### Negative Signals / Caution Areas
+- **Anti-AI sentiment intense and specific**: r/godot response to AI-generated browser game: "You didn't make anything. Go actually learn to fucking program and get a life."
+- **AI PR spam backlash**: Maintainers demoralized by low-quality AI-generated contributions. This has spilled into broader "AI bad" sentiment.
+- **Key nuance**: The anger is at (a) AI replacing humans, (b) AI-generated low-effort content, (c) AI spam on open-source repos. It is NOT at AI-assisted development tools used by real developers. Our "knowledge infrastructure" positioning remains safe.
+- **Console export** remains the #1 structural complaint — no official support
+
+### Marketing Implications
+- **DO**: Frame as "knowledge infrastructure for developers," "helps your AI understand Godot 4," "stops AI from generating Godot 3 code"
+- **DON'T**: Use phrases like "AI-powered," "generate games," "replace tutorials," "vibe coding"
+- **STS2 timing**: Can reference STS2's success to validate Godot as a serious engine choice
+- **Forum post > Reddit post** for initial Godot community outreach — less hostile to tools, more technical discussion
+
+---
+
+## 12. Godot-Specific Patterns for MCP Docs
 
 ### Patterns to Document (Priority Order)
-1. **Scene Composition** — how to structure a game as nested scenes
-2. **Signal Architecture** — when to use direct signals vs signal bus vs groups
-3. **State Machine (Node-based)** — the standard character controller pattern
-4. **Custom Resources for Data** — item databases, enemy stats, skill trees
-5. **Object Pooling** — adapting pooling to Godot's node system
-6. **Autoload Management** — what deserves to be global vs scene-local
-7. **Input Handling** — Input Map + `_unhandled_input` vs `_input` vs `_process`
-8. **Scene Transitions** — loading screens, async loading, scene stacking
-9. **Save/Load Systems** — ConfigFile vs Resource saving vs JSON
-10. **UI Architecture** — separating game logic from UI with signals
+1. ✅ **Scene Composition** (G1) — how to structure a game as nested scenes
+2. ✅ **State Machine (Node-based)** (G2) — the standard character controller pattern
+3. ✅ **Signal Architecture** (G3) — when to use direct signals vs signal bus vs groups
+4. ✅ **Input Handling** (G4) — Input Map + action system + buffering + accessibility
+5. ✅ **Physics & Collision** (G5) — body types, layers, raycasting, platforms
+6. ✅ **Camera Systems** (G6) — follow, deadzone, shake, zoom, multi-target, cinematic
+7. **TileMap & Navigation** (G7) — TileMapLayer + NavAgent — **NEXT (50% milestone)**
+8. **Custom Resources for Data** — item databases, enemy stats, skill trees
+9. **UI Architecture** — Control nodes, themes, separation
+10. **Scene Transitions** — loading, async, stacking
+11. **Save/Load Systems** — ConfigFile vs Resource saving vs JSON (confirmed community gap)
+12. **Object Pooling** — adapted for node tree
+13. **Autoload Management** — what deserves to be global vs scene-local
+14. **Animation Systems** — AnimationPlayer + AnimationTree + tweens
+15. **Dialogue Systems** — confirmed high-demand (Dialogic 2 vs custom)
+
+### Architecture Docs
+1. ✅ **E1 Architecture Overview** — Node tree, scenes, signals philosophy
+2. ✅ **E2 GDScript vs C#** — Language choice deep-dive with migration tables
+3. **E3 Project Structure** — Directory layout, autoloads, naming
+4. **E4 When to Use Godot** — Genre fit, limitations, honest assessment
 
 ### Anti-Patterns to Warn About
 1. Deep inheritance trees (use scene composition instead)
@@ -334,85 +468,43 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 
 ---
 
-## 9. Version Timeline
+## 13. Research Gaps (Still Need)
 
-| Version | Release | Key Features |
-|---------|---------|--------------|
-| 4.0 | Mar 2023 | Vulkan, GDScript 2.0, complete rewrite |
-| 4.1 | Jul 2023 | Stability, performance fixes |
-| 4.2 | Nov 2023 | GDScript improvements, Android editor |
-| 4.3 | Aug 2024 | TileMapLayer, interactive music, dotnet 8 |
-| 4.4 | Feb 2025 | Wayland, WebSocket client, Vulkan fixes |
-| 4.5 | ~2025 | Animation improvements, editor UX |
-| 4.6 | ~2026 | Jolt physics default, LibGodot, GDScript type improvements |
-
----
-
-## 10. MCP Module Planning
-
-### Doc Structure (Mirror MonoGame)
-```
-docs/godot-arch/
-├── architecture/
-│   ├── E1_architecture_overview.md     — Node tree, scenes, signals philosophy
-│   ├── E2_gdscript_vs_csharp.md        — Language choice deep-dive
-│   ├── E3_project_structure.md          — Directory layout, autoloads, naming
-│   └── E4_when_to_use_godot.md          — Genre fit, limitations, honest assessment
-├── guides/
-│   ├── G1_scene_composition.md          — Building games with nested scenes
-│   ├── G2_state_machine.md              — Node-based FSM for characters
-│   ├── G3_signal_architecture.md        — Signals, signal bus, groups
-│   ├── G4_custom_resources.md           — Data-driven design with .tres
-│   ├── G5_input_handling.md             — Input maps, action system
-│   ├── G6_tilemaps_navigation.md        — TileMapLayer + NavAgent
-│   ├── G7_save_load_systems.md          — Multiple approaches compared
-│   ├── G8_ui_architecture.md            — Control nodes, themes, separation
-│   ├── G9_object_pooling.md             — Adapted for node tree
-│   ├── G10_scene_transitions.md         — Loading, async, stacking
-│   └── ... (genre-specific guides)
-├── reference/
-│   ├── R1_node_cheatsheet.md            — Essential nodes quick reference
-│   ├── R2_addon_directory.md            — Curated addon recommendations
-│   └── R3_gdscript_patterns.md          — Code snippets & idioms
-└── godot-rules.md                       — AI code generation rules
-```
-
-### Genre-Specific Guides to Create
-- G20_platformer_systems.md — CharacterBody2D movement, coyote time, wall jumps
-- G21_topdown_rpg_systems.md — Grid movement, NPC dialogue, quest tracking
-- G22_tower_defense_systems.md — Path2D enemies, Area2D towers, wave spawning
-- G23_roguelike_systems.md — Procedural generation, permadeath, run progression
-- G24_survival_systems.md — Inventory, crafting, hunger/thirst, day/night cycle
-- G25_combat_damage_systems.md — Hitbox/hurtbox, damage pipeline (Godot-specific)
-
-### Godot Rules File (for AI Code Gen)
-Key rules to enforce:
-- Use CharacterBody2D/3D (not KinematicBody — that's Godot 3)
-- Use `await` not `yield` (Godot 3 syntax)
-- Use typed GDScript (`var speed: float = 200.0`)
-- Use `@export` not `export` (Godot 3 syntax)
-- Use `@onready` not `onready` (Godot 3 syntax)
-- Prefer signals over direct references
-- Use `StringName` for performance-critical string comparisons
-- Use `move_and_slide()` without arguments (Godot 4 changed the API)
-- TileMapLayer (4.3+) replaces TileMap
-
----
-
-## 11. Research Gaps (Still Need)
-
-- [ ] Deep-dive into Godot 4.6 Jolt physics integration specifics
+- [ ] Deep-dive into Godot 4.6 LibGodot embedding workflows
 - [ ] GDExtension workflow for performance-critical code
 - [ ] Multiplayer architecture patterns (authoritative server in Godot)
 - [ ] Shader recipes (common visual effects in Godot shader language)
 - [ ] CI/CD pipeline for Godot (GitHub Actions export templates)
 - [ ] Mobile-specific considerations (touch input, performance budgets)
-- [ ] Console export (requires third-party — W4 Games partnership)
+- [ ] Console export via W4 Games partnership
+- [ ] STS2 technical architecture analysis (if any postmortems surface)
+- [ ] 4.5 TileMapLayer collision merging — impact on game physics patterns
+- [ ] Context7 MCP — evaluate if it's a docs competitor worth watching
+
+---
+
+## 14. "Why AI Writes Better Game Code in Godot" Thesis (Validated)
+
+DEV Community article (Mar 19, 2026, still trending Mar 22) — key arguments:
+
+1. **Text-based file formats** — `.tscn` and `.tres` are human-readable. Unity's `.unity` and `.prefab` are YAML-database-dumps. "When an AI assistant encounters a Unity scene file, it's essentially reading a database dump."
+2. **GDScript simplicity** — one file = one class, clear scope, Python-like syntax is closer to training data
+3. **Integrated workflow** — everything in one editor, no split between IDE + engine
+4. **Scene tree = natural hierarchy** — AI can reason about parent-child relationships easily
+
+### Implications for Our MCP
+- Godot is already AI-friendly at the format level
+- Our value isn't "make AI understand Godot files" (it already can)
+- Our value is "make AI understand Godot PATTERNS and BEST PRACTICES" — the difference between code that compiles and code that follows idiomatic Godot 4 architecture
+- The 850-class GDScript API + Godot 3→4 breaking changes = the knowledge gap we fill
 
 ---
 
 ## Research Log
 
+- **2026-03-22 11am:** **Rotation 4 update (Godot).** Key findings: (1) Godot 4.5.2 released Mar 20 (Android debug symbols, D3D12 shader fix), 4.6.2 RC 2 out Mar 21 (crash fixes). Our docs remain current. (2) **Slay the Spire 2 — 3M+ sales, biggest Godot commercial hit ever**, surpassed Hades 2 and Silksong in revenue. Validates Godot for serious commercial games. Adds card/deckbuilder to genre strengths. (3) **GoPeak (Coding-Solo/godot-mcp) expanded to 95+ tools** — now includes LSP, DAP debugger, screenshots, ClassDB. Context window bloat problem we position against. (4) Godogen still growing (1,699+ ⭐), covered by multiple outlets. Creator's 4-rewrite story validates our GDScript docs thesis. (5) GodotAI plugin launched — free in-editor AI chat, complements our MCP. (6) Anti-AI PR spam is demoralizating Godot maintainers — colors community sentiment but our positioning remains safe. (7) Updated competitive landscape (9+ servers, all editor-integration except dead godot-mcp-docs). (8) Godot 3 tutorials STILL being published in Mar 2026 — the outdated resources problem persists. (9) Forum sentiment positive (devs choosing Godot after trying everything), Reddit sentiment mixed (pro-Godot but anti-AI-content). Updated module status to 9/20 docs (45%).
+- **2026-03-21 11am:** _Bevy rotation — see bevy.md_
+- **2026-03-20 11am:** _Unity rotation — see unity.md_
 - **2026-03-19 1pm:** **Phase 2 STARTED.** Created `docs/godot-arch/` directory skeleton (architecture/, guides/, reference/). Wrote 3 docs totaling ~43.6KB:
   - E1 Architecture Overview (15.6KB) — covers node tree, scenes, signals, autoloads, custom resources, state machine pattern, 2D vs 3D distinction, full Godot vs MonoGame comparison table, when-to-use honest assessment
   - godot-rules.md (13.6KB) — AI code gen rules: comprehensive Godot 3→4 rename table (20+ entries), typed GDScript standards, @export patterns with groups, signal callback naming, platformer + top-down movement templates, custom resource patterns, object pooling, file boundaries, performance rules

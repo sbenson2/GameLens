@@ -4,6 +4,7 @@ export interface Env {
   CACHE_KV: KVNamespace;
   API_VERSION: string;
   LEMONSQUEEZY_STORE_ID: string;
+  LEMONSQUEEZY_WEBHOOK_SECRET: string;  // HMAC signing secret for webhook verification
 }
 
 /** Doc metadata stored in KV (value = content, metadata = this) */
@@ -21,9 +22,12 @@ export interface DocMeta {
 /** License validation cache entry in CACHE_KV */
 export interface LicenseCacheEntry {
   valid: boolean;
-  key: string;
-  validatedAt: number; // epoch ms
+  keyHash: string;              // SHA-256 hash — never store plaintext key
+  validatedAt: number;          // epoch ms
   tier: "free" | "pro";
+  expiresAt?: string;           // ISO date for subscription expiry
+  activationLimit?: number;     // from LemonSqueezy (undefined = unlimited)
+  activationsUsed?: number;
 }
 
 /** Rate limit entry in CACHE_KV */

@@ -7,6 +7,10 @@ compatibility_flags = ["nodejs_compat"]
 API_VERSION = "1.0.0"
 LEMONSQUEEZY_STORE_ID = ""
 
+# Secrets (set via `wrangler secret put`):
+# - LEMONSQUEEZY_WEBHOOK_SECRET: HMAC signing secret for webhook verification
+#   wrangler secret put LEMONSQUEEZY_WEBHOOK_SECRET
+
 # KV Namespace bindings
 # For local dev, use placeholder IDs. Replace with real IDs after:
 #   wrangler kv namespace create DOCS_KV
