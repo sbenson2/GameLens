@@ -13,6 +13,7 @@ import { handleListDocs } from "./tools/list-docs.js";
 import { handleSession } from "./tools/session.js";
 import { handleGenreLookup, formatGenreResult } from "./tools/genre-lookup.js";
 import { handleRandomDoc } from "./tools/random-doc.js";
+import { handleCompareEngines } from "./tools/compare-engines.js";
 import { validateLicense, getLicenseKey } from "./license.js";
 import { checkSearchLimit, checkGetDocLimit, getUsageStats } from "./rate-limit.js";
 import {
@@ -458,6 +459,36 @@ export async function createServer() {
         return handleRandomDoc(args, docStore, discoveredModules);
       } catch (err) {
         return { content: [{ type: "text", text: `Random doc error: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
+    }
+  );
+
+  server.tool(
+    "compare_engines",
+    "Compare how different game engines handle the same topic (e.g. 'camera', 'physics', 'state machine'). Shows the core theory doc, engine-specific implementations side by side, and a quick comparison table. Great for choosing an engine or understanding architectural differences.",
+    {
+      topic: z.string().describe("Topic to compare across engines (e.g. 'camera', 'state machine', 'physics', 'input handling', 'scene management')"),
+      engines: z.array(z.string()).optional().describe("Specific engines to compare (e.g. ['Godot', 'MonoGame']). Omit to compare all available engines."),
+      maxDocsPerEngine: z.number().optional().describe("Maximum docs to show per engine (default: 3). Reduce for a more compact comparison."),
+    },
+    async (args) => {
+      try {
+        const access = isToolAllowed(tier, "compare_engines");
+        if (access === false) return proGateResponse();
+
+        // Free tier: comparison requires cross-engine access (Pro)
+        if (access === "limited") {
+          return {
+            content: [{
+              type: "text",
+              text: `Engine comparison requires a Pro license (it accesses engine-specific modules). ${PRO_GATE_MESSAGE}`,
+            }],
+          };
+        }
+
+        return handleCompareEngines(args, docStore, searchEngine, discoveredModules);
+      } catch (err) {
+        return { content: [{ type: "text", text: `Comparison error: ${err instanceof Error ? err.message : String(err)}` }] };
       }
     }
   );
