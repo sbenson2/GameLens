@@ -57,18 +57,18 @@ Every task should read this before starting and append learnings when done.
 - **npm v1.0.0 published** — need to set up GitHub Actions OIDC trusted publishing for future releases
 - **MCP registry submissions pending** — mcp.so, mcpmarket.com, smithery.ai, Cline marketplace
 
-## Competitive Landscape (updated 2026-03-21)
+## Competitive Landscape (updated 2026-03-22)
 
 - Space dominated by engine integration tools (Godot-MCP 2.5K⭐, Unreal-MCP 1.6K⭐, Unity-MCP 1.4K⭐, IvanMurzak Unity-MCP 1.4K⭐)
 - Only one docs competitor: `godot-mcp-docs` (51⭐) — **effectively dead** (no updates since July 2025)
 - **THREE paid/freemium Godot MCP servers now**: Godot MCP Pro ($5, 162 tools), GDAI MCP ($19, 76⭐), GodotIQ (10⭐, 35 tools, 22 free + 13 paid intelligence layer). All editor integration, not knowledge.
-- **Godogen BREAKOUT** (1,588⭐ in 5 days) — Claude Code skills pipeline that generates complete Godot 4 games. Creator spent 4 rewrites building custom GDScript docs. Validates our Godot module thesis. Complementary, not competitive.
-- **MCP EXISTENTIAL DEBATE (NEW)** — Perplexity CTO + YC CEO Garry Tan both publicly criticized MCP. Perplexity moving away internally (40-50% context window consumed by tool schemas). This HELPS us: criticism targets tool-heavy servers, not knowledge servers with ~5 tools.
+- **Godogen SUSTAINED BREAKOUT** (1,699⭐ in 6 days, +111 overnight) — Claude Code skills pipeline that generates complete Godot 4 games. Creator spent 4 rewrites building custom GDScript docs. Validates our Godot module thesis. Complementary, not competitive.
+- **MCP EXISTENTIAL DEBATE + RSAC ESCALATION** — Perplexity CTO + YC CEO Garry Tan criticized MCP. RSAC 2026 MCPwned talk delivered: Dark Reading declares MCP security "can't be patched away" (architectural, not fixable). Malwarebytes calls MCP-based attacks "defining capability" of criminal operations in 2026. All criticism targets remote HTTP servers; our stdio-only architecture is the antidote.
 - **Claude Code Channels launched (March 20)** — Anthropic's Telegram/Discord integration for Claude Code. VentureBeat calls it "OpenClaw killer." Makes our MCP more accessible (devs can use it from messaging apps).
 - **97 million monthly MCP SDK downloads** (Feb 2026) — protocol entrenched despite criticism.
 - **Godot MCP namespace now has 7+ servers** — extreme fragmentation benefits our "one knowledge server" positioning.
 - **Ref** (ref.tools) remains closest analog — $9/mo credit-based docs MCP. Proves paid docs-MCP works.
-- **Figma, WordPress, Amazon Ads all shipped MCP servers this week** — enterprise adoption accelerating.
+- **Figma, WordPress, Amazon Ads, Roblox all shipped MCP servers** — enterprise adoption accelerating. **Roblox is now most MCP-invested engine company** (official mesh gen, screenshot tool, expanded MCP Server tools as of March 19). No other engine has first-party MCP support at this level.
 - Agent architecture convergence: Claude Code, Codex, Copilot, Cursor, Windsurf all use same pattern (explore → loop → multi-agent). Single-turn autocomplete is dead.
 - **Anti-AI sentiment in r/godot** is real but targeted at lazy AI-generated content, not AI-assisted dev tools. Our knowledge-layer positioning is safe.
 
@@ -154,13 +154,13 @@ _Append Wes's feedback and direction changes here._
 ✅ v1.1.0 prepped (not published)
 ❌ npm v1.1.0 NOT published, MCP registries NOT submitted, Godot E2-G7 NOT started
 
-## Today's Priorities (2026-03-22) — Day 7 (Sunday)
+## Today's Priorities (2026-03-22) — Day 7 (Sunday) — UPDATED 9am
 
-1. **🔴 npm v1.1.0 publish** — DAY 4. v1.0.0 is 8 days stale. 82 downloads on stale version. MUST publish today. No more deferral.
-2. **🔴 MCP registry submissions** — Prep mcp.so PR (PR-based, no account needed). Other registries need Wes.
-3. **🟡 Godot G5 Physics** — next most-referenced missing guide, would bring Godot to 40%
-4. **🟡 Workers API local testing + deploy** — scaffolded Day 5, untouched for 2 days
-5. **🟡 Godot G6 Camera** — high-value, can port patterns from MonoGame G20
+1. **🔴 npm v1.1.0 publish** — DAY 4. v1.0.0 is 8 days stale. 86 downloads on stale version. MUST publish today. No more deferral.
+2. **🔴 Merge 4 Dependabot PRs** — Easy wins: checkout@v6, setup-node@v6, codeql-action@v4, @types/node@25.5.0
+3. **🔴 MCP registry submissions** — Prep mcp.so PR (PR-based, no account needed). Other registries need Wes.
+4. **🟡 Godot G7 TileMap** — Would hit 50% Godot milestone (10/20 docs). G5+G6 done overnight.
+5. **🟡 Workers API local testing + deploy** — scaffolded Day 5, untouched for 2 days
 6. **🟢 Save/load guide** — confirmed community gap
 7. **🟢 claudefa.st submission** — discovery opportunity
 
@@ -308,4 +308,5 @@ _Append operational lessons here._
 - **2026-03-22 (9pm lesson)**: Distribution for MCP servers follows a "registry floor + community spike" pattern. The registries (mcp.so, smithery, mcpservers.org, LobeHub, Cline) provide steady baseline discovery — like being listed in an app store. Community posts (Reddit, HN, DEV) provide spikes that can 10× overnight. The most successful MCP servers did both: got listed everywhere for compounding long-tail discovery, then had one viral community moment. The mistake is optimizing for one without the other — a great Reddit post with no registry presence means the spike fades; great registry presence with no launch moment means slow crawl. Also: the "agent distribution" channel (AGENTS.md, Claude Code Skills) is the MCP equivalent of mobile's shift from web to app stores — companies that build for it early will have outsized advantage. Karpathy's "Build. For. Agents." is the MCP version of "mobile first."
 - **2026-03-22 (5am functional test)**: Rotation A — Full functional test. Build clean, 152/152 tests pass in 1.1s across 25 suites. All 8 tools verified for correct free/pro tier gating. All 3 modules (core, monogame-arch, godot-arch) correctly gated. Server discovers 138 docs across 2 modules. Doc count has grown from 123 (Day 4) → 130 (Day 5) → 138 (Day 7) — steady ~2 docs/day. Test count grew from 36 → 58 → 84 → 152 over 4 days with no performance degradation (~1.1s total). Minor UX observation: `list_modules` is not in free tier TOOL_ACCESS, so free users can't discover available engine modules. Since it returns metadata only (no content), adding it to free tier would improve discovery without content leakage. Not a bug per current logic (unknown tools default to pro-only), but worth a design decision.
 - **2026-03-22 (6am git sync)**: Repo clean. Working tree was clean on pull — no uncommitted work. `git pull` confirmed already up to date. Build passes (`tsc --noEmit` clean). 152/152 tests pass. Local and remote both at 4ee7596 before sync. Metrics updated and committed (462bad1). 72 total commits, 228 tracked files, 7.4M .git size. Day 7 repo health: excellent. npm v1.1.0 still not published (Day 4 — flagged as 🔴 priority in today's plan).
+- **2026-03-22 (8am competitor scan)**: RSAC 2026 MCPwned talk elevated MCP security to "architectural unfixable problem" narrative (Dark Reading). Malwarebytes classifying MCP attack frameworks as "defining capability" of criminal ops. Star updates: Godogen 1,699 (+111/day, sustained), IvanMurzak/Unity-MCP 1,422 (+18, pushed today), Coding-Solo/godot-mcp 2,528 (+20). Roblox shipped major official MCP update (mesh gen + screenshot + expanded tools) — most MCP-invested engine company, stronger than community-built Godot/Unity/Unreal MCPs. GDC 2026 survey: 52% anti-AI sentiment BUT 33% actively using AI — our target is the 33%. "Engine-less" AI gamedev trend emerging in Japan (Raylib/SDL + Zig/Odin/Rust). Key lesson: stdio-only transport is now a top-3 competitive advantage (not a footnote) given RSAC security narrative. README security section is overdue.
 - **2026-03-22 (7am doc audit #4)**: Audited 5 random docs (G17 Testing, G5 Physics, R2 Capability Matrix, G56 Side-Scrolling, fog-of-war-theory), found and fixed 5 issues. (1) G56 had a broken link to `G22_render_pipeline.md` — file is actually `G22_parallax_depth_layers.md`. Likely the file was renamed at some point. (2) R2 listed Apos.Input as v2.5.0 but NuGet latest is 2.4.2 — version was probably aspirational or from a preview that was yanked. (3) G17 Testing covers collision testing and BenchmarkDotNet extensively but never cross-referenced G3 Physics, G13 C# Performance, or P12 Performance Budget. Added all three. (4) G17 CI snippet had `actions/checkout@v4` and `actions/setup-dotnet@v4` — updated to v6 per Dependabot PRs already merged. (5) fog-of-war-theory.md ended with "see engine-specific modules" but never actually linked to any — added Related Engine Guides section with links to G54, G39, G40, G58. Systemic pattern confirmed: core theory docs consistently lack cross-references to their engine implementation guides (third audit in a row catching this). Recently created docs (G5, created same day) are clean. Version drift in R2 capability matrix is a recurring maintenance burden — should consider a periodic version-check script.

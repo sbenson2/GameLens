@@ -4,6 +4,97 @@ Daily summary of new GitHub issues and PRs.
 
 ---
 
+## 2026-03-22 — Morning Standup (Day 7, Sunday)
+
+### GitHub Status
+- **Open Issues:** 4 (all Dependabot)
+- **Open PRs:** 4 (all Dependabot)
+  - #4: `@types/node` 22.19.15 → 25.5.0
+  - #3: `github/codeql-action` 3 → 4
+  - #2: `actions/checkout` 4 → 6
+  - #1: `actions/setup-node` 4 → 6
+- **Stars:** 0 | **Forks:** 0 | **Watchers:** 0
+- No external engagement after 7 days. Distribution remains THE blocker.
+
+### npm Status
+- **Published:** `gamedev-mcp-server@1.0.0` — **8 DAYS STALE**
+- **Local version:** `1.1.0` (ready to publish)
+- **Downloads:** 86 total (82 on 3/20, 4 on 3/21, 0 since)
+- **⚠️ v1.1.0 NOT published — Day 4 of being #1 priority.** 86 downloaders are on stale version missing Godot module, 8 tools, section extraction, cross-engine search, caching, and 15+ new docs.
+
+### Git Status
+- **Last commit:** `42c13c5` — rnd: audit #4 lessons learned
+- **77 total commits, 228 tracked files**
+- **Modified (uncommitted):** `rnd/PROJECT_MEMORY.md`, `rnd/competitor-log.md`
+- **Build:** ✅ Clean (`tsc --noEmit`)
+- **Tests:** ✅ 152/152 pass (1.0s, 25 suites)
+
+### Content Stats
+- **138 docs** across `docs/` (4.1 MB) — up from 134 yesterday
+- **Godot module:** 9 docs (E1, E2, godot-rules, G1-G6) — **45% of planned 20** (up from 35%)
+- **MonoGame:** 77 docs, 100% genre coverage
+- **Core:** 19 concept/theory docs (combat-theory added)
+- **8 MCP tools** (search_docs, get_doc, list_docs, list_modules, random_doc, genre_lookup, get_rules, license_info)
+- **152 tests**, all passing
+
+### Overnight Progress (Day 6 → Day 7 cron sessions)
+1. ✅ G5 Physics & Collision (33KB) — body types, collision layers, raycasting, platforms
+2. ✅ G6 Camera Systems (50KB) — follow, deadzone, shake, multi-target, cinematic, pixel-perfect
+3. ✅ combat-theory.md (34KB) — 19-section engine-agnostic combat foundation
+4. ✅ random_doc tool implemented (#16 code improvement)
+5. ✅ G4 AI Systems deep polish (30KB → 89KB) — squad tactics, DDA, debugging
+6. ✅ Phase 5 integration testing COMPLETE — 60 new tests (152 total)
+7. ✅ Search quality round 3 — 30 queries, 0 failures
+8. ✅ Distribution strategy created (rnd/marketing/distribution-strategy.md)
+9. ✅ Functional testing rotation — all 8 tools verified, tier gating correct
+10. ✅ Doc audit #4 — 5 issues fixed across 5 docs
+11. ✅ Competitor scan — RSAC MCPwned, Godogen 1,699⭐, Roblox MCP expansion
+
+### Open Items
+| Item | Priority | Days Open | Notes |
+|---|---|---|---|
+| **npm v1.1.0 publish** | 🔴 Critical | **4** | 86 users on stale v1.0.0. MUST publish today. |
+| **MCP registry submissions** | 🔴 Critical | **4** | mcp.so (PR-based), smithery (auto-indexes npm). Needs Wes for accounts. |
+| **Merge 4 Dependabot PRs** | 🟡 Medium | 1 | actions/checkout@v6, setup-node@v6, codeql-action@v4, @types/node@25.5.0 |
+| GitHub Actions OIDC publishing | 🟡 Medium | 4 | Trusted publishing for npm |
+| Workers API deploy | 🟡 Medium | 2 | Scaffolded + cached client + tested, needs wrangler deploy |
+| Godot G7 TileMap | 🟡 Medium | — | Would reach 50% Godot milestone (10/20) |
+| Search P4 (stemming) | 🟡 Medium | 5 | Defer until post-launch |
+| claudefa.st submission | 🟢 Low | 3 | "50+ Best MCP Servers" list |
+| P-file title numbering mismatch | 🟢 Low | 7 | Cosmetic, P3 still shows "# 07" |
+| **0 stars / 0 forks** | 🔴 Strategic | **7** | No distribution = no users = no feedback |
+
+### Key Observations — Day 7
+
+**The good:**
+- Overnight sessions continue to be extremely productive. 11 items completed autonomously.
+- Godot module jumped from 35% → 45% in one day (G5 Physics + G6 Camera — both foundational).
+- combat-theory.md fills the biggest cross-cutting gap (referenced by 8/11 genres).
+- 152 tests, all passing. Test count grew from 36 (Day 4) → 152 (Day 7) with no degradation.
+- Distribution strategy document now exists — clear launch sequence defined.
+- Content quality is strong: 138 docs, 4.1 MB, 100% MonoGame genre coverage, 45% Godot.
+
+**The bad:**
+- **npm v1.1.0 is Day 4 of "must publish today."** This is the single biggest failure of the week. 86 downloaders are on stale v1.0.0 missing Godot, cross-engine search, section extraction, caching, random_doc, and 15+ new docs. Every day unpublished = users judging us on 8-day-old code.
+- **Zero stars, zero forks, zero engagement after 7 full days.** Without registry listings, the only discovery path is "stumble on npm" which got us 86 downloads and nothing else.
+- **4 Dependabot PRs sitting unmerged** — easy wins that keep dependencies current.
+
+**Week 1 Summary:**
+- Built: 138 docs (4.1 MB), 8 tools, 152 tests, CI/CD, Workers API scaffold, caching layer, cross-engine search, 3 modules (core/MonoGame/Godot)
+- Shipped: v1.0.0 to npm on Day 4. That's it. Everything since is local.
+- Missing: v1.1.0 publish, registry submissions, launch post, any marketing whatsoever
+- **The product is excellent. The distribution is nonexistent.**
+
+### Today's Priorities (2026-03-22, Sunday)
+1. **🔴 npm v1.1.0 publish** — `npm publish` or trigger release workflow. NO MORE DEFERRAL.
+2. **🔴 Merge Dependabot PRs** — 4 easy merges, keeps deps current
+3. **🔴 Flag for Wes:** Registry submissions need accounts (mcp.so PR can be prepped autonomously)
+4. **🟡 Godot G7 TileMap** — Would hit 50% milestone (10/20 docs)
+5. **🟡 Workers API local testing** — 2 days since scaffold, needs validation before deploy
+6. **🟢 Continue content creation** — Godot save/load guide (confirmed community demand)
+
+---
+
 ## 2026-03-21 — Morning Standup (Day 6, Saturday)
 
 ### GitHub Status
@@ -55,26 +146,6 @@ Daily summary of new GitHub issues and PRs.
 | P-file title numbering mismatch | 🟢 Low | 6 | Cosmetic, P3 still shows "# 07" |
 | 0 stars / 0 downloads | 🔴 Strategic | **6** | No distribution = no users = no feedback |
 
-### Key Observations — Day 6
-
-**The good:**
-- Overnight cron sessions are extremely productive. 10 items completed autonomously.
-- Godot module accelerating: 7/20 docs done (35%), up from 5/20 yesterday.
-- Client-side caching (Phase 4) is a production-ready feature — offline fallback, stale cache, source annotations.
-- Feature roadmap provides clear strategic direction through v2.0.
-- 82 npm downloads on Day 5 — first real signal of interest.
-
-**The bad:**
-- **npm v1.1.0 STILL not published.** This has been the #1 priority for 2 consecutive days. The 82 people who downloaded v1.0.0 are getting a stale product missing Godot module, section extraction, summary mode, caching, and 30+ new docs.
-- **Zero GitHub stars/forks after 6 days.** Without registry listings, there's no discovery path.
-- **MCP registries still not submitted.** This also requires Wes's involvement for account creation.
-
-**Pattern (Day 6):**
-The build pipeline is excellent — content quality, code quality, testing, commits all strong. But we're optimizing a product nobody can find. The 82 downloads prove there IS interest when people stumble on it. The bottleneck is 100% distribution:
-1. Publish v1.1.0 (autonomous — can be done by cron)
-2. Registry submissions (needs Wes for accounts)
-3. Launch post / social signal (needs Wes for posting)
-
 ### Today's Priorities (2026-03-21, Saturday)
 1. **🔴 npm v1.1.0 publish** — Manual `npm publish` or trigger release workflow. Cannot wait another day.
 2. **🔴 MCP registry submissions** — Flag for Wes. At minimum: mcp.so (PR-based, can prep), smithery.ai
@@ -111,55 +182,6 @@ The build pipeline is excellent — content quality, code quality, testing, comm
 - **MonoGame:** G64-G67 + full architecture suite
 - **Core:** networking-theory.md added
 - **Genre coverage:** ~95%
-
-### Overnight Progress (Day 4 cron sessions)
-All completed autonomously by cron agents:
-1. ✅ G2 State Machines (38KB) — 4 patterns, animation integration, debug tools
-2. ✅ G67 Object Pooling (87KB) — cross-genre recycling patterns
-3. ✅ G3 Signal Architecture (19KB) — bus patterns, anti-patterns, decision guide
-4. ✅ networking-theory.md (21KB) — first core concepts expansion
-5. ✅ Section extraction + maxLength for get_doc (#14 code improvement)
-6. ✅ Cloudflare Workers API scaffold — all 5 endpoints, rate limiting, CORS
-7. ✅ Search quality test — 20/20 PASS (100%)
-8. ✅ Doc audit #6 — 6 issues fixed across 5 docs
-9. ✅ Pricing analysis finalized ($9/mo confirmed)
-10. ✅ Competitor scan updated (GodotIQ, MCP security crisis, DEV Community article)
-11. ✅ All work committed and pushed (8 commits overnight)
-
-### Open Items
-| Item | Priority | Days Open | Notes |
-|---|---|---|---|
-| npm v1.1.0 publish | 🔴 High | 0 | Lots of improvements since 1.0.0 |
-| GitHub Actions OIDC publishing | 🟡 Medium | 1 | Trusted publishing for npm |
-| MCP registry submissions | 🟡 Medium | 1 | mcp.so, mcpmarket, smithery, Cline |
-| Search P4 (stemming) | 🟡 Medium | 2 | Medium impact, needs testing |
-| Remaining code improvements | 🟡 Medium | 1 | See code-improvements.md |
-| Godot Phase 2 continue | 🟡 Medium | 1 | E2 GDScript vs C#, G4-G7 |
-| Workers API deploy | 🟢 Low | 0 | Scaffolded, needs wrangler deploy |
-| P-file title numbering mismatch | 🟢 Low | 5 | Cosmetic |
-| 0 stars / 0 downloads | 🟡 Strategic | 5 | Need marketing / discovery push |
-
-### Key Observations — Day 5
-
-**The good:**
-- Cron pipeline is crushing it. 8 commits overnight, all clean, build passes.
-- Content quality is high — 130 docs, 3.5MB, ~95% genre coverage.
-- Section extraction feature is the strongest competitive differentiator.
-- Cloudflare Workers API is scaffolded and ready to deploy.
-- Search quality at 100% on test suite.
-
-**The concern:**
-- Zero external signals after 5 days. No stars, no forks, no downloads (or too few to register).
-- npm v1.0.0 is stale — doesn't include Godot module, section extraction, G64-G67, or Workers API.
-- No MCP registry listings submitted yet — this is how people discover MCP servers.
-- No README marketing push or social media presence.
-
-**Pattern shift needed:**
-Days 1-4 were build mode (content, code, fixes). Day 5 should pivot to **distribution**:
-- Publish npm v1.1.0 with all improvements
-- Submit to MCP registries (mcp.so, smithery.ai, mcpmarket.com)
-- Update README with compelling pitch + usage examples
-- Consider a launch post (r/aigamedev, DEV Community, Godot forum)
 
 ### Today's Priorities (2026-03-20)
 1. **🔴 npm v1.1.0 publish** — Include everything since 1.0.0

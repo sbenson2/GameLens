@@ -4,6 +4,113 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-22 (8am) — Competitor Scan: RSAC MCPwned Delivered, MCP Security Becomes "Architectural" Problem, Roblox Ships Official MCP Tools, GDC Fallout Crystallizes
+
+### 🔥 HEADLINE: RSAC 2026 MCPwned Talk Delivered — Dark Reading Declares MCP Security "Can't Be Patched Away," Roblox Ships Mesh Gen + Screenshot MCP Tools, Godogen Sustains Growth to 1,699⭐
+
+The RSAC 2026 Conference this week elevated MCP security from "some CVEs" to a front-page enterprise security story. Dark Reading published "AI Conundrum: Why MCP Security Can't Be Patched Away" (March 20), arguing that MCP security risks are **architectural, not fixable with patches**. Meanwhile, Roblox shipped significant MCP server updates (mesh generation, screenshot tool), and the Godogen phenomenon continues with sustained press coverage and star growth.
+
+### Star Count Tracker (vs 2026-03-21 baseline)
+
+| Repo | Stars (03-21) | Stars (03-22) | Δ | Last Push |
+|------|--------------|--------------|---|-----------|
+| Coding-Solo/godot-mcp | 2,508 | 2,528 | +20 | 2026-03-18 |
+| htdt/godogen | 1,588 | 1,699 | +111 | 2026-03-17 |
+| chongdashu/unreal-mcp | 1,605 | 1,613 | +8 | 2025-04-22 (stale) |
+| CoderGamester/mcp-unity | 1,437 | 1,438 | +1 | 2026-03-10 |
+| IvanMurzak/Unity-MCP | 1,404 | 1,422 | +18 | 2026-03-22 (TODAY) |
+| 3ddelano/GDAI MCP | 76 | 76 | 0 | 2026-03-07 |
+| Nihilantropy/godot-mcp-docs | 51 | 51 | 0 | 2025-07-25 (stale) |
+| salvo10f/godotiq | 10 | 12 | +2 | 2026-03-21 |
+
+**Trends:**
+- **Godogen still surging** — +111 stars in ONE DAY (1,699 total). Now 6 days old and approaching 2K⭐. Multiple analysis articles still appearing (chyshkala.com deep-dive on the "four rewrites", simplenews.ai, topaiproduct.com). This is a sustained breakout, not a one-day spike.
+- **IvanMurzak/Unity-MCP** pushed TODAY, +18 stars. Most consistently active gamedev MCP competitor.
+- **Coding-Solo/godot-mcp** steady +20/day. Reliable growth but no recent pushes.
+- **godot-mcp-docs** remains dead. 51⭐, no push since July 2025. Our only direct docs competitor is effectively abandoned.
+- **GDAI MCP** stalled at 76. May be losing momentum.
+- **GodotIQ** ticking up slowly (+2), still actively developing (pushed yesterday).
+
+### 🔒 RSAC 2026: MCP Security Hits Main Stage
+
+The MCPwned talk delivered at RSAC this week, and the fallout is significant:
+
+**Dark Reading (March 20): "AI Conundrum: Why MCP Security Can't Be Patched Away"**
+- Token Security researcher Ariel Simon presented the MCPwned research
+- Key argument: MCP security risks are **architectural** — the protocol itself introduces fundamental security issues that can't be fixed with patches
+- Azure MCP RCE flaw demonstrated: could compromise entire Azure tenants
+- Dark Reading coverage positions this as an enterprise governance crisis, not just a vulnerability report
+
+**Broader RSAC MCP Coverage:**
+- SiliconANGLE (March 21): "RSAC 2026 preview: AI hype meets operating model reality" — MCP security called out as top concern alongside authentication and provenance
+- InfoSecToday (March 21): **Malwarebytes called MCP-based attack frameworks a "defining capability" of criminal operations in 2026** — MCP tools now being used offensively
+- SecurityBoulevard (March 20): "Why MCP Gateways are a Bad Idea" — argues runtime hooks and registries beat gateway pattern for MCP security
+- Pivot Point Security: Studies find "large percentages of open MCP servers suffer OAuth flaws, command injection, unrestricted network access, file exposure, plaintext credentials"
+
+**Why this matters for us (strengthening our position):**
+1. The "architectural" security argument SPECIFICALLY targets remote HTTP MCP servers with auth, not stdio-based local servers like ours
+2. Malwarebytes flagging MCP as an attack vector means enterprise security teams will scrutinize MCP installations — our stdio-only transport = zero network attack surface
+3. The "MCP gateways are bad" argument further validates our local-first design
+4. **Marketing angle upgraded**: "Zero network exposure. Zero auth surface. Pure local knowledge delivery." This is now a top-3 selling point, not a footnote.
+
+### 🎮 Roblox Ships Major MCP Server Update (March 19)
+
+Roblox DevForum announced significant MCP updates this week:
+- **Mesh Generation via MCP** — generate textured 3D meshes from text prompts using GenerateModelAsync API
+- **Screenshot Tool** — AI can capture and analyze game scenes
+- **New MCP Server Tools** — expanded toolset for Roblox Studio integration
+
+This makes Roblox the **most invested major engine company in MCP**, with official first-party MCP tools. Godot, Unity, and Unreal rely on community-built MCP servers. Roblox building it natively is a strong signal that MCP is the standard for game engine ↔ AI integration.
+
+Community forks continue to appear on LobeHub (boshyxd-robloxstudio-mcp with object inspection, project modification, advanced editing).
+
+### 📊 GDC 2026 Survey Data Crystallizing
+
+The post-GDC data is now clearer:
+- **52% of game professionals view AI negatively** (up from 18% two years ago) — implicator.ai
+- **A third of developers USE generative AI** despite negative sentiment — ixbt.games
+- Engine share: 42% Unreal, 30% Unity, 19% proprietary, **5% Godot**
+- GamesIndustry.biz opinion piece: "Generative AI will never achieve the same level of quality as a human in any artistic medium" — but argues industry needs to "get past two-sided" debate
+- Polygon: "GDC was defined by anxiety about the future" — AI + layoffs dominate mood
+- Aftermath: Even more pessimistic coverage on demoralization
+
+**The 52%/33% split is KEY**: Majority view AI negatively, but a third actively use it. Our target market is the 33% who use AI tools — they need knowledge infrastructure to use AI effectively. The 52% who view AI negatively are not our users and shouldn't influence our positioning.
+
+### 🆕 NEW: "Engine-less" Gamedev with AI Trend (Japan)
+
+Japanese blog post (t-arashiyama.com, March 9) documents a growing trend: developers using Raylib, SDL, Zig, Odin, and Rust instead of Unity/Unreal/Godot for AI-assisted game development. Arguments: simpler codebase = AI understands it better, no opaque engine internals.
+
+**Implication**: This is a fringe trend but validates that "AI + minimal framework" is an emerging pattern. Our core theory docs (engine-agnostic) would serve this audience well. Not actionable now but worth monitoring.
+
+### 📰 GDC Recap Thread on r/gamedev
+
+"I went to GDC 2026 so you didn't have to" — live GDC notes from an attendee. Anti-AI sentiment evident in comments ("AI pitch forks. How dare you.") but poster defends AI as a tool. Matches the 52%/33% split we're seeing in survey data.
+
+### 📊 MCP Ecosystem Stats Update
+
+- **14,274+ registered servers** (Descope directory count) — growth continuing
+- **GitHub MCP Server** added secret scanning (March 17) — GitHub expanding first-party MCP capabilities
+- WebMCP launched (NewStack, March 14) — Chrome extension that turns any web page into an MCP server for AI agents. Different category but shows MCP surface area expanding.
+- **Figma enforcing AI credit limits** starting March 2026 — pay-as-you-go credit plan validates credit-based monetization for AI tools (validates our pricing approach)
+
+### Key Takeaways
+
+1. **MCP security narrative hit peak volume at RSAC** — "can't be patched away" (Dark Reading) and "defining capability of criminal operations" (Malwarebytes) are the strongest MCP security statements yet. Our stdio-only architecture is now a **top-tier competitive advantage**, not just a technical detail. README security section is overdue.
+
+2. **Godogen sustained at +111⭐/day** — approaching 2K total. Not slowing down. Multiple analysis articles prove this isn't a one-day HN spike but genuine community interest. Validates Godot + AI knowledge demand continues to grow.
+
+3. **Roblox is now the most MCP-invested engine company** — official mesh gen + screenshot + MCP tools in Roblox Studio. No other engine has first-party MCP support at this level. Interesting strategic signal but not competitive (different market).
+
+4. **GDC 2026 data: 52% anti-AI, 33% using AI** — our market is the 33%. The anti-AI sentiment is about replacement (art, writing, localization), not about development tooling. "Knowledge infrastructure" positioning remains safe.
+
+5. **IvanMurzak/Unity-MCP** pushed TODAY, still the most active competitor (+18⭐/day). No knowledge-layer moves detected.
+
+6. **godot-mcp-docs remains dead** — our only direct docs competitor hasn't pushed since July 2025. Wide-open lane confirmed for 8th consecutive day.
+
+7. **"Engine-less" AI gamedev emerging in Japan** — Raylib/SDL + Zig/Odin/Rust. Fringe but our engine-agnostic core docs serve this audience naturally.
+
+---
+
 ## 2026-03-21 (8am) — Competitor Scan: MCP Existential Debate Erupts, Claude Code Channels Launches, Godogen Goes Viral
 
 ### 🔥 HEADLINE: MCP Faces Its First Real Existential Challenge — Perplexity & YC CEO Both Publicly Abandon It, While Anthropic Ships Claude Code Channels as an OpenClaw Competitor
