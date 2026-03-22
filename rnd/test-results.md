@@ -207,3 +207,85 @@ All tool access correctly gated:
 - **Build**: Clean
 - **Protocol**: Compliant
 - **Tier gating**: Working correctly for free/pro/invalid/dev scenarios
+
+## 2026-03-22 — Day A: Functional Testing (5am cron)
+
+### Build Verification
+- **`npm run build` (tsc)**: ✅ PASS — Clean compilation, no errors
+- **`npm test` (152 tests)**: ✅ 152/152 PASS in 1128ms
+- **Suites**: 25
+
+### Server Startup
+- **Modules discovered**: 2 (monogame-arch: 78 docs, godot-arch: 9 docs)
+- **Total docs**: 138
+- **License**: Pro (dev mode) ✅
+- **Transport**: stdio ✅
+
+### Tool & Tier Gating Verification
+
+| Tool | Free Tier | Pro Tier | Expected | Result |
+|------|-----------|----------|----------|--------|
+| search_docs | limited | true | Free=core only | ✅ PASS |
+| get_doc | limited | true | Free=core only | ✅ PASS |
+| list_docs | true | true | Available both | ✅ PASS |
+| license_info | true | true | Available both | ✅ PASS |
+| list_modules | false | true | Pro only | ✅ PASS |
+| random_doc | limited | true | Free=core only | ✅ PASS |
+| genre_lookup | limited | true | Free=limited | ✅ PASS |
+| session | false | true | Pro only | ✅ PASS |
+
+### Module Gating
+
+| Module | Free | Pro | Result |
+|--------|------|-----|--------|
+| core | ✅ allowed | ✅ allowed | ✅ PASS |
+| monogame-arch | ❌ denied | ✅ allowed | ✅ PASS |
+| godot-arch | ❌ denied | ✅ allowed | ✅ PASS |
+
+### Test Suite Breakdown (25 suites, 152 tests)
+
+| Suite | Tests | Result |
+|-------|------:|--------|
+| Analytics | 9 | ✅ |
+| Cross-Engine Search | 10 | ✅ |
+| DocCache | 9 | ✅ |
+| DocStore | 5 | ✅ |
+| HybridProvider | 7 | ✅ |
+| Cache Lifecycle | 5 | ✅ |
+| Offline Fallback Chain | 5 | ✅ |
+| Performance Benchmarks | 5 | ✅ |
+| Manifest Caching | 3 | ✅ |
+| License key format | 7 | ✅ |
+| list_docs summary mode | 6 | ✅ |
+| Module Auto-Discovery | 9 | ✅ |
+| Module Resolution | 5 | ✅ |
+| Synthetic Module Discovery | 3 | ✅ |
+| random_doc tool | 8 | ✅ |
+| SearchEngine | 8 | ✅ |
+| Tier System | 6 | ✅ |
+| Workers API — Search Engine | 8 | ✅ |
+| Workers API — Section Extraction | 5 | ✅ |
+| Workers API — Truncation | 3 | ✅ |
+| Workers API — Tier Gating (E2E) | 5 | ✅ |
+| Workers API — Rate Limiting | 4 | ✅ |
+| Workers API — License Validation | 4 | ✅ |
+| Workers API — Search E2E | 5 | ✅ |
+| Workers API — Full Request Simulation | 8 | ✅ |
+
+### Observations
+
+1. **⚠️ `list_modules` not in free tier TOOL_ACCESS** — Falls through to `false` for free users. Since it returns only metadata (no content), consider adding it to free tier for discovery purposes. Not a bug per current logic (unknown tools default to pro-only), but a UX decision worth revisiting.
+
+2. **Doc count growth**: 138 total (was 130 on Day 5, 123 on Day 4). Growth from new Godot docs (G5, G6) and core docs (combat-theory). Healthy trajectory.
+
+3. **Test count growth**: 152 (was 84 on Day 6, 58 on Day 5, 36 on Day 5 early). Integration and Workers API tests comprise ~40% of total.
+
+4. **Performance**: All tests complete in ~1.1s. No degradation despite 3× test count increase.
+
+### Summary
+- **Build**: ✅ Clean
+- **Tests**: 152/152 PASS (0 failures)
+- **Tier gating**: All 8 tools verified, all 3 modules verified
+- **Server startup**: Clean, correct module discovery
+- **No new bugs found**
+- **Minor observation**: list_modules UX for free tier (non-blocking)
