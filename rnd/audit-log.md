@@ -7,6 +7,44 @@
 | 2026-03-20 | A (New concept) | Created `networking-theory.md` (~21KB) |
 | 2026-03-21 | B (Strategic — Feature Roadmap) | Created `rnd/marketing/feature-roadmap.md` — v1.1/v1.2/v2.0/v3.0 roadmap |
 | 2026-03-21 | C (Improve PM doc) | Expanded E4_project_management.md (12.9KB → 43.5KB) — added 6 new sections |
+| 2026-03-22 | A (New concept) | Created `combat-theory.md` (~34KB) — highest-priority gap, referenced by 8/11 genres |
+
+---
+
+## 2026-03-22 (2am — Core Docs Cron)
+
+### Rotation A: New Concept Theory Doc
+
+**Created: `docs/core/concepts/combat-theory.md`** (~34KB)
+
+Combat was the highest-priority missing concept doc — referenced by 8/11 genre guides (tower defense, survival, action, platformer, RPG, roguelike, ARPG, fighting) and had a full MonoGame implementation guide (G64) but no engine-agnostic theory foundation. Godot/Bevy developers had no conceptual grounding before diving into engine-specific combat code.
+
+**Covers 19 sections:**
+- Damage pipeline architecture (canonical 10-stage pipeline, event-driven vs direct call trade-offs)
+- Health & resource pools (integer HP rationale, segmented health, shield/overshield with overflow options, resource pool comparison table — mana/stamina/energy/rage/ammo)
+- Damage types & resistances (type system, resistance matrix with 3 formulas, diminishing returns formula with math breakdown, effectiveness triangles)
+- Hitbox/hurtbox model (separation rationale, collision layer setup, activation patterns with already-hit tracking, shape comparison)
+- Invincibility frames (implementation, tuning table by genre, dodge i-frames vs damage i-frames)
+- Knockback & hit reactions (impulse model, curve-based knockback with shape comparison, weight classes, hit stun)
+- Hit stop & screen shake (selective freeze, Perlin noise trauma system, directional shake, tuning tables)
+- Projectile systems (6 types with movement/detection characteristics, homing steering with turn rate tuning, lifetime/cleanup, pooling notes)
+- Melee attack design (frame data model, telegraph hierarchy by attack tier, cancel windows for combo chains)
+- Critical hits & damage variance (PRD pseudo-random distribution to prevent streaks, variance guidelines)
+- Armor & defense models (5 models compared — flat/percentage/diminishing/threshold/layered, armor penetration)
+- Status effects & DoT (9 common effects, stacking rules with 4 policies, tick-based DoT with framerate independence)
+- Combo systems (input combo detection, chain combo with cancel windows, combo counter with proration)
+- Turn-based combat (5 turn order systems, timeline/CTB pseudocode, action economy)
+- Difficulty scaling & damage curves (3 stat growth models, 3 damage formulas, stealth difficulty techniques)
+- Death, respawn & recovery (state machine, consequence severity table by genre)
+- Combat feel & feedback (6 channels, white flash technique, 10-step layered feedback)
+- Anti-patterns (5 common mistakes with fixes)
+- Decision framework (real-time vs turn-based decision tree with sub-branches)
+
+All pseudocode, fully engine-agnostic. Cross-references to 8 related docs (G64, G4 AI, physics-theory, camera-theory, animation-theory, input-handling-theory, character-controller-theory, Godot G5).
+
+Added 12 new TOPIC_DOC_MAP keywords: combat-theory, damage pipeline, hurtbox, invincibility, i-frames, hit stop, critical hit, armor, status effect, turn-based, melee, projectile.
+
+**Next rotation:** B (Expand thin core doc) — candidates: `ui-theory.md` (5KB), `lighting-2d-theory.md` (6KB), `camera-theory.md` (6KB), `tilemap-theory.md` (6KB), `particles-theory.md` (6KB).
 
 ---
 
