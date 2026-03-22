@@ -12,6 +12,7 @@ import { handleGetDoc, handleGetDocHybrid } from "./tools/get-doc.js";
 import { handleListDocs } from "./tools/list-docs.js";
 import { handleSession } from "./tools/session.js";
 import { handleGenreLookup, formatGenreResult } from "./tools/genre-lookup.js";
+import { handleRandomDoc } from "./tools/random-doc.js";
 import { validateLicense, getLicenseKey } from "./license.js";
 import { checkSearchLimit, checkGetDocLimit, getUsageStats } from "./rate-limit.js";
 import {
@@ -416,6 +417,47 @@ export async function createServer() {
         return { content: [{ type: "text", text: output }] };
       } catch (err) {
         return { content: [{ type: "text", text: `Module listing error: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
+    }
+  );
+
+  server.tool(
+    "random_doc",
+    "Get a random game development doc for discovery and learning. Returns a preview with metadata — use get_doc to read the full document. Great for exploring what knowledge is available or finding inspiration. Optionally filter by category, module, or engine.",
+    {
+      category: z.enum(CATEGORIES).optional().describe("Filter by category (e.g. 'guide', 'concept', 'architecture')"),
+      module: z.string().optional().describe("Filter by module ID (e.g. 'core', 'monogame-arch', 'godot-arch')"),
+      engine: z.string().optional().describe("Filter by engine name (e.g. 'Godot', 'MonoGame'). Also includes core docs."),
+    },
+    async (args) => {
+      try {
+        const access = isToolAllowed(tier, "random_doc");
+        if (access === false) return proGateResponse();
+
+        // Free tier: restrict to core module
+        if (access === "limited") {
+          if (args.module && args.module !== "core") {
+            return {
+              content: [{
+                type: "text",
+                text: `Browsing non-core modules requires a Pro license. ${PRO_GATE_MESSAGE}`,
+              }],
+            };
+          }
+          if (args.engine) {
+            return {
+              content: [{
+                type: "text",
+                text: `Browsing by engine requires a Pro license. Free tier browses core docs only. ${PRO_GATE_MESSAGE}`,
+              }],
+            };
+          }
+          args.module = "core";
+        }
+
+        return handleRandomDoc(args, docStore, discoveredModules);
+      } catch (err) {
+        return { content: [{ type: "text", text: `Random doc error: ${err instanceof Error ? err.message : String(err)}` }] };
       }
     }
   );

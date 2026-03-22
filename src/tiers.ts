@@ -14,6 +14,7 @@ const TOOL_ACCESS: Record<Tier, Record<string, boolean | "limited">> = {
     session: false,
     genre_lookup: "limited", // generic info only
     license_info: true,
+    random_doc: "limited",  // core module only
   },
   pro: {
     list_docs: true,
@@ -22,6 +23,7 @@ const TOOL_ACCESS: Record<Tier, Record<string, boolean | "limited">> = {
     session: true,
     genre_lookup: true,
     license_info: true,
+    random_doc: true,
   },
 };
 
@@ -56,6 +58,7 @@ export function getTierFeatures(tier: Tier): {
         session: "Full session co-pilot",
         genre_lookup: "Full system mappings + recommended docs",
         license_info: "Available",
+        random_doc: "All modules",
       },
       modules: ["core", "monogame-arch", "godot-arch", "future premium modules"],
       description: "Pro ($9/mo) — all tools and modules fully unlocked",
@@ -70,6 +73,7 @@ export function getTierFeatures(tier: Tier): {
       session: "Locked (Pro)",
       genre_lookup: "Generic info only (Pro for full mappings)",
       license_info: "Available",
+      random_doc: "Core module only",
     },
     modules: ["core"],
     description: "Free tier — core docs with daily limits",
