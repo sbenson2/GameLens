@@ -255,20 +255,9 @@ const lines = results.map((r, i) => {
 
 **Implemented:** `summary` boolean param. When true, returns compact counts per module/category with doc IDs (up to 10 per category, then "+N more"). Full mode unchanged (default). Updated tool description with usage guidance. 6 new tests, 42/42 total pass. Commit: b722f52.
 
-#### 16. Add a `random_doc` Tool for Discovery
+#### ✅ 16. `random_doc` Tool for Discovery — DONE 2026-03-22
 
-**Problem:** AI agents only access docs they know about. A "random doc" or "featured doc" tool would help agents (and users) discover content they didn't know existed.
-
-```typescript
-server.tool(
-  "random_doc",
-  "Get a random game development doc for discovery/learning. Optionally filter by category or module.",
-  { category: ..., module: ... },
-  async (args) => { /* pick random from filtered list */ }
-);
-```
-
-Low-effort, high-delight feature. Also helps demonstrate breadth during demos.
+**Implemented:** `random_doc` tool with `category`, `module`, and `engine` filter params. Returns doc metadata + 500-char preview (skips title heading, breaks at paragraph boundary). Free tier restricted to core module. Engine filter resolves via module metadata and always includes core docs. Error messages guide users to `list_docs` or available engines. 8 new tests, 92/92 total pass. Commit: 9815d43.
 
 #### 17. Tool Descriptions Could Be More AI-Agent-Friendly
 
