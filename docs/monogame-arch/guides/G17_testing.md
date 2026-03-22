@@ -1,7 +1,7 @@
 # G17 — Testing
 
 
-> **Category:** Guide · **Related:** [G11 Programming Principles](./G11_programming_principles.md) · [G16 Debugging](./G16_debugging.md)
+> **Category:** Guide · **Related:** [G11 Programming Principles](./G11_programming_principles.md) · [G16 Debugging](./G16_debugging.md) · [G3 Physics & Collision](./G3_physics_and_collision.md) · [G13 C# Performance](./G13_csharp_performance.md) · [P12 Performance Budget](./P12_performance_budget.md)
 
 > Comprehensive testing guide for MonoGame + Arch ECS projects covering unit tests, ECS system tests, integration patterns, fixtures, and performance benchmarking.
 
@@ -1134,8 +1134,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '8.0.x'
       - run: dotnet test --configuration Release --logger "trx" --results-directory TestResults

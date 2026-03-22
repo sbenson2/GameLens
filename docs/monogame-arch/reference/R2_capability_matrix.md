@@ -44,7 +44,7 @@ Quick lookup: what provides what.
 | UI framework | Gum.MonoGame | Forms, visual editor, anchor layout | [G5](../guides/G5_ui_framework.md) |
 | Runtime fonts | FontStashSharp v1.3.7 | .ttf/.otf at any size, glyph atlases | |
 | **Input** | | | |
-| Input handling | Apos.Input v2.5.0 | Keyboard, mouse, gamepad, touch | [G7](../guides/G7_input_handling.md) |
+| Input handling | Apos.Input v2.4.2 | Keyboard, mouse, gamepad, touch | [G7](../guides/G7_input_handling.md) |
 | **Audio** | | | |
 | Audio (basic) | MonoGame built-in | SoundEffect + Song | [G6](../guides/G6_audio.md) |
 | Audio (advanced) | FMOD via FmodForFoxes | DSP, buses, beat sync, 3D spatial | [G6](../guides/G6_audio.md) |

@@ -243,7 +243,7 @@ Layer 4 — Tilemap (game world)  (SpeedX: 1.0)   — 1:1 with camera
 Layer 5 — Foreground foliage    (SpeedX: 1.2)   — moves faster than camera
 ```
 
-> See [G22 Render Pipeline](./G22_render_pipeline.md) for draw-order integration with the main render loop.
+> See [G22 Parallax & Depth Layers](./G22_parallax_depth_layers.md) for draw-order integration with the main render loop.
 
 ---
 
