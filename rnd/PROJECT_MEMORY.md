@@ -156,29 +156,32 @@ _Append Wes's feedback and direction changes here._
 
 ## Today's Priorities (2026-03-22) — Day 7 (Sunday)
 
-1. **🔴 npm v1.1.0 publish** — DAY 3 of this being #1 priority. v1.0.0 is 7 days stale. 82 downloads on stale version. MUST publish.
-2. **🔴 MCP registry submissions** — Needs Wes for account creation. Prep PRs where possible (mcp.so is PR-based).
-3. **🟡 Godot G5 Physics** — next most-referenced missing guide
-4. **🟡 Workers API local testing + deploy** — scaffolded + cached client ready
+1. **🔴 npm v1.1.0 publish** — DAY 4. v1.0.0 is 8 days stale. 82 downloads on stale version. MUST publish today. No more deferral.
+2. **🔴 MCP registry submissions** — Prep mcp.so PR (PR-based, no account needed). Other registries need Wes.
+3. **🟡 Godot G5 Physics** — next most-referenced missing guide, would bring Godot to 40%
+4. **🟡 Workers API local testing + deploy** — scaffolded Day 5, untouched for 2 days
 5. **🟡 Godot G6 Camera** — high-value, can port patterns from MonoGame G20
 6. **🟢 Save/load guide** — confirmed community gap
 7. **🟢 claudefa.st submission** — discovery opportunity
 
 ## Yesterday's Completed (2026-03-21) — Day 6 Recap
 
-11 cron sessions, all clean commits. Another highly productive day.
-✅ G4 Input Handling (43KB) — 4 movement patterns, input buffering, accessibility
+28 commits, 58 files changed, +8,421/-300 lines. 11 cron sessions, all clean.
+✅ Cross-engine search with engine filter + grouped output (10 new tests)
+✅ list_docs summary mode (#15 code improvement, 6 new tests)
+✅ Client-side caching Phase 4 (remote-client, doc-cache, hybrid-provider, 16 new tests)
 ✅ E2 GDScript vs C# (33KB) — architecture decision doc, Unity migration tables
-✅ list_docs summary mode (#15 code improvement)
-✅ Client-side caching Phase 4 (remote-client, doc-cache, hybrid-provider)
-✅ Content validation + doc audit #3 (7 issues fixed)
-✅ Feature roadmap (rnd/marketing/feature-roadmap.md)
-✅ Google Stitch UI workflow guide (52KB)
+✅ G4 Input Handling (43KB) — 4 movement patterns, input buffering, accessibility
 ✅ E4 Solo Project Management expanded (12.9KB → 43.5KB)
+✅ G4 AI Systems deep polish (30KB → 89KB) — squad tactics, DDA, debugging
+✅ CI/CD hardening — Dependabot, CodeQL, branch protection, 4 PRs merged
+✅ Content validation + doc audit #3 (7 issues fixed)
+✅ Feature roadmap + launch blog post draft
 ✅ Competitor scan — MCP debate, Godogen, Claude Code Channels
-✅ 58/58 tests passing, build clean
-❌ npm v1.1.0 STILL not published (Day 2)
-❌ MCP registries STILL not submitted (Day 2)
+✅ v1.1.0 finalized — CHANGELOG merged, version bumped
+✅ 84/84 tests passing, build clean
+❌ npm v1.1.0 STILL not published (Day 3)
+❌ MCP registries STILL not submitted (Day 3)
 
 ## Godot Module Progress (Phase 2 — Prototyping)
 

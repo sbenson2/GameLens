@@ -365,3 +365,82 @@ The "good at creating, bad at shipping" pattern from Day 2 **partially broke tod
 3. **Start Godot research** — begin filling engine-research/godot.md for the module expansion
 4. **Content gap analysis** — compare genre-lookup coverage vs what guides actually exist
 5. **Commit rnd/ to git** — get the R&D infrastructure tracked
+
+---
+
+## Day 6 — Saturday, March 21, 2026
+
+### 📊 Key Metrics
+- **Commits:** 28 (most ever in a single day)
+- **Files changed:** 58 (+8,421 / -300 lines)
+- **Cron sessions:** 11 (all completed successfully)
+- **Tests:** 84/84 passing (854ms) — up from 58 yesterday
+- **Total docs:** 134 (+4 from yesterday)
+- **Build:** Clean (`tsc --noEmit` passes)
+- **Working tree:** 1 uncommitted file (competitor-log.md update from 8pm scan)
+
+### ✅ Done
+
+**Features (3)**
+1. **Cross-engine search** — `engine` filter + `crossEngine` grouped output + module labels. 10 new tests. (15879cc)
+2. **list_docs summary mode** — compact per-module/category counts, dramatically reduces token usage. 6 new tests. (b722f52)
+3. **Client-side caching Phase 4** — remote-client, doc-cache, hybrid-provider. Stale cache fallback for offline use. 16 new tests. (97f8546)
+
+**Content (4 docs)**
+4. **E2 GDScript vs C# Language Choice** (33KB) — architecture decision doc, Unity migration tables, decision tree. (41fe5f7)
+5. **G4 Input Handling** (43KB) — 4 movement patterns, input buffering, coyote time, gamepad, touch, local multiplayer, accessibility. (f7bceb3 — committed prev day, landed today)
+6. **E4 Solo Project Management expanded** (12.9KB → 43.5KB) — risk mgmt, burnout prevention, project health metrics, pivot framework, financial planning. (3a689cb)
+7. **G4 AI Systems deep polish** (30KB → 89KB) — pushdown automaton, GOAP caching, squad tactics, DDA, AI debugging, 7 common mistakes. (0961a11)
+
+**Infrastructure (2)**
+8. **CI/CD hardening** — Dependabot config, CodeQL security scanning, branch protection on main, security audit job, concurrency control. (4cda40f)
+9. **4 Dependabot PRs merged** — actions/checkout v6, actions/setup-node v6, codeql-action v4, @types/node 25.5.0. (4fb9923, 8692338, 6421694, 7afc9fa)
+
+**Content Quality (1)**
+10. **Doc audit #3** — 5 docs audited, 6 issues fixed (broken links, outdated Steamworks.NET API, P12 title, missing cross-refs). (2b8e6fc)
+11. **Content validation** — 1 broken link fixed (G1 → G4_custom_resources now points to G4_input_handling). (4d5c26d)
+
+**Marketing & Research (4)**
+12. **Launch blog post draft** — ~1,500 words, platform-specific posting notes for DEV/Reddit/HN/Twitter. (7879b1f)
+13. **README + CHANGELOG updated** — doc counts, Day 6 features, badges. (7879b1f)
+14. **Competitor scan** — MCP existential debate (Perplexity/YC criticism), Godogen breakout (1,588⭐), Claude Code Channels launch. (55af9dd)
+15. **Feature roadmap** — v1.1→v2.0 plan, anti-roadmap defined, MCP spec alignment. (rnd/marketing/feature-roadmap.md)
+
+**Release Prep (1)**
+16. **v1.1.0 finalized** — CHANGELOG merged, analytics test isolation fixed, version bumped. (ff2898e)
+
+### ❌ Not Done / Failed
+- **npm v1.1.0 NOT published** — Day 3 of this being #1 priority. v1.0.0 is now 8 days stale with 82 downloads on old version. Needs manual `npm publish` or GitHub Actions release workflow trigger.
+- **MCP registry submissions NOT done** — Day 3. Needs Wes for account creation on mcp.so, smithery.ai, mcpmarket.com. Drafts ready.
+- **Godot G5 Physics NOT started** — pushed by other priorities.
+- **Workers API NOT deployed** — scaffolded but no local testing or Cloudflare deploy.
+- **claudefa.st submission NOT done** — discovery opportunity still pending.
+
+### 🔬 Competitive Intel Summary
+- **MCP under fire**: Perplexity CTO + YC CEO Garry Tan publicly criticized MCP (context window overhead). Criticism targets tool-heavy servers — helps our "5 tools, pure knowledge" positioning.
+- **Godogen viral**: 1,588⭐ in 5 days. Claude Code skills for Godot game generation. Creator built custom GDScript docs from scratch — validates our Godot module thesis.
+- **Claude Code Channels**: Anthropic's Telegram/Discord integration. VentureBeat calls it "OpenClaw killer." Makes our MCP more accessible (more Claude Code users = more MCP users).
+- **MCP "shadow IT"**: 7K exposed servers, enterprise security crisis. Our stdio-only transport is a marketable security advantage.
+- **Tangy TD viral**: Solo dev made $250K first week on tower defense game. Our TD guides (G64/G65/G66) are timely.
+- **97M monthly MCP SDK downloads** — protocol entrenched despite criticism.
+
+### 🎯 Tomorrow Priorities (Day 7 — Sunday)
+1. 🔴 **npm v1.1.0 publish** — DAY 4. Trigger GitHub Actions release workflow or manual `npm publish`. No more excuses.
+2. 🔴 **MCP registry submissions** — At minimum, prep the mcp.so PR (it's PR-based, no account needed).
+3. 🟡 **Godot G5 Physics** — next most-referenced missing guide, would bring Godot to 40%.
+4. 🟡 **Workers API local testing** — scaffolded Day 5, untouched since.
+5. 🟡 **Godot G6 Camera** — high-value, port patterns from MonoGame G20 deep polish.
+6. 🟢 **Commit remaining changes** — competitor-log.md update + this daily summary.
+
+### 🚨 Needs Attention
+- **npm publish is becoming a pattern** — 3 days as #1 priority, still not done. Either the release workflow needs manual trigger by Wes, or the cron agents need explicit permission to run `npm publish`.
+- **Content:distribution ratio is extreme** — 134 docs, 84 tests, 3 features added today, but still only 82 npm downloads on a stale v1.0.0. Building is outpacing shipping by a wide margin.
+- **4 Dependabot PRs merged** but branch protection may block future auto-merges if `enforce_admins` is toggled.
+
+### Project Health
+- **Godot module:** 7/20 docs (35%) — up from 25% start of day
+- **MonoGame module:** 77 docs, 100% genre coverage
+- **Test suite:** 84 tests, 0 failures, <1s runtime
+- **Git:** Clean history, all work committed same-day
+- **Build:** TypeScript strict mode, no errors
+- **Velocity:** ~4 docs/day sustained across 6 days

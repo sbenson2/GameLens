@@ -697,6 +697,141 @@ These connect AI assistants directly to game engine editors. **gamedev-mcp-serve
 | [FryMyCalamari/gamedev-mcp-hub](https://github.com/FryMyCalamari/gamedev-mcp-hub) | ⭐ 1 | Aggregates 600+ tools across Unity, Godot, Blender, GitHub, Discord. Smart routing. GUI dashboard. | Aggregator pattern — wraps other MCP servers (Obsidian, Blender, Godot, GitHub). Very ambitious but low traction (1 star). Not a docs server. |
 | [mcp-tool-shop-org/game-dev-mcp](https://github.com/mcp-tool-shop-org/game-dev-mcp) | ⭐ 0 | UE5 control via Remote Control API. Actor/asset/blueprint management. | Engine integration, not docs. 0 stars, 4 installs on LobeHub. |
 
+---
+
+## 2026-03-21 (6pm) — Community Research: Indie Dev Struggles, MCP Security Crisis, Godot 4.6.2, AI Localization Backlash
+
+### Topic: Mixed — Indie Dev Pain Points + MCP Ecosystem Trends + Godot Community Pulse
+
+Researched: r/gamedev, r/godot, Godot Forum, MCP ecosystem blogs, gaming press. Focus on what developers are struggling with RIGHT NOW and how it maps to our content.
+
+### 🔥 HEADLINE: "Tangy TD" Solo Dev Goes Viral ($250K in One Week), MCP Declared "Shadow IT" by Security Industry, AI Localization Becomes Third Rail
+
+---
+
+### 1. INDIE DEV STRUGGLES — What's Hurting Devs This Week
+
+**A. Tangy TD: The Solo Dev Success Story Everyone's Talking About**
+- Solo dev "Cakez77" made a tower defense game over 4 years, often doubting if he should continue (kid, other job)
+- Game went viral via Twitch/YouTube → $250,000 in first week on Steam
+- Covered by PC Gamer, Polygon, GamesRadar, front page of r/gaming, r/pcgaming, r/nextfuckinglevel
+- **Key quote from other devs:** "I've released 4 games on Steam over 5 years, thousands of hours, made maybe $12K"
+- **Insight for us:** Tower defense is one of our strongest genre coverage areas (G65 economy, G66 building, G64 combat all directly relevant). This viral moment makes TD guides especially timely. Marketing angle: "Build the next Tangy TD with structured knowledge, not trial and error."
+
+**B. AI Localization is Now Toxic**
+- r/gamedev post (4 days ago) from a dev whose roguelite got a brutal review from the Slay the Spire 2 localizer, criticizing AI-translated text
+- Dev removed all AI localization after community feedback — consensus was universal: **AI localization is unacceptable**
+- The dev was being pragmatic (limited budget, multiple languages) but community was unforgiving
+- **Insight for us:** Our docs should never recommend AI for localization/dialogue. If we add a localization guide, it should frame AI as "first draft tool" with mandatory human review — or better, not mention AI for creative text at all. Anti-AI sentiment in gamedev is VERY specific: it targets visible AI output (art, writing, localization) but accepts invisible AI assistance (code suggestions, architecture knowledge). Our positioning as "knowledge infrastructure" remains safe.
+
+**C. Scope Creep Remains the #1 Indie Killer**
+- "Quit our jobs to make an indie game" post (4 days ago, highly upvoted) — two ex-Harmonix/Google devs share hard-won lessons:
+  - "As an indie, I have to ruthlessly cut and prioritize for a scope reasonable for a team of two"
+  - Stripped out adventure/exploration from a Zelda-like to make a boss-focused game
+  - Project that was "supposed to take 2 years is now going to be 4 or 5"
+  - Contract work 50% of the time for financial stability
+  - LLC S-Corp saves ~$10K/year in taxes
+- **Mental health thread** (deleted but comments survived) — dev struggling with "I thought I was different" syndrome, community recommended peer accountability for scope management
+- **Insight for us:** Our E4 Solo Project Management doc (recently expanded to 43.5KB with burnout prevention, pivot decisions, kill criteria) directly addresses this. This is a consistent, recurring pain point. Consider a "scope management checklist" as a lightweight free-tier doc that links to E4.
+
+**D. Art Pipeline as Motivation Killer**
+- Thread from 2 days ago: "I'm stuck in a mental rut" — programmer can't get past art production
+- Top advice: "find a visual style that works WITH your limitations instead of against them"
+- Multiple devs recommended procedural/generative art approaches
+- **Insight for us:** Our Stitch UI workflow guide and P5 art pipeline doc address this partially. A "programmer art survival guide" doc could be high-value — framing art constraints as design opportunities rather than obstacles.
+
+**E. Steam Build Review Process Frustrations**
+- "Steam Review Build Insanity" post (2 days ago, 33 upvotes) — dev's build fails review because it "fails to launch"
+- Common pattern: works on dev machine, fails in Steam's review sandbox
+- **Insight for us:** Platform deployment is a gap in our docs. A "shipping to Steam" guide covering Steamworks SDK integration, review requirements, common rejection reasons, and testing methodology would be high-value. This links to our existing G48 Online Services doc (which covers Steamworks auth) but a dedicated shipping guide is missing.
+
+---
+
+### 2. MCP ECOSYSTEM — Security Crisis Deepens, Enterprise Adoption Accelerates Anyway
+
+**A. MCP Declared "Shadow IT" for AI — Qualys Blog (March 19)**
+- Qualys TotalAI now provides "layered discovery of MCP servers across network, host, and supply chain"
+- Over 10,000 active public MCP servers, "most organizations have zero visibility"
+- MCP described as "a new integration tier sitting between your AI stack and your internal systems"
+- **Qualys is building MCP fingerprinting and security assessment** — treats MCP servers like any other shadow IT endpoint
+- **Insight for us:** The MCP security narrative is evolving from "some CVEs" to "enterprise governance problem." Our stdio-only architecture is a genuine security advantage. Marketing should mention: "Runs locally via stdio — no network exposure, no attack surface, no shadow IT risk."
+
+**B. ~7,000 Internet-Exposed MCP Servers Found (SC Media, March 18)**
+- "Roughly half of all known deployments" are internet-exposed with no auth
+- Security researchers cataloguing them like open databases
+- SC Media headline: "MCP is the backdoor your zero-trust architecture forgot to close"
+- **This is a NEW security narrative** — last week it was CVEs and tool injection, this week it's enterprise governance
+- **Insight for us:** Every "best MCP servers" list will soon need a security section. Our README should add a "Security" section highlighting stdio-only transport before the enterprise audience grows.
+
+**C. Aembit Publishes "Ultimate Guide to MCP Security Vulnerabilities"**
+- Configuration poisoning, insecure defaults, tampered config files
+- Published March 18, already syndicated to Security Boulevard
+- **Insight for us:** Confirms that security will be a differentiator for paid MCP servers. "Audited, safe, stdio-only" could be part of our Pro positioning.
+
+**D. Most Popular MCP Servers (FastMCP Analysis)**
+- Top servers by stars: GitHub (3,500+), Google Drive (2,000+), PostgreSQL (1,850+), Google Maps (1,550+), Git (1,450+)
+- **Playwright MCP (5,500⭐) and Puppeteer MCP (5,100⭐) are the real star leaders** — browser automation is the hottest category
+- Azure DevOps MCP went to public preview (March 17) — Microsoft doubling down
+- Google Colab MCP Server launched (March 16) — Google officially in the MCP ecosystem
+- **14,274 servers listed on directories** as of January 2026 — likely 15,000+ now
+- **Insight for us:** The "best MCP servers" lists are a major discovery channel. We're not on claudefa.st's "50+ Best" list. Submission should be a priority — the list was updated just yesterday.
+
+---
+
+### 3. GODOT COMMUNITY PULSE
+
+**A. Godot 4.6.2 RC 2 Released (March 21 — TODAY)**
+- Second release candidate for 4.6.2
+- "More critical bugfixes than usual" — crashes on empty strings, memory buffer overread
+- Core stability fixes suggest 4.6.x is still maturing
+- **Insight for us:** Our docs target 4.4+ which covers 4.6.x. The "standalone library" feature in 4.6 (Godot can now be built as a library, not just an editor) is worth noting in E1 architecture overview eventually.
+
+**B. GodotAI Plugin — Free Open-Source AI Assistant in Godot Editor (2 days ago, r/godot)**
+- New plugin "GodotAI" — docked panel in Godot editor supporting Claude, ChatGPT, 500+ models via OpenRouter
+- Available on GitHub, itch.io, and Godot Asset Library
+- Community response: mixed positive — some excited, some note it's redundant with external tools
+- **One comment stands out:** "I personally would rather someone gets some insight into how to fix what's going on in their project using something like this tool, than to give up in frustration"
+- **Insight for us:** GodotAI is an in-editor chat panel — NOT an MCP server. It doesn't have structured knowledge, just raw LLM chat. This is exactly the problem our MCP solves: the LLM behind GodotAI will hallucinate Godot 3 patterns just like any other chat interface. Our MCP gives it correct knowledge. Potential integration story: "GodotAI + gamedev-mcp-server = in-editor AI that actually knows Godot 4."
+
+**C. Voxel Teardown Clone in Godot (4 days ago)**
+- Dev built voxel ray-traced destruction in Godot — extending Jolt physics with custom VoxelShape3D
+- Highly technical discussion about custom physics shapes, SDF collisions
+- Shows Godot community pushing into advanced territory (custom physics, ray marching)
+- **Insight for us:** Our upcoming G5 Physics guide should acknowledge advanced users pushing past built-in physics. A section on extending Jolt or custom collision shapes would be a differentiator.
+
+**D. Dialogue/Visual Scripting Tools Proliferating**
+- New branching dialogue tool with Godot plugin (2 days ago)
+- Discussion mentions DialogueManager (existing popular plugin), Articy integration
+- Dialogue systems remain a high-demand topic
+- **Insight for us:** We don't have a dialogue system guide for Godot. This is a confirmed gap. Should add to the Godot module plan (~G12-G15 range).
+
+**E. Match-3 Starter Kit (Kenney, 4 days ago)**
+- Another Godot starter kit, this time for Match-3 games, fully open-source
+- Shows demand for genre-specific templates/starter kits
+- **Insight for us:** Our genre guides serve a similar purpose but as knowledge rather than code. Consider referencing popular starter kits in our genre docs — "pair this guide with [starter kit]" approach.
+
+---
+
+### 4. CONTENT GAPS IDENTIFIED (This Research)
+
+| Gap | Source | Priority | Notes |
+|-----|--------|----------|-------|
+| Steam shipping/deployment guide | r/gamedev build review thread | 🟡 Medium | Common frustration, no existing doc |
+| Dialogue systems (Godot) | r/godot plugin discussion | 🟡 Medium | High demand, multiple tools in space |
+| AI localization guidance | r/gamedev controversy | 🟢 Low | Anti-pattern doc, not a how-to |
+| Programmer art survival guide | r/gamedev mental rut thread | 🟢 Low | Motivation-focused, unusual for us |
+| Scope management checklist (free tier) | Multiple threads | 🟡 Medium | Lightweight entry point to E4 |
+
+### 5. ACTION ITEMS
+
+1. **Submit to claudefa.st "50+ Best MCP Servers" list** — updated yesterday, we're not on it. HIGH priority for discovery.
+2. **Add "Security" section to README** — stdio-only, no network exposure. The enterprise security narrative around MCP is exploding; get ahead of it.
+3. **Consider a "Shipping to Steam" guide** — persistent community pain point, no existing coverage.
+4. **Add dialogue systems to Godot module plan** — confirmed community demand.
+5. **Marketing moment: Tower defense success story** — Tangy TD going viral makes our TD-related docs (G64, G65, G66) timely. Could mention in blog post.
+
+---
+
 ### Key Takeaways
 
 1. **The gamedev MCP space is dominated by engine integration tools** — Unity (2 major players with 1,300+ stars each), Godot (Coding-Solo at 2,400 stars), Unreal (chongdashu at 1,600 stars). These let AI control the editor directly.
