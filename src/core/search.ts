@@ -20,6 +20,39 @@ export class SearchEngine {
     "it", "be", "have", "has", "had", "was", "were", "are", "am",
     "been", "being", "not", "no", "if", "then", "than", "so", "very",
     "just", "about", "also", "way", "best", "make", "use",
+    "start", "get", "need", "want", "like", "work", "using",
+    "really", "going", "trying", "keep", "help",
+  ]);
+
+  /** Lightweight synonym map for common gamedev query expansions */
+  private static QUERY_SYNONYMS: Map<string, string[]> = new Map([
+    ["enemies", ["enemy", "ai"]],
+    ["enemy", ["enemies", "ai"]],
+    ["follow", ["chase", "pursue", "pathfind"]],
+    ["hud", ["ui", "interface"]],
+    ["health", ["hp", "hitpoint"]],
+    ["bar", ["gauge", "meter"]],
+    ["clips", ["collision", "physics", "clipping"]],
+    ["clipping", ["collision", "physics"]],
+    ["stuck", ["collision", "physics"]],
+    ["slow", ["performance", "optimization", "profil"]],
+    ["lag", ["performance", "optimization", "latency"]],
+    ["fast", ["performance", "optimization"]],
+    ["beginner", ["getting-started", "overview", "introduction"]],
+    ["learn", ["getting-started", "tutorial", "overview"]],
+    ["move", ["movement", "velocity"]],
+    ["moving", ["movement", "velocity"]],
+    ["walk", ["movement", "character"]],
+    ["run", ["movement", "character", "sprint"]],
+    ["jump", ["platformer", "character"]],
+    ["die", ["death", "respawn", "health"]],
+    ["dies", ["death", "respawn", "health"]],
+    ["bug", ["debugging", "fix", "issue"]],
+    ["broken", ["debugging", "fix"]],
+    ["multiplayer", ["networking", "netcode", "online"]],
+    ["online", ["networking", "multiplayer"]],
+    ["rpg", ["role-playing", "combat", "inventory"]],
+    ["stats", ["statistics", "attribute", "stat"]],
   ]);
 
   /** Lightweight stemmer — strips common English suffixes for better recall */

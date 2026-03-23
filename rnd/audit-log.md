@@ -8,6 +8,44 @@
 | 2026-03-21 | B (Strategic — Feature Roadmap) | Created `rnd/marketing/feature-roadmap.md` — v1.1/v1.2/v2.0/v3.0 roadmap |
 | 2026-03-21 | C (Improve PM doc) | Expanded E4_project_management.md (12.9KB → 43.5KB) — added 6 new sections |
 | 2026-03-22 | A (New concept) | Created `combat-theory.md` (~34KB) — highest-priority gap, referenced by 8/11 genres |
+| 2026-03-23 | B (Expand thin core doc) | Expanded `ui-theory.md` (5KB → 40KB) — 19 sections, added 18 TOPIC_DOC_MAP keywords |
+
+---
+
+## 2026-03-23 (2am — Core Docs Cron)
+
+### Rotation B: Expand Thin Core Doc
+
+**Expanded: `docs/core/concepts/ui-theory.md`** (5KB → 40KB, ~8× expansion)
+
+`ui-theory.md` was the thinnest concept doc at 5KB — essentially a glossary of UI terms with no depth. Expanded to a comprehensive engine-agnostic UI architecture reference with 19 sections.
+
+**New/expanded sections:**
+1. **UI Rendering Paradigms** — expanded from 2 paragraphs to full comparison of immediate/retained/hybrid/direct-draw with strengths, weaknesses, and use-case recommendations
+2. **Layout System Architecture** — complete position/size model tables, 4 container types (stack/grid/wrap/canvas), anchoring patterns with code, and the measure→arrange→render pipeline with critical "no layout in render pass" rule
+3. **The Visual Tree** — NEW. Tree structure diagram, rendering/input order, coordinate inheritance, visibility propagation, clipping, Z-order guidance
+4. **Common Controls & Patterns** — expanded from a simple table to three tiers: basic controls (7), compound controls (5), game-specific controls (7 including health bar, cooldown radial, damage numbers, notification toast)
+5. **Screen & Layer Management** — NEW. Screen stack architecture with push/pop/replace lifecycle, 6-layer model (World UI → Debug), modal vs non-modal, 5 transition types
+6. **HUD Design** — NEW. Information hierarchy (always/on-change/on-demand/contextual/never), layout zones diagram with player scan pattern, animated value changes with delayed drain, damage direction indicators
+7. **Inventory & Container UI** — NEW. Slot-based inventory with stacking algorithm, drag-and-drop manager (press/release/swap/stack/cancel), tooltip positioning with edge clamping
+8. **Dialogue & Text Systems** — NEW. Typewriter effect with punctuation pausing and skip, dialogue tree architecture (nodes + choices + conditions + effects), rich text inline tags (color, item links, input glyphs, shake, wave, pause)
+9. **Theming & Visual States** — expanded with full state table (normal/hovered/pressed/focused/disabled/selected), comprehensive theme system definition (colors/fonts/spacing/borders/button states), pixel-art theming constraints (9-slice, integer sizing, no AA)
+10. **Data Binding & Reactive UI** — expanded from a brief example to observer pattern vs polling pattern with trade-off analysis, plus recommended hybrid approach
+11. **Input Handling & Navigation** — NEW. Multi-input table (mouse/keyboard/gamepad), focus system with spatial navigation algorithm, input action glyph mapping by device
+12. **Tooltips, Popups & Contextual UI** — NEW. Tooltip manager with hover delay, contextual menu, confirmation dialog (focus Cancel by default for safety), notification toast system with stacking/shifting
+13. **Animation & Transitions** — NEW. 7 common UI animations with durations, easing function guide (5 types with "best for"), staggered entrance pattern for cascading reveals
+14. **Localization** — NEW. Text externalization pattern, 6 localization challenges with solutions (text length, CJK fonts, pluralization, RTL, dynamic values, gender), pseudolocalization testing technique
+15. **Accessibility** — NEW. 8 essential accessibility features with implementation notes, color contrast guidelines (WCAG ratios), minimum touch/click target sizes by platform
+16. **Resolution & Scaling** — NEW. 3 scaling strategies (virtual resolution, DPI-aware, responsive), safe area rules (TV overscan, mobile notches), pixel-perfect UI pipeline
+17. **Performance** — expanded with rendering cost techniques (atlases, text caching, dirty flags, visibility culling), layout cost rules, virtualized scrolling implementation for 500+ item lists
+18. **Anti-Patterns** — NEW. 7 common UI anti-patterns with wrong/right comparisons (spaghetti updates, layout every frame, deep nesting, hardcoded positions, ignoring gamepad, monolithic scene, no transitions)
+19. **UI Architecture Decision Framework** — NEW. Decision tree for choosing UI approach based on complexity, engine, art style, and platform
+
+Added Related Engine Guides footer with links to G5 (MonoGame Gum), G55 (Settings), G61 (Tutorial), G_stitch (Stitch prototyping), and 3 related core theory docs.
+
+Added 18 new TOPIC_DOC_MAP keywords: `ui architecture`, `hud`, `heads up display`, `health bar`, `inventory ui`, `tooltip`, `drag and drop`, `typewriter`, `dialogue tree`, `screen manager`, `data binding`, `focus system`, `gamepad navigation`, `ui accessibility`, `9-slice`, `nine slice`, `retained mode`, `immediate mode`.
+
+**Next rotation:** C (Improve project management doc) — candidates: check which PM docs haven't been touched recently.
 
 ---
 
