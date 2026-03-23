@@ -444,3 +444,74 @@ The "good at creating, bad at shipping" pattern from Day 2 **partially broke tod
 - **Git:** Clean history, all work committed same-day
 - **Build:** TypeScript strict mode, no errors
 - **Velocity:** ~4 docs/day sustained across 6 days
+
+---
+
+## 2026-03-22 — Day 7 (Sunday)
+
+### 📊 Key Metrics
+- **27 commits**, 41 files changed, **+10,001 / -789 lines**
+- **164/164 tests** pass (26 suites, 1.2s) — up from 152 yesterday
+- **138 total docs** (+4 from yesterday's 134)
+- **Godot module: 9/20 (45%)** — up from 35%, ONE doc from 50% milestone
+- **Core theory: ~79%** — combat-theory filled the #1 gap
+- **MonoGame: 78 docs** — G3 Physics deep polished (30KB → 77KB), G4 AI deep polished (30KB → 89KB)
+- **v1.2.0 tagged and pushed** — 31 commits since v1.1.0
+
+### ✅ Done
+
+**New Docs (4)**
+- G5 Physics & Collision (Godot, 33KB/1104 lines) — body types, collision layers, CharacterBody2D, RigidBody2D, Area2D, raycasting, one-way platforms, moving platforms
+- G6 Camera Systems (Godot, 50KB/1648 lines) — follow modes, deadzone, look-ahead, shake, zoom, multi-target, cinematic, transitions, camera zones, pixel-perfect, split screen, state machine
+- combat-theory.md (Core, 34KB/982 lines) — 19-section engine-agnostic combat theory, damage pipeline, hitbox/hurtbox, i-frames, knockback, combos, turn-based, DDA
+- G69 Save/Load Serialization (MonoGame, 113KB) — elevated from G10 subsection to full standalone guide
+
+**New Tools (2)**
+- `compare_engines` — cross-engine topic comparison with theory auto-linking, synonym expansion, comparison tables (12 tests)
+- `random_doc` — discovery tool with category/module/engine filters, 500-char previews (8 tests)
+
+**Deep Polish (2)**
+- G4 AI Systems: 30KB → 89KB — squad tactics, DDA, AI debugging, pushdown automaton, 7 common mistakes
+- G3 Physics & Collision: 30KB → 77KB — pipeline diagram, broad phase, raycasting, CCD, trigger zones, top-down physics, troubleshooting
+
+**Infrastructure**
+- Phase 5 integration testing complete — 60 new tests (workers-api + integration-e2e)
+- 4 Dependabot PRs merged (checkout@v6, setup-node@v6, codeql-action@v4, @types/node@25.5.0)
+- Node 24 added to CI matrix, all workflows updated to latest action versions
+- v1.2.0 version bump, CHANGELOG dated, tag pushed
+
+**Research & Strategy**
+- Distribution strategy document created — 9 registry channels identified, launch sequence defined
+- Godot competitive landscape updated — STS2 3M sales validates Godot, GoPeak at 95+ tools, Context7 as future watch
+- Community research — anti-AI "No Gen AI" badges trend, Cursor Composer 2 launched, save/load confirmed #1 Godot gap
+- Search quality round 3 — 30 queries, 27/30 excellent, 0 failures
+- Doc audit #4 — 5 docs audited, 5 issues fixed
+
+### ❌ Not Done / Failed
+- **🔴 npm publish — DAY 5.** v1.0.0 still live (86 downloads on stale version). v1.2.0 tagged but GitHub Release not created. Publish pipeline (OIDC) is UNTESTED. This is the longest-running blocker.
+- **🔴 MCP registry submissions** — drafts ready since Day 5, still not submitted. Wes needed for some.
+- **🟡 G7 TileMap** — would have hit the 50% Godot milestone. Deferred again.
+- **🟡 Workers API local testing & deploy** — scaffolded Day 5, untouched for 3 days
+- **🟢 claudefa.st submission** — easy discovery win, not done
+
+### 🎯 Tomorrow Priorities (Day 8 — Monday)
+1. **🔴 npm v1.2.0 publish** — Create GitHub Release from v1.2.0 tag OR manual `npm publish`. DAY 6 if not done. Non-negotiable.
+2. **🔴 MCP registry submissions** — At minimum mcp.so (PR-based, no account). Drafts are ready.
+3. **🟡 G7 TileMap** — Hit the 50% Godot milestone (10/20 docs)
+4. **🟡 Workers API local testing** — `wrangler dev` smoke test, KV data upload
+5. **🟢 Godot G8-G10** — Push toward 60% if G7 lands early
+
+### 🚨 Needs Attention
+- **npm publish is critical path** — every day without publishing means 86 users are on stale v1.0.0 with known bugs (genre filter leak, search P1-P3). v1.2.0 has 2 new tools, 60+ new tests, 4 new docs, 2 deep polishes, and cross-engine search. This is a significant release sitting in git.
+- **Publish pipeline untested** — v1.0.0 was published manually. The `publish.yml` workflow (triggered by GitHub Release) has never run. OIDC trusted publishing may not be configured in npm. Test before relying on it.
+- **Content velocity vs distribution gap** — 138 docs, 164 tests, 8 tools, but zero external distribution since Day 4's manual npm publish. The product is strong; the distribution is nonexistent.
+
+### Project Health
+- **Godot module:** 9/20 docs (45%) — up from 35% start of day
+- **MonoGame module:** 78 docs, 100% genre coverage
+- **Core theory:** ~79% complete
+- **Test suite:** 164 tests, 0 failures, 1.2s runtime
+- **Git:** Clean, all work committed and pushed same-day
+- **Build:** TypeScript strict mode, no errors
+- **Velocity:** ~4 docs/day sustained across 7 days (28 total in Week 1)
+- **Cross-engine features:** 3/4 complete (auto-discovery ✅, cross-engine search ✅, compare_engines ✅, migration guides ⬜)
