@@ -4,6 +4,120 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-22 (6pm) — Community Research Deep Dive: Indie Dev Struggles, AI Coding Tool War, Godot Content Gaps
+
+### 🔥 HEADLINE: "No Gen AI" Badges Emerge as Marketing Strategy, Cursor Composer 2 Challenges Claude Code, Godot Save/Load & Dialogue Remain Top Unanswered Questions, Steam Build Review Process Is a Persistent Pain Point
+
+Deep dive across r/gamedev, r/godot, Godot Forum, HN, and AI coding tool landscape. Focus: indie dev struggles, community content gaps, and AI tooling shifts.
+
+---
+
+### 1. Indie Dev Struggles (r/gamedev)
+
+**Tangy TD viral moment continues to dominate.** Cakez77's tower defense game ($250K in week one after 4 years of solo dev) is now covered by Polygon, GamesRadar, PC Gamer, and r/gaming (massive cross-post). Community discussion reveals deeper truths:
+- **Revenue reality check**: commenters note that after Steam's 30% cut + taxes, $250K → ~$130K take-home for 4 years of work. "98% of indie games earn a couple thousand bucks."
+- **AI slop marketplace concern**: indie devs report that AI-generated asset-flip games are "clogging the marketplace" making discovery harder for quality titles.
+- **"No Gen AI" as marketing badge**: At Game On Expo, indie devs from Whim Games discussed prominently displaying "no generative AI" promises on Steam pages as a wishlisting driver. This is becoming a conscious marketing strategy, not just ideology.
+
+**Steam Build Review remains a pain point.** A 33-upvote, 43-comment thread ("Please help, Steam Review Build Insanity") shows a dev whose build passed testing on multiple machines but failed Steam's review. Root cause: GPU hardware acceleration requirement not in system requirements. Community had to help troubleshoot what Steam support wouldn't explain. The dev eventually got approved after modifying requirements.
+- **Content gap confirmed**: We flagged "Steam build review process" as a gap last week. This thread validates it — no comprehensive guide exists for navigating Steamworks submission, build review, and the common gotchas (GPU requirements, controller overlay behavior, etc.).
+
+**GDC 2026 aftermath**: Polygon called it "unlike any other, thanks to AI and layoffs." A personal account from an indie dev (invisiblefriends.net) highlights a specific fear: Steam's AI policy has changed 3 times (blocked → allowed → "subject to change"), and devs spending 3-5 years on games face policy risk mid-development. Anti-AI sentiment is NOT about the technology — it's about **unpredictable platform policies** and **marketplace flooding**.
+
+**Scope creep & burnout**: "Quit our jobs to make an indie game — 2 years and multiple 'what am I doing' moments later" post highly upvoted (r/gamedev). Reinforces that our E4 Solo Project Management doc (now 43.5KB with risk management, burnout prevention, pivot decisions) addresses the most emotionally resonant indie dev struggle.
+
+---
+
+### 2. AI Coding Tool Landscape Update
+
+**The Cursor vs Claude Code war is intensifying:**
+- **Cursor Composer 2 released** (March 20) — their own model, scoring 61.3 on CursorBench vs Claude Opus 4.6's 58.2 and GPT-5.4 Thinking's 63.9. Cursor is building its own model to reduce Claude dependency.
+- **Fortune profile of Cursor** (March 21) reveals: Claude Code now has a **$2.5B run rate and 300K+ business customers**. The "Cursor is dead" narrative started in February when startup Valon switched to Claude Code. Fortune describes a "vibe shift" — the future of coding is "not the IDE but autonomous agents."
+- **Forbes** (March 5) reported Cursor's strategic pivot: priority is making a model that can compete with Claude Code's Opus "without human interaction" — i.e., they're pivoting from IDE-with-AI to autonomous agent. This is convergence toward the same architecture.
+- **Claude Code vs Cursor vs Copilot comparison articles** flooding DEV Community — multiple new posts this week. Developers actively evaluating which to use for gamedev.
+
+**Implication for us**: Claude Code's dominance (and its MCP support) means our MCP server has the best possible distribution platform. Cursor also supports MCP. The AI coding tool war doesn't threaten us — it increases the number of MCP-compatible agents.
+
+**Godogen HN discussion update** (still active, March 19): Creator confirms game generation costs $5-8 all-in ($1-3 LLM + $3-5 assets). Community pushback is predictable: "games feel lifeless," "no actual gameplay." The interesting tension in the thread: platform engineer says "games aren't where code quality matters" → game dev pushes back: "I only get a few milliseconds every frame... spaghetti code = bad performance." This debate directly validates our knowledge MCP — we provide the structured architecture knowledge that makes AI-generated game code NOT spaghetti.
+
+**System prompt repo hit 131K⭐** — Augment Code documented that Cursor, Windsurf, Claude Code, and 25+ other tools all have their system prompts collected in a public GitHub repo. Shows the transparency/hacking culture around AI coding tools.
+
+---
+
+### 3. Godot Community Content Gaps
+
+**Save/Load remains the #1 unanswered question:**
+- Godot Forum thread from March 18 (4 days ago): "How can I save a complex level with Runtime Node?" — dev struggling with PackedScene.pack() for runtime-generated content, JSON limitations with Godot types (Vector2, Color). This is the EXACT same question from 2 weeks ago.
+- DeepWiki generated docs for Godot's save system, confirming demand for structured save/load knowledge.
+- Our G69 Save/Load Serialization (113KB) addresses this comprehensively. **This should be highlighted in any r/godot marketing.**
+
+**Dialogue systems = persistent confusion:**
+- Multiple active Forum threads: "Help with dialogue implementation" (5 days ago), "Dialogue Manager" (1 month ago, still active).
+- Nathan Hoad's DialogueManager plugin is the de facto standard, but beginners consistently struggle with setup.
+- A **new visual scripting tool for branching dialogues** with Godot plugin just posted on r/godot (3 days ago, well-received). Shows active demand.
+- **LobeHub now has a "godot-genre-visual-novel" skill** — dialogue/narrative knowledge packaged as a Claude Code skill. Demand proven through multiple channels.
+- **Content gap**: We don't have a Godot dialogue systems guide. This should be on the Godot module roadmap.
+
+**New Godot tools & community activity:**
+- **GodotAI plugin** (free, open-source AI coding assistant in-editor) posted on r/godot 3 days ago. Reception: generally positive, community appreciates that it helps beginners "not give up in frustration." One commenter already uses DialogueManager and wonders about compatibility. Complementary to us.
+- **Lex transpiler** (Godot Forum, 2 weeks ago): converts declarative data → typed GDScript Resources. Solves "managing structured data (items, stats, quests, dialogue) without manually writing Resource scripts or dealing with fragile JSON parsing." Novel tooling that addresses the same data management pain our save/load guide covers.
+- **Match-3 starter kit** by Kenney (r/godot, 462 upvotes) — open-source Godot starter kits are popular. Validates demand for structured, reusable game templates.
+- **Procedural shader tutorials** gaining traction (Desmos → Godot shader, 358 upvotes). Shaders is a content gap for our Godot module.
+- **Voxel ray tracing in Godot** ("Can Godot do Teardown? Yes." — exciting 3D showcase, custom Jolt physics extension). Shows Godot 3D maturity.
+
+**Godot 3 tutorials STILL being published** (March 20, 2026): "Mastering 3D Game Development in Godot 3" published on firstdesignprintweb.co.uk. Our Godot module using correct 4.x patterns remains highly differentiated.
+
+---
+
+### 4. MCP Ecosystem Trends
+
+**New major MCP server launches this week:**
+- **Google Colab MCP Server** — official, open-source, lets AI agents run Colab notebooks. Major Google investment in MCP.
+- **Azure DevOps Remote MCP Server** (public preview) — Microsoft's second MCP server. Local → remote upgrade. Shows enterprise adoption trajectory.
+- **SonarQube Cloud native MCP** — now embedded in SonarQube Cloud, not just Docker container. DevSecOps meets MCP.
+- **Fingerprint MCP Server** — fraud prevention via MCP. Shows MCP expanding beyond dev tools into security/business intelligence.
+
+**MCP "best of" list proliferation:**
+- claudefa.st "50+ Best MCP Servers for Claude Code 2026" (updated 2 days ago) — we're NOT on this list. Submission opportunity.
+- Apify's "Best MCP Servers for Developers 2026" — categories: web data, code, files. No gamedev category.
+- PremAI's "25 Best MCP Servers for AI Agents" — 6 categories: productivity, databases, dev tools, browser automation, cloud, search. No gamedev.
+- DEV Community: "I Built 15 MCP Servers" post (2 days ago) — MCP content creation is accelerating.
+
+**MCP security narrative at peak:**
+- Qualys TotalAI now fingerprints MCP servers (March 19). Enterprise security vendors treating MCP as an attack surface to monitor.
+- SC Media: "MCP is the backdoor your zero-trust architecture forgot to close" (March 18). ~7,000 internet-exposed servers, half of all known deployments, many with no auth.
+- **All criticism targets remote HTTP servers.** Our stdio-only architecture remains the antidote.
+
+**Context7 MCP worth watching** — appeared on LobeHub marketplace alongside Godot MCPs. Described as "up-to-date, version-specific documentation" server. If they add Godot content, they become the first general-purpose docs MCP competitor. Currently not gamedev-specific.
+
+---
+
+### 5. Actionable Insights
+
+| Finding | Action | Priority |
+|---------|--------|----------|
+| Save/load is STILL #1 Godot community question | Highlight G69 in r/godot launch post | HIGH |
+| Dialogue systems = persistent gap | Add Godot dialogue guide to module roadmap | MEDIUM |
+| "No Gen AI" badge becoming marketing strategy | Position our tool as "invisible AI" — helps devs, doesn't generate content | HIGH (marketing angle) |
+| Steam build review process = content gap | Consider adding publishing/deployment guide to core docs | MEDIUM |
+| Cursor Composer 2 launched, AI tool war intensifying | Both Cursor + Claude Code support MCP — our distribution surface grows | AWARENESS |
+| claudefa.st "50+ Best MCP" list missing us | Submit immediately (pre-launch discovery) | HIGH |
+| Godot shaders = untapped content area | Add to Godot module Phase 3 roadmap | LOW |
+| Godogen $5-8/game cost proves low barrier | Our $9/mo is < 2 game generations — easy value prop | MARKETING |
+| Claude Code $2.5B run rate, 300K customers | Our primary distribution platform is healthy | POSITIVE |
+| System prompt transparency (131K⭐ repo) | Consider publishing our AGENTS.md-compatible integration guide | MEDIUM |
+
+---
+
+### Market Sentiment Snapshot (March 22, 6pm)
+
+- **Anti-AI in gamedev**: TARGETED, not blanket. Visible AI output (art, localization, asset-flip games) is rejected. Invisible AI assistance (coding tools, knowledge infrastructure) is accepted or welcomed. The line is clear.
+- **Indie dev economics**: Tangy TD's $250K is aspirational but commenters anchor on post-tax/cut reality. Solo dev financial planning content resonates.
+- **AI tool convergence**: Cursor building its own model, Claude Code as autonomous agent, Copilot adding MCP — all converging on the same pattern. MCP is the lingua franca.
+- **Community fatigue**: Not with AI tools per se, but with marketplace flooding (Steam), policy uncertainty (Steam AI policy shifts), and MCP fragmentation (7,000+ exposed servers). "The ONE knowledge server" positioning is more relevant than ever.
+
+---
+
 ## 2026-03-22 (8am) — Competitor Scan: RSAC MCPwned Delivered, MCP Security Becomes "Architectural" Problem, Roblox Ships Official MCP Tools, GDC Fallout Crystallizes
 
 ### 🔥 HEADLINE: RSAC 2026 MCPwned Talk Delivered — Dark Reading Declares MCP Security "Can't Be Patched Away," Roblox Ships Mesh Gen + Screenshot MCP Tools, Godogen Sustains Growth to 1,699⭐
