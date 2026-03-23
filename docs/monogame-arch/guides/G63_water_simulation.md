@@ -1,7 +1,7 @@
 # G63 — 2D Water Simulation
 
 
-> **Category:** Guide · **Related:** [G3 Physics & Collision](./G3_physics_and_collision.md) · [G27 Shaders & Visual Effects](./G27_shaders_and_effects.md) · [G23 Particles](./G23_particles.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G57 Weather Effects](./G57_weather_effects.md)
+> **Category:** Guide · **Related:** [G3 Physics & Collision](./G3_physics_and_collision.md) · [G27 Shaders & Visual Effects](./G27_shaders_and_effects.md) · [G23 Particles](./G23_particles.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G57 Weather Effects](./G57_weather_effects.md) · [G67 Object Pooling](./G67_object_pooling.md) · [G64 Combat & Damage](./G64_combat_damage_systems.md)
 
 ---
 
@@ -813,3 +813,10 @@ public static class WaterFactory
 | ECS systems | `WaterSurfaceSystem`, `WaterRenderSystem`, `BuoyancySystem`, `WaterTriggerSystem` |
 
 Start with `WaterFactory.CreateWaterBody()`, register the systems, and you have a complete 2D water simulation pipeline.
+
+---
+
+## Performance Notes
+
+- **Pool splash particles** — frequent splash events create many short-lived entities. Use an object pool ([G67 Object Pooling](./G67_object_pooling.md)) for droplet particles instead of creating/destroying entities per splash.
+- **Lava/acid contact damage** integrates with the damage pipeline from [G64 Combat & Damage Systems](./G64_combat_damage_systems.md) — apply damage via the standard `DamageEvent` rather than directly decrementing health to ensure i-frames, resistance, and UI feedback all trigger correctly.
