@@ -180,11 +180,32 @@ function isThrottled(): { throttled: boolean; retryAfterMs: number } {
 
 // --- Cache management ---
 
+/** Validate that a parsed JSON object has the required CacheEntry shape */
+export function isValidCacheShape(data: unknown): data is CacheEntry {
+  if (data === null || typeof data !== "object") return false;
+  const obj = data as Record<string, unknown>;
+  return (
+    typeof obj.valid === "boolean" &&
+    typeof obj.keyHash === "string" &&
+    typeof obj.validatedAt === "number" &&
+    typeof obj.instanceId === "string" &&
+    // Optional fields: must be correct type if present
+    (obj.activationLimit === undefined || typeof obj.activationLimit === "number") &&
+    (obj.activationsUsed === undefined || typeof obj.activationsUsed === "number") &&
+    (obj.expiresAt === undefined || typeof obj.expiresAt === "string")
+  );
+}
+
 /** Read cached validation result */
 function readCache(key: string): CacheEntry | null {
   try {
     if (!fs.existsSync(CACHE_PATH)) return null;
-    const data: CacheEntry = JSON.parse(fs.readFileSync(CACHE_PATH, "utf-8"));
+    const data: unknown = JSON.parse(fs.readFileSync(CACHE_PATH, "utf-8"));
+    if (!isValidCacheShape(data)) {
+      // Corrupt or incompatible cache — remove it
+      try { fs.unlinkSync(CACHE_PATH); } catch { /* non-fatal */ }
+      return null;
+    }
     if (data.keyHash !== hashKey(key)) return null;
     return data;
   } catch {
@@ -507,6 +528,11 @@ export async function validateLicense(): Promise<{
         message: `[gamedev-mcp] License: ${result.error ?? "invalid key"} — running in free tier`,
       };
     }
+  }
+
+  // Network error — log the specific error for debugging
+  if (result.error) {
+    console.error(`[gamedev-mcp] License validation failed: ${result.error}`);
   }
 
   // Network error — check if cached result is within offline grace period

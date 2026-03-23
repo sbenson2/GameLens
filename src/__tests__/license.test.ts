@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { isValidKeyFormat } from "../license.js";
+import { isValidKeyFormat, isValidCacheShape } from "../license.js";
 
 describe("License key format validation", () => {
   it("should accept valid UUID v4 format keys", () => {
@@ -41,5 +41,74 @@ describe("License key format validation", () => {
   it("should reject keys with spaces or padding", () => {
     assert.ok(!isValidKeyFormat(" 550e8400-e29b-41d4-a716-446655440000"));
     assert.ok(!isValidKeyFormat("550e8400-e29b-41d4-a716-446655440000 "));
+  });
+});
+
+describe("Cache shape validation", () => {
+  const validEntry = {
+    valid: true,
+    keyHash: "abc123def456",
+    validatedAt: Date.now(),
+    instanceId: "user@host (darwin/arm64)",
+  };
+
+  it("should accept a valid cache entry with required fields only", () => {
+    assert.ok(isValidCacheShape(validEntry));
+  });
+
+  it("should accept a valid cache entry with all optional fields", () => {
+    assert.ok(isValidCacheShape({
+      ...validEntry,
+      activationLimit: 5,
+      activationsUsed: 2,
+      expiresAt: "2026-12-31T00:00:00Z",
+    }));
+  });
+
+  it("should reject null", () => {
+    assert.ok(!isValidCacheShape(null));
+  });
+
+  it("should reject non-objects", () => {
+    assert.ok(!isValidCacheShape("string"));
+    assert.ok(!isValidCacheShape(42));
+    assert.ok(!isValidCacheShape(true));
+    assert.ok(!isValidCacheShape(undefined));
+  });
+
+  it("should reject empty object (missing required fields)", () => {
+    assert.ok(!isValidCacheShape({}));
+  });
+
+  it("should reject when valid is not boolean", () => {
+    assert.ok(!isValidCacheShape({ ...validEntry, valid: "true" }));
+    assert.ok(!isValidCacheShape({ ...validEntry, valid: 1 }));
+  });
+
+  it("should reject when keyHash is not string", () => {
+    assert.ok(!isValidCacheShape({ ...validEntry, keyHash: 123 }));
+  });
+
+  it("should reject when validatedAt is not number", () => {
+    assert.ok(!isValidCacheShape({ ...validEntry, validatedAt: "2026-01-01" }));
+  });
+
+  it("should reject when instanceId is not string", () => {
+    assert.ok(!isValidCacheShape({ ...validEntry, instanceId: null }));
+  });
+
+  it("should reject when optional fields have wrong types", () => {
+    assert.ok(!isValidCacheShape({ ...validEntry, activationLimit: "5" }));
+    assert.ok(!isValidCacheShape({ ...validEntry, activationsUsed: true }));
+    assert.ok(!isValidCacheShape({ ...validEntry, expiresAt: 12345 }));
+  });
+
+  it("should accept when optional fields are undefined", () => {
+    assert.ok(isValidCacheShape({
+      ...validEntry,
+      activationLimit: undefined,
+      activationsUsed: undefined,
+      expiresAt: undefined,
+    }));
   });
 });
