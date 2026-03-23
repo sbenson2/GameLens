@@ -37,7 +37,10 @@ function findDocsRoot(): string {
   if (fs.existsSync(cwdDocs)) return cwdDocs;
 
   throw new Error(
-    `Could not find docs directory. Looked in: ${docsPath}, ${cwdDocs}`
+    `Could not find docs directory.\n` +
+    `Looked in:\n  - ${docsPath}\n  - ${cwdDocs}\n\n` +
+    `If installed via npm, ensure the package includes the docs/ directory.\n` +
+    `If running from source, run from the project root.`
   );
 }
 
@@ -109,7 +112,7 @@ export async function createServer() {
 
   server.tool(
     "search_docs",
-    "Search across all game development docs (core + active engine modules). Returns matching doc snippets with IDs and relevance scores. Use `engine` to filter by engine (e.g. 'Godot', 'MonoGame'). When results span multiple engines, they're grouped by engine for easy comparison.",
+    "Search game development documentation by keyword. Returns up to 10 results ranked by relevance with doc IDs and snippets. Use this when you need to find guides, references, or explanations for a specific gamedev topic. Use `engine` to filter by engine (e.g. 'Godot', 'MonoGame'). Cross-engine results are automatically grouped for comparison. Follow up with get_doc to read the full document.",
     {
       query: z.string().describe("Search query (e.g. 'camera follow', 'A* pathfinding', 'ECS architecture')"),
       category: z.enum(CATEGORIES).optional().describe("Filter by category"),

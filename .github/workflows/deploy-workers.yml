@@ -1,0 +1,78 @@
+# Deploy Cloudflare Workers API
+# Triggers: manual dispatch, or on push to main when workers/ files change
+name: Deploy Workers API
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deploy environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+  push:
+    branches: [main]
+    paths:
+      - 'workers/**'
+      - 'docs/**'
+      - '.github/workflows/deploy-workers.yml'
+
+concurrency:
+  group: deploy-workers-${{ github.event.inputs.environment || 'production' }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Workers
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install workers dependencies
+        working-directory: workers
+        run: npm ci
+
+      - name: Type check
+        working-directory: workers
+        run: npx tsc --noEmit
+
+      - name: Generate KV data
+        working-directory: workers
+        run: npx tsx scripts/upload-docs.ts --write
+
+      - name: Deploy Worker
+        working-directory: workers
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx wrangler deploy
+          echo "Worker deployed successfully"
+
+      - name: Upload docs to KV
+        working-directory: workers
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx wrangler kv bulk put --binding DOCS_KV kv-bulk.json --remote
+          echo "Uploaded $(cat kv-bulk.json | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))') KV entries"
+
+      - name: Smoke test
+        run: |
+          # Wait for deployment to propagate
+          sleep 10
+          HEALTH=$(curl -sf https://gamedev-mcp-api.sbenson2.workers.dev/v1/health)
+          echo "Health check: $HEALTH"
+          echo "$HEALTH" | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["ok"], "Health check failed"'

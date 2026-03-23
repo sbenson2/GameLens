@@ -102,7 +102,8 @@ export function handleSearchDocs(
     const scoreStr = r.score.toFixed(1);
     const engineLabel = moduleToEngine.get(r.doc.module) ?? r.doc.module;
     const engineTag = isCrossEngine ? ` [${engineLabel}]` : "";
-    return `${i + 1}. **${r.doc.id}** — ${r.doc.title}${engineTag} [${r.doc.module}/${r.doc.category}] (score: ${scoreStr})\n   ${r.snippet.split("\n")[0]}\n`;
+    const desc = r.doc.description ? `\n   _${r.doc.description}_` : "";
+    return `${i + 1}. **${r.doc.id}** — ${r.doc.title}${engineTag} [${r.doc.module}/${r.doc.category}] (score: ${scoreStr})${desc}\n   ${r.snippet.split("\n")[0]}\n`;
   });
 
   // Add cross-engine summary header when results span multiple engines
@@ -132,7 +133,7 @@ export function handleSearchDocs(
       for (const r of groupResults) {
         const scoreStr = r.score.toFixed(1);
         groupedLines.push(
-          `${rank}. **${r.doc.id}** — ${r.doc.title} [${r.doc.category}] (score: ${scoreStr})\n   ${r.snippet.split("\n")[0]}\n`
+          `${rank}. **${r.doc.id}** — ${r.doc.title} [${r.doc.category}] (score: ${scoreStr})${r.doc.description ? `\n   _${r.doc.description}_` : ""}\n   ${r.snippet.split("\n")[0]}\n`
         );
         rank++;
       }
