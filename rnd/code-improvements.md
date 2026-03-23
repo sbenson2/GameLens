@@ -124,19 +124,9 @@ export function handleSearchDocs(...): ToolResult {
 }
 ```
 
-#### 5. `findDocsRoot()` Throws on Missing Docs (server.ts:25-34)
+#### ✅ 5. `findDocsRoot()` Throws on Missing Docs — DONE 2026-03-23
 
-**Problem:** If `docs/` doesn't exist, the server crashes on startup with an unhelpful error. This is the first thing a new user hits if they install the npm package but `docs/` isn't bundled correctly.
-
-**Fix:** Add context to the error:
-```typescript
-throw new Error(
-  `Could not find docs directory.\n` +
-  `Looked in:\n  - ${docsPath}\n  - ${cwdDocs}\n\n` +
-  `If installed via npm, ensure the package includes the docs/ directory.\n` +
-  `If running from source, run from the project root.`
-);
-```
+**Implemented:** Added multi-line error with paths checked and troubleshooting hints. Commit: 315b78f.
 
 #### ✅ 6. License Validation Network Error Logging — DONE 2026-03-23
 
@@ -210,18 +200,9 @@ construction: ["G66"],
 
 ### 🔵 P3 — MCP Tool Improvements
 
-#### 13. `search_docs` Should Return Doc Descriptions (search-docs.ts)
+#### ✅ 13. `search_docs` Should Return Doc Descriptions — DONE 2026-03-23
 
-**Problem:** Search results only show `doc.id`, `doc.title`, and the first line of the snippet. The `doc.description` field is extracted but never shown in search results. Descriptions would help AI agents decide which doc to fetch.
-
-**Fix:**
-```typescript
-const lines = results.map((r, i) => {
-  const scoreStr = r.score.toFixed(1);
-  const desc = r.doc.description ? `\n   _${r.doc.description}_` : '';
-  return `${i + 1}. **${r.doc.id}** — ${r.doc.title} [${r.doc.module}/${r.doc.category}] (score: ${scoreStr})${desc}\n   ${r.snippet.split("\n")[0]}\n`;
-});
-```
+**Implemented:** Search results now show doc descriptions (italic, below title) in both flat and grouped output formats. Commit: 315b78f.
 
 #### ✅ 14. `get_doc` Section Extraction + maxLength (get-doc.ts) — DONE 2026-03-20
 
@@ -235,12 +216,9 @@ const lines = results.map((r, i) => {
 
 **Implemented:** `random_doc` tool with `category`, `module`, and `engine` filter params. Returns doc metadata + 500-char preview (skips title heading, breaks at paragraph boundary). Free tier restricted to core module. Engine filter resolves via module metadata and always includes core docs. Error messages guide users to `list_docs` or available engines. 8 new tests, 92/92 total pass. Commit: 9815d43.
 
-#### 17. Tool Descriptions Could Be More AI-Agent-Friendly
+#### ✅ 17. Tool Descriptions More AI-Agent-Friendly — DONE 2026-03-23
 
-**Current:** `"Search across all game development docs"`  
-**Better:** `"Search game development documentation by keyword. Returns up to 10 results ranked by relevance. Use this when you need to find guides, references, or explanations for a specific game dev topic. Follow up with get_doc to read the full document."`
-
-Longer descriptions help AI agents understand *when* and *how* to use each tool. The MCP spec encourages descriptive tool descriptions.
+**Implemented:** Updated `search_docs` description to include behavior guidance ("Follow up with get_doc"), result count expectation ("up to 10"), and cross-engine behavior. Other tool descriptions were already good from prior work. Commit: 315b78f.
 
 ---
 

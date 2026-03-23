@@ -151,12 +151,25 @@ Validate a license key. Returns tier and expiry info.
 
 ## Current Phase: COMPLETE (All 5 phases done)
 
-## Next Steps
-- Deploy to Cloudflare Workers (wrangler deploy)
-- Create real KV namespaces (wrangler kv namespace create DOCS_KV / CACHE_KV)
-- Upload docs to KV (npm run upload-docs --write && wrangler kv bulk put)
-- Set LEMONSQUEEZY_STORE_ID secret
-- Configure custom domain (api.gamedev-mcp.com)
+## Deployment Status
+
+### Completed (2026-03-23)
+- [x] Local `wrangler dev` smoke test — all 5 endpoints verified working (health/list/get/search/rate limits)
+- [x] 140 docs loaded into local KV, health returns `docsCount: 140`
+- [x] Tier gating verified — Pro docs return metadata-only without auth
+- [x] Rate limit headers verified (X-RateLimit-Limit/Remaining/Reset)
+- [x] Deploy CI workflow created (`.github/workflows/deploy-workers.yml`)
+- [x] Deployment guide created (`workers/DEPLOY.md`)
+
+### Deployment Steps (Requires Wes)
+- [ ] Create Cloudflare account + `wrangler login`
+- [ ] Create KV namespaces (`wrangler kv namespace create DOCS_KV / CACHE_KV`)
+- [ ] Update `wrangler.toml` with real KV namespace IDs
+- [ ] Set `LEMONSQUEEZY_STORE_ID` in wrangler.toml vars
+- [ ] Set `LEMONSQUEEZY_WEBHOOK_SECRET` via `wrangler secret put`
+- [ ] Run first deploy: `cd workers && npm run upload-docs && wrangler deploy && wrangler kv bulk put --binding DOCS_KV kv-bulk.json --remote`
+- [ ] Configure custom domain (api.gamedev-mcp.com) in Cloudflare dashboard
+- [ ] Set GitHub secrets for CI deploy: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
 
 ## File Structure
 
