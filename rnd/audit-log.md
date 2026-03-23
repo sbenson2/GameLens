@@ -12,6 +12,32 @@
 
 ---
 
+## 2026-03-23 (7am — Doc Audit #5)
+
+### 5 Random Docs Audited
+
+**Docs:** E7 Emergent Puzzle Design, G63 Water Simulation, E6 Game Design Fundamentals, P11 Polish Checklist, G7 Input Handling (MonoGame)
+
+**Issues Found & Fixed: 5**
+
+1. **E6 — Broken link to E4** (`./E4_project_management.md` → `../project-management/E4_project_management.md`). E4 lives in `core/project-management/` not `core/game-design/`. Two instances fixed (header + inline reference).
+
+2. **P11 — Title numbering mismatch** (`# 15` → `# P11`). The P-file numbering issue flagged in previous audits — this was one of the remaining instances. Now fixed.
+
+3. **G63 — Missing cross-references**. No links to G67 Object Pooling (splash particles should be pooled for performance) or G64 Combat & Damage (lava/acid damage should go through standard damage pipeline). Added both to Related header and a new Performance Notes section at the end explaining integration points.
+
+4. **G7 — Missing cross-references**. Only linked to R1 and C1. Added cross-references to G52 Character Controller (input drives character movement), G15 Game Loop (input timing), and G30 Game Feel Tooling (input buffering for game feel).
+
+5. **E7 — Missing cross-references**. No links to combat-theory.md (element interaction systems directly relate to damage type design) or G68 Puzzle Game Systems (the MonoGame implementation of puzzle mechanics). Added both.
+
+**Systemic pattern (4th audit confirming):** Docs created in earlier phases lack cross-references to newer docs. This is expected — new docs reference old ones, but old ones don't get backlinks. Worth a bulk cross-reference pass eventually.
+
+**Clean docs:** G63's code and Arch ECS v2.1.0 reference are current. G7's Apos.Input usage is version-agnostic (no version pinned, which is fine). E7's content quality is excellent. P11's content is comprehensive and all internal links resolve correctly.
+
+**Commit:** 25e3ac7 — pushed to main.
+
+---
+
 ## 2026-03-23 (2am — Core Docs Cron)
 
 ### Rotation B: Expand Thin Core Doc
