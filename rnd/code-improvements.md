@@ -138,37 +138,13 @@ throw new Error(
 );
 ```
 
-#### 6. License Validation Network Error Leaks to stderr (license.ts)
+#### ✅ 6. License Validation Network Error Logging — DONE 2026-03-23
 
-**Problem:** The `validateRemote` function handles errors internally (returns `{ valid: false, error: "Network error" }`), but the caller doesn't log the error type. If a user is offline and has no cache, they silently drop to free tier with no explanation beyond "could not validate."
+**Implemented:** Added `console.error` logging of specific network error in `validateLicense()` when remote validation fails. Users now see the reason (Network error, Request timeout, etc.) in stderr. Commit: 2a1a5a4.
 
-**Suggestion:** Log the specific error in `validateLicense`:
-```typescript
-if (result.error) {
-  console.error(`[gamedev-mcp] License validation failed: ${result.error}`);
-}
-```
+#### ✅ 7. Cache Shape Validation — DONE 2026-03-23
 
-#### 7. `readCache` Doesn't Validate JSON Shape (license.ts:72-80)
-
-**Problem:** `JSON.parse` succeeds but the result might not have the expected fields. If `cache.json` is corrupted or from an older version, `data.key` or `data.validatedAt` could be undefined, causing subtle runtime errors.
-
-**Fix:**
-```typescript
-function readCache(key: string): CacheEntry | null {
-  try {
-    if (!fs.existsSync(CACHE_PATH)) return null;
-    const data = JSON.parse(fs.readFileSync(CACHE_PATH, "utf-8"));
-    if (typeof data.key !== 'string' || typeof data.valid !== 'boolean' || typeof data.validatedAt !== 'number') {
-      return null; // Invalid cache shape
-    }
-    if (data.key !== key) return null;
-    return data as CacheEntry;
-  } catch {
-    return null;
-  }
-}
-```
+**Implemented:** Added `isValidCacheShape()` type guard that validates all required fields (`valid: boolean`, `keyHash: string`, `validatedAt: number`, `instanceId: string`) and optional fields (`activationLimit`, `activationsUsed`, `expiresAt`) have correct types when present. `readCache()` now validates shape before trusting parsed JSON — corrupt or incompatible cache files are auto-deleted. 11 new tests, 175/175 total pass. Commit: 2a1a5a4.
 
 ---
 
