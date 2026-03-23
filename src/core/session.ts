@@ -206,6 +206,21 @@ const TOPIC_DOC_MAP: Record<string, string[]> = {
   "y-sort": ["godot-arch/G7"],
   "tile pathfinding": ["godot-arch/G7", "pathfinding-theory"],
   "astar grid": ["godot-arch/G7", "G40"],
+  "godot animation": ["godot-arch/G8", "animation-theory"],
+  "animationplayer": ["godot-arch/G8"],
+  "animationtree": ["godot-arch/G8"],
+  "blend tree": ["godot-arch/G8"],
+  "blend space": ["godot-arch/G8"],
+  "sprite sheet": ["godot-arch/G8", "G31"],
+  "tween": ["godot-arch/G8", "G41", "tweening-theory"],
+  "godot tween": ["godot-arch/G8"],
+  "squash and stretch": ["godot-arch/G8"],
+  "hit flash": ["godot-arch/G8", "combat-theory"],
+  "hit freeze": ["godot-arch/G8", "combat-theory"],
+  "cutscene": ["godot-arch/G8"],
+  "typewriter": ["godot-arch/G8"],
+  "animation state machine": ["godot-arch/G8", "godot-arch/G2"],
+  "aseprite": ["godot-arch/G8"],
 };
 
 export function createDefaultState(): SessionState {
