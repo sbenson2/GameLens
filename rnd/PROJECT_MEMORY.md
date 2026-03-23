@@ -57,7 +57,7 @@ Every task should read this before starting and append learnings when done.
 - **npm v1.0.0 published** — need to set up GitHub Actions OIDC trusted publishing for future releases
 - **MCP registry submissions pending** — mcp.so, mcpmarket.com, smithery.ai, Cline marketplace
 
-## Competitive Landscape (updated 2026-03-22)
+## Competitive Landscape (updated 2026-03-23)
 
 - Space dominated by engine integration tools (Godot-MCP 2.5K⭐, Unreal-MCP 1.6K⭐, Unity-MCP 1.4K⭐, IvanMurzak Unity-MCP 1.4K⭐)
 - Only one docs competitor: `godot-mcp-docs` (51⭐) — **effectively dead** (no updates since July 2025)
@@ -71,6 +71,13 @@ Every task should read this before starting and append learnings when done.
 - **Figma, WordPress, Amazon Ads, Roblox all shipped MCP servers** — enterprise adoption accelerating. **Roblox is now most MCP-invested engine company** (official mesh gen, screenshot tool, expanded MCP Server tools as of March 19). No other engine has first-party MCP support at this level.
 - Agent architecture convergence: Claude Code, Codex, Copilot, Cursor, Windsurf all use same pattern (explore → loop → multi-agent). Single-turn autocomplete is dead.
 - **Anti-AI sentiment in r/godot** is real but targeted at lazy AI-generated content, not AI-assisted dev tools. Our knowledge-layer positioning is safe.
+- **STS2 now at 4.6M copies / $92M revenue** — biggest indie launch in history, built on Godot. Surpassed Hades 2 and Silksong. r/gaming front page driving massive Unity→Godot narrative. Best possible timing for our Godot module launch.
+- **Godogen STILL ACCELERATING** — 1,849⭐ (+150 overnight), pushed yesterday. Sustained breakout entering second week.
+- **StraySpark Unreal MCP** posted on Epic Forums — 207 tools across 34 categories. Most ambitious Unreal MCP by tool count. Perfect "tool bloat" counterexample for our marketing.
+- **MCP SDK convergence**: TypeScript v1.27.1, Python v1.26, OpenAI Agents SDK v0.12.x, Google ADK v2.0 all now support MCP. Multi-vendor convergence kills the "MCP might die" narrative.
+- **CoplayDev/unity-mcp** documented in Japan (Qiita) — third Japanese MCP+gamedev article in 2 weeks. International adoption accelerating.
+- **CoderGamester/mcp-unity surging** — +52 stars in one day (1,490 total). IvanMurzak/Unity-MCP pushed today at 1,456⭐.
+- **gamedev-mcp-server listed on LobeHub** — discovered during scan. Basic listing exists.
 
 ## Market Sentiment (2026-03-17)
 
@@ -154,14 +161,41 @@ _Append Wes's feedback and direction changes here._
 ✅ v1.1.0 prepped (not published)
 ❌ npm v1.1.0 NOT published, MCP registries NOT submitted, Godot E2-G7 NOT started
 
-## Tomorrow's Priorities (2026-03-23) — Day 8 (Monday)
+## Today's Priorities (2026-03-23) — Day 8 (Monday)
 
 1. **🔴 npm v1.2.0 publish** — DAY 6. Create GitHub Release from v1.2.0 tag OR manual `npm publish`. Publish pipeline (OIDC) is UNTESTED. Non-negotiable.
 2. **🔴 MCP registry submissions** — At minimum mcp.so (PR-based). Drafts ready since Day 5.
-3. **🟡 G7 TileMap** — Hit the 50% Godot milestone (10/20 docs)
-4. **🟡 Workers API local testing** — `wrangler dev` smoke test, KV data upload
-5. **🟢 claudefa.st submission** — easy discovery win
-6. **🟢 Godot G8-G10** — Push toward 60% if G7 lands early
+3. **🟡 Godot G9-G12** — UI, Audio, Save/Load, Shaders. Breadth over depth (already at 55%).
+4. **🟡 claudefa.st + AGENTS.md to repo root** — Agent-native distribution
+5. **🟢 Search synonym map** — 10-15 entries to fix remaining search quality gaps
+6. **🟢 Bulk cross-reference pass** — Fix systemic backlink issue caught in 4 consecutive audits
+
+## Tomorrow's Priorities (2026-03-24) — Day 9 (Tuesday)
+
+1. **🔴 Registry submissions** (if not done today) — mcp.so, smithery, mcpservers.org, LobeHub, claudefa.st
+2. **🟡 Launch post drafts** — DEV Community + r/aigamedev (target Thursday publish)
+3. **🟡 Workers API deploy** — Needs Wes for Cloudflare account setup
+4. **🟢 Continue Godot breadth** — Push toward 60-65%
+
+## Yesterday (2026-03-22) — Day 7 Recap
+
+42 commits overnight, 70 files changed, +21,915/-1,092 lines. Most ambitious day yet.
+✅ G7 TileMap & Terrain (80KB) — **50% Godot milestone reached**
+✅ G8 Animation Systems (49KB) — AnimationTree, blend spaces, hit effects, tweens
+✅ ui-theory.md 8× expansion (5KB → 40KB) — definitive engine-agnostic UI reference
+✅ combat-theory.md (34KB) — 19-section engine-agnostic combat foundation
+✅ G69 Save/Load Serialization (113KB) — standalone guide from G10 subsection
+✅ compare_engines tool + random_doc tool (2 new MCP tools)
+✅ Cache shape validation + network error logging (code improvements #6, #7)
+✅ Workers API smoke test — all 5 endpoints verified with 140 docs
+✅ Deploy CI workflow + code improvements #5, #13, #17
+✅ G3 Physics deep polish (30KB → 77KB), G4 AI deep polish (30KB → 89KB)
+✅ Phase 5 integration testing (60 new tests), search quality rounds 3+4
+✅ Distribution strategy + user persona analysis (strategic docs)
+✅ v1.2.0 tagged and pushed
+✅ Doc audits #4 + #5 (10 issues fixed)
+✅ Dependabot PRs merged, CI hardened (Node 24, actions v6, CodeQL v4)
+❌ npm STILL on v1.0.0 — Day 6 of not publishing
 
 ## Yesterday's Completed (2026-03-21) — Day 6 Recap
 
@@ -329,6 +363,7 @@ _Append operational lessons here._
 
 - **2026-03-22 (8pm EOD digest)**: Day 7 was the most balanced day yet — equal parts new content (4 docs), code features (2 tools, 60 tests), deep polish (2 docs), infrastructure (CI hardening, version prep), and strategy (distribution, community research). The key lesson: **content velocity without distribution is inventory, not impact.** 138 docs and 164 tests mean nothing if npm is on v1.0.0 from 8 days ago. Week 1 was about building the product; Week 2 MUST be about shipping it. The npm publish blocker has compounded from "we'll do it tomorrow" to a 5-day debt that undermines every other accomplishment. Also: the 50% Godot milestone being one doc away (G7 TileMap) is a psychological threshold — hitting it turns the module from "incomplete experiment" to "viable product" in marketing materials.
 - **2026-03-22 (10pm)**: Created **G7 TileMap & Terrain Systems** (`docs/godot-arch/guides/G7_tilemap_and_terrain.md`, ~80KB, 20 sections). **50% Godot milestone reached** (10/20 docs). Comprehensive guide covering: TileMapLayer migration from deprecated TileMap (Godot 4.3+), TileSet resource creation (programmatic + editor), atlas source organization, coordinate conversion pipeline (world↔local↔map), multi-layer architecture (7-layer recommended setup with layer manager), terrain auto-tiling (terrain sets, peering bits, runtime painting, minimum tile count tables), custom data layers (movement cost, tile types, hazard damage, destructible flags), physics tile setup (world collision, one-way platforms, hazard triggers), navigation tiles (nav layer config, nav mesh building from tile data), runtime tile manipulation (modify/destroy/undo system, batch operations: fill/clear/copy/replace), procedural generation (BSP dungeon generator, cellular automata caves with flood-fill cleanup, simplified Wave Function Collapse with weighted selection + constraint propagation), chunk-based infinite worlds (ChunkManager with load/unload queues + noise-based ChunkGenerator using FastNoiseLite), animated tiles (programmatic setup, frame duration, random start times), isometric & hexagonal tilemaps (coordinate conversion, hex distance via cube coords, hex ring/area queries), Y-sorting with per-tile Y Sort Origin, tile-based fog of war (hidden/explored/visible states, Bresenham line-of-sight), destructible terrain (health system, damage states via alternative tiles, explosion radius with falloff, respawn timers), A* pathfinding integration (AStarGrid2D with movement cost weights, world↔tile path conversion, incremental cell updates), performance optimization (quadrant size tuning, batch update patterns, draw call reduction, memory budget), 7 common mistakes with fixes, and tuning reference tables (tile size by game type, chunk size by world scale, terrain tile counts, procedural algorithm selection, layer count budget). Added 22 TOPIC_DOC_MAP keywords. Committed and pushed (e73e718).
+- **2026-03-23 (8am competitor scan)**: Star count updates: Godogen 1,849 (+150, second week sustained), IvanMurzak/Unity-MCP 1,456 (+34, pushed today), CoderGamester/mcp-unity 1,490 (+52, biggest single-day jump), Coding-Solo/godot-mcp 2,556 (+28). StraySpark Unreal MCP (207 tools) posted on Epic Forums — most tool-heavy gamedev MCP yet. STS2 numbers updated to 4.6M copies/$92M revenue, surpassed Hades 2 + Silksong. MCP SDK convergence confirmed: TypeScript v1.27, Python v1.26, OpenAI Agents v0.12.x, Google ADK v2.0 all support MCP — multi-vendor adoption kills "MCP might die" narrative. CoplayDev/unity-mcp adoption in Japan (Qiita article). gamedev-mcp-server discovered on LobeHub. Context7 still general-purpose docs, no gamedev content. godot-mcp-docs still dead at 51⭐. Key lesson: the STS2 $92M Godot success + 207-tool Unreal MCP "bloat" example create perfect launch timing for our "5 tools, pure knowledge, Godot-first" positioning. npm v1.2.0 publish is Day 6 overdue — every day of delay wastes the STS2 marketing window.
 - **2026-03-22 (10pm lesson)**: G7 TileMap is the most systems-integrating Godot guide — it touches physics (collision tiles), navigation (nav meshes from tiles), pathfinding (AStarGrid2D), camera (auto-limits from TileMapLayer, covered in G6), input (grid movement from G4), and procedural generation. Writing it after physics (G5) and camera (G6) was correct because those guides establish patterns (collision layers, camera limits) that G7 references directly. The TileMap→TileMapLayer migration is the single most important Godot 4.3+ change — every online tutorial and StackOverflow answer still uses the deprecated `TileMap` with `layer` parameter. Emphasizing `TileMapLayer` as individual nodes (not layers-by-index) aligns with Godot's composition-over-configuration philosophy. The three procedural generators (BSP, cellular automata, WFC) cover the three most common tile world generation needs: structured dungeons, organic caves, and constrained decorative tiling. Including all three in one guide (rather than a separate procgen guide) keeps tile-related content centralized and lets each algorithm's `apply_to_tilemap()` method show the bridge from generation to rendering.
 - **2026-03-22 (10pm milestone)**: **Godot module at 50%** — 10/20 planned docs, ~356KB total content. This is the "viable module" threshold for marketing. Completed docs: E1 Architecture Overview, E2 GDScript vs C#, G1 Scene Composition, G2 State Machine, G3 Signal Architecture, G4 Input Handling, G5 Physics & Collision, G6 Camera Systems, G7 TileMap & Terrain, plus godot-rules.md. The module covers all foundational systems a game needs. Remaining docs should focus on breadth (Animation, UI, Audio, Save/Load, Shaders) rather than more depth on existing topics.
 - **2026-03-23 (1am)**: Created **G8 Animation Systems** (`docs/godot-arch/guides/G8_animation_systems.md`, ~49KB, 19 sections). Comprehensive guide covering: animation pipeline overview (AnimationPlayer vs AnimatedSprite2D vs AnimationTree vs Tweens with decision table and execution order), AnimationPlayer fundamentals (play/queue/stop/seek, speed scale, RESET animation pattern), keyframing anything (property/method/bezier/audio tracks), animation callbacks & signals (finished/started/changed, await pattern with interrupt handling, frame-accurate events via method tracks), AnimatedSprite2D for simple frame cycling (SpriteFrames, playback, when-to-use decision table), AnimationTree blend trees (Blend2/Add2/OneShot/TimeScale/Seek nodes), AnimationTree state machines (travel vs start, transition config, advance conditions), 1D & 2D blend spaces (speed-based blending, 8-directional top-down character with full implementation), root motion & 2D attack lunges, tween system (property/relative/callback/method tweens, all easing types with game-feel presets), tween chaining & parallel execution (sequential/parallel/looping, kill management, collect item animation), hit effects (white flash shader, modulate flash, hit freeze with global and per-node variants, knockback combo with i-frame blink), sprite sheet pipeline (grid sheets, AnimationPlayer frame tracks, Aseprite integration, variable frame timing for attack feel), state machine integration (CharacterState base with animation support, platformer states, attack combo with buffered input, animation events → state transitions), animation layers & overrides (upper/lower body split, OneShot overlay, AnimationLibrary for weapon variants), cutscene & dialogue animation (AnimationPlayer as director, multi-track cutscenes, typewriter effect with skip), performance (LOD by distance, process mode matching, tween creation anti-pattern, SpriteFrames sharing, state caching), 7 common mistakes with fixes, tuning reference tables (animation speed by genre, hit effect timing, squash & stretch values, tween presets for common effects). Added 15 TOPIC_DOC_MAP keywords. Godot module now at 11/~20 docs (55%). Committed and pushed (b17697f).
