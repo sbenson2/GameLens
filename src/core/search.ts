@@ -26,33 +26,70 @@ export class SearchEngine {
 
   /** Lightweight synonym map for common gamedev query expansions */
   private static QUERY_SYNONYMS: Map<string, string[]> = new Map([
+    // Entities & AI
     ["enemies", ["enemy", "ai"]],
     ["enemy", ["enemies", "ai"]],
-    ["follow", ["chase", "pursue", "pathfind"]],
-    ["hud", ["ui", "interface"]],
-    ["health", ["hp", "hitpoint"]],
-    ["bar", ["gauge", "meter"]],
-    ["clips", ["collision", "physics", "clipping"]],
-    ["clipping", ["collision", "physics"]],
-    ["stuck", ["collision", "physics"]],
-    ["slow", ["performance", "optimization", "profil"]],
-    ["lag", ["performance", "optimization", "latency"]],
-    ["fast", ["performance", "optimization"]],
-    ["beginner", ["getting-started", "overview", "introduction"]],
-    ["learn", ["getting-started", "tutorial", "overview"]],
-    ["move", ["movement", "velocity"]],
+    ["chase", ["pathfind", "pathfinding", "ai", "steering"]],
+    ["follow", ["ai", "pathfind", "pathfinding", "chase", "pursue"]],
+    ["pathfind", ["ai", "navigation", "astar"]],
+    ["pathfinding", ["ai", "navigation", "astar"]],
+    ["spawn", ["pool", "pooling", "instantiate"]],
+
+    // Health & combat
+    ["hp", ["health", "damage", "hitpoint"]],
+    ["health", ["hp", "hitpoint", "damage"]],
+    ["shoot", ["projectile", "bullet", "weapon"]],
+
+    // Movement & input
+    ["move", ["movement", "velocity", "input", "character-controller"]],
     ["moving", ["movement", "velocity"]],
+    ["movement", ["input", "character-controller", "velocity"]],
     ["walk", ["movement", "character"]],
     ["run", ["movement", "character", "sprint"]],
     ["jump", ["platformer", "character"]],
-    ["die", ["death", "respawn", "health"]],
-    ["dies", ["death", "respawn", "health"]],
+
+    // UI
+    ["hud", ["ui", "interface"]],
+    ["bar", ["gauge", "meter"]],
+
+    // Graphics & rendering
+    ["sprite", ["rendering", "graphics", "animation", "spritesheet"]],
+
+    // Debugging & performance
     ["bug", ["debugging", "fix", "issue"]],
+    ["debug", ["debugging", "fix", "issue", "troubleshoot"]],
     ["broken", ["debugging", "fix"]],
+    ["fps", ["profiling", "optimization", "performance", "framerate"]],
+    ["framerate", ["profiling", "optimization", "performance", "fps"]],
+    ["slow", ["performance", "optimization", "profil"]],
+    ["lag", ["performance", "optimization", "latency"]],
+    ["fast", ["performance", "optimization"]],
+
+    // Save/load & serialization
+    ["save", ["save-load", "serialization", "persistence"]],
+    ["load", ["save-load", "serialization", "persistence"]],
+
+    // Animation
+    ["tween", ["animation", "easing", "interpolation"]],
+
+    // Physics & collision
+    ["clips", ["collision", "physics", "clipping"]],
+    ["clipping", ["collision", "physics"]],
+    ["stuck", ["collision", "physics"]],
+
+    // Networking
     ["multiplayer", ["networking", "netcode", "online"]],
     ["online", ["networking", "multiplayer"]],
+
+    // Discovery & learning
+    ["beginner", ["getting-started", "overview", "introduction"]],
+    ["learn", ["getting-started", "tutorial", "overview"]],
+
+    // Genre & game state
     ["rpg", ["role-playing", "combat", "inventory"]],
     ["stats", ["statistics", "attribute", "stat"]],
+    ["die", ["death", "respawn", "health"]],
+    ["dies", ["death", "respawn", "health"]],
   ]);
 
   /** Lightweight stemmer — strips common English suffixes for better recall */
