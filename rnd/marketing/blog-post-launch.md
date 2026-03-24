@@ -24,7 +24,7 @@ AI assistants are stateless. Every prompt starts from zero. They have broad trai
 npx gamedev-mcp-server
 ```
 
-One command. 138+ curated docs. Your AI now knows:
+One command. 140+ curated docs. Your AI now knows:
 
 - How to architect a state machine that scales (not the tutorial version that falls apart at 8 states)
 - The difference between client prediction and server reconciliation in multiplayer
@@ -58,7 +58,7 @@ The `section` and `maxLength` params on `get_doc` are the key differentiator. Mo
 
 **Engine modules:**
 - **MonoGame/Arch ECS** — 78 implementation guides (G1–G69), fully stable, 100% genre coverage across 11 genres
-- **Godot 4.4+** — 9 docs and growing: architecture, GDScript vs C#, scene composition, state machines, signals, input handling, physics & collision, camera systems
+- **Godot 4.4+** — 11 docs (55% of planned module): architecture, GDScript vs C#, scene composition, state machines, signals, input handling, physics & collision, camera systems, tilemap & terrain, animation systems. Growing weekly.
 - **Unity 6** — Planned (research complete, zero knowledge-layer competitors exist)
 - **Bevy** — Planned (highest AI hallucination rate of any engine = highest value for knowledge MCP)
 
@@ -127,7 +127,7 @@ npx gamedev-mcp-server
 GitHub: [sbenson2/gamedev-mcp-server](https://github.com/sbenson2/gamedev-mcp-server)
 npm: [gamedev-mcp-server](https://www.npmjs.com/package/gamedev-mcp-server)
 
-Star the repo if it's useful. Open an issue if it's not. I'm building this actively — 134 docs today, Godot module expanding weekly, Unity module coming next.
+Star the repo if it's useful. Open an issue if it's not. I'm building this actively — 140 docs today, Godot module at 55% and expanding weekly, Unity module coming next.
 
 ---
 
@@ -145,8 +145,8 @@ Star the repo if it's useful. Open an issue if it's not. I'm building this activ
 ### Reddit
 - **r/gamedev**: Frame as "tool I built" — community likes seeing dev tools from fellow devs. Avoid marketing language.
 - **r/aigamedev**: More technical, can go deeper on MCP specifics
-- **r/godot**: Lead with Godot-specific content (E2, G1-G4, godot-rules.md). Mention Godot 3→4 migration table prominently. Be aware of anti-AI sentiment — frame as "knowledge infrastructure" not "AI replacement."
-- **r/MonoGame**: Lead with MonoGame content depth (77 guides, 100% genre coverage)
+- **r/godot**: Lead with Godot-specific content (E2, G1-G8, godot-rules.md). Mention: Godot 3→4 migration table, STS2 ($92M on Godot proves the engine), 55% module progress. Be aware of anti-AI sentiment — frame as "knowledge infrastructure" not "AI replacement."
+- **r/MonoGame**: Lead with MonoGame content depth (78 guides, 100% genre coverage)
 
 ### Hacker News
 - Title: "GameDev MCP Server – Cross-engine game dev knowledge for AI coding assistants"

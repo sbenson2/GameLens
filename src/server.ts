@@ -14,6 +14,7 @@ import { handleSession } from "./tools/session.js";
 import { handleGenreLookup, formatGenreResult } from "./tools/genre-lookup.js";
 import { handleRandomDoc } from "./tools/random-doc.js";
 import { handleCompareEngines } from "./tools/compare-engines.js";
+import { handleMigrationGuide } from "./tools/migration-guide.js";
 import { validateLicense, getLicenseKey } from "./license.js";
 import { checkSearchLimit, checkGetDocLimit, getUsageStats } from "./rate-limit.js";
 import {
@@ -547,6 +548,40 @@ export async function createServer() {
         return handleCompareEngines(args, docStore, searchEngine, discoveredModules);
       } catch (err) {
         return { content: [{ type: "text", text: `Comparison error: ${err instanceof Error ? err.message : String(err)}` }] };
+      }
+    }
+  );
+
+  server.tool(
+    "migration_guide",
+    "Get migration guidance between two game engines. Shows concept mappings (how architecture/physics/input/etc translate), engine-specific gotchas, relevant docs from both engines, and a migration strategy. Great for developers switching engines or porting games.",
+    {
+      from: z.string().describe("Source engine to migrate FROM (e.g. 'Unity', 'Godot', 'MonoGame')"),
+      to: z.string().describe("Target engine to migrate TO (e.g. 'Godot', 'MonoGame', 'Unity')"),
+      topic: z.string().optional().describe("Focus on a specific topic (e.g. 'physics', 'input', 'animation'). Omit for a full migration overview."),
+      maxDocs: z.number().optional().describe("Maximum docs to show per engine (default: 3)."),
+    },
+    async (args) => {
+      try {
+        const access = isToolAllowed(tier, "migration_guide");
+        if (access === false) { analytics.recordProGate("migration_guide"); return proGateResponse(); }
+
+        // Free tier: migration requires cross-engine access (Pro)
+        if (access === "limited") {
+          return {
+            content: [{
+              type: "text",
+              text: `Migration guides require a Pro license (they access engine-specific modules). ${PRO_GATE_MESSAGE}`,
+            }],
+          };
+        }
+
+        const migrationStart = Date.now();
+        const result = handleMigrationGuide(args, docStore, searchEngine, discoveredModules);
+        analytics.recordToolCall("migration_guide", Date.now() - migrationStart);
+        return result;
+      } catch (err) {
+        return { content: [{ type: "text", text: `Migration guide error: ${err instanceof Error ? err.message : String(err)}` }] };
       }
     }
   );

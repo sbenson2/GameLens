@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-03-24
+
+### Added
+- **Analytics & conversion tracking** — Pro gate impression recording, tool call timing, search/doc access metrics, startup metrics, graceful shutdown flush
+- **Godot docs:**
+  - `G7` TileMap & Terrain Systems (~80KB) — TileMapLayer migration, auto-tiling, custom data layers, procedural generation (BSP, cellular automata, WFC), chunk-based infinite worlds, isometric/hex tilemaps, fog of war, destructible terrain, A* pathfinding integration. **Godot module hits 50% milestone (10/20 docs).**
+  - `G8` Animation Systems (~49KB) — AnimationPlayer, AnimatedSprite2D, AnimationTree (blend trees, state machines, blend spaces), root motion, tween system, hit effects (white flash shader, hit freeze, knockback combo), sprite sheet pipeline, state machine integration, animation layers, cutscene direction
+- **Core concepts:**
+  - `combat-theory.md` (~34KB) — Engine-agnostic combat foundation: 10-stage damage pipeline, hitbox/hurtbox model, i-frames, knockback, projectiles, melee frame data, critical hits (PRD), 5 armor models, status effects, combo systems, turn-based combat, difficulty scaling, combat feel, decision framework
+  - `ui-theory.md` expanded 8× (5KB → 40KB) — Rendering paradigms, layout architecture, screen/layer management, HUD design, inventory UI, dialogue systems, data binding, input navigation, tooltips, animation, localization, accessibility, resolution scaling, anti-patterns, decision framework
+- **Cache shape validation** — `isValidCacheShape()` type guard validates all required CacheEntry fields; corrupt/incompatible cache files auto-deleted instead of causing runtime errors
+- **Network error logging** — `validateLicense()` now logs specific error reason (timeout, network error) instead of generic failure
+- **Workers API deploy workflow** — Auto-deploys on push to main when `workers/` or `docs/` change, supports manual dispatch
+- **Manual publish workflow** — `publish-manual.yml` workflow_dispatch escape hatch with dry-run option and version check against npm registry
+- **Improved tool descriptions** — search_docs, get_doc, list_docs now have richer MCP manifest descriptions
+- **Docs-not-found error improvement** — Better error message when doc ID doesn't match, suggests using list_docs
+
+### Changed
+- 187 tests, all passing (up from 164)
+- README updated: 140+ docs, 11 Godot docs (55% milestone), 187 tests, context-efficiency positioning sharpened
+- TOPIC_DOC_MAP expanded with 37 new keywords (G7 tilemaps, G8 animation, combat-theory, ui-theory)
+
+### Fixed
+- Doc audit #5: E6 broken E4 link, P11 title "# 15" → "# P11", G63 missing cross-references to G67/G64, G7 missing G52/G15/G30 links, E7 missing combat-theory/G68 links
+- Search quality round 4: identified synonym gaps (chase→pathfind, follow→ai) — fixes pending
+
 ## [1.2.0] - 2026-03-22
 
 ### Added
