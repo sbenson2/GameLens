@@ -1,7 +1,7 @@
 # G41 — Tweening & Easing
 
 
-> **Category:** Guide · **Related:** [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G30 Game Feel Tooling](./G30_game_feel_tooling.md) · [G5 UI Framework](./G5_ui_framework.md) · [G42 Screen Transitions](./G42_screen_transitions.md)
+> **Category:** Guide · **Related:** [Tweening Theory](../../core/concepts/tweening-theory.md) · [G1 Custom Code Recipes](./G1_custom_code_recipes.md) · [G30 Game Feel Tooling](./G30_game_feel_tooling.md) · [G5 UI Framework](./G5_ui_framework.md) · [G42 Screen Transitions](./G42_screen_transitions.md) · [G31 Animation State Machines](./G31_animation_state_machines.md) · [G64 Combat & Damage Systems](./G64_combat_damage_systems.md)
 
 Tweening (short for "in-betweening") interpolates values over time with configurable easing curves. This guide covers a complete, zero-allocation tween engine built for MonoGame + Arch ECS.
 

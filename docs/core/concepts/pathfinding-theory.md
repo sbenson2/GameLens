@@ -218,4 +218,16 @@ Use a spatial hash (grid of cell lists) for efficient neighbor lookups in steeri
 
 ---
 
-*Implementation examples are available in engine-specific modules.*
+---
+
+## Related Engine Guides
+
+- **MonoGame:** [G40 — Pathfinding](../../monogame-arch/guides/G40_pathfinding.md) (A*, flow fields, nav mesh implementation with Arch ECS)
+- **MonoGame:** [G4 — AI Systems](../../monogame-arch/guides/G4_ai_systems.md) (steering behaviors, tactical AI, squad movement)
+- **Godot:** [G7 — TileMap & Terrain](../../godot-arch/guides/G7_tilemap_and_terrain.md) (AStarGrid2D integration, procedural dungeon generation, chunk-based worlds)
+
+## Related Concept Docs
+
+- [AI Theory](./ai-theory.md) — Decision-making systems that drive pathfinding (FSM, behavior trees, GOAP)
+- [Networking Theory](./networking-theory.md) — Networked pathfinding, client-side prediction for movement
+- [Tilemap Theory](./tilemap-theory.md) — Grid representations that pathfinding algorithms operate on

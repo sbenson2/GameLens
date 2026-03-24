@@ -2,7 +2,7 @@
 
 
 
-> **Category:** Guide · **Related:** [G31 Animation & Sprite State Machines](./G31_animation_state_machines.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [R1 Library Stack](../reference/R1_library_stack.md)
+> **Category:** Guide · **Related:** [Animation Theory](../../core/concepts/animation-theory.md) · [G31 Animation & Sprite State Machines](./G31_animation_state_machines.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [G41 Tweening & Easing](./G41_tweening.md) · [G64 Combat & Damage Systems](./G64_combat_damage_systems.md) · [R1 Library Stack](../reference/R1_library_stack.md)
 
 ---
 
@@ -889,10 +889,15 @@ public static void SetAnimationIfNew(
 
 Pin your runtime version in your `.csproj` and coordinate editor version across the team:
 
+Spine does **not** distribute via NuGet. Include the runtime source directly from the [spine-runtimes](https://github.com/EsotericSoftware/spine-runtimes) repo:
+
 ```xml
-<!-- In your .csproj — pin the exact version -->
-<PackageReference Include="SpineMonoGame" Version="4.2.*" />
+<!-- In your .csproj — reference the Spine runtime projects directly -->
+<ProjectReference Include="path/to/spine-csharp/spine-csharp.csproj" />
+<ProjectReference Include="path/to/spine-monogame/spine-monogame.csproj" />
 ```
+
+Pin to the release tag matching your editor version (e.g., `4.2.x` tag for Spine Editor 4.2).
 
 ### Content Pipeline Integration
 

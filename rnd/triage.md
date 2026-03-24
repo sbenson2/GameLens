@@ -4,6 +4,71 @@ Daily summary of new GitHub issues and PRs.
 
 ---
 
+## 2026-03-24 — Morning Standup (Day 9, Tuesday)
+
+### GitHub Status
+- **Open Issues:** 0
+- **Open PRs:** 0 (4 Dependabot PRs merged previously)
+- **Stars:** 0 | **Forks:** 0 | **Watchers:** 0
+- No external engagement. Zero visibility = zero users.
+
+### npm Status
+- **Published:** `gamedev-mcp-server@1.0.0` — **10 DAYS STALE** (published 2026-03-20)
+- **Local version:** `1.2.0` (tagged, ready to publish)
+- **Downloads (last 7 days):** 93 total — 82 on launch day (3/20), then 4, 3, 4, 0 on 3/24 so far
+- **⚠️ npm publish is now DAY 7 of being #1 priority.** 93 downloaders stuck on v1.0.0 with none of the last 8 days of work.
+
+### Git Status
+- **Last commit:** `9ec2193` — standup: Day 8 Monday triage + priorities
+- **Uncommitted:** 9 files modified + 1 new (publish-manual.yml)
+- **Build:** ✅ Clean (`tsc --noEmit`)
+- **Tests:** ✅ 175/175 pass (1.3s, 27 suites)
+- **Tags:** v1.2.0 (latest), v1.1.0
+
+### Content Stats
+- **140 docs** across `docs/` (~4.5 MB)
+- **Godot module:** 11 docs (55% of planned 20) — viable for marketing
+- **MonoGame:** 78 docs, 100% genre coverage
+- **Core:** 20 concept/theory docs
+- **9 MCP tools**, **175 tests** all passing
+
+### Overnight Progress (Day 8 → Day 9)
+- Cron sessions ran overnight: doc polishing, competitive research, engine research
+- Modified files: pathfinding-theory.md, G41_tweening.md, G59_skeletal_animation.md, competitor-log.md, unity.md, gaps.md, metrics.md
+- New file: `.github/workflows/publish-manual.yml` — manual npm publish workflow (addressing the OIDC publishing blocker!)
+
+### Open Items (Priority-Sorted)
+| Item | Priority | Days Open | Notes |
+|---|---|---|---|
+| **npm v1.2.0 publish** | 🔴🔴 CRITICAL | **7** | v1.2.0 tagged. `publish-manual.yml` created overnight — try manual workflow dispatch or just `npm publish`. **THIS IS THE ONLY THING THAT MATTERS TODAY.** |
+| **MCP registry submissions** | 🔴 Critical | **7** | mcp.so, smithery, mcpservers.org, LobeHub, claudefa.st. Drafts ready since Day 5. |
+| **0 stars / 0 forks** | 🔴 Strategic | **9** | No distribution = no users = no feedback. STS2 window closing. |
+| Launch post drafts | 🟡 Medium | 4 | DEV Community + r/aigamedev. Ready to polish and publish. |
+| Workers API deploy | 🟡 Medium | 4 | Needs Wes for Cloudflare account. Tested locally. |
+| Search synonyms | 🟡 Medium | 7 | 10-15 entries would fix remaining gaps. |
+| Godot G9-G12 | 🟡 Medium | — | UI, Audio, Save/Load, Shaders — breadth push |
+| Bulk cross-reference pass | 🟢 Low | — | 4 consecutive audits found same systemic issue |
+
+### Key Observations — Day 9 (Tuesday)
+
+**The critical:**
+- **npm publish is 7 DAYS overdue.** The `publish-manual.yml` workflow was created overnight — this may finally unblock the automated path. But honestly, `cd /path && npm publish` takes 10 seconds. This has become the project's biggest failure: building an incredible product that nobody can install.
+- **93 total downloads, trending to zero.** Launch day spike of 82 faded to single digits. Without v1.2.0 + registry submissions + community posts, this flatlines.
+
+**The good:**
+- Overnight work polished existing docs (pathfinding-theory, G41 tweening, G59 skeletal animation) and created the manual publish workflow.
+- Build and tests remain rock solid: 175/175 pass.
+- Content quality at this point is genuinely exceptional: 140 docs, 9 tools, cross-engine search, section extraction.
+
+**Today's mandate:**
+1. 🔴 **Publish npm v1.2.0** — manual workflow or direct `npm publish`. No more delays.
+2. 🔴 **Submit to 3+ MCP registries** — mcp.so, smithery, mcpservers.org minimum.
+3. 🔴 **Commit uncommitted work** — 9 modified files sitting uncommitted.
+4. 🟡 **Polish launch blog post** — target Thursday publish on DEV Community.
+5. 🟡 **Continue Godot breadth** — G9 UI/Control if time permits.
+
+---
+
 ## 2026-03-23 — Morning Standup (Day 8, Monday)
 
 ### GitHub Status

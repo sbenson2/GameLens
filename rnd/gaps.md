@@ -1,7 +1,7 @@
 # Content Gap Analysis
 
 Weekly comparison of genre-lookup system requirements vs available guides.
-Last updated: 2026-03-22 (10am content gap cron)
+Last updated: 2026-03-23 (10am content gap cron)
 
 ---
 
@@ -9,50 +9,49 @@ Last updated: 2026-03-22 (10am content gap cron)
 
 Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) against existing docs in `docs/monogame-arch/guides/`, `docs/core/concepts/`, and `docs/godot-arch/`.
 
-## 📊 Doc Count by Module (138 total)
+## 📊 Doc Count by Module (140 total)
 
 | Module | Category | Count | Size |
 |--------|----------|-------|------|
 | core | ai-workflow | 2 | — |
-| core | concepts | 19 | +1 (combat-theory) |
+| core | concepts | 19 | — |
 | core | game-design | 6 | — |
 | core | programming | 4 | — |
 | core | project-management | 18 | — |
 | core | session | 2 | — |
-| **core total** | | **51** | **1.1M** |
+| **core total** | | **51** | **1.0M** |
 | godot-arch | architecture | 2 | — |
-| godot-arch | guides | 6 | +2 (G5 Physics, G6 Camera) |
+| godot-arch | guides | 8 | +2 (G7 TileMap, G8 Animation) |
 | godot-arch | root (rules) | 1 | — |
-| **godot-arch total** | | **9** | **276K** |
+| **godot-arch total** | | **11** | **397K** |
 | monogame-arch | architecture | 4 | — |
-| monogame-arch | guides | 70 | +1 (G69 Save/Load) |
+| monogame-arch | guides | 70 | — |
 | monogame-arch | reference | 3 | — |
 | monogame-arch | root (rules) | 1 | — |
 | **monogame-arch total** | | **78** | **2.7M** |
-| **GRAND TOTAL** | | **138** | **~4.1M** |
+| **GRAND TOTAL** | | **140** | **~4.2M** |
 
-### Changes Since Last Update (2026-03-21)
-- +4 docs total (134 → 138)
-- +2 Godot docs: G5 Physics & Collision (33KB), G6 Camera Systems (50KB)
-- +1 Core doc: combat-theory.md (34KB) — was the #1 missing concept (8/11 genres)
-- +1 MonoGame doc: G69 Save/Load Serialization (113KB) — fills save system content gap
-- Deep polish: G4 AI Systems (30KB → 89KB), fog-of-war-theory, G17 Testing, G56 Side-Scrolling, R2 Capability Matrix
-- Godot module size: 188K → 276K (+47%)
-- Total size: 3.8M → 4.1M
+### Changes Since Last Update (2026-03-22)
+- +2 docs total (138 → 140)
+- +2 Godot docs: G7 TileMap & Terrain (80KB), G8 Animation Systems (51KB)
+- **🎉 Godot 50% milestone PASSED** — now at 55% (11/20)
+- Core expansion: ui-theory.md 8× expansion (5KB → 41KB) — now the definitive engine-agnostic UI reference
+- Godot module size: 276K → 397K (+44%)
+- Total size: 4.1M → 4.2M
 
 ## ✅ Filled Gaps
 
 | System | Referenced By (genres) | Guide |
 |--------|----------------------|-------|
-| Combat & Damage (hitbox/hurtbox, health, knockback, projectiles) | roguelike, metroidvania, top-down-rpg, bullet-hell, survival, fighting, tower-defense, strategy (8/11) | **G64** + **combat-theory.md** ← theory added 2026-03-22 |
-| Economy/Currency + Shop System | tower-defense, survival (2/11) | **G65** (created 2026-03-18) |
-| Building/Placement System | survival, strategy (2/11) | **G66** (created 2026-03-19) |
-| Object Pooling & Recycling (general) | bullet-hell, tower-defense (2/11) | **G67** (created 2026-03-20) |
-| Puzzle Game Systems (undo/redo, level loading, scoring) | puzzle (1/11) | **G68** (created 2026-03-21) |
-| Save/Load & Serialization | roguelike, metroidvania, top-down-rpg, survival, visual-novel (5/11) | **G69** (created 2026-03-22) ← NEW — was previously only in G10 §3 |
+| Combat & Damage (hitbox/hurtbox, health, knockback, projectiles) | roguelike, metroidvania, top-down-rpg, bullet-hell, survival, fighting, tower-defense, strategy (8/11) | **G64** + **combat-theory.md** |
+| Economy/Currency + Shop System | tower-defense, survival (2/11) | **G65** |
+| Building/Placement System | survival, strategy (2/11) | **G66** |
+| Object Pooling & Recycling (general) | bullet-hell, tower-defense (2/11) | **G67** |
+| Puzzle Game Systems (undo/redo, level loading, scoring) | puzzle (1/11) | **G68** |
+| Save/Load & Serialization | roguelike, metroidvania, top-down-rpg, survival, visual-novel (5/11) | **G69** |
 | Character Controller | platformer, metroidvania, fighting | G52 |
 | Physics & Collision | platformer, bullet-hell, fighting | G3 |
-| Camera Systems | platformer, metroidvania, top-down-rpg, strategy, bullet-hell | G20 (polished Day 5) |
+| Camera Systems | platformer, metroidvania, top-down-rpg, strategy, bullet-hell | G20 |
 | Tilemap | platformer, top-down-rpg, tower-defense | G37 |
 | Animation State Machines | platformer, metroidvania, fighting | G31 |
 | Pathfinding | roguelike, tower-defense, strategy | G40 |
@@ -83,11 +82,11 @@ Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) agai
 
 ## 🔴 Remaining MonoGame Gaps — NONE
 
-**MonoGame genre coverage: 100%** — all 11 genres fully covered. G69 Save/Load now provides a dedicated standalone guide (was previously only covered in G10 §3).
+**MonoGame genre coverage: 100%** — all 11 genres fully covered.
 
-## 🔵 Godot Module Gaps (9 of ~20 planned = 45%)
+## 🔵 Godot Module Gaps (11 of ~20 planned = 55%)
 
-Godot Phase 2 started 2026-03-19. Up from 35% last update.
+Godot Phase 2 started 2026-03-19. **50% milestone passed on 2026-03-22 (G7 TileMap).**
 
 | Planned Doc | Status | Priority | Notes |
 |-------------|--------|----------|-------|
@@ -98,13 +97,13 @@ Godot Phase 2 started 2026-03-19. Up from 35% last update.
 | G2 State Machine | ✅ Done | — | 38KB |
 | G3 Signal Architecture | ✅ Done | — | 20KB |
 | G4 Input Handling | ✅ Done | — | 43KB |
-| G5 Physics & Collision | ✅ Done | — | 33KB ← NEW |
-| G6 Camera Systems | ✅ Done | — | 50KB ← NEW |
-| **G7 TileMap** | ❌ Missing | **HIGH** | TileMapLayer (4.3+), terrain system, autotiling — most genres need this. **50% milestone doc** |
-| **G8 Animation** | ❌ Missing | MEDIUM | AnimationPlayer, AnimationTree, blend spaces |
-| **G9 UI/Control nodes** | ❌ Missing | MEDIUM | Container system, themes, responsive layouts |
+| G5 Physics & Collision | ✅ Done | — | 33KB |
+| G6 Camera Systems | ✅ Done | — | 53KB |
+| G7 TileMap & Terrain | ✅ Done | — | 80KB ← NEW (50% milestone) |
+| G8 Animation Systems | ✅ Done | — | 51KB ← NEW |
+| **G9 UI/Control nodes** | ❌ Missing | **HIGH** | Container system, themes, responsive layouts — needed by RPG/strategy/puzzle/VN genres |
 | **G10 Audio** | ❌ Missing | MEDIUM | AudioStreamPlayer, bus layout, positional audio |
-| **G11 Save/Load** | ❌ Missing | MEDIUM | Resource serialization, ConfigFile, JSON patterns — confirmed community gap |
+| **G11 Save/Load** | ❌ Missing | **HIGH** | Resource serialization, ConfigFile, JSON patterns — confirmed community demand (Godot Forum) |
 | **G12 Shaders** | ❌ Missing | MEDIUM | CanvasItem shaders, visual shader editor |
 | **G13 Particles** | ❌ Missing | LOW | GPUParticles2D, sub-emitters |
 | **G14 Navigation** | ❌ Missing | MEDIUM | NavigationServer2D, avoidance |
@@ -112,65 +111,62 @@ Godot Phase 2 started 2026-03-19. Up from 35% last update.
 | **G16 Autoloads/Singletons** | ❌ Missing | MEDIUM | Global state, service pattern |
 | **G17 Export/Deploy** | ❌ Missing | LOW | Export templates, platform-specific settings |
 
-**Godot completion: 9/20 (45%) — 11 docs remaining**
-- Reaching 50% (10 docs) requires just **G7 TileMap** — single doc away
-- At current pace (~1 Godot doc/day), 50% by ~March 23
+**Godot completion: 11/20 (55%) — 9 docs remaining**
+- **50% milestone REACHED** on 2026-03-22 (G7 TileMap)
+- Now at 55% with G8 Animation
+- Next HIGH priority: G9 UI/Control and G11 Save/Load
+- At current pace (~1 Godot doc/day), 65% by ~March 25
 
 ## 🟡 Core Concept Gaps
 
-19 concept theory docs exist (was 18). combat-theory.md filled the #1 gap.
+19 concept theory docs exist. ui-theory.md expanded 8× (5KB → 41KB) but was already counted.
 
 | Missing Concept | Relevant Guides | Priority | Notes |
 |-----------------|----------------|----------|-------|
-| **inventory-theory.md** | G10 §1 (MonoGame) | MEDIUM | Inventory/item systems referenced by 4 genres. Patterns are engine-agnostic |
-| **save-system-theory.md** | G10 §3, G69 (MonoGame) | MEDIUM | Save/load referenced by 5 genres. G69 now exists as MonoGame guide; theory doc would be engine-agnostic |
-| **economy-theory.md** | G65 (MonoGame) | LOW | Sink/faucet balance, dynamic pricing, currency design |
+| **inventory-theory.md** | G10 §1 (MonoGame) | MEDIUM | Inventory/item systems referenced by 4 genres |
+| **save-system-theory.md** | G10 §3, G69 (MonoGame) | MEDIUM | Save/load referenced by 5 genres |
+| **economy-theory.md** | G65 (MonoGame) | LOW | Sink/faucet balance, dynamic pricing |
 | **state-machine-theory.md** | G2 (Godot), G31 (MonoGame) | MEDIUM | FSM/HSM/pushdown theory — cross-engine fundamental |
 | **narrative-theory.md** | G62 (MonoGame) | LOW | Branching story structures, dialogue tree patterns |
 
-Core theory coverage: 19/24 identified topics (~79%) — up from 75%.
+Core theory coverage: 19/24 identified topics (~79%) — unchanged from last update.
 
 ## 📊 Coverage Summary
 
 ### Genre Coverage (MonoGame)
-- **Fully covered** (all required systems have guides): ALL 11 genres ✅
-  - platformer, metroidvania, roguelike, top-down-rpg, visual-novel, fighting, bullet-hell, tower-defense, survival, strategy, puzzle
+- **Fully covered**: ALL 11 genres ✅
 - **Overall**: **100%** of genre-referenced systems have MonoGame documentation
 
 ### Godot Coverage
 - **Architecture**: 2/2 planned overview docs (100%)
-- **Guides**: 6/~17 planned (35%)
+- **Guides**: 8/~17 planned (47%)
 - **Rules**: 1/1 (100%)
-- **Overall**: **45%** of planned Godot module complete (up from 35%)
-- **Critical missing**: TileMap — the only HIGH-priority gap remaining (Physics + Camera now done)
-- **Velocity**: +2 docs since last update (G5 + G6)
-- **50% milestone**: 1 doc away (G7 TileMap)
+- **Overall**: **55%** of planned Godot module complete (up from 45%)
+- **Critical missing**: G9 UI/Control, G11 Save/Load (both HIGH priority)
+- **Velocity**: +2 docs since last update (G7 + G8)
+- **50% milestone**: ✅ REACHED (2026-03-22)
 
 ### Core Theory Coverage
-- **Existing**: 19 concept docs covering physics, camera, animation, AI, audio, pathfinding, particles, procedural gen, networking, combat, fog of war, etc.
+- **Existing**: 19 concept docs (ui-theory.md massively expanded: 5→41KB)
 - **Missing**: 5 topics (inventory, save systems, economy, state machines, narrative)
 - **Overall**: 19/24 identified topics (~79%)
-- **Key fill**: combat-theory.md was the #1 priority gap (8/11 genres reference combat)
 
 ## 🎯 Next Priority (ranked)
 
-### Godot (biggest gap — 45% done, target 50%)
-1. **G7 TileMap** — TileMapLayer (4.3+), terrain system, autotiling. **50% milestone doc — single doc to hit target**
+### Godot (target 65% by March 25)
+1. **G9 UI/Control nodes** — Container system, themes, responsive layouts. HIGH — needed by 5 genres (RPG, strategy, tower-defense, puzzle, visual-novel)
+2. **G11 Save/Load** — Resource serialization, ConfigFile, JSON. HIGH — confirmed community demand, 5 genres need it
+3. **G10 Audio** — AudioStreamPlayer, buses, positional. MEDIUM
+4. **G14 Navigation** — NavigationServer2D, avoidance agents. MEDIUM
+5. **G16 Autoloads/Singletons** — global patterns. MEDIUM
 
 ### Core Theory
-2. **state-machine-theory.md** — cross-engine fundamental, both Godot G2 and MonoGame G31 exist as impl guides
-3. **save-system-theory.md** — 5 genres reference save/load, G69 MonoGame guide now exists, theory would help Godot/Bevy
-4. **inventory-theory.md** — 4 genres reference inventory, engine-agnostic patterns
-
-### Godot (continued, MEDIUM priority)
-5. **G8 Animation** — AnimationPlayer/AnimationTree, referenced by all action genres
-6. **G11 Save/Load** — confirmed community demand from Godot Forum
-7. **G16 Autoloads/Singletons** — global patterns, frequently asked
-8. **G9 UI/Control nodes** — Container system, themes
-9. **G14 Navigation** — NavigationServer2D
+6. **state-machine-theory.md** — cross-engine fundamental
+7. **save-system-theory.md** — 5 genres reference save/load
+8. **inventory-theory.md** — 4 genres reference inventory
 
 ### MonoGame (COMPLETE ✅)
-- No remaining gaps. All 11 genres fully covered. G69 elevated save/load from a G10 subsection to a full 113KB guide.
+- No remaining gaps.
 
 ## 📈 Progress Tracking
 
@@ -181,4 +177,5 @@ Core theory coverage: 19/24 identified topics (~79%) — up from 75%.
 | 2026-03-19 | ~126 | 49 | 74 | 3 | 15% | ~93% | — |
 | 2026-03-20 | 130 | 49 | 76 | 5 | 25% | ~95% | 75% |
 | 2026-03-21 | 134 | 50 | 77 | 7 | 35% | 100% | 75% |
-| **2026-03-22** | **138** | **51** | **78** | **9** | **45%** | **100%** | **~79%** |
+| 2026-03-22 | 138 | 51 | 78 | 9 | 45% | 100% | ~79% |
+| **2026-03-23** | **140** | **51** | **78** | **11** | **55%** | **100%** | **~79%** |

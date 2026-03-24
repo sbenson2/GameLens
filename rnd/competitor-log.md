@@ -4,6 +4,111 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-23 (8am) — Monday Competitor Scan: STS2 Hits 4.6M Sales/$92M Revenue, StraySpark Unreal MCP (207 Tools), MCP SDK v1.27 Ecosystem Convergence, CoplayDev Unity MCP Appears in Japan
+
+### 🔥 HEADLINE: Slay the Spire 2 Becomes Biggest Indie Launch in History on Godot ($92M Revenue), New "StraySpark" Unreal MCP Server With 207 Tools Posted on Epic Forums, MCP Ecosystem Hits Multi-SDK Convergence (TypeScript v1.27, Python v1.26, OpenAI Agents SDK, Google ADK v2.0)
+
+---
+
+### Star Count Tracker (vs 2026-03-22 baseline)
+
+| Repo | Stars (03-22) | Stars (03-23) | Δ | Last Push |
+|------|--------------|--------------|---|-----------|
+| Coding-Solo/godot-mcp | 2,528 | 2,556 | +28 | 2026-03-18 |
+| htdt/godogen | 1,699 | 1,849 | +150 | 2026-03-22 (yesterday) |
+| chongdashu/unreal-mcp | 1,613 | 1,622 | +9 | 2025-04-22 (stale) |
+| CoderGamester/mcp-unity | 1,438 | 1,490 | +52 | 2026-03-10 |
+| IvanMurzak/Unity-MCP | 1,422 | 1,456 | +34 | 2026-03-23 (TODAY) |
+| 3ddelano/GDAI MCP | 76 | 77 | +1 | 2026-03-07 |
+| Nihilantropy/godot-mcp-docs | 51 | 51 | 0 | 2025-07-25 (stale) |
+| salvo10f/godotiq | 12 | 13 | +1 | 2026-03-21 |
+
+**Trends:**
+- **Godogen STILL ACCELERATING** — +150 stars overnight (1,699→1,849). Pushed yesterday, still actively developing. At this rate will pass 2K⭐ this week. Now #3 in gamedev MCP space behind godot-mcp and unreal-mcp (which is stale).
+- **CoderGamester/mcp-unity SURGING** — +52 stars, biggest single-day jump tracked. Something drove attention (possibly STS2 Godot discussion driving Unity comparison interest).
+- **IvanMurzak/Unity-MCP** pushed TODAY, +34 stars. Most actively maintained competitor. Now at 1,456⭐.
+- **godot-mcp-docs** still dead at 51⭐. 9 months without a push.
+
+### 🆕 NEW ENTRANT: StraySpark Unreal MCP Server (207 Tools)
+
+Posted 4 days ago on Epic Developer Community Forums:
+- **207 editor tools** across 34 categories, 12 context resources, 10 workflow prompts
+- JSON-RPC 2.0 over HTTP transport
+- Most ambitious Unreal MCP server by tool count (vs chongdashu's ~30 tools, flopperam's ~20)
+- Posted on official Epic forums = higher visibility than GitHub-only projects
+- **Key concern**: 207 tools = massive context window overhead. This is exactly the problem Perplexity CTO criticized. Our "5 tools, pure knowledge" is the direct counterpoint.
+- **Threat level: NONE** — editor integration, not knowledge. But shows Unreal MCP competition is heating up.
+
+### 🆕 NEW: CoplayDev/unity-mcp (Japan)
+
+Japanese Qiita article (yesterday) documents a Claude Code × unity-mcp workflow:
+- **CoplayDev/unity-mcp** — scene control, script generation, Play Mode management
+- Author built a full game dev workflow: planning → implementation → testing → publishing
+- Shows MCP+gamedev adoption spreading to Japan
+- Third Japanese MCP+gamedev article in two weeks (after Godot MCP and Godogen coverage)
+- **Implication**: International adoption accelerating. Our docs being English-only is fine for now but Japanese/Chinese localization could be future growth.
+
+### 📊 Slay the Spire 2: Biggest Godot Commercial Success EVER
+
+Updated numbers since last scan:
+- **4.6 MILLION copies sold** (up from 3M last week)
+- **$92 MILLION estimated revenue** (WCCFTech)
+- **574,638 peak concurrent** Steam players (3 days post-launch)
+- **Surpassed Hades 2 AND Hollow Knight: Silksong in revenue** (ixbt.games)
+- r/gaming front page: "Slay the Spire 2 is one of the year's biggest hits — a good time to remember it abandoned Unity" — driving massive Godot mindshare
+- Wikipedia updated to note Godot engine, early access March 2026
+
+**Strategic impact**: STS2 is now the single strongest data point for "Godot can ship AAA-indie games." The Unity-to-Godot migration narrative is front-page news. Our Godot module launch has never had better timing. Marketing angle: "The engine behind the biggest indie launch of 2026 deserves AI knowledge that actually works."
+
+### 🔧 MCP Ecosystem: Multi-SDK Convergence (March 2026)
+
+Context Studios blog published a comprehensive MCP ecosystem analysis:
+- **TypeScript SDK v1.27.1** — latest stable
+- **Python SDK v1.26** — tracking TypeScript closely
+- **OpenAI Agents SDK v0.12.x** — now has MCP integration built in
+- **Google ADK v2.0** — Task API with MCP support
+- **Anthropic Agent SDK** — published alongside Claude 4.6
+
+**What this means**: MCP is no longer just Anthropic's protocol. OpenAI and Google have both integrated it. The "MCP might die" narrative from Perplexity is contradicted by the three biggest AI companies all shipping MCP support. Our bet on MCP as the integration layer is validated by multi-vendor convergence.
+
+**Streamable HTTP update**: The 2026 roadmap prioritizes scaling Streamable HTTP transport, but Julien Simon (Medium) notes "stateful sessions fight with load balancers" — the transport still has scaling issues. Our stdio-only approach sidesteps this entirely.
+
+### 📰 MCP Security Narrative — Still Peak Volume
+
+- Hacker News "ThreatsDay Bulletin" (4 days ago) includes "MCP Abuse" alongside FortiGate RaaS and Citrix exploits — MCP now routinely grouped with major security threats
+- byteiota.com comprehensive MCP history article quotes user: "token overhead with 30 MCPs turned my $2 chat into a $47 nightmare"
+- Pivot Point Security: detailed MCP vulnerability breakdown (insecure defaults, config poisoning, plaintext creds)
+- **No new CVEs this week** — the RSAC MCPwned narrative is still the biggest story, but no fresh critical vulns
+
+### 📊 Context7 Update — Still Worth Monitoring
+
+- Context7 featured prominently on claudefa.st's "Best MCP Servers" recommendations
+- Described as "up-to-date, version-specific documentation and code examples for libraries"
+- Still general-purpose (library docs), not gamedev-specific
+- **No gamedev content detected** — still not a direct competitor, but the closest architecture to ours in the docs-MCP space
+
+### 🎮 Community Pulse
+
+**r/godot "Thank you Godot!!!" (2 days ago)**: Dev credits Godot community for game success. Positive sentiment high, driven by STS2.
+
+**"Why AI Writes Better Game Code in Godot Than in Unity" (DEV Community, still trending 4 days later)**: Text-based formats advantage continues to resonate. Being referenced in multiple other articles now.
+
+**GodotAI open-source editor plugin (r/godot, 4 days ago)**: Still getting positive reception. "I personally would rather someone gets some insight" — community accepting of AI assistance tools.
+
+### 📋 Actionable Items
+
+| Finding | Action | Priority |
+|---------|--------|----------|
+| STS2 at $92M/4.6M copies on Godot | Update marketing materials with STS2 reference | HIGH |
+| Godogen at 1,849⭐, pushed yesterday | Monitor — may pass godot-mcp-docs as knowledge reference | AWARENESS |
+| StraySpark 207-tool Unreal MCP | Note for "tool bloat" comparison in marketing | LOW |
+| MCP SDK convergence (OpenAI + Google + Anthropic) | Validates MCP bet — mention in README/blog | MEDIUM |
+| CoplayDev/unity-mcp Japan adoption | International market growing | AWARENESS |
+| npm v1.2.0 STILL NOT PUBLISHED (Day 6) | 🔴 CRITICAL — blocks everything | CRITICAL |
+| claudefa.st list — still not submitted | Quick win for discovery | HIGH |
+
+---
+
 ## 2026-03-22 (6pm) — Community Research Deep Dive: Indie Dev Struggles, AI Coding Tool War, Godot Content Gaps
 
 ### 🔥 HEADLINE: "No Gen AI" Badges Emerge as Marketing Strategy, Cursor Composer 2 Challenges Claude Code, Godot Save/Load & Dialogue Remain Top Unanswered Questions, Steam Build Review Process Is a Persistent Pain Point

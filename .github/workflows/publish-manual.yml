@@ -1,0 +1,89 @@
+# Manual npm publish — escape hatch when release-based publish isn't working
+# Use this when: GitHub Release flow is blocked, OIDC isn't configured yet,
+# or you need to push an urgent fix to npm without a full release ceremony.
+name: Publish to npm (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (validate only, no publish)'
+        required: false
+        type: boolean
+        default: false
+      tag:
+        description: 'npm dist-tag (latest, next, beta)'
+        required: false
+        type: choice
+        default: 'latest'
+        options:
+          - latest
+          - next
+          - beta
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Verify dist output
+        run: test -f dist/index.js
+
+      - name: TypeScript strict check
+        run: npx tsc --noEmit
+
+      - name: Run tests
+        run: npm test
+
+      - name: Check version vs npm registry
+        run: |
+          LOCAL_VERSION=$(node -p 'require("./package.json").version')
+          NPM_VERSION=$(npm view gamedev-mcp-server version 2>/dev/null || echo "not-published")
+          echo "Local: v${LOCAL_VERSION}"
+          echo "npm:   v${NPM_VERSION}"
+          if [ "$LOCAL_VERSION" = "$NPM_VERSION" ]; then
+            echo "::error::Version ${LOCAL_VERSION} is already published to npm. Bump the version first."
+            exit 1
+          fi
+          echo "VERSION=${LOCAL_VERSION}" >> "$GITHUB_ENV"
+
+      - name: Dry run — npm pack
+        if: ${{ inputs.dry_run }}
+        run: |
+          npm pack --dry-run
+          echo "✅ Dry run complete. Package looks good."
+
+      - name: Publish with provenance
+        if: ${{ !inputs.dry_run }}
+        run: npm publish --provenance --access public --tag ${{ inputs.tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify publish
+        if: ${{ !inputs.dry_run }}
+        run: |
+          sleep 10
+          PUBLISHED=$(npm view gamedev-mcp-server version 2>/dev/null)
+          echo "Published version: ${PUBLISHED}"
+          if [ "$PUBLISHED" != "$VERSION" ]; then
+            echo "::warning::Published version doesn't match expected. May need propagation time."
+          else
+            echo "✅ v${VERSION} published successfully!"
+          fi

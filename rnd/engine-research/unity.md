@@ -2,8 +2,8 @@
 
 > **Status:** Pre-Module — Research Phase  
 > **Priority:** #2 (after Godot)  
-> **Last Updated:** 2026-03-20  
-> **Current Version:** Unity 6.4 (6.7 LTS planned end of year)  
+> **Last Updated:** 2026-03-23  
+> **Current Version:** Unity 6.4 (released March 19, 2026) — 6.5 next, 6.7 LTS planned end of year  
 > **Next Rotation:** Bevy
 
 ---
@@ -293,4 +293,122 @@
 
 ---
 
-_Last researched: 2026-03-20 (11am cron). Next rotation: Bevy._
+---
+
+## 11. Update Log — 2026-03-23 (Week 2 Rotation)
+
+### Unity 6.4 Released (March 19, 2026) — KEY DEVELOPMENTS
+
+**6.4 landed 4 days ago** — a "Supported" release (same support tier as LTS). Key changes:
+
+1. **ECS/Entities is now a CORE package** — no longer optional/separate. Entities, Collections, Mathematics, and Entities Graphics built directly into the Editor. This is the inflection point: ECS is officially a first-class path in Unity, not an experimental add-on. Strategic move toward CoreCLR support and faster engine updates.
+
+2. **Project Auditor now built-in** — previously optional package, now default under Windows > Analysis. Includes updatable rules packages. Relevant for our performance/DX docs.
+
+3. **Multiplayer & Matchmaker improvements** — dashboard logs for ticket creation/match results, OR operations in CEL expressions for matchmaking, configuration history tracking, and **official support for third-party hosting** outside Unity's services.
+
+4. **Adaptive Performance expanded to consoles** — PS4/PS5/Xbox One/Xbox Series X|S now supported via "Basic provider." Auto-scaling quality settings (LOD, resolution, shadows) based on CPU/GPU bottlenecks. Unified API across PC/mobile/console.
+
+5. **Unsigned package security prompts** — Package Manager now warns when installing unsigned or non-Unity-sourced packages. Security posture tightening.
+
+### Unity Studio Also Released (March 18, 2026)
+
+**New product: Unity Studio** — browser-based, no-code 3D creation tool with visual scripting. **$799/seat/year.** NOT aimed at game developers (targets designers, product teams, enterprise). Supports drag-and-drop, multiple 3D/CAD formats, link publishing. Uses Unity engine under the hood. Irrelevant to our MCP but signals Unity's diversification strategy beyond games.
+
+### CoreCLR / Scripting / ECS Status Update (March 2026)
+
+Official quarterly update posted (Unity Discussions thread, 7+ pages of discussion):
+- **CoreCLR Editor targeting Unity 6.8** — quarterly updates planned as they approach release
+- First update from new Product lead covering Core Engine team
+- Community discussion active and engaged — ECS as core package is generating both excitement and concern
+- **Key implication for our docs**: Unity module MUST cover both GameObject AND ECS paths from day 1. The CoreCLR transition means C# version/runtime differences will be a new pain point on top of existing render pipeline fragmentation.
+
+### Render Pipeline Thread Still Burning (30+ pages)
+
+The "Render Pipelines strategy for 2026" thread continues to grow (page 30+ as of this week). Unity confirmed:
+- **HDRP → maintenance mode** (bug fixes only, no new features)
+- **Nintendo Switch 2 HDRP preview in 6.5** — as a final gesture for existing HDRP projects
+- **Long-term: ONE render pipeline** — but timeline is "years not months"
+- **URP is the future** — all investment going here
+- Developer sentiment still hot: "HDRP is dead" narrative firmly established
+
+### Cities: Skylines 2 — Unity's Biggest PR Disaster in a Year
+
+**PC Gamer headline (March 18, 2026)**: Colossal Order CEO says they "completely overestimated the engine's capabilities." Cited:
+- HDRP shader pipeline missing core features (interpolators)
+- ECS long-running job support lacking
+- General engine instability
+- **Iceflake Studios took over development at start of 2026** (original studio couldn't deliver)
+
+This is viral across r/gaming, r/CitiesSkylines, r/Unity3D. Combined with STS2's massive success on Godot ("remember they abandoned Unity"), the dual narrative is devastating for Unity's reputation: "Unity's biggest game failed on Unity while the biggest Unity defector thrived on Godot."
+
+**MCP relevance**: This INCREASES Unity developer need for curated knowledge. The CS2 problems stem from relying on half-baked engine features — exactly what our render pipeline guide and DOTS/ECS decision guide would help devs avoid. "Don't bet on promised features" is a key lesson our docs should convey.
+
+### Unity Stock Under Pressure
+
+Unity stock down, Q1 2026 guidance: $535-545M revenue (flat sequential growth). Full-year: 5-7% expansion — well below historical 20%+ rates. "Transition pains" narrative. This matters for our strategic assessment: Unity isn't going anywhere (still massive installed base), but the narrative of decline makes developers more cautious and more likely to seek reliable third-party knowledge.
+
+### Unity AI Beta — MCP Gateway Coming
+
+Unity's GDC 2026 demo confirmed:
+- **AI Gateway** — allows developers to bring their own AI keys/models into Unity
+- **MCP Server support** — external AI agents can take action inside the editor via MCP
+- **Scene generation, profiler debugging, UI generation from sketches** shown
+- Community reception MIXED: "genuinely useful" vs "built-in asset flip generator"
+
+**Key insight**: Unity is building FIRST-PARTY MCP support into the editor. This is the only engine doing so. It legitimizes the entire Unity MCP ecosystem — including knowledge-layer servers like ours. When Unity ships official MCP support, every Unity dev will learn what MCP is, creating massive awareness for third-party MCP servers.
+
+### STS2 + Unity Exodus Narrative Peaked
+
+PC Gamer published a viral retrospective (6 days ago): "Slay the Spire 2 is one of the year's biggest hits, which is a good time to remember it abandoned Unity." r/gaming front page. Key new details:
+- Mega Crit ran an internal 3-week game jam on Godot before committing (produced Dancing Duellists)
+- Mega Crit is now a major Godot Development Fund sponsor (alongside Re-Logic/Terraria)
+- Had 2+ years of Unity work that needed porting
+- Community narrative: "Godot has had a massive increase in funding, improvements, users, and games released. STS2 is the first major release after the exodus."
+
+**MCP relevance**: The Unity→Godot migration wave is still ongoing. Our cross-engine comparison tool (`compare_engines`) and eventual migration guides are well-positioned for this trend.
+
+### Unity MCP Landscape Update
+
+New additions since last rotation:
+- **antigravity-unity-mcp-server** (azide1337) — appeared on LobeHub, dual-mode (local/cloud execution)
+- **Unity Editor MCP** (ozankasikci) — another editor integration server
+- **Fourth Japanese Qiita article** documenting Claude Code × unity-mcp workflow (full pipeline from game concept → WebGL build → GitHub Pages deploy). International adoption accelerating.
+- **Unity Code MCP Server** confirmed on r/Unity3D with 147 tools, WebSocket, Undo integration
+
+Total Unity MCP servers now: **8+ editor-integration, still ZERO knowledge-layer**. Our niche remains wide open.
+
+### New Pain Points Identified
+
+1. **UI Toolkit daily frustration** — r/Unity3D comment on 6.4 thread: "working daily with UI Toolkit and it's such a pain to navigate between UXML and USS files." Validates our G5_ui_toolkit.md priority.
+
+2. **Visual Scripting in maintenance mode** — Unity Discussions thread asking for updates, community told it's maintenance-only. Another abandoned tool path for devs to navigate.
+
+3. **"Surprisingly small number of additions" in 6.4** — community underwhelmed by the release. Sentiment: "Would rather they focus on a small number of features and not break anything." Trust-is-fragile mode.
+
+4. **DLSS 5 working in Unity** — positive technical news (impressive visual results), but still URP/HDRP pipeline-dependent.
+
+### Unity Community Resources — New
+
+- **Unity Learn: New "Game Development Pathway"** (March 20, 2026) — official step-by-step 2D/3D/C# learning path. Our docs complement this (architecture patterns vs fundamentals).
+- **Running Unity Tests at Warp Speed with .NET** — GameDev.net article on running Unity tests without the editor, using .NET directly. Relevant for our testing docs.
+
+### Updated Strategic Assessment
+
+**Priority remains: unity-rules.md FIRST.** The combination of:
+1. ECS now core (devs need to choose: GameObject vs DOTS)
+2. Render pipeline consolidation (URP only for new projects)
+3. CoreCLR transition (C# runtime changes)
+4. UI Toolkit replacing UGUI
+5. Unity's own MCP support creating awareness
+
+...means the AI code generation confusion problem is WORSE than 3 days ago. Every one of these transitions creates a new axis of "which pattern is correct in 2026?" that AI agents get wrong. Our unity-rules.md constraining AI to correct Unity 6.4+ patterns is the single highest-value doc we can create for Unity.
+
+**Revised module timeline:**
+- unity-rules.md should ship BEFORE full module launch — it's useful as a standalone and could be the viral piece (like godot-rules.md is for Godot)
+- E2_render_pipeline_guide.md is now URGENT given CS2 disaster narrative
+- G6_dots_ecs_guide.md moves UP in priority — ECS as core package in 6.4 makes "when to use DOTS?" the top architecture question
+
+---
+
+_Last researched: 2026-03-23 (11am cron). Next rotation: Bevy._

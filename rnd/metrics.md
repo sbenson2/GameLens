@@ -1,5 +1,81 @@
 # Metrics
 
+## Content Stats — 2026-03-23 (10:00 AM)
+
+| Module | Category | Count | Size |
+|--------|----------|-------|------|
+| core | ai-workflow | 2 | — |
+| core | concepts | 19 | — |
+| core | game-design | 6 | — |
+| core | programming | 4 | — |
+| core | project-management | 18 | — |
+| core | session | 2 | — |
+| **core total** | | **51** | **1.0M** |
+| godot-arch | architecture | 2 | — |
+| godot-arch | guides | 8 | +2 (G7 TileMap, G8 Animation) |
+| godot-arch | root (rules) | 1 | — |
+| **godot-arch total** | | **11** | **397K** |
+| monogame-arch | architecture | 4 | — |
+| monogame-arch | guides | 70 | — |
+| monogame-arch | reference | 3 | — |
+| monogame-arch | root (rules) | 1 | — |
+| **monogame-arch total** | | **78** | **2.7M** |
+| **GRAND TOTAL** | | **140** | **~4.2M** |
+
+## Coverage Stats — 2026-03-23
+
+| Metric | Value | Change |
+|---|---|---|
+| MonoGame genre coverage | **100%** (11/11 genres fully covered) | unchanged |
+| Godot module completion | **55%** (11/20 planned docs) | ↑ from 45% |
+| Core theory coverage | **~79%** (19/24 identified topics) | unchanged |
+| Missing core theory | inventory, save-system, economy, state-machine, narrative | unchanged |
+| Missing Godot (HIGH priority) | **G9 UI/Control, G11 Save/Load** | TileMap + Animation filled ✅ |
+| Missing MonoGame | **NONE** ✅ | unchanged |
+| 50% Godot milestone | **✅ REACHED** (2026-03-22, G7 TileMap) | milestone passed! |
+
+## Growth Trajectory
+
+| Date | Total Docs | Godot Docs | Godot % | MonoGame Genre % | Key Additions |
+|------|-----------|------------|---------|------------------|---------------|
+| 2026-03-17 (Day 2) | ~120 | 0 | 0% | ~75% | G64 Combat, link fixes |
+| 2026-03-18 (Day 3) | ~122 | 0 | 0% | ~90% | G65 Economy, E8, image fix |
+| 2026-03-19 (Day 4) | ~126 | 3 | 15% | ~93% | G66 Building, Godot E1/rules/G1 |
+| 2026-03-20 (Day 5) | 130 | 5 | 25% | ~95% | G67 Pooling, G2/G3, networking, Workers, CI/CD |
+| 2026-03-21 (Day 6) | 134 | 7 | 35% | 100% | G4 Input, E2 GDScript, G68 Puzzle, Stitch, caching |
+| 2026-03-22 (Day 7) | 138 | 9 | 45% | 100% | G5 Physics, G6 Camera, combat-theory, G69 Save/Load |
+| **2026-03-23 (Day 8)** | **140** | **11** | **55%** | **100%** | **G7 TileMap (80KB), G8 Animation (51KB), ui-theory 8× expand** |
+
+## Velocity
+
+| Period | Docs Created | Avg/Day |
+|--------|-------------|---------|
+| Days 2-3 (Mar 17-18) | 4 | 2.0 |
+| Day 4 (Mar 19) | 4 | 4.0 |
+| Day 5 (Mar 20) | 4 | 4.0 |
+| Day 6 (Mar 21) | 4 | 4.0 |
+| Day 7 (Mar 22) | 4 | 4.0 |
+| Day 8 (Mar 23) | 2 (+major expansion) | 2.0 |
+| **Week 1 total** | **22** | **3.1** |
+
+## Key Milestones
+
+- ✅ 2026-03-17: First content doc (G64 Combat)
+- ✅ 2026-03-19: Godot module started (3 docs)
+- ✅ 2026-03-19: npm v1.0.0 published
+- ✅ 2026-03-20: v1.1.0 prepped (not published)
+- ✅ 2026-03-21: **MonoGame 100% genre coverage** (G68 closed last gaps)
+- ✅ 2026-03-21: Godot module at 35% (7/20 docs)
+- ✅ 2026-03-22: Godot module at 45% (9/20 docs)
+- ✅ 2026-03-22: Core theory at ~79% (combat-theory filled #1 gap)
+- ✅ 2026-03-22: **50% Godot milestone REACHED** (G7 TileMap)
+- ✅ 2026-03-23: **55% Godot** (G8 Animation) + ui-theory 8× expansion
+- ⏳ Next: **Godot 65%** — G9 UI/Control, G11 Save/Load are HIGH priority
+- ⏳ Next: npm v1.2.0 publish (Day 6 overdue — 🔴 CRITICAL)
+- ⏳ Next: MCP registry submissions
+
+---
+
 ## Git Stats — 2026-03-23 (6:00 AM)
 
 | Metric | Value |
