@@ -163,21 +163,21 @@ _Append Wes's feedback and direction changes here._
 
 ## Today's Priorities (2026-03-24) — Day 9 (Tuesday)
 
-1. **🔴🔴 npm v1.2.0 publish** — DAY 7. `publish-manual.yml` created overnight. Try workflow dispatch or direct `npm publish`. **THIS IS THE SINGLE MOST IMPORTANT TASK. NOTHING ELSE MATTERS UNTIL THIS IS DONE.**
-2. **🔴 MCP registry submissions** — mcp.so, smithery, mcpservers.org minimum. Drafts ready since Day 5.
-3. **🔴 Commit uncommitted work** — 9 modified files + 1 new workflow file sitting uncommitted.
+1. **🔴🔴 npm v1.2.0 publish** — DAY 7 OVERDUE. `publish-manual.yml` exists. `npm publish` takes 10 seconds. **Wes must either run `npm publish` directly or configure NPM_TOKEN in GitHub repo settings.** The STS2 Godot hype window is closing. 93 downloaders stuck on v1.0.0.
+2. **🔴 MCP registry submissions** — mcp.so, smithery, mcpservers.org, LobeHub, claudefa.st. Drafts ready since Day 5. Zero distribution = zero users.
+3. **🔴 Commit migration-guide WIP** — 2 new files + 2 modified sitting uncommitted.
 4. **🟡 Launch post polish** — DEV Community + r/aigamedev. Target Thursday publish.
-5. **🟡 Godot G9-G12** — UI, Audio, Save/Load, Shaders. Breadth over depth.
+5. **🟡 Godot G9 UI/Control** — Highest-leverage missing doc (boosts 5 genre coverages by 20-30% each).
 6. **🟢 claudefa.st + AGENTS.md to repo root** — Agent-native distribution
 7. **🟢 Search synonym map** — 10-15 entries for remaining gaps
 
 ## Tomorrow's Priorities (2026-03-25) — Day 10 (Wednesday)
 
-1. **🔴 Registry submissions** (if not done today) + verify npm v1.2.0 live
+1. **🔴 Verify npm v1.2.0 live** + registry submissions (if not done today)
 2. **🟡 Launch post publish** — DEV Community first, then r/aigamedev
 3. **🟡 Workers API deploy** — Needs Wes for Cloudflare account setup
-4. **🟢 Continue Godot breadth** — Push toward 60-65%
-5. **🟢 Bulk cross-reference pass** — Fix systemic backlink issue caught in 4+ audits
+4. **🟢 Continue Godot breadth** — G10 Audio, G11 Save/Load. Push toward 60-65%
+5. **🟢 Bulk cross-reference pass** — Fix systemic backlink issue caught in 5 audits
 
 ## Yesterday (2026-03-22) — Day 7 Recap
 

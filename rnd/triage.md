@@ -4,7 +4,74 @@ Daily summary of new GitHub issues and PRs.
 
 ---
 
-## 2026-03-24 — Morning Standup (Day 9, Tuesday)
+## 2026-03-24 — 9 AM Standup (Day 9, Tuesday)
+
+### GitHub Status
+- **Open Issues:** 0
+- **Open PRs:** 0 (all 4 Dependabot PRs merged)
+- **Stars:** 0 | **Forks:** 0 | **Watchers:** 0
+- Still zero external engagement. Distribution crisis continues.
+
+### npm Status
+- **Published:** `gamedev-mcp-server@1.0.0` — **5 DAYS OLD** (published 2026-03-19)
+- **Local version:** `1.2.0` (tagged, ready to publish)
+- **Downloads (last 7 days):** 93 total — down to 0 today so far
+- **93 downloaders stuck on v1.0.0.** v1.2.0 has 40+ commits of improvements they can't access.
+
+### Git Status
+- **Last commit:** `063f708` — CI/CD audit lesson
+- **Uncommitted:** 2 modified (`server.ts`, `tiers.ts`) + 2 new (`migration-guide.ts`, `migration-guide.test.ts`)
+- **Build:** ✅ Clean (`tsc --noEmit`)
+- **Tests:** ✅ 175/175 pass
+- **Tags:** v1.2.0 (latest), v1.1.0
+
+### Content Stats
+- **140 docs** across `docs/` (~4.5 MB)
+- **Godot module:** 11 docs (55%) — past the 50% viability threshold
+- **MonoGame:** 78 docs, 100% genre coverage
+- **Core:** 20 concept/theory docs
+- **9 MCP tools** (10th — `migration_guide` — in progress, uncommitted)
+
+### Overnight Work
+- **New `migration_guide` tool** — in progress (2 new files + 2 modified). Cross-engine migration guide generation with concept mappings (Architecture, Physics, Input, Camera, Animation, UI, State Mgmt, Audio, Networking, Save/Load). Supports `from`/`to` engine params with topic filtering.
+- Doc polishing continued on pathfinding-theory, G41 tweening, G59 skeletal animation
+- Bevy research rotation 2 completed, CI/CD audit completed
+
+### Open Items (Priority-Sorted)
+| Item | Priority | Days Open | Notes |
+|---|---|---|---|
+| **npm v1.2.0 publish** | 🔴🔴 CRITICAL | **7** | `publish-manual.yml` exists. Or just run `npm publish`. **Non-negotiable today.** |
+| **MCP registry submissions** | 🔴 Critical | **7** | mcp.so, smithery, mcpservers.org, LobeHub, claudefa.st. Drafts ready. |
+| **Commit overnight work** | 🔴 Hygiene | 1 | migration-guide tool + modified files |
+| **0 stars / 0 forks** | 🔴 Strategic | **9** | Zero visibility. STS2 Godot hype window narrowing. |
+| Launch post polish | 🟡 Medium | 4 | DEV Community + r/aigamedev. Target Thursday. |
+| Godot G9-G12 | 🟡 Medium | — | UI, Audio, Save/Load, Shaders — breadth push |
+| Workers API deploy | 🟡 Medium | 4 | Needs Wes for Cloudflare account |
+| Search synonyms | 🟡 Medium | 7 | 10-15 entries for remaining gaps |
+| Bulk cross-reference pass | 🟢 Low | — | Systemic backlink issue (5 audits confirm) |
+
+### Key Observations
+
+**Critical reality check:**
+- **Day 9. Zero stars. Zero forks. 93 total downloads trending to zero.** The product is excellent — 140 docs, 175 tests, 9 (soon 10) tools, cross-engine search. But none of that matters without distribution. We've been building in a vacuum.
+- npm v1.2.0 publish has been the #1 priority for a full week. The `publish-manual.yml` workflow exists. `npm publish` takes 10 seconds. This must happen today.
+
+**What's working:**
+- Build & tests rock solid (175/175)
+- Content quality is genuinely best-in-class for this niche
+- Overnight sessions keep shipping (migration-guide tool, doc polish, research)
+- Zero regressions across 9 days of continuous development
+
+**Today's battle plan:**
+1. 🔴 **npm v1.2.0 publish** — THE priority. Wes needs to run this or configure NPM_TOKEN.
+2. 🔴 **Registry submissions** — at least mcp.so + smithery + mcpservers.org
+3. 🟡 **Commit migration-guide WIP** + push
+4. 🟡 **Launch post polish** for Thursday
+5. 🟢 **Godot G9 UI** if time
+
+---
+
+## 2026-03-24 — Earlier Standup (Day 9, Tuesday)
 
 ### GitHub Status
 - **Open Issues:** 0
