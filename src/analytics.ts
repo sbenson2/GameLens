@@ -97,6 +97,11 @@ export interface DailySummary {
     searchLimitHits: number;           // times daily search limit was reached
     docLimitHits: number;              // times daily doc limit was reached
   };
+  conversion: {
+    proGateImpressions: number;        // times a Pro gate message was shown
+    proGateByTool: Record<string, number>; // which tools triggered Pro gates
+    upgradeUrlShown: number;           // times upgrade URL was displayed
+  };
   modules: {
     discovered: number;
     active: number;
@@ -140,6 +145,11 @@ function emptyDailySummary(date: string): DailySummary {
       discovered: 0,
       active: 0,
       totalDocs: 0,
+    },
+    conversion: {
+      proGateImpressions: 0,
+      proGateByTool: {},
+      upgradeUrlShown: 0,
     },
   };
 }
@@ -275,6 +285,18 @@ export class Analytics {
         this.summary.cache.remoteFetches += 1;
         break;
     }
+    this.dirty = true;
+  }
+
+  /** Record a Pro gate impression (conversion funnel tracking) */
+  recordProGate(tool: string): void {
+    if (!this.enabled) return;
+    this.ensureToday();
+
+    this.summary.conversion.proGateImpressions += 1;
+    this.summary.conversion.proGateByTool[tool] =
+      (this.summary.conversion.proGateByTool[tool] ?? 0) + 1;
+    this.summary.conversion.upgradeUrlShown += 1;
     this.dirty = true;
   }
 

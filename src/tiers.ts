@@ -9,6 +9,7 @@ export const PRO_GATE_MESSAGE = `This feature requires a Pro license. Get one at
 const TOOL_ACCESS: Record<Tier, Record<string, boolean | "limited">> = {
   free: {
     list_docs: true,
+    list_modules: true,     // discovery — shows what Pro unlocks (conversion driver)
     search_docs: "limited", // core module only
     get_doc: "limited",     // core module only
     session: false,
@@ -19,6 +20,7 @@ const TOOL_ACCESS: Record<Tier, Record<string, boolean | "limited">> = {
   },
   pro: {
     list_docs: true,
+    list_modules: true,
     search_docs: true,
     get_doc: true,
     session: true,
@@ -55,6 +57,7 @@ export function getTierFeatures(tier: Tier): {
     return {
       tools: {
         list_docs: "Full access",
+        list_modules: "Full access",
         search_docs: "All modules, unlimited",
         get_doc: "All modules, unlimited, section extraction",
         session: "Full session co-pilot",
@@ -71,6 +74,7 @@ export function getTierFeatures(tier: Tier): {
   return {
     tools: {
       list_docs: "Full access",
+      list_modules: "Full access (discover available engines)",
       search_docs: "Core module only (50/day)",
       get_doc: "Core module only (30/day)",
       session: "Locked (Pro)",

@@ -24,6 +24,7 @@ import {
   PRO_GATE_MESSAGE,
   UPGRADE_URL,
 } from "./tiers.js";
+import { getAnalytics } from "./analytics.js";
 
 function findDocsRoot(): string {
   // Try to find docs relative to __dirname (works in CJS)
@@ -56,7 +57,8 @@ const SESSION_ACTIONS = [
 
 type ToolResult = { content: Array<{ type: "text"; text: string }> };
 
-function proGateResponse(): ToolResult {
+function proGateResponse(tool?: string): ToolResult {
+  // Analytics tracking deferred — caller records via analytics.recordProGate()
   return { content: [{ type: "text", text: PRO_GATE_MESSAGE }] };
 }
 
@@ -90,6 +92,10 @@ export async function createServer() {
     licenseKey,
   });
 
+  // Initialize analytics
+  const startTime = Date.now();
+  const analytics = getAnalytics();
+
   const discoveredNames = discoveredModules.map((m) => `${m.id} (${m.label}, ${m.docCount} docs)`);
   const activeNames = activeModuleMeta.map((m) => m.id);
   console.error(
@@ -102,6 +108,16 @@ export async function createServer() {
   if (hybridProvider.isHybridEnabled) {
     console.error(`[gamedev-mcp] Hybrid mode: enabled (API: ${apiUrl})`);
   }
+
+  // Record startup metrics
+  analytics.recordStartup({
+    version: "1.2.0",
+    tier: process.env.GAMEDEV_MCP_DEV === "true" ? "dev" : tier,
+    startupTimeMs: Date.now() - startTime,
+    discoveredModules: discoveredModules.length,
+    activeModules: activeModuleMeta.length,
+    totalDocs: allDocs.length,
+  });
 
   const server = new McpServer({
     name: "gamedev-mcp-server",
@@ -123,7 +139,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "search_docs");
-        if (access === false) return proGateResponse();
+        if (access === false) { analytics.recordProGate("search_docs"); return proGateResponse(); }
 
         // Free tier: force module to 'core'
         if (access === "limited") {
@@ -149,6 +165,7 @@ export async function createServer() {
         // Daily rate limit for free tier
         const rateLimit = checkSearchLimit(tier);
         if (!rateLimit.allowed) {
+          analytics.recordRateLimit("search");
           return {
             content: [{
               type: "text",
@@ -157,7 +174,14 @@ export async function createServer() {
           };
         }
 
+        const searchStart = Date.now();
         const result = handleSearchDocs(args, docStore, searchEngine, discoveredModules);
+        analytics.recordToolCall("search_docs", Date.now() - searchStart);
+        analytics.recordSearch({
+          module: args.module,
+          category: args.category,
+          resultCount: result.content[0].text.includes("No results") ? 0 : 10, // approximate
+        });
 
         // Append usage info for free tier when getting low
         if (tier === "free" && rateLimit.remaining <= 10 && rateLimit.remaining > 0) {
@@ -183,7 +207,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "get_doc");
-        if (access === false) return proGateResponse();
+        if (access === false) { analytics.recordProGate("get_doc"); return proGateResponse(); }
 
         if (access === "limited") {
           // Check if doc belongs to a non-core module
@@ -205,6 +229,7 @@ export async function createServer() {
         // Daily rate limit for free tier
         const docRateLimit = checkGetDocLimit(tier);
         if (!docRateLimit.allowed) {
+          analytics.recordRateLimit("doc");
           return {
             content: [{
               type: "text",
@@ -213,11 +238,31 @@ export async function createServer() {
           };
         }
 
+        const docStart = Date.now();
+        let docResult: ToolResult;
+
         // Use hybrid provider if enabled, otherwise pure local
         if (hybridProvider.isHybridEnabled) {
-          return await handleGetDocHybrid(args, docStore, hybridProvider);
+          docResult = await handleGetDocHybrid(args, docStore, hybridProvider);
+        } else {
+          docResult = handleGetDoc(args, docStore);
         }
-        return handleGetDoc(args, docStore);
+
+        analytics.recordToolCall("get_doc", Date.now() - docStart);
+
+        // Record doc access if we found the doc
+        const docForAnalytics = docStore.getDoc(args.id) ??
+          docStore.getAllDocs().find((d) => d.id.toLowerCase() === args.id.toLowerCase());
+        if (docForAnalytics) {
+          analytics.recordDocAccess({
+            docId: docForAnalytics.id,
+            module: docForAnalytics.module,
+            usedSection: !!args.section,
+            usedMaxLength: !!args.maxLength,
+          });
+        }
+
+        return docResult;
       } catch (err) {
         return { content: [{ type: "text", text: `Error fetching doc: ${err instanceof Error ? err.message : String(err)}` }] };
       }
@@ -234,8 +279,12 @@ export async function createServer() {
     },
     async (args) => {
       try {
-        return handleListDocs(args, docStore);
+        const listStart = Date.now();
+        const listResult = handleListDocs(args, docStore);
+        analytics.recordToolCall("list_docs", Date.now() - listStart);
+        return listResult;
       } catch (err) {
+        analytics.recordToolCall("list_docs", 0, true);
         return { content: [{ type: "text", text: `Error listing docs: ${err instanceof Error ? err.message : String(err)}` }] };
       }
     }
@@ -249,9 +298,13 @@ export async function createServer() {
     },
     async (args) => {
       try {
-        if (!isToolAllowed(tier, "session")) return proGateResponse();
-        return handleSession(args);
+        if (!isToolAllowed(tier, "session")) { analytics.recordProGate("session"); return proGateResponse(); }
+        const sessionStart = Date.now();
+        const sessionResult = handleSession(args);
+        analytics.recordToolCall("session", Date.now() - sessionStart);
+        return sessionResult;
       } catch (err) {
+        analytics.recordToolCall("session", 0, true);
         return { content: [{ type: "text", text: `Session error: ${err instanceof Error ? err.message : String(err)}` }] };
       }
     }
@@ -266,9 +319,11 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "genre_lookup");
-        if (access === false) return proGateResponse();
+        if (access === false) { analytics.recordProGate("genre_lookup"); return proGateResponse(); }
 
+        const genreStart = Date.now();
         const result = handleGenreLookup(args);
+        analytics.recordToolCall("genre_lookup", Date.now() - genreStart);
 
         if (!result.found) {
           return {
@@ -436,7 +491,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "random_doc");
-        if (access === false) return proGateResponse();
+        if (access === false) { analytics.recordProGate("random_doc"); return proGateResponse(); }
 
         // Free tier: restrict to core module
         if (access === "limited") {
@@ -477,7 +532,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "compare_engines");
-        if (access === false) return proGateResponse();
+        if (access === false) { analytics.recordProGate("compare_engines"); return proGateResponse(); }
 
         // Free tier: comparison requires cross-engine access (Pro)
         if (access === "limited") {
@@ -568,6 +623,14 @@ export async function createServer() {
       const transport = new StdioServerTransport();
       await server.connect(transport);
       console.error("[gamedev-mcp] Server started on stdio");
+
+      // Graceful shutdown — flush analytics
+      const shutdown = () => {
+        analytics.shutdown();
+        process.exit(0);
+      };
+      process.on("SIGINT", shutdown);
+      process.on("SIGTERM", shutdown);
     },
   };
 }

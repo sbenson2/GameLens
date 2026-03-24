@@ -1,7 +1,7 @@
 # Content Gap Analysis
 
 Weekly comparison of genre-lookup system requirements vs available guides.
-Last updated: 2026-03-23 (10am content gap cron)
+Last updated: 2026-03-24 (10am content gap cron)
 
 ---
 
@@ -21,23 +21,23 @@ Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) agai
 | core | session | 2 | — |
 | **core total** | | **51** | **1.0M** |
 | godot-arch | architecture | 2 | — |
-| godot-arch | guides | 8 | +2 (G7 TileMap, G8 Animation) |
+| godot-arch | guides | 8 | — |
 | godot-arch | root (rules) | 1 | — |
-| **godot-arch total** | | **11** | **397K** |
+| **godot-arch total** | | **11** | **388K** |
 | monogame-arch | architecture | 4 | — |
 | monogame-arch | guides | 70 | — |
 | monogame-arch | reference | 3 | — |
 | monogame-arch | root (rules) | 1 | — |
 | **monogame-arch total** | | **78** | **2.7M** |
-| **GRAND TOTAL** | | **140** | **~4.2M** |
+| **GRAND TOTAL** | | **140** | **~4.1M** |
 
-### Changes Since Last Update (2026-03-22)
-- +2 docs total (138 → 140)
-- +2 Godot docs: G7 TileMap & Terrain (80KB), G8 Animation Systems (51KB)
-- **🎉 Godot 50% milestone PASSED** — now at 55% (11/20)
-- Core expansion: ui-theory.md 8× expansion (5KB → 41KB) — now the definitive engine-agnostic UI reference
-- Godot module size: 276K → 397K (+44%)
-- Total size: 4.1M → 4.2M
+### Changes Since Last Update (2026-03-23)
+- **No new docs created** since last analysis (Day 8-9 focused on standups + publish workflow)
+- Doc count unchanged at 140
+- Godot module unchanged at 55% (11/20)
+- Core theory unchanged at ~79%
+- **Day 9 with no content velocity** — first zero-doc day since project started
+- npm v1.2.0 publish is now **Day 7 overdue** 🔴🔴
 
 ## ✅ Filled Gaps
 
@@ -88,8 +88,8 @@ Cross-referenced all `requiredSystems` from `src/core/genre.ts` (11 genres) agai
 
 Godot Phase 2 started 2026-03-19. **50% milestone passed on 2026-03-22 (G7 TileMap).**
 
-| Planned Doc | Status | Priority | Notes |
-|-------------|--------|----------|-------|
+| Planned Doc | Status | Priority | Genre Need (genres requiring this) |
+|-------------|--------|----------|-----|
 | E1 Architecture Overview | ✅ Done | — | 16KB |
 | E2 GDScript vs C# | ✅ Done | — | 34KB |
 | godot-rules.md | ✅ Done | — | 14KB |
@@ -99,37 +99,57 @@ Godot Phase 2 started 2026-03-19. **50% milestone passed on 2026-03-22 (G7 TileM
 | G4 Input Handling | ✅ Done | — | 43KB |
 | G5 Physics & Collision | ✅ Done | — | 33KB |
 | G6 Camera Systems | ✅ Done | — | 53KB |
-| G7 TileMap & Terrain | ✅ Done | — | 80KB ← NEW (50% milestone) |
-| G8 Animation Systems | ✅ Done | — | 51KB ← NEW |
-| **G9 UI/Control nodes** | ❌ Missing | **HIGH** | Container system, themes, responsive layouts — needed by RPG/strategy/puzzle/VN genres |
-| **G10 Audio** | ❌ Missing | MEDIUM | AudioStreamPlayer, bus layout, positional audio |
-| **G11 Save/Load** | ❌ Missing | **HIGH** | Resource serialization, ConfigFile, JSON patterns — confirmed community demand (Godot Forum) |
-| **G12 Shaders** | ❌ Missing | MEDIUM | CanvasItem shaders, visual shader editor |
-| **G13 Particles** | ❌ Missing | LOW | GPUParticles2D, sub-emitters |
-| **G14 Navigation** | ❌ Missing | MEDIUM | NavigationServer2D, avoidance |
-| **G15 Networking** | ❌ Missing | LOW | MultiplayerAPI, RPCs, authority |
-| **G16 Autoloads/Singletons** | ❌ Missing | MEDIUM | Global state, service pattern |
+| G7 TileMap & Terrain | ✅ Done | — | 80KB |
+| G8 Animation Systems | ✅ Done | — | 51KB |
+| **G9 UI/Control nodes** | ❌ Missing | **HIGH** | RPG, strategy, TD, puzzle, VN (5 genres) — Container system, themes, responsive layouts |
+| **G10 Audio** | ❌ Missing | MEDIUM | VN + all genres indirectly — AudioStreamPlayer, bus layout, positional |
+| **G11 Save/Load** | ❌ Missing | **HIGH** | roguelike, metroidvania, RPG, survival, VN (5 genres) — Resource serialization, ConfigFile, JSON. Confirmed community demand (Godot Forum Mar 18) |
+| **G12 Shaders** | ❌ Missing | MEDIUM | Cross-cutting visual — CanvasItem shaders, visual shader editor |
+| **G13 Particles** | ❌ Missing | LOW | bullet-hell, TD (2 genres) — GPUParticles2D, sub-emitters |
+| **G14 Navigation** | ❌ Missing | MEDIUM | roguelike, TD, strategy (3 genres) — NavigationServer2D, avoidance |
+| **G15 Networking** | ❌ Missing | LOW | (core need) — MultiplayerAPI, RPCs, authority |
+| **G16 Autoloads/Singletons** | ❌ Missing | MEDIUM | Godot-specific architecture pattern, needed by every game |
 | **G17 Export/Deploy** | ❌ Missing | LOW | Export templates, platform-specific settings |
 
 **Godot completion: 11/20 (55%) — 9 docs remaining**
-- **50% milestone REACHED** on 2026-03-22 (G7 TileMap)
-- Now at 55% with G8 Animation
+- 50% milestone reached 2026-03-22
+- **No new Godot docs in 2 days** (Mar 23-24) — velocity stalled
+- At prior pace (~1 Godot doc/day), 65% target was March 25 — now likely March 26-27
 - Next HIGH priority: G9 UI/Control and G11 Save/Load
-- At current pace (~1 Godot doc/day), 65% by ~March 25
+
+### Godot Genre Coverage Matrix
+
+How well does the current Godot module serve each genre?
+
+| Genre | Core Systems Covered by Godot Docs | Missing Godot-Specific | Coverage |
+|-------|-----------------------------------|----------------------|----------|
+| Platformer | Physics, Input, Camera, TileMap, Animation, State Machine | — | **95%** ✅ |
+| Roguelike | TileMap (procgen), State Machine | UI, Save/Load, Navigation | 50% |
+| Metroidvania | Physics, Input, Camera, Animation, State Machine | Save/Load, Scene transitions | 60% |
+| Top-Down RPG | Input, Camera, TileMap | UI, Save/Load, Dialogue | 40% |
+| Tower Defense | TileMap, Camera | UI, Navigation, Particles | 35% |
+| Bullet Hell | Physics, Input, Camera, Animation | Particles, Pooling patterns | 50% |
+| Puzzle | Input, State Machine | UI, Save/Load, Tweens | 30% |
+| Survival | Physics, Input, TileMap, Camera | UI, Save/Load, Audio | 40% |
+| Strategy | TileMap, Camera | UI, Navigation, Fog of War | 30% |
+| Visual Novel | State Machine | UI, Save/Load, Audio, Dialogue | 15% |
+| Fighting | Physics, Input, Animation, State Machine | — (mostly covered by core) | 70% |
+
+**Observation**: Platformer and Fighting genres are well-served by current Godot docs. UI-heavy genres (RPG, Strategy, Puzzle, VN) are poorly served — G9 UI/Control would immediately boost 5 genre coverages. Save/Load (G11) would boost another 5.
 
 ## 🟡 Core Concept Gaps
 
-19 concept theory docs exist. ui-theory.md expanded 8× (5KB → 41KB) but was already counted.
+19 concept theory docs exist. ui-theory.md expanded 8× on Day 8 (5KB → 41KB).
 
 | Missing Concept | Relevant Guides | Priority | Notes |
 |-----------------|----------------|----------|-------|
+| **state-machine-theory.md** | G2 (Godot), G31 (MonoGame) | MEDIUM | FSM/HSM/pushdown theory — cross-engine fundamental |
 | **inventory-theory.md** | G10 §1 (MonoGame) | MEDIUM | Inventory/item systems referenced by 4 genres |
 | **save-system-theory.md** | G10 §3, G69 (MonoGame) | MEDIUM | Save/load referenced by 5 genres |
 | **economy-theory.md** | G65 (MonoGame) | LOW | Sink/faucet balance, dynamic pricing |
-| **state-machine-theory.md** | G2 (Godot), G31 (MonoGame) | MEDIUM | FSM/HSM/pushdown theory — cross-engine fundamental |
 | **narrative-theory.md** | G62 (MonoGame) | LOW | Branching story structures, dialogue tree patterns |
 
-Core theory coverage: 19/24 identified topics (~79%) — unchanged from last update.
+Core theory coverage: 19/24 identified topics (~79%) — unchanged since March 22.
 
 ## 📊 Coverage Summary
 
@@ -141,41 +161,55 @@ Core theory coverage: 19/24 identified topics (~79%) — unchanged from last upd
 - **Architecture**: 2/2 planned overview docs (100%)
 - **Guides**: 8/~17 planned (47%)
 - **Rules**: 1/1 (100%)
-- **Overall**: **55%** of planned Godot module complete (up from 45%)
-- **Critical missing**: G9 UI/Control, G11 Save/Load (both HIGH priority)
-- **Velocity**: +2 docs since last update (G7 + G8)
+- **Overall**: **55%** of planned Godot module complete (unchanged)
+- **Critical missing**: G9 UI/Control (5 genres), G11 Save/Load (5 genres)
+- **Velocity**: 0 new docs in 2 days (stalled)
 - **50% milestone**: ✅ REACHED (2026-03-22)
 
 ### Core Theory Coverage
-- **Existing**: 19 concept docs (ui-theory.md massively expanded: 5→41KB)
-- **Missing**: 5 topics (inventory, save systems, economy, state machines, narrative)
+- **Existing**: 19 concept docs
+- **Missing**: 5 topics (state-machine, inventory, save-system, economy, narrative)
 - **Overall**: 19/24 identified topics (~79%)
 
-## 🎯 Next Priority (ranked)
+## 🎯 Next Priority (ranked by genre impact)
 
-### Godot (target 65% by March 25)
-1. **G9 UI/Control nodes** — Container system, themes, responsive layouts. HIGH — needed by 5 genres (RPG, strategy, tower-defense, puzzle, visual-novel)
-2. **G11 Save/Load** — Resource serialization, ConfigFile, JSON. HIGH — confirmed community demand, 5 genres need it
-3. **G10 Audio** — AudioStreamPlayer, buses, positional. MEDIUM
-4. **G14 Navigation** — NavigationServer2D, avoidance agents. MEDIUM
-5. **G16 Autoloads/Singletons** — global patterns. MEDIUM
+### Godot (target 65% by March 26-27)
+1. **G9 UI/Control nodes** — Unlocks 5 genre coverages (RPG +30%, Strategy +25%, TD +20%, Puzzle +25%, VN +30%). **Single highest-impact missing doc.**
+2. **G11 Save/Load** — Unlocks 5 genre coverages (roguelike +15%, metroidvania +15%, RPG +20%, survival +15%, VN +25%). Confirmed community demand.
+3. **G14 Navigation** — Unlocks 3 genre coverages (roguelike +10%, TD +15%, strategy +15%).
+4. **G10 Audio** — Universal need, VN-critical.
+5. **G16 Autoloads/Singletons** — Architecture pattern used by every game.
+6. **G12 Shaders** — Visual polish, cross-genre.
 
 ### Core Theory
-6. **state-machine-theory.md** — cross-engine fundamental
-7. **save-system-theory.md** — 5 genres reference save/load
-8. **inventory-theory.md** — 4 genres reference inventory
+7. **state-machine-theory.md** — Cross-engine fundamental, complements G2 (Godot) + G31 (MonoGame)
+8. **save-system-theory.md** — 5 genres reference save/load
+9. **inventory-theory.md** — 4 genres reference inventory
 
 ### MonoGame (COMPLETE ✅)
 - No remaining gaps.
 
+## ⚠️ Velocity & Distribution Concerns
+
+| Metric | Status | Concern Level |
+|--------|--------|---------------|
+| Content velocity | 0 docs/day (last 2 days) | 🟡 Stalled — was averaging 3.1/day |
+| npm publish | v1.0.0 (Day 7 overdue for v1.2.0) | 🔴🔴 Critical blocker |
+| MCP registries | 0 submitted (Day 7 overdue) | 🔴 No external discovery |
+| Godot 65% target | Was March 25, now likely March 26-27 | 🟡 Slipping |
+| Total docs since Day 7 | 0 new (only standups) | 🔴 Two lost production days |
+
+**Assessment**: Content creation has paused while publish/distribution issues compound. The product is strong (140 docs, 175 tests, 4.2M content) but invisible to the market. Every day without npm v1.2.0 wastes the STS2 marketing window.
+
 ## 📈 Progress Tracking
 
-| Date | Total | Core | MonoGame | Godot | Godot % | MonoGame Genre % | Core Theory % |
-|------|-------|------|----------|-------|---------|------------------|---------------|
-| 2026-03-17 | ~120 | 49 | 71 | 0 | 0% | ~75% | — |
-| 2026-03-18 | ~122 | 49 | 73 | 0 | 0% | ~90% | — |
-| 2026-03-19 | ~126 | 49 | 74 | 3 | 15% | ~93% | — |
-| 2026-03-20 | 130 | 49 | 76 | 5 | 25% | ~95% | 75% |
-| 2026-03-21 | 134 | 50 | 77 | 7 | 35% | 100% | 75% |
-| 2026-03-22 | 138 | 51 | 78 | 9 | 45% | 100% | ~79% |
-| **2026-03-23** | **140** | **51** | **78** | **11** | **55%** | **100%** | **~79%** |
+| Date | Total | Core | MonoGame | Godot | Godot % | MonoGame Genre % | Core Theory % | New Docs |
+|------|-------|------|----------|-------|---------|------------------|---------------|----------|
+| 2026-03-17 | ~120 | 49 | 71 | 0 | 0% | ~75% | — | 1 |
+| 2026-03-18 | ~122 | 49 | 73 | 0 | 0% | ~90% | — | 2 |
+| 2026-03-19 | ~126 | 49 | 74 | 3 | 15% | ~93% | — | 4 |
+| 2026-03-20 | 130 | 49 | 76 | 5 | 25% | ~95% | 75% | 4 |
+| 2026-03-21 | 134 | 50 | 77 | 7 | 35% | 100% | 75% | 4 |
+| 2026-03-22 | 138 | 51 | 78 | 9 | 45% | 100% | ~79% | 4 |
+| 2026-03-23 | 140 | 51 | 78 | 11 | 55% | 100% | ~79% | 2 |
+| **2026-03-24** | **140** | **51** | **78** | **11** | **55%** | **100%** | **~79%** | **0** ⚠️ |
