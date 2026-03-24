@@ -1,291 +1,46 @@
-# Test Results
-
-Functional, content, and integration test logs.
-
----
-
-## 2026-03-21 — Day C: Content Validation (5am cron)
-
-### Build Verification
-- **`npm run build` (tsc)**: ✅ PASS — Clean compilation
-- **`npx tsx --test` (58 tests)**: ✅ 58/58 PASS in 684ms
-
-### 5 Random Docs Audited
-
-| Doc | File | Lines | Links | Code | Issues |
-|-----|------|------:|------:|-----:|--------|
-| G1 Scene Composition | `docs/godot-arch/guides/G1_scene_composition.md` | 488 | 2 | 21 blocks (GDScript) | 1 broken link (FIXED) |
-| G5 UI Framework | `docs/monogame-arch/guides/G5_ui_framework.md` | 293 | 2 | 9 blocks (C#) | None |
-| G Stitch UI Workflow | `docs/core/game-design/G_stitch_ui_workflow.md` | 1282 | 8 | 41 blocks (C#/GDScript/markdown/prompts) | None |
-| P12 Performance Budget | `docs/monogame-arch/guides/P12_performance_budget.md` | 874 | 8 | 7 blocks (C#) | Title numbering mismatch (known) |
-| P3 Daily Workflow | `docs/core/project-management/P3_daily_workflow.md` | 595 | 5 | 1 block | Title numbering mismatch (known) |
-
-### Issues Found
-
-#### 1. ❌ **Broken link in G1** → FIXED
-- **G1 line 3**: `[G4 Custom Resources](./G4_custom_resources.md)` pointed to non-existent file
-- **Cause**: G4 was originally planned as "Custom Resources" but was created as "Input Handling" (`G4_input_handling.md`)
-- **Fix**: Updated link to `[G4 Input Handling](./G4_input_handling.md)` — committed & pushed (4d5c26d)
-- **Scope**: Only G1 referenced this; no other files affected
-
-#### 2. ⚠️ **Title numbering mismatch** (known, cosmetic)
-- P12 file has title "# 16 — Performance Budget Template"
-- P3 file has title "# 07 — Daily Dev Workflow"
-- Already tracked in PROJECT_MEMORY as low-priority cosmetic issue
-
-#### 3. ✅ **All internal links verified** (Python link checker)
-- 25 total internal links across 5 docs
-- All resolve to existing files after G1 fix
-
-### Code Quality Checks
-
-- **G1 GDScript**: Clean Godot 4.4+ syntax — `@export`, `@onready`, typed signals (`signal health_changed(new_health: int, max_health: int)`), `class_name`, typed functions. No Godot 3 patterns.
-- **G5 C#**: Clean MonoGame/Gum API — `ContainerRuntime`, `ColoredRectangleRuntime`, proper layout units.
-- **Stitch C#**: Modern Gum.MonoGame API with `GumService.Default`, `NineSliceRuntime`. Mixed language blocks (C#, GDScript, markdown prompts) all correctly tagged where applicable.
-- **P12 C#**: Standard MonoGame patterns — `SpriteBatch`, `GameTime`, profiling patterns.
-- **P3**: Minimal code (workflow doc), tables and checklists well-formatted.
-
-### Content Accuracy
-
-- **G1**: Correctly describes Godot 4 node composition (CharacterBody2D, Area2D, signals). Component pattern examples (Health, Hitbox, Hurtbox) are idiomatic.
-- **Stitch**: Stitch.withgoogle.com references appear current (March 2026 features: infinite canvas, voice canvas, vibe design, DESIGN.md). Gum.MonoGame translation table is accurate.
-- **P12**: Frame budget math correct (16.67ms for 60fps). Memory budget recommendations reasonable for 2D indie games.
-- **P3**: Daily workflow patterns are practical and well-structured for solo devs.
-
-### Summary
-- **Docs audited**: 5
-- **Issues found**: 1 broken link (fixed), 2 cosmetic title mismatches (known)
-- **Build**: Clean
-- **Tests**: 58/58 PASS
-- **Code quality**: All code blocks use correct, modern API patterns
-- **Content accuracy**: No outdated APIs or incorrect information found
-
----
-
-## 2026-03-19 — Day A: Functional Testing (3pm)
-
-### Build Verification
-- **`npm run build` (tsc)**: ✅ PASS — Clean compilation, no errors, no warnings
-- **Compiled files**: `dist/` contains index.js, server.js, license.js, tiers.js + core/ + tools/ — all present
-- **Total source lines**: 530 lines across 4 main JS files
-
-### MCP Protocol Tests (Pro Tier, dev mode)
-
-| Test | Method | Expected | Actual | Result |
-|------|--------|----------|--------|--------|
-| Initialize | `initialize` | Protocol handshake | `protocolVersion: "2024-11-05"`, capabilities, serverInfo | ✅ PASS |
-| Tool listing | `tools/list` | 6 tools | 6 tools returned: search_docs, get_doc, list_docs, session, genre_lookup, license_info | ✅ PASS |
-| Search (basic) | `search_docs("character controller")` | Relevant results | Top hit: G52 (score 57.4), #2: character-controller-theory (54.1) | ✅ PASS |
-| List docs | `list_docs()` | All docs listed | 123 docs across core + monogame-arch (correct count) | ✅ PASS |
-| Get doc (valid) | `get_doc("P0")` | Full content returned | Complete P0 master playbook returned | ✅ PASS |
-| Get doc (invalid) | `get_doc("nonexistent-doc-xyz")` | Error message | "Doc not found. Use list_docs to see available docs." | ✅ PASS |
-| Session menu | `session("menu")` | Session briefing | Full session briefing with action menu | ✅ PASS |
-| Genre lookup | `genre_lookup("platformer")` | Full system mappings | Required systems, recommended docs, starter checklist | ✅ PASS |
-| License info | `license_info()` | Pro tier details | "Pro — all tools and modules fully unlocked" | ✅ PASS |
-
-**Protocol compliance: 9/9 PASS**
-
-### Search Quality Regression Tests
-
-| Query | Expected Behavior | Actual | Result |
-|-------|-------------------|--------|--------|
-| `"character controller"` (two words) | Match G52 + concept doc | G52 (57.4), character-controller-theory (54.1) | ✅ PASS |
-| `"character-controller"` (hyphenated) | Should also match | **"No docs found"** — hyphen tokenization bug | ❌ FAIL (known) |
-| `"godot scene composition"` (no godot module) | Only core/monogame results | G29, G26, E8, etc. — no Godot results (module not loaded) | ✅ PASS (expected) |
-
-**Hyphen tokenization bug confirmed still present.** Documented in `rnd/search-quality.md` as P1.
-
-### Godot Module Testing
-
-| Test | Expected | Actual | Result |
-|------|----------|--------|--------|
-| Load godot-arch module (`GAMEDEV_MODULES="monogame-arch,godot-arch"`) | 3 Godot docs loaded | 3 docs: godot-arch/E1, godot-rules, godot-arch/G1 | ✅ PASS |
-| Search with Godot module | Godot docs in results | godot-arch/E1 (50.4), godot-arch/G1 (40.6), godot-rules (38.2) all ranked high | ✅ PASS |
-| List docs (godot-arch filter) | Show only Godot docs | 3 docs: architecture/E1, reference/godot-rules, guide/G1 | ✅ PASS |
-| Get Godot doc (Pro) | Full content | Full godot-arch/G1 content returned | ✅ PASS |
-| Search Godot (Free tier) | Pro gate | "Searching non-core modules requires a Pro license" | ✅ PASS |
-| Get Godot doc (Free tier) | Pro gate | "requires a Pro license" | ✅ PASS |
-
-**Godot module: 6/6 PASS — fully functional when module is activated.**
-
-### Free vs Pro Tier Gating (regression)
-
-| Test | Free Tier | Pro Tier | Result |
-|------|-----------|----------|--------|
-| search_docs (core) | Returns core results | Returns all results | ✅ PASS |
-| search_docs (module filter) | Pro gate message | Returns module results | ✅ PASS |
-| get_doc (core doc) | Returns content | Returns content | ✅ PASS |
-| get_doc (module doc) | Pro gate message | Returns content | ✅ PASS |
-| session | Pro gate message | Full session briefing | ✅ PASS |
-| license_info | Free tier details | Pro tier details | ✅ PASS |
-
-**Tier gating: 6/6 PASS**
-
-### Issues Found
-
-1. **❌ Hyphen tokenization bug STILL OPEN** — `"character-controller"` returns 0 results. Known P1 issue from 2026-03-18. Fix in `rnd/search-quality.md`.
-2. **⚠️ Godot module not in default `GAMEDEV_MODULES`** — Only `monogame-arch` is default. Godot docs won't appear unless env var includes `godot-arch`. This is expected behavior for now (Godot is still in development), but should be added to defaults when content is ready.
-3. **⚠️ Doc count shows 123 (was 122 last test)** — Increased by 1 since Day 3. Likely from new Godot docs when testing with both modules, or a new doc added.
-
-### Summary
-- **Total test cases**: 21
-- **PASS**: 20
-- **FAIL**: 1 (known hyphen tokenization bug)
-- **Build**: Clean
-- **Protocol**: Compliant
-- **Godot module**: Fully functional
-- **Tier gating**: Working correctly
-- **No new bugs found**
-
-## 2026-03-18 — Day C: Integration Testing (3pm)
-
-### Build Verification
-- **`npm run build` (tsc)**: ✅ PASS — Clean compilation, no errors
-- **122 docs loaded** from `docs/` directory (modules: monogame-arch)
-
-### Test 1: Free Tier (no license key)
-All tool access correctly gated:
-
-| Tool | Expected | Actual | Result |
-|------|----------|--------|--------|
-| `tools/list` | Returns all 6 tools | `['search_docs', 'get_doc', 'list_docs', 'session', 'genre_lookup', 'license_info']` | ✅ PASS |
-| `search_docs` (core query) | Returns results from core only | Returned 10 results, all from core module | ✅ PASS |
-| `search_docs` (monogame-arch module) | Blocked with Pro gate | "Searching non-core modules requires a Pro license" | ✅ PASS |
-| `get_doc` (P0, core) | Returns content | Full P0 content returned | ✅ PASS |
-| `get_doc` (G52, monogame-arch) | Blocked with Pro gate | "requires a Pro license" | ✅ PASS |
-| `session` (menu) | Blocked | "requires a Pro license" | ✅ PASS |
-| `license_info` | Shows Free tier details | Correct tier, tool access list, upgrade URL | ✅ PASS |
-| `genre_lookup` (platformer) | Limited — strips system mappings + doc refs | Description shown, Required Systems + Recommended Docs replaced with Pro gate | ✅ PASS |
-
-**Free tier verdict: All 8 test cases PASS. Tier gating works correctly.**
-
-### Test 2: Pro Tier (dev mode, `GAMEDEV_MCP_DEV=true`)
-
-| Tool | Expected | Actual | Result |
-|------|----------|--------|--------|
-| `search_docs` (monogame-arch) | Full results | 10 results including G20 Camera Systems (score 44.6) | ✅ PASS |
-| `get_doc` (G52) | Full content | Complete G52 platformer controller doc returned | ✅ PASS |
-| `session` (menu) | Session briefing | Full session briefing with date, status, path | ✅ PASS |
-| `genre_lookup` (platformer) | Full system mappings | *(not re-tested after fix, verified with prior combined test)* | ✅ PASS |
-
-**Pro tier verdict: All tools unlocked and returning full content.**
-
-### Test 3: Invalid License Key (`GAMEDEV_MCP_LICENSE=bogus-key-abc123`)
-- Server calls LemonSqueezy API, receives "invalid" response
-- Falls back to free tier: `"License: invalid key — running in free tier"`
-- `license_info` correctly shows Free tier
-- **Result: ✅ PASS — Graceful degradation to free tier**
-
-### Test 4: Edge Cases
-
-| Scenario | Expected | Actual | Result |
-|----------|----------|--------|--------|
-| No network + no cache | Free tier | Untested (would require network isolation) | ⏭️ SKIP |
-| Offline + valid cached (within 7d grace) | Pro tier | Logic reviewed in code — correct | ✅ CODE REVIEW |
-| Offline + expired cache (>7d) | Free tier | Logic reviewed in code — correct | ✅ CODE REVIEW |
-
-### 🐛 Bug Found & Fixed
-
-**DEV MODE BUG**: `GAMEDEV_MCP_DEV=true` only worked when a license key was also set.
-
-- **Root cause**: In `src/license.ts`, `getLicenseKey()` was called first and returned `{ tier: "free" }` when no key existed, *before* the dev mode check could run.
-- **Fix**: Moved the `GAMEDEV_MCP_DEV` check to the top of `validateLicense()`, before the key lookup.
-- **Verified**: After fix, `GAMEDEV_MCP_DEV=true` correctly enables Pro tier without any key.
-- **Impact**: Low (dev-only flow), but would frustrate anyone following dev setup instructions.
-
-### MCP Protocol Compliance
-- ✅ `initialize` handshake works correctly (returns protocolVersion, capabilities, serverInfo)
-- ✅ `notifications/initialized` accepted
-- ✅ `tools/list` returns all 6 registered tools with descriptions and schemas
-- ✅ `tools/call` dispatches correctly to all tool handlers
-- ✅ All responses follow `{ content: [{ type: "text", text: "..." }] }` format
-- ✅ Server runs on stdio transport (StdioServerTransport)
-
-### Summary
-- **15 test cases**: 14 PASS, 1 SKIP (network isolation)
-- **1 bug found and fixed** (dev mode license bypass)
-- **Build**: Clean
-- **Protocol**: Compliant
-- **Tier gating**: Working correctly for free/pro/invalid/dev scenarios
-
-## 2026-03-22 — Day A: Functional Testing (5am cron)
-
-### Build Verification
-- **`npm run build` (tsc)**: ✅ PASS — Clean compilation, no errors
-- **`npm test` (152 tests)**: ✅ 152/152 PASS in 1128ms
-- **Suites**: 25
-
-### Server Startup
-- **Modules discovered**: 2 (monogame-arch: 78 docs, godot-arch: 9 docs)
-- **Total docs**: 138
-- **License**: Pro (dev mode) ✅
-- **Transport**: stdio ✅
-
-### Tool & Tier Gating Verification
-
-| Tool | Free Tier | Pro Tier | Expected | Result |
-|------|-----------|----------|----------|--------|
-| search_docs | limited | true | Free=core only | ✅ PASS |
-| get_doc | limited | true | Free=core only | ✅ PASS |
-| list_docs | true | true | Available both | ✅ PASS |
-| license_info | true | true | Available both | ✅ PASS |
-| list_modules | false | true | Pro only | ✅ PASS |
-| random_doc | limited | true | Free=core only | ✅ PASS |
-| genre_lookup | limited | true | Free=limited | ✅ PASS |
-| session | false | true | Pro only | ✅ PASS |
-
-### Module Gating
-
-| Module | Free | Pro | Result |
-|--------|------|-----|--------|
-| core | ✅ allowed | ✅ allowed | ✅ PASS |
-| monogame-arch | ❌ denied | ✅ allowed | ✅ PASS |
-| godot-arch | ❌ denied | ✅ allowed | ✅ PASS |
-
-### Test Suite Breakdown (25 suites, 152 tests)
-
-| Suite | Tests | Result |
-|-------|------:|--------|
-| Analytics | 9 | ✅ |
-| Cross-Engine Search | 10 | ✅ |
-| DocCache | 9 | ✅ |
-| DocStore | 5 | ✅ |
-| HybridProvider | 7 | ✅ |
-| Cache Lifecycle | 5 | ✅ |
-| Offline Fallback Chain | 5 | ✅ |
-| Performance Benchmarks | 5 | ✅ |
-| Manifest Caching | 3 | ✅ |
-| License key format | 7 | ✅ |
-| list_docs summary mode | 6 | ✅ |
-| Module Auto-Discovery | 9 | ✅ |
-| Module Resolution | 5 | ✅ |
-| Synthetic Module Discovery | 3 | ✅ |
-| random_doc tool | 8 | ✅ |
-| SearchEngine | 8 | ✅ |
-| Tier System | 6 | ✅ |
-| Workers API — Search Engine | 8 | ✅ |
-| Workers API — Section Extraction | 5 | ✅ |
-| Workers API — Truncation | 3 | ✅ |
-| Workers API — Tier Gating (E2E) | 5 | ✅ |
-| Workers API — Rate Limiting | 4 | ✅ |
-| Workers API — License Validation | 4 | ✅ |
-| Workers API — Search E2E | 5 | ✅ |
-| Workers API — Full Request Simulation | 8 | ✅ |
-
-### Observations
-
-1. **⚠️ `list_modules` not in free tier TOOL_ACCESS** — Falls through to `false` for free users. Since it returns only metadata (no content), consider adding it to free tier for discovery purposes. Not a bug per current logic (unknown tools default to pro-only), but a UX decision worth revisiting.
-
-2. **Doc count growth**: 138 total (was 130 on Day 5, 123 on Day 4). Growth from new Godot docs (G5, G6) and core docs (combat-theory). Healthy trajectory.
-
-3. **Test count growth**: 152 (was 84 on Day 6, 58 on Day 5, 36 on Day 5 early). Integration and Workers API tests comprise ~40% of total.
-
-4. **Performance**: All tests complete in ~1.1s. No degradation despite 3× test count increase.
-
-### Summary
-- **Build**: ✅ Clean
-- **Tests**: 152/152 PASS (0 failures)
-- **Tier gating**: All 8 tools verified, all 3 modules verified
-- **Server startup**: Clean, correct module discovery
-- **No new bugs found**
-- **Minor observation**: list_modules UX for free tier (non-blocking)
+# Functional Test Results — 2026-03-24 (Rotation A)
+
+## Build
+- **tsc**: PASS (clean, zero errors)
+- **Package version**: 1.3.0
+
+## Automated Tests
+- **Total**: 187/187 PASS
+- **Suites**: 28
+- **Duration**: 1.46s
+- **Failures**: 0
+- **Skipped**: 0
+
+## Module Discovery
+- **Modules**: 2 (monogame-arch: 79 docs, godot-arch: 14 docs)
+- **Core docs**: 51
+- **Total docs**: 144
+
+## Tool Verification (Free Tier — 10 tools)
+
+| Tool | Free Tier | Pro Tier (dev) | Status |
+|------|-----------|----------------|--------|
+| search_docs | OK (2067 chars, limited to core) | OK (1430 chars) | ✅ PASS |
+| get_doc | OK (6222 chars, core only) | OK (9058 chars, any module) | ✅ PASS |
+| list_docs | OK (1217 chars) | OK (1129 chars) | ✅ PASS |
+| genre_lookup | OK (773 chars, limited) | OK (841 chars, full) | ✅ PASS |
+| license_info | OK (825 chars) | OK (681 chars) | ✅ PASS |
+| list_modules | OK (1257 chars) | OK (1110 chars) | ✅ PASS |
+| random_doc | OK (563 chars, core only) | OK (732 chars, any engine) | ✅ PASS |
+| compare_engines | GATED (84 chars, Pro required) | OK (2072 chars) | ✅ PASS |
+| migration_guide | GATED (84 chars, Pro required) | OK (5114 chars) | ✅ PASS |
+| session | GATED (Pro required) | OK (1228 chars) | ✅ PASS |
+
+## Section Extraction (Pro/dev)
+- `get_doc("G6", section: "Screen Shake")` → OK (417 chars) — correct subsection returned
+
+## Tier Gating Summary
+- **Free tools (full)**: list_docs, list_modules, license_info (3)
+- **Free tools (limited)**: search_docs, get_doc, genre_lookup, random_doc (4, core module only)
+- **Pro-only**: compare_engines, migration_guide, session (3)
+- All gates verified correct ✅
+
+## Dev Mode
+- `GAMEDEV_MCP_DEV=true` correctly enables Pro tier without license key ✅
+
+## No Issues Found
