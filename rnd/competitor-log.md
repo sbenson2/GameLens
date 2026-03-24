@@ -4,6 +4,138 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-24 (6pm) — Tuesday Community Research Deep Dive: GDC 2026 Aftermath, MCP Context Crisis Goes Mainstream, Indie Dev Pain Points Confirm Our Thesis
+
+### 🔥 HEADLINE: GDC 2026 Survey — 52% Anti-AI But 36% Using It Daily (Our Target Market). Perplexity DROPS MCP Citing 72% Context Waste — Claude Code Ships Lazy-Loading Fix. Context7 (50K⭐, #1 MCP Server) Scores F on Schema Quality. DLSS 5 Backlash Validates "Invisible AI = Good" Rule. Indie Devs' #1 Missing Resource: Marketing, Not Tools.
+
+---
+
+### GDC 2026 — The Definitive AI Sentiment Snapshot
+
+The GDC 2026 State of the Industry report dropped this week with data that matters for our positioning:
+
+| Metric | 2024 | 2025 | 2026 |
+|--------|------|------|------|
+| "Gen AI is bad for industry" | 18% | 30% | **52%** |
+| Corporate AI adoption | — | — | **52%** |
+| Developers personally using AI | — | — | **36%** |
+| AI use for research/brainstorming | — | — | **81%** |
+| AI use for code assistance | — | — | **47%** |
+| Thinks AI disclosure should be required | — | — | **90%** |
+| No gen AI used in studio | — | — | **66.1%** |
+
+**Key insights:**
+- **The 16-point gap** (52% corporate adoption vs 36% personal use) = developers being pushed toward tools they don't trust. Our product serves the 36% who CHOOSE to use AI, not the 52% who are forced.
+- **81% use AI for research/brainstorming** — this is exactly what a knowledge MCP does. We're not code generation or asset creation. We're research infrastructure.
+- **47% use AI for code assistance** — this is our direct target. Nearly half of devs who use AI use it for coding help.
+- **The Verge** (March 22): "AI was everywhere at GDC — except the games." Every indie dev interviewed disavowed AI in their games, but the distinction is critical: they reject AI-GENERATED content, not AI-ASSISTED development.
+- **Nvidia DLSS 5 backlash** became the flashpoint — altering artists' character models without consent. Validates our rule: **visible AI = rejected, invisible AI = accepted**. Our knowledge MCP is definitionally invisible.
+- **r/gamedev GDC recap** (highly upvoted): "GenAI is taking the backseat against practical lightweight LLMs that solve specific tasks." The attendee noted AI booths decreased significantly from last year. Meshy was the only GenAI vendor from last year that returned. Conference is shifting toward "practical AI" — literally our positioning.
+- **Larian Studios abandoned gen AI tools** for next Divinity game after fan backlash. Even AAA studios are retreating from visible AI.
+- **90% want AI disclosure on Steam** (PC Gamer survey, 826 respondents). This specifically targets games with AI-generated CONTENT. Dev tools like ours are not covered.
+
+**Marketing implication:** The anti-AI number (52%) is a feature, not a bug. Our product helps the 36-47% who've chosen to use AI do it better. Position as: "We don't generate your game. We make your AI understand how games work." The GDC sentiment actually HELPS us by pushing all the "generate everything" tools out, leaving the practical knowledge-layer niche.
+
+### MCP Context Window Crisis — Now a Top-Level Industry Debate
+
+Three major developments in one week:
+
+**1. Perplexity CTO Drops MCP Internally (March 11)**
+- Denis Yarats at Ask 2026: moving away from MCP, favoring Perplexity's own Agent API
+- **Headline stat: 72% of context window consumed by tool schemas before first user query**
+- BUT the 72% figure came from Apideck (3 servers, ~40 tools, 143K/200K tokens), NOT Perplexity's own measurement
+- Nevo Systems analysis correctly notes: "the difference between 'MCP wastes 72% of context' and 'one worst-case deployment showed 72% waste' is the difference between a death sentence and a known engineering problem"
+- MCP still has **97M+ monthly SDK downloads, 5,800+ verified servers, Linux Foundation governance**
+- **Our angle**: 7 tools = ~350 tokens. We ARE the lean MCP server the industry is asking for.
+
+**2. Context7 Scores F on MCP Schema Quality (March 24, DEV Community)**
+- **Context7 = 50,000 GitHub stars, 240,000 weekly npm downloads, #1 MCP server in the world**
+- MCP schema quality leaderboard: Context7 scores **7.5/100 (Grade F)** — only 2 tools but 1,020 tokens due to bloated descriptions
+- `resolve-library-id` description alone = 2,006 characters (10× recommended 200)
+- Comparison: PostgreSQL MCP = 1 tool, 46 tokens, scores 100.0/100 (A+)
+- GitHub MCP server: 80 tools, **20,444 tokens** (!), Grade F
+- **This is our BEST competitive positioning data yet.** We should audit our own schema quality, aim for A-grade, and market token efficiency alongside content quality.
+- **Action item**: Run our server's tool schemas through the agent-friend leaderboard at 0-co.github.io/company/leaderboard.html
+
+**3. Claude Code Ships "MCP Tool Search" — Lazy Loading (March 2026)**
+- Claude Code v2.1.7 shipped Tool Search: lazy-loads tool descriptions on demand
+- **95-99% context reduction** — only loads tool schemas when Claude actually needs them
+- claudefa.st: "You can now run all these MCP servers without worrying about context limits"
+- Three competing solutions: Cloudflare Code Mode (99.9% reduction), Anthropic lazy-loading (98.7%), CLI progressive disclosure
+- **Impact on us**: Good news — makes multi-server setups viable, so devs won't choose between us and other MCPs. But also means our "lean server" advantage is less critical for Claude Code users. Still matters for Cursor, Copilot, Windsurf.
+
+### r/gamedev & r/godot Community Pain Points (This Week)
+
+**Thread: "What is the one thing you feel is missing as an indie game developer?" (r/gamedev, 4 days ago)**
+- Top answer by far: **Marketing team / marketing knowledge**. "Marketing team without question. So much of making a game successful is just letting people know it exists."
+- Options presented: Art team (A), Engineering (B), Mentor/Producer (C), Marketing (D), Design (E), Nobody (F)
+- Marketing was the overwhelming winner
+- **Our relevance**: We solve the engineering/knowledge gap (B), but devs say marketing is their #1 need. Consider whether our docs should include a game marketing section or if that's scope creep.
+
+**Thread: "Sharing my pain and worries about making my game" (r/gamedev, 3 days ago)**
+- Solo dev Julia, fintech background, making a cozy narrative game for 1 year
+- Key struggles: fear of failure, not finding audience, weight of responsibility to team, treating game as "my child"
+- Emotional/burnout post — very common pattern on r/gamedev
+- **Confirms**: E4 Solo Project Management (burnout prevention, pivot decisions) is exactly the right content. The emotional burden of solo dev is real and undertreated in technical docs.
+
+**Thread: "Quit our jobs to make an indie game. 2 years and multiple 'what am I doing' moments later" (r/gamedev, 1 week ago)**
+- Key quote: "As an indie, I have to **ruthlessly cut and prioritize for a scope reasonable for a team of two**. We stripped out most of the adventure and exploration elements and committed to making a boss-focused game."
+- Scope cutting = survival. Another confirmation of E4's value.
+- Tangy TD dev (tower defense, $250K first week) was also solo for 4 years
+
+**Thread: "How did you learn" (r/godot, 1 day ago)**
+- Beginners asking how to learn Godot from scratch
+- Recommendations: Zenva courses, Godotneers tutorials, official docs
+- **Gap we fill**: No one recommends an MCP server because no one knows about us yet. This is a distribution problem, not a product problem.
+
+**Thread: "I built a free, open-source AI coding assistant that lives inside the Godot editor" (r/godot, 5 days ago)**
+- GodotAI plugin (Claude, ChatGPT, OpenRouter support) — in-editor AI panel
+- Mixed reception: some appreciate the tool for beginners, others say "the docs are really good" and resist AI
+- Key comment: "tools like this are really helpful to beginners as they can be leveraged to learn as well. Not to just vibe code."
+- **Our complementary angle**: GodotAI is the interface; we're the knowledge that makes it accurate. Without something like our MCP, these AI chat plugins hallucinate Godot 3 patterns.
+
+**Thread: "My visual scripting tool for creating branching dialogues now has Godot plugin!" (r/godot, 5 days ago)**
+- Standalone desktop app for dialogue trees with Godot integration plugin
+- Discussion mentions DialogueManager plugin as existing solution
+- **Confirms**: Dialogue systems remain a hot topic for Godot devs. Should be in our module roadmap.
+
+**Thread: "What's wrong with Godot?" (r/godot, 2 weeks ago)**
+- Common complaints: loss of visual scripting (huge for beginners), GDScript learning curve for non-Python devs
+- **Our relevance**: E2 GDScript vs C# directly addresses the language confusion. Visual scripting gap = opportunity for our docs to serve as "the bridge" for beginners who need structured guidance.
+
+### Broader MCP Ecosystem Updates
+
+- **Google Colab MCP Server** launched (official, Google Developers Blog) — connect any AI agent to Colab notebooks
+- **Azure DevOps Remote MCP** in public preview (March 17) — GitHub Copilot ↔ Azure DevOps
+- **Talk Python launched an MCP server** (talkpython.fm/ai-integration) — education platform creating MCP integration. Validates paid-education-via-MCP model.
+- **MCP ecosystem count**: 5,000+ community servers (Cursor/NxCode estimate), 5,800+ verified (Linux Foundation count). Gap suggests ~800 servers meet verification standards.
+- **claudefa.st "50+ Best MCP Servers" list** updated but we're still not on it. Submission remains a quick-win.
+- **LobeHub** continues growing as MCP marketplace. New Godot shader basics skill appeared (Japanese) — 3rd Japanese Godot+AI resource this month.
+
+### AI Coding Tool Landscape
+
+- **Pragmatic Coders "Best AI Tools for Coding 2026"**: Top 6 = Aider, Cursor, Zed, Claude Code, Windsurf, GitHub Copilot
+- **Cursor Composer 2** shipped with own model (61.3 CursorBench). Fortune reports Claude Code at **$2.5B run rate, 300K+ business customers**
+- **Claude Code March 2026 updates**: /loop command, voice mode, MCP elicitation support, MCP Tool Search (lazy loading), -n/--name flag, sparse checkout for monorepos
+- **"AI Does Not Replace Developers. It Amplifies What They Lack."** (KatanaQuant blog) — this is literally our tagline opportunity
+- **Unanimoustech guide**: SWE-bench agents now consistently score 80%+ on real GitHub issues. Agent quality is improving, making knowledge infrastructure MORE valuable (better agents benefit more from better context).
+
+### Strategic Implications
+
+1. **MCP schema efficiency is now a competitive dimension.** The Context7 F-grade article will spread. We should proactively audit our 7-tool schema, optimize descriptions, and market our token efficiency score alongside content quality. Target: <400 tokens total, A-grade.
+
+2. **Claude Code's lazy loading partially neutralizes our "lean server" advantage** for Claude users. But Cursor (largest user base), Windsurf, and Copilot don't have this yet. And even with lazy loading, clean schemas load faster and more reliably.
+
+3. **GDC 2026 data crystalizes our positioning**: 36% of devs actively use AI for coding → our TAM. 81% use it for research → our exact function. 52% anti-AI → NOT our market, don't try to convert them. Target the pragmatic 36-47%.
+
+4. **"Practical lightweight LLMs that solve specific tasks"** is the new GDC narrative. Our MCP server is literally a practical, lightweight knowledge provider that solves the specific task of "stop hallucinating game dev patterns." We should use this exact framing in launch materials.
+
+5. **Indie dev #1 missing resource = marketing, not tools.** Consider whether game launch marketing content (Steam page optimization, wishlist strategies, trailer creation) belongs in our docs or is scope creep. Likely scope creep — stick to technical knowledge.
+
+6. **Perplexity's Agent API as MCP competitor** is worth monitoring but isn't a threat yet. 97M monthly MCP downloads vs Perplexity's niche API. MCP's Linux Foundation governance makes it the safe bet for at least 2-3 years.
+
+---
+
 ## 2026-03-23 (8am) — Monday Competitor Scan: STS2 Hits 4.6M Sales/$92M Revenue, StraySpark Unreal MCP (207 Tools), MCP SDK v1.27 Ecosystem Convergence, CoplayDev Unity MCP Appears in Japan
 
 ### 🔥 HEADLINE: Slay the Spire 2 Becomes Biggest Indie Launch in History on Godot ($92M Revenue), New "StraySpark" Unreal MCP Server With 207 Tools Posted on Epic Forums, MCP Ecosystem Hits Multi-SDK Convergence (TypeScript v1.27, Python v1.26, OpenAI Agents SDK, Google ADK v2.0)

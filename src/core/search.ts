@@ -149,10 +149,42 @@ export class SearchEngine {
     }
   }
 
+  /** Expand query tokens with synonyms (discounted weight) */
+  private expandWithSynonyms(tokens: string[]): { token: string; weight: number }[] {
+    const expanded: { token: string; weight: number }[] = [];
+    const seen = new Set<string>();
+
+    for (const token of tokens) {
+      if (!seen.has(token)) {
+        seen.add(token);
+        expanded.push({ token, weight: 1.0 });
+      }
+      const synonyms = SearchEngine.QUERY_SYNONYMS.get(token);
+      if (synonyms) {
+        for (const syn of synonyms) {
+          if (!seen.has(syn)) {
+            seen.add(syn);
+            expanded.push({ token: syn, weight: 0.4 }); // synonyms contribute less
+          }
+          // Also add stemmed synonym
+          const stemmedSyn = this.stem(syn);
+          if (stemmedSyn !== syn && stemmedSyn.length > 1 && !seen.has(stemmedSyn)) {
+            seen.add(stemmedSyn);
+            expanded.push({ token: stemmedSyn, weight: 0.3 });
+          }
+        }
+      }
+    }
+    return expanded;
+  }
+
   /** Search docs, return sorted by relevance */
   search(query: string, docs: Doc[], limit: number = 10): SearchResult[] {
     const queryTokens = this.tokenize(query);
     if (queryTokens.length === 0) return [];
+
+    // Expand with synonyms for better recall
+    const expandedTokens = this.expandWithSynonyms(queryTokens);
 
     const results: SearchResult[] = [];
 
@@ -162,12 +194,12 @@ export class SearchEngine {
 
       let score = 0;
 
-      // TF-IDF scoring
-      for (const token of queryTokens) {
+      // TF-IDF scoring with synonym expansion
+      for (const { token, weight } of expandedTokens) {
         const tf = termFreq.get(token) ?? 0;
         if (tf === 0) continue;
         const idf = this.idfCache.get(token) ?? 0;
-        score += (1 + Math.log(tf)) * idf;
+        score += (1 + Math.log(tf)) * idf * weight;
       }
 
       // Boost: exact ID match
