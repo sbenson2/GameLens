@@ -1,8 +1,8 @@
 # Godot Engine Research
 
-> **Status:** Phase 2 — Prototyping (9/~20 docs complete, 45%)  
+> **Status:** Phase 2 — Prototyping (12/~20 docs complete, 60%)  
 > **Priority:** #1 (first engine expansion after MonoGame)  
-> **Last Updated:** 2026-03-22  
+> **Last Updated:** 2026-03-24  
 > **Current Version:** Godot 4.6.1 stable (4.6.2 RC 2 out, 4.5.2 also just released)
 
 ---
@@ -472,14 +472,17 @@ Each state is a child node with its own script. Visual in the editor, easy to de
 
 - [ ] Deep-dive into Godot 4.6 LibGodot embedding workflows
 - [ ] GDExtension workflow for performance-critical code
-- [ ] Multiplayer architecture patterns (authoritative server in Godot)
-- [ ] Shader recipes (common visual effects in Godot shader language)
-- [ ] CI/CD pipeline for Godot (GitHub Actions export templates)
-- [ ] Mobile-specific considerations (touch input, performance budgets)
+- [ ] Multiplayer architecture patterns (authoritative server in Godot) → G13
+- [ ] Shader recipes (common visual effects in Godot shader language) → G12
+- [ ] CI/CD pipeline for Godot (GitHub Actions export templates) → G17
+- [x] Mobile touch input — covered in G4 (virtual joystick, touch buttons)
 - [ ] Console export via W4 Games partnership
 - [ ] STS2 technical architecture analysis (if any postmortems surface)
-- [ ] 4.5 TileMapLayer collision merging — impact on game physics patterns
-- [ ] Context7 MCP — evaluate if it's a docs competitor worth watching
+- [x] TileMapLayer patterns — covered in G7 (80KB, comprehensive)
+- [ ] Context7 MCP — still general-purpose, no gamedev content. Monitor.
+- [ ] Godot 4.7 drawable textures — potential fog-of-war/terrain painting patterns
+- [ ] Local/small LLM integration guide — r/LocalLLM community needs it
+- [ ] Dialogue systems research for G15 (visual scripting tools, Ink integration, etc.)
 
 ---
 
@@ -500,8 +503,127 @@ DEV Community article (Mar 19, 2026, still trending Mar 22) — key arguments:
 
 ---
 
+## 15. Godot 4.7 Development (New Section)
+
+**4.7 dev 2 released March 4, 2026** — development moving fast despite 4.6 being only 2 months old.
+
+### Key 4.7 Features (So Far)
+- **Virtual joystick input** (built-in mobile solution) — partially overlaps with our G4 touch input section
+- **Drawable textures** — runtime texture painting, useful for terrain/fog-of-war
+- **Windows HDR support** (dev 1), **Apple HDR support** (dev 2)
+- **Vulkan raytracing foundations** — early-stage, signals 3D investment
+- **Editor QoL**: Copy/paste entire property sections (not individual fields), monospaced font for code names, animation track group collapsing
+- **105 contributors, 248 fixes** in dev 2 alone
+
+### Implications for Our Docs
+- Our docs targeting "Godot 4.4+" remain safe — 4.7 is additive, no breaking patterns
+- Built-in virtual joystick may reduce the need for our G4 custom touch joystick section, but custom implementations will still be needed for non-standard layouts
+- Drawable textures could enable new fog-of-war patterns (currently our G7 uses tile-based approach)
+- Need to watch for 4.7 beta (likely Q2-Q3 2026) for any API changes that affect our guides
+
+---
+
+## 16. AI + Godot Ecosystem Update (March 2026)
+
+### GodotAI Plugin (New — March 19, 2026)
+- **Free, open-source** AI coding assistant that lives INSIDE the Godot editor as a docked panel
+- Supports Claude, ChatGPT, and 500+ models via OpenRouter
+- Available on GitHub (Sods2/GodotAI), itch.io, and Godot Asset Library
+- **Significance**: First mainstream in-editor AI assistant for Godot that isn't MCP-based. Reduces friction compared to external tools. Complements our MCP because these AI assistants NEED knowledge to not hallucinate — we provide that knowledge layer.
+- r/godot post well-received — the community accepted it because it's a coding tool, not content generation
+
+### Godogen Trajectory
+- Started with 407⭐ at HN launch → 651⭐ mid-March → 1,699⭐ Mar 22 → 1,849⭐ Mar 23
+- Growth rate: ~150/day sustained for 10+ days. Likely approaching 2,000+ by now
+- Creator's "four rewrites" story analyzed on chyshkala.com — confirms the core problem: LLMs barely know GDScript (850 classes, Python-like syntax that invites hallucination)
+- YouTube coverage: "AI Builds Complete Godot Games Autonomously" — mainstream visibility
+
+### Anti-AI Content Sentiment (Crystallized)
+- Godot Forum thread (March 21): "Why Is AI Generated Content Like Music & Images Looked Down Upon In Video Games?" — indie devs with zero budget asking why players reject AI art/music
+- Clear community answer: AI-generated CONTENT (visible) is rejected; AI-assisted DEVELOPMENT (invisible) is accepted
+- NewGrounds players specifically "went insane" about AI art in Godot games
+- This reinforces our positioning: knowledge infrastructure (invisible) is safe; we would NEVER want to position as content generation
+
+### LocalLLM + Godot (New Signal)
+- r/LocalLLM thread (March 20): "How are you all doing agentic coding on 9b models?" — commenter specifically says "Qwen won't have jack squat for training on Godot" and recommends "create a local RAG for your 9b model and stuff it full of code, docs, manuals, samples, guides - inject things from github or have an MCP that can reach out to github"
+- This is LITERALLY describing our product. The local/small model community needs external knowledge even more than Claude/GPT users because small models have less Godot training data
+- Implication: our MCP might have an underserved audience in the local LLM community
+
+### Godot MCP Landscape (Updated)
+- **LobeHub new entry** (March 21): "neversight-skills_feed-godot-mcp-setup" — a skill that installs and configures a Godot MCP server for "agent-driven scene manipulation and automation"
+- Total Godot MCP namespace: **10+ servers**, all editor-integration or setup-automation
+- **Still ZERO knowledge-layer Godot MCPs** — our niche remains completely uncontested after 3 rotations
+
+---
+
+## 17. Version Timeline (Updated)
+
+| Version | Release | Key Feature | Our Docs Impact |
+|---------|---------|-------------|-----------------|
+| 4.4 | Sep 2024 | Typed dictionaries, improved GDScript | Baseline for our docs |
+| 4.5 | Sep 2025 | Stencil buffer, TileMapLayer collision merging | G7 covers new TileMapLayer patterns |
+| 4.6 | Jan 2026 | LibGodot (standalone library), new default theme | godot-rules.md covers 4.6 patterns |
+| 4.5.2 | Mar 20, 2026 | Android debug symbols, D3D12 shader compile fix | No doc impact |
+| 4.6.2 RC2 | Mar 21, 2026 | Core crash fixes, memory buffer fixes | Stability, no API changes |
+| **4.7 dev 2** | **Mar 4, 2026** | Virtual joystick, drawable textures, Apple HDR, Vulkan RT foundations | Watch for beta — may need G4/G7 updates |
+
+---
+
+## 18. Community Pain Points (Refreshed March 2026)
+
+### Ranked by Frequency (from Reddit/Forum/DEV Community this week)
+1. **Outdated resources** — STILL #1. Godot 3 tutorials published as recently as March 20, 2026. LLMs trained on this data hallucinate `KinematicBody2D`, `yield`, `export` without `@`. Our correct-4.x docs remain highest-value.
+2. **AI hallucination of GDScript** — Godogen creator confirms: "LLMs barely know GDScript... 850 classes and a Python-like syntax that will happily let a model hallucinate Python idioms that fail to compile." This IS our problem statement.
+3. **Console deployment gap** — DEV Community (March 2026): "Console deployment is Godot's most significant gap." W4 Games third-party ports add cost/complexity. Not something we can address with docs.
+4. **Community = passionate amateurs** — r/godot "What's wrong with Godot?" thread: criticism that community "never gets past basic demos." Our production-grade docs (89KB AI systems, 80KB TileMap, 54KB UI) directly counter this perception.
+5. **AI-generated content backlash** — active concern for indie devs who can't afford artists. Not our problem space (we're dev tools, not content gen).
+6. **Dialogue systems** — persistent gap. Visual scripting dialogue plugin posted on r/godot this week, active help threads. Should be in our module roadmap.
+7. **Point-and-click / adventure game patterns** — r/godot question about point-and-click-style game with no good answers. Niche but underserved.
+
+### "What's Wrong with Godot?" Synthesis (March 2026)
+From r/godot thread with significant engagement:
+- GDScript as a custom language (instead of using Python/Lua) remains controversial
+- Community quality perception: knowledgeable but amateur-skewing
+- 3D capabilities: improving but still behind Unity/Unreal
+- Documentation: official docs acknowledged as incomplete for advanced topics
+- Console exports: the persistent gap that W4 Games partially addresses
+
+---
+
+## 19. Doc Needs Assessment (Updated)
+
+### Current Module Status: 12/20 docs (60%)
+Completed:
+- ✅ E1 Architecture Overview, E2 GDScript vs C#
+- ✅ godot-rules.md (AI code generation rules)
+- ✅ G1 Scene Composition, G2 State Machine, G3 Signal Architecture
+- ✅ G4 Input Handling, G5 Physics & Collision, G6 Camera Systems
+- ✅ G7 TileMap & Terrain, G8 Animation Systems
+- ✅ G9 UI & Control Systems (NEW — highest-leverage doc for genre coverage)
+
+### Remaining Priority (8 docs to 100%)
+| Priority | Doc | Rationale |
+|----------|-----|-----------|
+| HIGH | G10 Audio Systems | Audio buses, SFX pooling, music transitions — every game needs it |
+| HIGH | G11 Save/Load | Confirmed community demand (forum threads), JSON + ResourceSaver patterns |
+| HIGH | G12 Shaders & VFX | Visual polish layer, Godot shader language is unique |
+| MEDIUM | G13 Networking/Multiplayer | Pain point #5, complex topic, SceneMultiplayer API |
+| MEDIUM | G14 Custom Resources | Data-driven patterns, EditorPlugin, tool scripts |
+| MEDIUM | G15 Dialogue Systems | Community demand confirmed (multiple sources this week) |
+| MEDIUM | G16 Particle Systems | GPUParticles2D/3D, visual effects |
+| LOW | G17 Export & Deployment | Platform-specific, less unique knowledge value |
+
+### New Content Gaps Identified This Rotation
+- **Local/small LLM integration** — r/LocalLLM community specifically needs Godot knowledge for RAG systems. Our MCP serves this use case but we could create a "using gamedev-mcp-server with local models" guide
+- **Point-and-click game patterns** — underserved genre in Godot, no good community resources
+- **Godot 4.7 migration notes** — will be needed when 4.7 enters beta/RC (Q2-Q3 2026)
+- **Drawable textures** — new 4.7 feature, could enable novel fog-of-war/terrain painting patterns
+
+---
+
 ## Research Log
 
+- **2026-03-24 11am:** **Rotation 5 update (Godot).** Key findings: (1) **Godot 4.7 dev 2 already out** (March 4) — virtual joystick, drawable textures, Apple HDR, Vulkan RT foundations, 248 fixes from 105 contributors. Our docs remain current but need to watch 4.7 beta for any breaking changes. (2) **GodotAI plugin gaining traction** — in-editor AI assistant (Claude/ChatGPT/500+ models), well-received on r/godot. Complementary to our MCP: the chat interface that needs our knowledge to stop hallucinating. (3) **LocalLLM community explicitly describing our product** — r/LocalLLM poster recommends "create a local RAG... stuff it full of docs, manuals, guides" for Godot + small models. Underserved audience. (4) **Anti-AI content sentiment crystallized** on Godot Forum — indie devs with no budget face rejection from players for AI art/music, but AI dev tools remain accepted. (5) **Godogen likely past 2,000⭐** based on 150/day trajectory from 1,849 on Mar 23. YouTube coverage going mainstream. (6) **10+ Godot MCP servers now** (LobeHub new entry), still ZERO knowledge-layer. (7) **Module hit 60%** (12/20) with G9 UI doc — highest-leverage single doc for genre coverage rebalancing. (8) **Community pain points unchanged**: outdated resources still #1, AI hallucination of GDScript confirmed by Godogen creator, console deployment still the structural gap, dialogue systems still the most-requested missing content. (9) r/godot "What's wrong with Godot?" thread reveals community self-aware about amateur perception — our production-grade docs counter this. (10) Godot 4.5.2 + 4.6.2 RC2 released for older branches, no API changes affecting our docs.
 - **2026-03-22 11am:** **Rotation 4 update (Godot).** Key findings: (1) Godot 4.5.2 released Mar 20 (Android debug symbols, D3D12 shader fix), 4.6.2 RC 2 out Mar 21 (crash fixes). Our docs remain current. (2) **Slay the Spire 2 — 3M+ sales, biggest Godot commercial hit ever**, surpassed Hades 2 and Silksong in revenue. Validates Godot for serious commercial games. Adds card/deckbuilder to genre strengths. (3) **GoPeak (Coding-Solo/godot-mcp) expanded to 95+ tools** — now includes LSP, DAP debugger, screenshots, ClassDB. Context window bloat problem we position against. (4) Godogen still growing (1,699+ ⭐), covered by multiple outlets. Creator's 4-rewrite story validates our GDScript docs thesis. (5) GodotAI plugin launched — free in-editor AI chat, complements our MCP. (6) Anti-AI PR spam is demoralizating Godot maintainers — colors community sentiment but our positioning remains safe. (7) Updated competitive landscape (9+ servers, all editor-integration except dead godot-mcp-docs). (8) Godot 3 tutorials STILL being published in Mar 2026 — the outdated resources problem persists. (9) Forum sentiment positive (devs choosing Godot after trying everything), Reddit sentiment mixed (pro-Godot but anti-AI-content). Updated module status to 9/20 docs (45%).
 - **2026-03-21 11am:** _Bevy rotation — see bevy.md_
 - **2026-03-20 11am:** _Unity rotation — see unity.md_
