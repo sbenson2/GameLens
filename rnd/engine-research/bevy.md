@@ -1,7 +1,7 @@
 # Bevy Engine Research
 
 Weekly research for MCP module development.
-**Last updated:** 2026-03-21
+**Last updated:** 2026-03-24
 
 ---
 
@@ -11,7 +11,7 @@ Weekly research for MCP module development.
 - **Architecture:** Pure ECS (Entity Component System) — not bolted on, it IS the architecture
 - **Current version:** 0.18.1 (released Dec 30, 2025), 0.19 in development
 - **Release cadence:** ~3 months, every release has breaking changes
-- **GitHub stars:** ~38K+
+- **GitHub stars:** ~44K+ (as of Feb 2026, up from ~38K estimate)
 - **License:** MIT/Apache-2.0 dual license
 - **Official warning on README:** "Bevy is still in the early stages of development. Important features are missing. Documentation is sparse."
 
@@ -198,3 +198,46 @@ Weekly research for MCP module development.
 - AI+Bevy challenges are severe — highest of all 3 engines
 - 12-doc module plan proposed across 3 phases
 - Recommendation: Bevy module is Phase 3 (after Godot completion), but bevy-rules.md could be created early as a standalone viral piece
+
+### 2026-03-24 (Rotation 2)
+
+**Engine Status:**
+- **Bevy 0.19-dev in active CI** — GitHub issue #23215 shows `v0.19.0-dev` compiling in CI as of March 4, 2026. 3D testbed crashes on Windows being tracked. Active development continuing on main branch.
+- **0.18.1 patch released** (Prism News coverage) — stabilization fixes for regressions from 0.18. bevy_brp_mcp tracks this versioning.
+- **GitHub stars at 44,000+** (Medium comparison article, Feb 2026) — up from ~38K in our initial estimate. Significant growth.
+
+**Community & Content Developments:**
+- **"Rust Game Engines in 2026" Medium article** (Aarambh Dev Hub, Feb 28) — comprehensive 4-engine comparison. Bevy described as "the one everyone talks about." Confirms same pain points: breaking changes, compile times, no visual editor, code-only workflow. Key insight: "ECS requires rethinking how you structure a game. If you've spent years thinking in objects and inheritance, Bevy asks you to throw that away." Positions Bevy as best for "ambitious 2D/3D projects where you want the Rust community's momentum."
+- **"10 New Games Developed in Bevy Game Engine"** posted on r/gamedev (March 2026) — proof of real games shipping. Comments reveal persistent UI pain: "I attempted making a game that's heavily UI/menu based... it was a massive pain to hand code everything and it ended up taking the vast majority of my time. There are some libraries... but they come with their own cons and they're not always going to be up to date with the latest version of Bevy." UI remains the #1 developer frustration.
+- **"Why Rust Is Winning for AI Tooling in 2026"** (dasroot.net, Feb 2026) — specifically mentions Bevy AI integration: "a developer used Claude Code to generate Bevy boilerplate code and game logic for a Space Invaders clone, resulting in an 800-line codebase with minimal manual input." Validates AI+Bevy workflow exists and works for simple projects.
+- **Rust+WASM for AI Interfaces article** mentions Bevy as a case study for browser-based AI apps — WASM deployment path gaining attention.
+- **STS2 r/gaming viral thread mentions Bevy** — in the massive "STS2 abandoned Unity" discussion, Bevy gets positive mentions alongside Godot. Bevy is entering mainstream gamedev consciousness as the "Rust option."
+
+**MCP Landscape Update:**
+- **bevy_brp_mcp still the most mature** — follows Bevy versioning (0.18.x), published on crates.io and LobeHub. Provides launch, inspect, mutate via BRP.
+- **ngxtm/devkit-bevy on LobeHub** (v1.0.3, 3 installs, 5/5 rating) — NEW since last rotation. Description confirms it covers "ECS architecture, component queries, plugin-based extensibility, asset pipeline, hot-reloading, 2D/3D rendering." A user review from Mar 14 reports successfully building a complete "Kaiten Sushi v2.5.0" game using the skill, implementing "20 sushi tiers, conveyor belt system, customer orders, combo system, skills, achievements, and game states." This is the most concrete evidence of AI+Bevy success.
+- **bfollington/terma-bevy** still listed (34⭐, 8 installs) — ECS patterns, system ordering, common pitfalls.
+- **Still ZERO knowledge-layer Bevy MCP servers** — our niche remains completely uncontested.
+- **DeepWiki (deepwiki.com/bevyengine/bevy)** indexed March 11, 2026 — AI-generated codebase wiki with render pipeline architecture, development/CI docs. Could serve as supplementary reference but NOT a replacement for curated knowledge docs (DeepWiki is auto-generated, not opinionated about patterns/anti-patterns).
+
+**Pain Points Update:**
+1. **UI still the #1 user frustration** — r/gamedev thread explicitly calls out hand-coding UI as "a massive pain" and third-party UI libs not staying up to date with Bevy versions. bevy_ui/Feathers (0.17-0.18) improving but not solving the problem.
+2. **API instability confirmed ongoing** — 0.19-dev already in CI, meaning another breaking release is coming in ~Q2 2026. Plugin ecosystem lag confirmed by community ("not always going to be up to date").
+3. **Visual editor still absent** — "Everything is code. Scene setup, entity placement, level design — all code."
+4. **Build times remain a barrier** — "Initial builds can take several minutes."
+5. **ECS learning curve** — "Some developers make the switch quickly. Others struggle for weeks."
+
+**Strategic Implications:**
+- **bevy-rules.md urgency increases** — With 0.19 coming, the window for creating a correct 0.18 rules file that helps users during the 0.18→0.19 migration is closing. bevy-rules.md would need to be version-pinned AND include migration guidance.
+- **UI doc is the highest-leverage Bevy guide** — The community's #1 pain point is UI. A comprehensive "UI Development in Bevy" doc covering bevy_ui + Feathers + bevy_egui + when-to-use-what would have disproportionate impact.
+- **Claude Code + Bevy is validated** — The Space Invaders clone (800 lines, minimal manual input) proves the workflow works for simple games. Our knowledge MCP would extend this to complex games where AI needs curated patterns to avoid the "hallucinate old APIs" problem.
+- **AI-generated skills are proliferating** — ngxtm/devkit-bevy with its concrete game success story validates that structured Bevy knowledge delivered to AI agents works. Our MCP is the scalable, searchable, versioned version of what skills like this provide as static files.
+- **44K+ stars = larger market than estimated** — Initial estimate was "10-20% of Godot's community." At 44K stars vs Godot's ~100K, it's more like 40-45% by GitHub stars (though stars don't directly map to active users). Market may be bigger than we thought.
+
+**Doc Needs Reassessment:**
+- Priority order unchanged from Rotation 1 but with sharper urgency:
+  1. **bevy-rules.md** — version-pinned 0.18 patterns, 0.17→0.18 migration table, common LLM hallucinations (URGENT before 0.19 drops)
+  2. **ECS Architecture Guide** — the "rethink your structure" doc that tutorials skip
+  3. **UI Development Guide** — community's #1 pain point, ZERO good docs exist
+  4. **Common Patterns & Anti-Patterns** — borrow conflicts, entity lifecycle, state management
+- Phase 3 timeline recommendation: After Godot hits 65%+ (~10 more docs), start with bevy-rules.md as a standalone piece, then evaluate full module based on community reception
