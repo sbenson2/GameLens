@@ -4,6 +4,138 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-25 (8am PT) — MCP Top 50 List Published, PolicyNote Paid MCP in OpenAI Store, Docker MCP Gateway v2, Context Window Debate Peaks
+
+### 🔥 HEADLINE: MCPManager.ai publishes definitive "50 Most Popular MCP Servers" by Ahrefs search volume (642K+ monthly worldwide). FiscalNote launches PAID PolicyNote MCP in OpenAI App Store (TODAY). Docker MCP Gateway v2 gets enterprise traction. "MCP Won. MCP Might Also Be Dead." DEV article captures the dual narrative perfectly. Context7 F-grade (1,020 tokens/2 tools) article now live on DEV Community. Claude Code /context command now warns about MCP context bloat. MCP gateway market emerging (Bifrost, TrueFoundry, Lunar.dev, Kong, Docker).
+
+---
+
+### MCP Ecosystem — Top 50 & Market Maturity
+
+**MCPManager.ai "50 Most Popular MCP Servers" (Published TODAY)**
+- Data from Ahrefs, pulled March 2026
+- **642K+ monthly worldwide searches** across top 50 servers
+- Top 5: Playwright (82K), Figma (74K), GitHub (69K), Jira/Atlassian (40K), Context7 (32K)
+- **42/50 servers are engineer-focused** — DevOps, backend, data, AI engineering
+- **NO gamedev MCP servers in the top 50** — validates our niche isn't crowded but also means we need to build awareness from zero
+- **Japan is #3 globally** (9% of search volume) — international MCP adoption accelerating, aligns with Japanese Unity MCP articles we tracked
+- Key insight: "CLI vs MCP debate was noise, not signal" — search data shows both have distinct use cases
+- **US accounts for only 28%** — global market, not US-centric
+- Marketing opportunity: being the FIRST gamedev MCP to appear in future iterations of this list
+
+**Context7 F-Grade Article Now on DEV Community**
+- "#1 Most Popular MCP Server Gets an F" — article quantifies Context7's 1,020 tokens for 2 tools (510/tool average)
+- This is NOW public discourse, not just our internal observation
+- Our 10 tools should be under 900 tokens total — need to audit and publish our grade
+- Article explicitly says "every model that loads Context7 burns over a thousand tokens before a single user message is processed"
+- **Actionable**: Audit our schema, get our grade, use it in marketing materials
+
+### Monetization — PolicyNote MCP in OpenAI App Store (BREAKING)
+
+**FiscalNote PolicyNote MCP — First Paid MCP in OpenAI App Store (TODAY)**
+- FiscalNote (NYSE: NOTE) launched PolicyNote MCP in the **OpenAI App Store**
+- **This is a PAID, commercial MCP server in the OpenAI marketplace** — FiscalNote controls pricing and access
+- Users "transact directly with FiscalNote" to access policy intelligence data
+- Enables ChatGPT users to query real-time legislative and regulatory intelligence natively
+- **MASSIVE validation**: A publicly traded company ($NOTE) chose MCP as the distribution channel for premium enterprise data
+- **OpenAI App Store is now a paid MCP marketplace** — this is the first high-profile example
+- Strategic implication: If/when we support streamable HTTP transport, the OpenAI App Store becomes a distribution channel
+- Combined with Talk Python MCP ($9-29/mo) and our own model, this is the THIRD independent validation of paid knowledge-via-MCP
+
+### MCP Infrastructure — Docker Gateway v2 & Gateway Market
+
+**Docker MCP Gateway v2 (2026 release)**
+- Enterprise-grade MCP server solution — runs MCP servers in isolated Docker containers
+- Features: secrets management, scalable orchestration, security isolation
+- `docker mcp gateway run` command, profile-based configuration, OAuth support
+- Getting mainstream coverage (dasroot.net cheatsheet, LobeHub listing)
+- **5 MCP gateways now competing**: Bifrost, TrueFoundry Lunar.dev MCPX, Kong AI Gateway, Docker MCP Gateway (per getmaxim.ai article)
+- Trend: MCP infrastructure layer is maturing — gateways handle security/scale so individual servers can focus on content
+
+### Community Sentiment — Dual Narrative
+
+**"MCP Won. MCP Might Also Be Dead." (DEV Community)**
+- Article perfectly captures the current tension
+- MCP's value is "write once, integrate everywhere" — that doesn't go away because of auth friction
+- 2026 roadmap explicitly acknowledges context window overhead and auth gaps
+- Conclusion: MCP as protocol is entrenched, but individual server quality varies wildly
+
+**Claude Code /context Command (NEW)**
+- Now provides actionable suggestions: identifies tools consuming most context, flags memory bloat
+- Warns when approaching capacity limits with optimization tips
+- **This actively directs users to reduce MCP server count** — favors lean servers like ours
+- Combined with MCP Tool Search lazy loading (95-99% reduction), Claude is actively mitigating context overhead
+
+**ManageMyClaw Blog (OpenClaw ecosystem)**
+- "Install 10 MCP servers and half your context window is gone before your agent reads a single instruction"
+- Direct quote validating our "5 tools, zero bloat" positioning
+
+### Godot Ecosystem
+
+**LobeHub: New "Godot MCP Setup" Skill (March 21)**
+- neversight-skills_feed-godot-mcp-setup — installs and configures Godot MCP for agent-driven scene manipulation
+- Yet another editor-integration MCP, NOT knowledge — our niche remains uncontested
+- Handles prerequisites, npx installers, port/security config, HTTP/WebSocket endpoints
+
+**GoPeak/Godot-MCP confirmed at 95+ tools on LobeHub listing**
+- Scene management, GDScript LSP diagnostics, DAP debugger, screenshot capture, input injection, ClassDB introspection, CC0 asset library
+- At 95+ tools with complex schemas, the context window cost must be enormous — perfect "tool bloat" counterexample
+
+**r/LocalLLM Godot Signal (STILL active)**
+- Same thread from March 20 still getting attention: "create a local RAG... stuff it full of docs, manuals, guides"
+- Multiple people independently describing our exact product
+- LocalLLM users are an underserved audience for us — smaller models have LESS Godot training data
+
+**Godot 4.5.2 released March 20**
+- Debug symbols for Android crash logs, improved shader compilation for DirectX 12
+- Our docs remain current for 4.4+
+
+### Gamedev Adjacent
+
+**Godogen still being cited in articles**
+- DEV Community "Why AI Writes Better Game Code in Godot" references Godogen explicitly
+- Chinese tech coverage (ones.com.cn) — "Claude Code + Godogen: 开启 Godot 游戏开发自动化新纪元"
+- Godogen now international news across English and Chinese media
+- Creator's "four rewrites" story continues to validate our thesis
+
+**Arm GDC Session on ML Pipeline in Godot drew full house**
+- Covered by Arm Newsroom (March 20)
+- Complex ML pipeline integrated into Godot, built with open-source models
+- Growing institutional interest in AI+Godot workflows
+
+**Ziva.sh — New AI+Godot Product**
+- "How to Make a Video Game in 2026" guide recommends Ziva for AI coding in Godot
+- Another entrant in the AI+Godot space, but assistant/IDE focused, not knowledge-layer
+
+### Star Tracking (estimated from trajectory, GitHub suspended — cannot verify directly)
+
+| Server | Est. Stars | Trend | Notes |
+|--------|-----------|-------|-------|
+| Coding-Solo/godot-mcp | ~2,580+ | +20/day | GoPeak brand, 95+ tools |
+| htdt/godogen | ~2,000+ | +100/day slowing | Entering Week 3, likely plateauing |
+| CoderGamester/mcp-unity | ~1,540+ | +50/day | Biggest Unity MCP momentum |
+| IvanMurzak/Unity-MCP | ~1,490+ | +30/day | Pushed regularly |
+| Unreal-MCP | ~1,650+ | steady | |
+| godot-mcp-docs | 51 | dead | No updates since Jul 2025 |
+
+*Note: Cannot verify star counts directly — GitHub account suspended. Estimates based on last verified counts + daily trajectory.*
+
+### Competitive Assessment
+
+**Our positioning is STRONGER this week:**
+1. **Context window efficiency** is now a public, measurable, competitive dimension (Context7 F-grade article)
+2. **Paid MCP servers** validated by PolicyNote in OpenAI Store + Talk Python + our own model (3 independent validations)
+3. **MCP gateways** maturing means security concerns (our stdio advantage) become less unique BUT our "zero infrastructure needed" local-first approach remains simpler
+4. **No gamedev server in top 50** means greenfield opportunity but also no existing demand signal in search data — community launch (Reddit/HN) is how we create initial awareness
+5. **LocalLLM audience** is a new segment worth targeting — they need external knowledge most
+
+**Urgent items:**
+- 🔴🔴🔴 GitHub suspension blocks ALL external work — star verification, npm publish (OIDC), CI/CD, registry submissions
+- 🟡 Schema quality audit against Context7 F-grade methodology — marketing opportunity
+- 🟡 OpenAI App Store as future distribution channel (requires streamable HTTP transport)
+
+---
+
 ## 2026-03-24 (6pm PT) — AI Coding Tool Updates & MCP Ecosystem Shift
 
 ### 🔥 HEADLINE: Claude Code Ships "Auto Mode" (TODAY — TechCrunch), 1M Token Context + Voice Mode + /loop This Month. MCP Becoming "Invisible Infrastructure" Per OpenAI SDK Velocity. All Major IDEs Now Support MCP. Windsurf Drops Credits for Quotas. GPT-5.3-Codex Gets LTS. Understand-Anything (2.4K⭐) Shows Browser-Only MCP Codebase Analysis.

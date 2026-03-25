@@ -164,20 +164,20 @@ _Append Wes's feedback and direction changes here._
 
 ## Today's Priorities (2026-03-25) — Day 10 (Wednesday)
 
-1. **🔴🔴🔴 npm v1.2.0 publish** — DAY 8 OVERDUE. This is the #1 project blocker. `publish-manual.yml` exists. `npm publish` takes 10 seconds. **Wes must either run `npm publish` directly or configure NPM_TOKEN.** 140 docs and 187 tests trapped behind v1.0.0.
-2. **🔴 MCP registry submissions** — mcp.so at minimum. All drafts ready since Day 5. Zero external discovery.
-3. **🟡 G9 UI/Control** — Single highest-leverage Godot doc. Boosts 5 genre coverages by 20-30% each.
-4. **🟡 Launch blog post publish** — DEV Community first, then r/aigamedev. Draft ready since Day 6.
-5. **🟢 Schema quality audit** — Audit our 7-tool schema token cost vs Context7's 1,020 tokens. Marketing opportunity.
+1. **🔴🔴🔴 GitHub account suspension** — ALL external operations blocked. Wes must contact support.github.com IMMEDIATELY. Check email for suspension reason. This supersedes everything.
+2. **🔴🔴 npm v1.2.0+ publish** — DAY 9 OVERDUE, now doubly blocked by GitHub suspension. If npm auth is NOT GitHub-linked, try `npm publish` directly. Otherwise blocked until suspension resolved.
+3. **🟡 Local-only work while blocked** — Content creation (Godot G10 Audio, G11 Save/Load), search synonyms, doc polish. Keep building so we ship a bigger update when unblocked.
+4. **🟡 Contingency planning** — If suspension is prolonged: set up GitLab mirror, configure npm token independent of GitHub, prepare alternative repo URLs for registry submissions.
+5. **🟢 Schema quality audit** — ✅ DONE overnight. Marketing doc ready.
 6. **🟢 Search synonym map** — 10-15 entries for remaining gaps (chase→pathfind, follow→ai, etc.)
 
 ## Tomorrow's Priorities (2026-03-26) — Day 11 (Thursday)
 
-1. **🔴 Verify npm v1.2.0 live** + registry submissions (if not done today)
-2. **🟡 Launch post on Reddit** — r/aigamedev, r/gamedev (if DEV Community published)
-3. **🟡 Workers API deploy** — Needs Wes for Cloudflare account setup
-4. **🟢 Continue Godot breadth** — G10 Audio, G11 Save/Load. Push toward 65%
-5. **🟢 Bulk cross-reference pass** — Fix systemic backlink issue caught in 5 audits
+1. **🔴 Resolve GitHub suspension** — If not resolved today, escalate
+2. **🔴 npm publish the moment GitHub is back** — Run immediately, don't wait for next standup
+3. **🟡 Registry submissions** — mcp.so, smithery, mcpservers.org. All drafts ready. Requires working GitHub URLs.
+4. **🟡 Launch post** — DEV Community + r/aigamedev. Requires working repo link.
+5. **🟢 Continue Godot breadth** — G10 Audio, G11 Save/Load, G12 Shaders. Push toward 75%
 
 ## Yesterday (2026-03-22) — Day 7 Recap
 
