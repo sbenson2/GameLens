@@ -16,7 +16,7 @@ AI assistants are stateless. Every prompt starts from zero. They have broad trai
 npx -y gamedev-mcp-server
 ```
 
-One command. **142 curated docs**. Your AI now knows:
+One command. **147+ curated docs**. Your AI now knows:
 
 - How to architect a state machine that scales (not the tutorial version that falls apart at 8 states)
 - The difference between client prediction and server reconciliation in multiplayer
@@ -31,7 +31,7 @@ These aren't raw API docs or scraped tutorials. Every doc is hand-written with A
 
 MCP is a protocol that lets AI tools (Claude Code, Cursor, Windsurf, Cline) connect to external knowledge sources. Instead of cramming everything into a system prompt, your AI can *search* for what it needs, *fetch* specific sections, and get targeted guidance without blowing up your context window.
 
-GameDev MCP Server has **9 tools** — lean by design:
+GameDev MCP Server has **10 tools** — lean by design:
 
 | Tool | What it does |
 |------|-------------|
@@ -42,6 +42,7 @@ GameDev MCP Server has **9 tools** — lean by design:
 | `compare_engines` | Side-by-side: "How does Godot handle cameras vs MonoGame?" |
 | `random_doc` | Discover docs you didn't know existed |
 | `genre_lookup` | "I'm building a roguelike" → here are the 14 systems you need, prioritized |
+| `migration_guide` | Engine migration guidance (e.g., Unity → Godot) |
 | `session` | Structured dev workflows — plan, debug, scope, decide |
 | `license_info` | Current tier and access info |
 
@@ -57,9 +58,9 @@ Your AI stays fast. Your context window stays clean.
 
 ## What's Covered
 
-**142 docs across 3 modules:**
+**147+ docs across 3 modules:**
 
-**🎮 Core Knowledge (51 docs, free):**
+**🎮 Core Knowledge (52 docs, free):**
 - Game design: genre profiles, game feel, balancing, progression
 - Architecture: ECS, state machines, component patterns, event systems
 - Programming: design patterns, data structures, algorithms for games
@@ -71,12 +72,12 @@ Your AI stays fast. Your context window stays clean.
 - Guides G1–G69: physics, AI, rendering, networking, UI, save/load, building systems, everything
 - Library reference and capability matrix
 
-**🟣 Godot 4.4+ (12 docs, Pro — 60% complete, growing weekly):**
+**🟣 Godot 4.4+ (16 docs, Pro — 80% complete, growing weekly):**
 - Architecture overview, GDScript vs C# decision guide with Unity migration table
 - Scene composition, state machines, signal architecture
 - Input handling (4 movement patterns, coyote time, input buffering, gamepad, accessibility)
 - Physics & collision, camera systems, tilemap & terrain (80KB — procedural gen, chunked worlds, A* pathfinding)
-- Animation systems, UI & control systems
+- Animation systems, UI & control systems, audio systems, save/load, shaders & VFX, networking & multiplayer
 - Correct Godot 4 patterns — no `KinematicBody2D`, no `yield`, no `TileMap` with layer params
 
 **Planned:** Unity 6 (research complete, zero knowledge-layer competitors) and Bevy (highest AI hallucination rate = highest value for a knowledge MCP).
@@ -87,7 +88,7 @@ Perplexity's CTO recently criticized MCP — internal tests showed tool-heavy se
 
 They're right — for tool-heavy servers. Some gamedev MCP servers have 95+ tools. [Context7, the #1 MCP server by stars, scored F (7.5/100)](https://dev.to) on schema quality — 1,020 tokens for 2 tools.
 
-GameDev MCP Server has **9 tools with minimal schema overhead**. Section extraction means you pull exactly what you need. The philosophy: knowledge density per token, not tool count.
+GameDev MCP Server has **10 tools with minimal schema overhead**. Section extraction means you pull exactly what you need. The philosophy: knowledge density per token, not tool count.
 
 ## Secure by Design
 
@@ -103,7 +104,7 @@ The server works out of the box with **no license key**. Core docs (51 docs cove
 
 - **Indie devs using AI coding tools** — Your biggest risk is your AI giving bad architectural advice early that you discover too late. A knowledge MCP catches that.
 - **Game jam participants** — `genre_lookup("roguelike")` gives you a prioritized system checklist in seconds.
-- **Godot devs tired of AI hallucinating Godot 3 patterns** — 12 docs of correct 4.4+ patterns, growing weekly. Your AI won't suggest `KinematicBody2D` when you need `CharacterBody2D`.
+- **Godot devs tired of AI hallucinating Godot 3 patterns** — 16 docs of correct 4.4+ patterns, growing weekly. Your AI won't suggest `KinematicBody2D` when you need `CharacterBody2D`.
 - **Unity devs migrating to Godot** — The E2 doc has a 16-concept migration table.
 - **Anyone tired of AI "context amnesia"** — If you've re-explained your game's architecture to Claude five times in one session, this fixes that.
 
@@ -127,7 +128,7 @@ claude mcp add gamedev -- npx -y gamedev-mcp-server
 **GitHub:** [sbenson2/gamedev-mcp-server](https://github.com/sbenson2/gamedev-mcp-server)
 **npm:** [gamedev-mcp-server](https://www.npmjs.com/package/gamedev-mcp-server)
 
-Star the repo if it's useful. Open an issue if it's not. I'm building this actively — 142 docs today, Godot module at 60% and expanding weekly, Unity module in the pipeline.
+Star the repo if it's useful. Open an issue if it's not. I'm building this actively — 147+ docs today, Godot module at 80% and expanding weekly, Unity module in the pipeline.
 
 ---
 

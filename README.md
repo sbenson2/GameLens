@@ -9,7 +9,7 @@
 
 **Your AI forgets everything mid-project. Give it permanent game development knowledge.**
 
-GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 144+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
+GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 147+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
 
 > Works with **Claude Code**, **Claude Desktop**, **Cursor**, **Windsurf**, **Cline**, and any MCP-compatible tool.
 
@@ -26,11 +26,11 @@ Every game dev using AI hits the same wall: your assistant starts strong, then f
 | 🎮 **Game Design** | Genre systems, game feel, balancing, progression | 12 |
 | 🏗️ **Architecture** | ECS, state machines, scene management, signals | 18 |
 | 💻 **Programming** | Design patterns, data structures, algorithms | 15 |
-| 🎯 **Engine Guides** | MonoGame (79 guides), Godot (14 docs), Unity (planned) | 93+ |
+| 🎯 **Engine Guides** | MonoGame (79 guides), Godot (16 docs), Unity (planned) | 95+ |
 | 🔧 **Core Concepts** | Camera, physics, pathfinding, networking, combat, particles, UI | 19 |
 | 📋 **Project Mgmt** | Scope control, sprint planning, art pipeline | 7 |
 
-**144+ docs. 4MB+ of curated knowledge. Zero external dependencies.**
+**147+ docs. 4.8MB+ of curated knowledge. Zero external dependencies.**
 
 ## Quick Start
 
@@ -75,7 +75,7 @@ GameDev MCP Server uses a modular architecture. Core knowledge (design, patterns
 |--------|--------|------|-------------|
 | `core` | ✅ Stable | 52 | Engine-agnostic game dev knowledge |
 | `monogame-arch` | ✅ Stable | 79 | MonoGame + Arch ECS — guides G1–G69, architecture, library reference |
-| `godot-arch` | 🚧 Active | 14 | Godot 4.4+ — architecture, GDScript/C#, scene composition, state machines, signals, input, physics, camera, tilemaps, animation, UI/controls, audio, save/load |
+| `godot-arch` | 🚧 Active (80%) | 16 | Godot 4.4+ — architecture, GDScript/C#, scene composition, state machines, signals, input, physics, camera, tilemaps, animation, UI/controls, audio, save/load, shaders, networking |
 | `unity-arch` | 📋 Planned | — | Unity 6 — URP, ECS, modern patterns |
 | `bevy-arch` | 📋 Planned | — | Bevy ECS — Rust game dev |
 
@@ -179,7 +179,7 @@ git clone https://github.com/sbenson2/gamedev-mcp-server.git
 cd gamedev-mcp-server
 npm install
 npm run build
-npm test          # 187 tests, Node.js built-in test runner
+npm test          # 190 tests, Node.js built-in test runner
 npm run dev       # Watch mode
 ```
 
@@ -212,7 +212,7 @@ docs/
 │   └── reference/           # Library stack, project structure
 └── godot-arch/              # Godot 4.4+
     ├── architecture/        # Node tree philosophy, GDScript vs C# decision guide
-    ├── guides/              # Scene composition, state machines, signals, input, physics, camera, tilemaps, animation
+    ├── guides/              # Scene composition, state machines, signals, input, physics, camera, tilemaps, animation, UI, audio, save/load, shaders, networking
     └── reference/           # (coming soon)
 ```
 
@@ -223,6 +223,12 @@ Docs are also available as MCP resources for clients that support them:
 - `gamedev://docs/{module}/{id}` — Any doc by module and ID
 - `gamedev://prompts/session` — Session co-pilot prompt
 - `gamedev://prompts/code-rules` — AI code generation rules
+
+## Security
+
+GameDev MCP Server uses **stdio-only transport** — no HTTP server, no open ports, no network exposure. While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/), this runs entirely local. Read-only by design: it serves knowledge, never modifies your project files. Zero runtime dependencies beyond Node.js.
+
+See [SECURITY.md](./SECURITY.md) for our full security policy and vulnerability reporting process.
 
 ## Contributing
 
