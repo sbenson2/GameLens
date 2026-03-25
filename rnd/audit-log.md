@@ -9,6 +9,7 @@
 | 2026-03-21 | C (Improve PM doc) | Expanded E4_project_management.md (12.9KB → 43.5KB) — added 6 new sections |
 | 2026-03-22 | A (New concept) | Created `combat-theory.md` (~34KB) — highest-priority gap, referenced by 8/11 genres |
 | 2026-03-23 | B (Expand thin core doc) | Expanded `ui-theory.md` (5KB → 40KB) — 19 sections, added 18 TOPIC_DOC_MAP keywords |
+| 2026-03-25 | C (Improve PM doc) | Expanded `E9_solo_dev_playbook.md` (15KB → 49KB) — 20 sections, added 18 TOPIC_DOC_MAP keywords |
 
 ---
 
