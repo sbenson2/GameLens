@@ -1,9 +1,9 @@
 # Godot Engine Research
 
-> **Status:** Phase 2 — Prototyping (12/~20 docs complete, 60%)  
+> **Status:** Phase 2 — Near Complete (16/~20 docs complete, 80%)  
 > **Priority:** #1 (first engine expansion after MonoGame)  
-> **Last Updated:** 2026-03-24  
-> **Current Version:** Godot 4.6.1 stable (4.6.2 RC 2 out, 4.5.2 also just released)
+> **Last Updated:** 2026-03-25  
+> **Current Version:** Godot 4.6.1 stable (4.6.2 RC 2 out — stable imminent, 4.5.2 also released)
 
 ---
 
@@ -592,25 +592,23 @@ From r/godot thread with significant engagement:
 
 ## 19. Doc Needs Assessment (Updated)
 
-### Current Module Status: 12/20 docs (60%)
+### Current Module Status: 16/20 docs (80%)
 Completed:
 - ✅ E1 Architecture Overview, E2 GDScript vs C#
 - ✅ godot-rules.md (AI code generation rules)
 - ✅ G1 Scene Composition, G2 State Machine, G3 Signal Architecture
 - ✅ G4 Input Handling, G5 Physics & Collision, G6 Camera Systems
 - ✅ G7 TileMap & Terrain, G8 Animation Systems
-- ✅ G9 UI & Control Systems (NEW — highest-leverage doc for genre coverage)
+- ✅ G9 UI & Control Systems, G10 Audio Systems
+- ✅ G11 Save/Load, G12 Shaders & VFX
+- ✅ G13 Networking/Multiplayer
 
-### Remaining Priority (8 docs to 100%)
+### Remaining Priority (4 docs to 100%)
 | Priority | Doc | Rationale |
 |----------|-----|-----------|
-| HIGH | G10 Audio Systems | Audio buses, SFX pooling, music transitions — every game needs it |
-| HIGH | G11 Save/Load | Confirmed community demand (forum threads), JSON + ResourceSaver patterns |
-| HIGH | G12 Shaders & VFX | Visual polish layer, Godot shader language is unique |
-| MEDIUM | G13 Networking/Multiplayer | Pain point #5, complex topic, SceneMultiplayer API |
-| MEDIUM | G14 Custom Resources | Data-driven patterns, EditorPlugin, tool scripts |
-| MEDIUM | G15 Dialogue Systems | Community demand confirmed (multiple sources this week) |
-| MEDIUM | G16 Particle Systems | GPUParticles2D/3D, visual effects |
+| HIGH | G14 Navigation & Pathfinding | AStarGrid2D, NavigationServer2D, avoidance — boosts 5 genres |
+| MEDIUM | G15 Particle Systems | GPUParticles2D/3D, visual effects |
+| MEDIUM | G16 Autoloads & Singletons | Architecture patterns, service locator, global state management |
 | LOW | G17 Export & Deployment | Platform-specific, less unique knowledge value |
 
 ### New Content Gaps Identified This Rotation
@@ -621,8 +619,91 @@ Completed:
 
 ---
 
+## 20. Rotation 6 Update (March 25, 2026)
+
+### Version Status
+- **4.6.2 stable imminent** — RC 2 released Mar 21 with "more critical bugfixes than usual" (crashes on empty strings, memory buffer overreading). Stable likely within days. No API changes affecting our docs.
+- **4.5.2 released** Mar 20 — maintained for devs who haven't upgraded to 4.6. Targets Android debug symbols and D3D12 shader compile times. Shows Godot Foundation's dual-branch maintenance commitment.
+- **4.7 dev 2** still the latest dev snapshot. No dev 3 yet.
+
+### Godot Rapier Physics Plugin (NEW — Major Development)
+- **GameFromScratch hands-on video** published Mar 23, getting significant community attention
+- Plugin creator posted on r/godot (Mar 24) — direct community engagement
+- **What it does**: Drop-in replacement for Godot's built-in physics via GDExtension. Uses Rapier (Rust) and Salva libraries internally. 1:1 compatibility with all Godot physics APIs (RigidBody, Area, CharacterController, joints). ALSO adds:
+  - **2D/3D fluid simulation** — different densities and viscosities, interaction with rigid bodies
+  - Full state save/load via Rust serde (binary or JSON)
+  - Deterministic simulation (useful for netcode)
+- **Implications for our docs**: Our G5 Physics guide covers built-in physics. Rapier is a power-user upgrade path. Worth adding a "Physics Server Alternatives" note to G5 pointing to Rapier for projects that need deterministic physics or fluid sim. NOT worth a full guide — it's a drop-in replacement, not a different API.
+
+### godot-mcp-enhanced (NEW Competitor)
+- Listed on LobeHub (appeared ~Mar 20): "Enhanced MCP server for Godot game engine — designed for closed-loop AI-assisted development"
+- Username `wgt19861219` — unknown developer
+- Requires Godot 4.x + Node.js ≥ 18, GUT plugin for tests
+- **Still editor-integration**, not knowledge-layer
+- Total Godot MCP namespace now at **11+ servers**. Still ZERO knowledge-layer competitors.
+
+### Kenney Godot Starter Kits (Community Resources)
+- **Match-3 Starter Kit** released on r/godot (Mar 19) — fully open-source, GitHub hosted
+- **Racing Starter Kit** also released, fully open-source including assets
+- Kenney is THE most recognized free game asset creator. His Godot starter kits signal growing community investment in learning resources
+- **Relevance**: These kits teach implementation but not architecture. Our docs explain the WHY and patterns; starter kits show a single implementation. Complementary, not competitive.
+
+### GDScript Learning Gap Confirmed (Again)
+- Godot Forum thread (Mar 25): Developer says they've been trying to learn GDScript for **2 years** and only understand if/while/functions "a little bit"
+- This is NOT a GDScript problem — it's an **architecture gap**. Syntax is easy; knowing WHAT to build (state machines, signal buses, composition patterns) is the hard part
+- Our docs bridge exactly this gap: not "what is a for loop" but "how do you structure a game with scenes, signals, and state machines"
+
+### Anti-AI Accusations Escalating
+- r/godot (Mar 23): Web dev with decades of experience showed their first Godot project after one month of learning. Community immediately accused them of using AI
+- Developer had to defend themselves: "absolutely not true, I used the godot editor, didn't install any plugin to get helped from AI agents"
+- **Pattern**: anti-AI sentiment is now causing friendly fire — competent newcomers are being accused of cheating simply for shipping polished work
+- This doesn't affect our product (invisible dev tools remain accepted) but it colors the r/godot launch strategy — ANY mention of AI will invite scrutiny
+
+### Slay the Spire 2 — Hype Window STILL OPEN
+- AllKeyShop article published TODAY (Mar 25): "Slay the Spire 2 Shatters Genre Records With 4.6 Million Sales"
+- Game World Observer (Mar 23): "surpassed Hollow Knight: Silksong and Hades II in revenue"
+- ixbt.games (Mar 21): "became one of the most successful indie games in history"
+- **Key data**: $92M revenue, 4.6M copies at $25 USD, all on Godot engine
+- Coverage is SUSTAINED — articles still appearing 2+ weeks after launch. This marketing window for "the engine behind STS2" remains viable for our launch messaging
+- **MegaCrit confirmed as major Godot Development Fund sponsor** — financial feedback loop strengthens Godot's development
+
+### Enterprise Ecosystem Maturation
+- **Sentry SDK 1.5 for Godot** released (r/godot, Mar 19) — enterprise-grade error tracking/crash reporting now available as a first-class Godot plugin
+- Signals Godot's transition from "hobby engine" to "production engine" — Sentry doesn't invest in platforms without commercial viability
+- **endoflife.date now tracks Godot** — another maturity signal (listed alongside enterprise software)
+
+### MCP Ecosystem Updates
+- **mcpmanager.ai published "50 Most Popular MCP Servers in 2026"** — new directory/ranking site. Pulse MCP statistics confirm MCP usage continues to rise. Need to check if gamedev-mcp-server is listed; submit if not.
+- **Shyft.ai listing Godot-Claude-Skills** — another platform surfacing Godot + AI integration skills. Discovery surface continues to expand.
+- **r/LocalLLM signal PERSISTS** — same thread from Mar 20 ("stuff it full of docs, guides") still getting engagement. The need for external Godot knowledge is confirmed by multiple independent sources across different communities.
+
+### Module Status: 16/20 (80%)
+Per gap analysis from earlier today:
+- **Completed since last rotation**: G10 Audio (43KB), G11 Save/Load (50KB), G12 Shaders (68KB), G13 Networking (47KB)
+- **Remaining**: G14 Navigation (HIGH), G15 Particles (MEDIUM), G16 Autoloads (MEDIUM), G17 Export (LOW)
+- Average genre coverage jumped from ~47% to ~71%
+- Module is now "production-viable" — covers all core game systems
+
+### Updated Pain Points (Ranked, March 25)
+1. **Outdated resources** — UNCHANGED at #1. The Godot 3→4 problem is NOT resolving organically.
+2. **Architecture knowledge gap** — Forum poster struggling for 2 years on basics confirms syntax ≠ understanding. Pattern/architecture docs are highest-value.
+3. **AI hallucination of GDScript** — UNCHANGED. Small/local LLMs have it even worse than frontier models.
+4. **Console deployment** — UNCHANGED. Structural gap that docs can't fix.
+5. **Anti-AI content backlash** — ESCALATING. Now causing friendly fire against competent newcomers. Doesn't affect our product but affects our marketing approach.
+6. **Physics limitations** — Rapier plugin gaining traction suggests built-in physics isn't enough for some use cases. Deterministic physics + fluid sim = real gaps.
+7. **Dialogue systems** — UNCHANGED demand. Visual scripting tools appearing but no comprehensive guide.
+
+### Marketing Implications
+- **STS2 window still open** — articles still being published. Any launch within the next 1-2 weeks can ride this wave.
+- **r/godot launch needs extreme care** — anti-AI friendly fire means even mentioning "AI knowledge" could trigger knee-jerk rejection. Frame as "gamedev documentation server" with AI being the delivery mechanism, not the headline.
+- **Rapier plugin awareness** — our G5 Physics guide should acknowledge Rapier as an alternative physics server. Shows our docs are current with ecosystem trends.
+- **"50 Most Popular MCP Servers"** list on mcpmanager.ai is a new discovery/ranking surface to target.
+
+---
+
 ## Research Log
 
+- **2026-03-25 11am:** **Rotation 6 update (Godot).** Key findings: (1) **Godot Rapier physics plugin** getting major coverage — GameFromScratch video + r/godot post from creator. Drop-in physics replacement with fluid sim and deterministic simulation. Worth noting in G5 but not a full guide. (2) **godot-mcp-enhanced** is 11th+ Godot MCP on LobeHub — "closed-loop AI dev," still editor-integration. Zero knowledge-layer competitors. (3) **Kenney releasing Starter Kits** (Match-3, Racing) — high-profile community resources, complementary to our architecture docs. (4) **GDScript learning gap confirmed** — Forum user struggling 2 years on basics. Pattern: syntax is easy, architecture is hard. Our docs bridge this exact gap. (5) **Anti-AI accusations escalating on r/godot** — competent newcomer accused of using AI simply for shipping polished work. Friendly fire. Doesn't affect our product but our launch framing must avoid triggering this. (6) **STS2 hype window STILL OPEN** — AllKeyShop article published today, coverage sustained 2+ weeks post-launch. Our Godot launch can still ride this wave. (7) **Sentry SDK 1.5 for Godot** — enterprise error tracking, signals engine maturation. (8) **mcpmanager.ai "50 Most Popular MCP Servers"** list — new discovery surface to target. (9) Module at 80% (16/20), only Navigation/Particles/Autoloads/Export remaining. Module is production-viable. (10) Godot 4.6.2 stable imminent (RC2 out with crash fixes), our docs remain current.
 - **2026-03-24 11am:** **Rotation 5 update (Godot).** Key findings: (1) **Godot 4.7 dev 2 already out** (March 4) — virtual joystick, drawable textures, Apple HDR, Vulkan RT foundations, 248 fixes from 105 contributors. Our docs remain current but need to watch 4.7 beta for any breaking changes. (2) **GodotAI plugin gaining traction** — in-editor AI assistant (Claude/ChatGPT/500+ models), well-received on r/godot. Complementary to our MCP: the chat interface that needs our knowledge to stop hallucinating. (3) **LocalLLM community explicitly describing our product** — r/LocalLLM poster recommends "create a local RAG... stuff it full of docs, manuals, guides" for Godot + small models. Underserved audience. (4) **Anti-AI content sentiment crystallized** on Godot Forum — indie devs with no budget face rejection from players for AI art/music, but AI dev tools remain accepted. (5) **Godogen likely past 2,000⭐** based on 150/day trajectory from 1,849 on Mar 23. YouTube coverage going mainstream. (6) **10+ Godot MCP servers now** (LobeHub new entry), still ZERO knowledge-layer. (7) **Module hit 60%** (12/20) with G9 UI doc — highest-leverage single doc for genre coverage rebalancing. (8) **Community pain points unchanged**: outdated resources still #1, AI hallucination of GDScript confirmed by Godogen creator, console deployment still the structural gap, dialogue systems still the most-requested missing content. (9) r/godot "What's wrong with Godot?" thread reveals community self-aware about amateur perception — our production-grade docs counter this. (10) Godot 4.5.2 + 4.6.2 RC2 released for older branches, no API changes affecting our docs.
 - **2026-03-22 11am:** **Rotation 4 update (Godot).** Key findings: (1) Godot 4.5.2 released Mar 20 (Android debug symbols, D3D12 shader fix), 4.6.2 RC 2 out Mar 21 (crash fixes). Our docs remain current. (2) **Slay the Spire 2 — 3M+ sales, biggest Godot commercial hit ever**, surpassed Hades 2 and Silksong in revenue. Validates Godot for serious commercial games. Adds card/deckbuilder to genre strengths. (3) **GoPeak (Coding-Solo/godot-mcp) expanded to 95+ tools** — now includes LSP, DAP debugger, screenshots, ClassDB. Context window bloat problem we position against. (4) Godogen still growing (1,699+ ⭐), covered by multiple outlets. Creator's 4-rewrite story validates our GDScript docs thesis. (5) GodotAI plugin launched — free in-editor AI chat, complements our MCP. (6) Anti-AI PR spam is demoralizating Godot maintainers — colors community sentiment but our positioning remains safe. (7) Updated competitive landscape (9+ servers, all editor-integration except dead godot-mcp-docs). (8) Godot 3 tutorials STILL being published in Mar 2026 — the outdated resources problem persists. (9) Forum sentiment positive (devs choosing Godot after trying everything), Reddit sentiment mixed (pro-Godot but anti-AI-content). Updated module status to 9/20 docs (45%).
 - **2026-03-21 11am:** _Bevy rotation — see bevy.md_
