@@ -2,24 +2,31 @@
 
 
 
-> **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [G3 Physics & Collision](./G3_physics_and_collision.md) · [G28 3/4 Top-Down Perspective](./G28_top_down_perspective.md)
+> **Category:** Guide · **Related:** [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G8 Content Pipeline](./G8_content_pipeline.md) · [G3 Physics & Collision](./G3_physics_and_collision.md) · [G28 3/4 Top-Down Perspective](./G28_top_down_perspective.md) · [G40 Pathfinding](./G40_pathfinding.md) · [G52 Character Controller](./G52_character_controller.md) · [G54 Stealth Systems](./G54_stealth_mechanics.md) · [G67 Object Pooling](./G67_object_pooling.md) · [G66 Building & Placement](./G66_building_placement_systems.md) · [tilemap-theory](../../core/concepts/tilemap-theory.md) · [procedural-generation-theory](../../core/concepts/procedural-generation-theory.md) · [fog-of-war-theory](../../core/concepts/fog-of-war-theory.md) · [pathfinding-theory](../../core/concepts/pathfinding-theory.md)
 
 ---
 
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Tiled (.tmx) Loading](#1-tiled-tmx-loading)
-3. [Tilemap Rendering](#2-tilemap-rendering)
-4. [Autotiling](#3-autotiling)
-5. [Tile Collision](#4-tile-collision)
-6. [Chunk-Based Streaming](#5-chunk-based-streaming)
-7. [Animated Tiles](#6-animated-tiles)
-8. [Tile Properties & Metadata](#7-tile-properties--metadata)
-9. [ECS Integration](#8-ecs-integration)
-10. [Multiple Tile Layers](#9-multiple-tile-layers)
-11. [Isometric & Hexagonal Tilemaps](#10-isometric--hexagonal-tilemaps)
-12. [Performance Checklist](#performance-checklist)
+2. [Tilemap Pipeline Overview](#tilemap-pipeline-overview)
+3. [Tiled (.tmx) Loading](#1-tiled-tmx-loading)
+4. [Tilemap Rendering](#2-tilemap-rendering)
+5. [Autotiling](#3-autotiling)
+6. [Tile Collision](#4-tile-collision)
+7. [Chunk-Based Streaming](#5-chunk-based-streaming)
+8. [Animated Tiles](#6-animated-tiles)
+9. [Tile Properties & Metadata](#7-tile-properties--metadata)
+10. [ECS Integration](#8-ecs-integration)
+11. [Multiple Tile Layers](#9-multiple-tile-layers)
+12. [Isometric & Hexagonal Tilemaps](#10-isometric--hexagonal-tilemaps)
+13. [Procedural Generation](#11-procedural-generation)
+14. [A* Pathfinding Integration](#12-a-pathfinding-integration)
+15. [Runtime Tile Modification](#13-runtime-tile-modification)
+16. [Fog of War & Tile Visibility](#14-fog-of-war--tile-visibility)
+17. [Common Mistakes & Troubleshooting](#15-common-mistakes--troubleshooting)
+18. [Performance Checklist](#performance-checklist)
+19. [Tuning Reference](#tuning-reference)
 
 ---
 
@@ -35,6 +42,55 @@ Tilemaps are the backbone of most 2D games — they define the world geometry, c
 | `MonoGame.Extended` | Tiled map loading (`TiledMap`), cameras |
 | `MonoGame.Extended.Tiled` | `.tmx` / `.tsx` content pipeline processors |
 | `Arch` (v2.1.0) | ECS world, queries, components |
+
+---
+
+## Tilemap Pipeline Overview
+
+Understanding the execution order prevents the most common tilemap bugs (collision not matching visuals, spawns at wrong positions, animations out of sync):
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        TILEMAP PIPELINE                                 │
+│                                                                         │
+│  LOAD PHASE (once per map transition)                                   │
+│  ┌──────────────┐    ┌──────────────────┐    ┌───────────────────────┐  │
+│  │ Parse .tmx/  │───▶│ Build Collision  │───▶│ Extract Spawn Points │  │
+│  │ .tmj file    │    │ Grid + Flag Grid │    │ + Trigger Zones      │  │
+│  └──────────────┘    └──────────────────┘    └───────────────────────┘  │
+│         │                    │                          │                │
+│         ▼                    ▼                          ▼                │
+│  ┌──────────────┐    ┌──────────────────┐    ┌───────────────────────┐  │
+│  │ Build Anim   │    │ Build Pathfind   │    │ Create Entities      │  │
+│  │ Registry     │    │ Cost Grid (A*)   │    │ (Player, Enemies,    │  │
+│  └──────────────┘    └──────────────────┘    │  NPCs, Pickups)      │  │
+│                                               └───────────────────────┘  │
+│                                                                         │
+│  UPDATE PHASE (every frame)                                             │
+│  ┌──────────────┐    ┌──────────────────┐    ┌───────────────────────┐  │
+│  │ Chunk Stream │───▶│ Update Anim      │───▶│ Resolve Tile         │  │
+│  │ (load/unload)│    │ Clock            │    │ Modifications        │  │
+│  └──────────────┘    └──────────────────┘    └───────────────────────┘  │
+│                                                        │                │
+│  RENDER PHASE (every frame, after update)              ▼                │
+│  ┌──────────────┐    ┌──────────────────┐    ┌───────────────────────┐  │
+│  │ Cull to      │───▶│ Draw Background  │───▶│ Draw Entities        │  │
+│  │ Viewport     │    │ Layers           │    │ (Y-sorted)           │  │
+│  └──────────────┘    └──────────────────┘    └───────────────────────┘  │
+│                                                        │                │
+│                                               ┌───────────────────────┐  │
+│                                               │ Draw Foreground      │  │
+│                                               │ Layers (tree tops)   │  │
+│                                               └───────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Critical ordering rules:**
+- Collision grid MUST be built before any entity spawns (entities query collision on creation)
+- Pathfinding cost grid MUST be built after collision grid (costs derive from collision + tile metadata)
+- Animation clock updates in `Update()`, resolved in `Draw()` — never update during draw
+- Chunk streaming runs BEFORE animation and rendering — new chunks need their animations resolved
+- Background layers → entities (Y-sorted) → foreground layers — wrong order causes z-fighting
 
 ---
 
@@ -2183,4 +2239,1373 @@ This convention lets systems automatically find the right layers by name, minimi
 
 ---
 
-*This guide is part of the Universal 2D Engine Toolkit documentation. For rendering pipeline details see [G2](./G2_rendering_and_graphics.md), for content loading see [G8](./G8_content_pipeline.md), for physics see [G3](./G3_physics_and_collision.md).*
+## 11 — Procedural Generation
+
+For games that generate worlds at runtime instead of loading pre-made Tiled maps. See [procedural-generation-theory](../../core/concepts/procedural-generation-theory.md) for algorithm concepts.
+
+### 11.1 BSP Dungeon Generator
+
+Binary Space Partitioning creates structured rooms connected by corridors — ideal for roguelikes and dungeon crawlers:
+
+```csharp
+public sealed class BspDungeonGenerator
+{
+    private readonly int _mapWidth;
+    private readonly int _mapHeight;
+    private readonly int _minRoomSize;
+    private readonly Random _rng;
+
+    public BspDungeonGenerator(int width, int height,
+        int minRoomSize = 6, int? seed = null)
+    {
+        _mapWidth = width;
+        _mapHeight = height;
+        _minRoomSize = minRoomSize;
+        _rng = seed.HasValue ? new Random(seed.Value) : new Random();
+    }
+
+    private record BspNode(int X, int Y, int Width, int Height)
+    {
+        public BspNode? Left { get; set; }
+        public BspNode? Right { get; set; }
+        public Rectangle? Room { get; set; }
+    }
+
+    /// <summary>
+    /// Generates a dungeon and returns the tile grid.
+    /// 0 = wall, 1 = floor, 2 = corridor, 3 = door.
+    /// </summary>
+    public int[,] Generate(int splitDepth = 5)
+    {
+        var grid = new int[_mapHeight, _mapWidth]; // All walls initially
+
+        var root = new BspNode(1, 1, _mapWidth - 2, _mapHeight - 2);
+        Split(root, splitDepth);
+        CreateRooms(root);
+        CarveRooms(root, grid);
+        ConnectRooms(root, grid);
+
+        return grid;
+    }
+
+    private void Split(BspNode node, int depth)
+    {
+        if (depth <= 0) return;
+        if (node.Width < _minRoomSize * 2 && node.Height < _minRoomSize * 2)
+            return;
+
+        // Decide split direction based on aspect ratio
+        bool splitH;
+        if (node.Width > node.Height * 1.25f) splitH = false;
+        else if (node.Height > node.Width * 1.25f) splitH = true;
+        else splitH = _rng.Next(2) == 0;
+
+        if (splitH && node.Height >= _minRoomSize * 2)
+        {
+            int splitY = _rng.Next(_minRoomSize,
+                node.Height - _minRoomSize + 1);
+            node.Left = new BspNode(node.X, node.Y,
+                node.Width, splitY);
+            node.Right = new BspNode(node.X, node.Y + splitY,
+                node.Width, node.Height - splitY);
+        }
+        else if (!splitH && node.Width >= _minRoomSize * 2)
+        {
+            int splitX = _rng.Next(_minRoomSize,
+                node.Width - _minRoomSize + 1);
+            node.Left = new BspNode(node.X, node.Y,
+                splitX, node.Height);
+            node.Right = new BspNode(node.X + splitX, node.Y,
+                node.Width - splitX, node.Height);
+        }
+        else return;
+
+        Split(node.Left, depth - 1);
+        Split(node.Right, depth - 1);
+    }
+
+    private void CreateRooms(BspNode node)
+    {
+        if (node.Left != null && node.Right != null)
+        {
+            CreateRooms(node.Left);
+            CreateRooms(node.Right);
+            return;
+        }
+
+        // Leaf node — create a room with random padding
+        int padX = _rng.Next(1, Math.Max(2, node.Width - _minRoomSize));
+        int padY = _rng.Next(1, Math.Max(2, node.Height - _minRoomSize));
+        int roomW = Math.Max(_minRoomSize - 2,
+            node.Width - padX - _rng.Next(1, 3));
+        int roomH = Math.Max(_minRoomSize - 2,
+            node.Height - padY - _rng.Next(1, 3));
+
+        node.Room = new Rectangle(
+            node.X + padX, node.Y + padY, roomW, roomH);
+    }
+
+    private void CarveRooms(BspNode node, int[,] grid)
+    {
+        if (node.Room.HasValue)
+        {
+            Rectangle r = node.Room.Value;
+            for (int y = r.Y; y < r.Y + r.Height; y++)
+                for (int x = r.X; x < r.X + r.Width; x++)
+                    if (y >= 0 && y < _mapHeight && x >= 0 && x < _mapWidth)
+                        grid[y, x] = 1; // Floor
+            return;
+        }
+        if (node.Left != null) CarveRooms(node.Left, grid);
+        if (node.Right != null) CarveRooms(node.Right, grid);
+    }
+
+    private void ConnectRooms(BspNode node, int[,] grid)
+    {
+        if (node.Left == null || node.Right == null) return;
+
+        ConnectRooms(node.Left, grid);
+        ConnectRooms(node.Right, grid);
+
+        // Connect the two children with an L-shaped corridor
+        Point centerA = GetRoomCenter(node.Left);
+        Point centerB = GetRoomCenter(node.Right);
+
+        // Horizontal then vertical
+        int startX = Math.Min(centerA.X, centerB.X);
+        int endX = Math.Max(centerA.X, centerB.X);
+        for (int x = startX; x <= endX; x++)
+            if (grid[centerA.Y, x] == 0)
+                grid[centerA.Y, x] = 2; // Corridor
+
+        int startY = Math.Min(centerA.Y, centerB.Y);
+        int endY = Math.Max(centerA.Y, centerB.Y);
+        for (int y = startY; y <= endY; y++)
+            if (grid[y, centerB.X] == 0)
+                grid[y, centerB.X] = 2; // Corridor
+    }
+
+    private Point GetRoomCenter(BspNode node)
+    {
+        if (node.Room.HasValue)
+        {
+            Rectangle r = node.Room.Value;
+            return new Point(r.X + r.Width / 2, r.Y + r.Height / 2);
+        }
+        // Recurse to find a room in this subtree
+        if (node.Left != null) return GetRoomCenter(node.Left);
+        if (node.Right != null) return GetRoomCenter(node.Right);
+        return new Point(node.X + node.Width / 2,
+            node.Y + node.Height / 2);
+    }
+
+    /// <summary>
+    /// Applies the generated grid to a tilemap's tile data array.
+    /// Maps tile types to GIDs from your tileset.
+    /// </summary>
+    public static void ApplyToTilemap(int[,] generatedGrid,
+        int[,] targetTileData, int floorGid, int wallGid,
+        int corridorGid, int doorGid)
+    {
+        int rows = generatedGrid.GetLength(0);
+        int cols = generatedGrid.GetLength(1);
+
+        for (int y = 0; y < rows; y++)
+        {
+            for (int x = 0; x < cols; x++)
+            {
+                targetTileData[y, x] = generatedGrid[y, x] switch
+                {
+                    1 => floorGid,
+                    2 => corridorGid,
+                    3 => doorGid,
+                    _ => wallGid
+                };
+            }
+        }
+    }
+}
+```
+
+### 11.2 Cellular Automata Caves
+
+Produces organic, cave-like terrain — great for natural environments:
+
+```csharp
+public sealed class CellularAutomataCaves
+{
+    private readonly int _width;
+    private readonly int _height;
+    private readonly Random _rng;
+
+    public CellularAutomataCaves(int width, int height, int? seed = null)
+    {
+        _width = width;
+        _height = height;
+        _rng = seed.HasValue ? new Random(seed.Value) : new Random();
+    }
+
+    /// <summary>
+    /// Generates cave terrain. Returns grid where true = wall, false = open.
+    /// </summary>
+    /// <param name="fillPercent">Initial wall fill (0.40-0.55 typical)</param>
+    /// <param name="smoothIterations">Higher = smoother (4-6 typical)</param>
+    /// <param name="wallThreshold">Neighbor count to become wall (4-5)</param>
+    public bool[,] Generate(float fillPercent = 0.45f,
+        int smoothIterations = 5, int wallThreshold = 4)
+    {
+        var grid = new bool[_height, _width];
+
+        // Step 1: Random fill
+        for (int y = 0; y < _height; y++)
+        {
+            for (int x = 0; x < _width; x++)
+            {
+                // Borders are always walls
+                if (x == 0 || x == _width - 1 ||
+                    y == 0 || y == _height - 1)
+                {
+                    grid[y, x] = true;
+                    continue;
+                }
+                grid[y, x] = _rng.NextDouble() < fillPercent;
+            }
+        }
+
+        // Step 2: Cellular automata smoothing
+        for (int i = 0; i < smoothIterations; i++)
+        {
+            var next = new bool[_height, _width];
+            for (int y = 1; y < _height - 1; y++)
+            {
+                for (int x = 1; x < _width - 1; x++)
+                {
+                    int walls = CountNeighborWalls(grid, x, y);
+                    next[y, x] = walls > wallThreshold;
+                }
+            }
+            // Keep borders solid
+            for (int y = 0; y < _height; y++)
+            {
+                next[y, 0] = true;
+                next[y, _width - 1] = true;
+            }
+            for (int x = 0; x < _width; x++)
+            {
+                next[0, x] = true;
+                next[_height - 1, x] = true;
+            }
+            grid = next;
+        }
+
+        return grid;
+    }
+
+    private int CountNeighborWalls(bool[,] grid, int cx, int cy)
+    {
+        int count = 0;
+        for (int dy = -1; dy <= 1; dy++)
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                if (dx == 0 && dy == 0) continue;
+                int nx = cx + dx;
+                int ny = cy + dy;
+                if (nx < 0 || nx >= _width || ny < 0 || ny >= _height)
+                    count++; // Out of bounds = wall
+                else if (grid[ny, nx])
+                    count++;
+            }
+        }
+        return count;
+    }
+
+    /// <summary>
+    /// Flood-fill to find all connected open regions.
+    /// Removes small regions (islands) below minSize by filling them.
+    /// Ensures the cave is fully connected.
+    /// </summary>
+    public void RemoveSmallRegions(bool[,] grid, int minSize = 16)
+    {
+        var visited = new bool[_height, _width];
+        var regions = new List<List<(int X, int Y)>>();
+
+        for (int y = 0; y < _height; y++)
+        {
+            for (int x = 0; x < _width; x++)
+            {
+                if (!grid[y, x] && !visited[y, x])
+                {
+                    var region = FloodFill(grid, visited, x, y);
+                    regions.Add(region);
+                }
+            }
+        }
+
+        if (regions.Count == 0) return;
+
+        // Keep the largest region, fill everything else
+        regions.Sort((a, b) => b.Count.CompareTo(a.Count));
+
+        for (int i = 1; i < regions.Count; i++)
+        {
+            if (regions[i].Count < minSize)
+            {
+                foreach (var (px, py) in regions[i])
+                    grid[py, px] = true; // Fill small region
+            }
+        }
+    }
+
+    private List<(int X, int Y)> FloodFill(bool[,] grid,
+        bool[,] visited, int startX, int startY)
+    {
+        var region = new List<(int, int)>();
+        var queue = new Queue<(int, int)>();
+        queue.Enqueue((startX, startY));
+        visited[startY, startX] = true;
+
+        while (queue.Count > 0)
+        {
+            var (x, y) = queue.Dequeue();
+            region.Add((x, y));
+
+            int[] dx = { 0, 1, 0, -1 };
+            int[] dy = { -1, 0, 1, 0 };
+            for (int d = 0; d < 4; d++)
+            {
+                int nx = x + dx[d];
+                int ny = y + dy[d];
+                if (nx >= 0 && nx < _width && ny >= 0 && ny < _height &&
+                    !grid[ny, nx] && !visited[ny, nx])
+                {
+                    visited[ny, nx] = true;
+                    queue.Enqueue((nx, ny));
+                }
+            }
+        }
+        return region;
+    }
+}
+```
+
+### 11.3 Noise-Based Terrain (Overworld)
+
+Uses Perlin/simplex noise for natural terrain variation — biomes, elevation, moisture:
+
+```csharp
+/// <summary>
+/// Simple value noise generator for tilemap terrain.
+/// For production, use FastNoiseLite or similar library.
+/// </summary>
+public sealed class NoiseTerrain
+{
+    private readonly int _width;
+    private readonly int _height;
+    private readonly float _scale;
+    private readonly Random _rng;
+    private readonly float[] _permutation;
+
+    public NoiseTerrain(int width, int height,
+        float scale = 0.08f, int? seed = null)
+    {
+        _width = width;
+        _height = height;
+        _scale = scale;
+        _rng = seed.HasValue ? new Random(seed.Value) : new Random();
+
+        // Build permutation table for value noise
+        _permutation = new float[256];
+        for (int i = 0; i < 256; i++)
+            _permutation[i] = (float)_rng.NextDouble();
+    }
+
+    /// <summary>
+    /// Generates a height map using layered noise (fractal Brownian motion).
+    /// Returns values 0.0-1.0.
+    /// </summary>
+    public float[,] GenerateHeightMap(int octaves = 4,
+        float persistence = 0.5f, float lacunarity = 2f)
+    {
+        var map = new float[_height, _width];
+        float maxValue = 0f;
+
+        for (int y = 0; y < _height; y++)
+        {
+            for (int x = 0; x < _width; x++)
+            {
+                float amplitude = 1f;
+                float frequency = _scale;
+                float value = 0f;
+
+                for (int o = 0; o < octaves; o++)
+                {
+                    float nx = x * frequency;
+                    float ny = y * frequency;
+                    value += SampleNoise(nx, ny) * amplitude;
+
+                    amplitude *= persistence;
+                    frequency *= lacunarity;
+                }
+
+                map[y, x] = value;
+                maxValue = Math.Max(maxValue, value);
+            }
+        }
+
+        // Normalize to 0-1
+        if (maxValue > 0)
+            for (int y = 0; y < _height; y++)
+                for (int x = 0; x < _width; x++)
+                    map[y, x] /= maxValue;
+
+        return map;
+    }
+
+    /// <summary>
+    /// Converts height map to tile types using threshold ranges.
+    /// </summary>
+    public static int[,] HeightToTileTypes(float[,] heightMap,
+        (float MaxHeight, int TileType)[] thresholds)
+    {
+        int rows = heightMap.GetLength(0);
+        int cols = heightMap.GetLength(1);
+        var grid = new int[rows, cols];
+
+        for (int y = 0; y < rows; y++)
+        {
+            for (int x = 0; x < cols; x++)
+            {
+                float h = heightMap[y, x];
+                grid[y, x] = thresholds[^1].TileType; // Default to last
+                foreach (var (maxH, tileType) in thresholds)
+                {
+                    if (h <= maxH)
+                    {
+                        grid[y, x] = tileType;
+                        break;
+                    }
+                }
+            }
+        }
+        return grid;
+    }
+
+    private float SampleNoise(float x, float y)
+    {
+        int ix = ((int)MathF.Floor(x)) & 255;
+        int iy = ((int)MathF.Floor(y)) & 255;
+        float fx = x - MathF.Floor(x);
+        float fy = y - MathF.Floor(y);
+
+        // Smoothstep interpolation
+        float u = fx * fx * (3 - 2 * fx);
+        float v = fy * fy * (3 - 2 * fy);
+
+        float a = _permutation[(ix + iy) & 255];
+        float b = _permutation[(ix + 1 + iy) & 255];
+        float c = _permutation[(ix + iy + 1) & 255];
+        float d = _permutation[(ix + 1 + iy + 1) & 255];
+
+        return a + u * (b - a) + v * (c - a) + u * v * (a - b - c + d);
+    }
+}
+
+// Usage example: generate an overworld
+var terrain = new NoiseTerrain(128, 128, scale: 0.06f, seed: 42);
+float[,] heights = terrain.GenerateHeightMap(octaves: 4);
+
+// Define biome thresholds
+var biomes = new (float MaxHeight, int TileType)[]
+{
+    (0.30f, 0),  // Deep water
+    (0.40f, 1),  // Shallow water
+    (0.45f, 2),  // Sand/beach
+    (0.65f, 3),  // Grass
+    (0.80f, 4),  // Forest
+    (0.90f, 5),  // Mountain
+    (1.00f, 6),  // Snow peak
+};
+
+int[,] tileTypes = NoiseTerrain.HeightToTileTypes(heights, biomes);
+```
+
+---
+
+## 12 — A* Pathfinding Integration
+
+Tilemaps provide the cost grid for pathfinding. See [pathfinding-theory](../../core/concepts/pathfinding-theory.md) and [G40](./G40_pathfinding.md) for algorithm details.
+
+### 12.1 Building Cost Grids from Tilemaps
+
+```csharp
+/// <summary>
+/// Builds a pathfinding cost grid from tile flags and metadata.
+/// Costs: -1 = impassable, 1 = normal, 2+ = difficult terrain.
+/// </summary>
+public static class TilePathCostBuilder
+{
+    public static float[,] BuildCostGrid(TileFlagGrid flagGrid)
+    {
+        var costs = new float[flagGrid.Rows, flagGrid.Cols];
+
+        for (int y = 0; y < flagGrid.Rows; y++)
+        {
+            for (int x = 0; x < flagGrid.Cols; x++)
+            {
+                TileFlags flags = flagGrid.Flags[y * flagGrid.Cols + x];
+
+                if ((flags & TileFlags.Solid) != 0)
+                    costs[y, x] = -1; // Impassable wall
+                else if ((flags & TileFlags.Water) != 0)
+                    costs[y, x] = 3f; // Slow traversal
+                else if ((flags & TileFlags.Hazard) != 0)
+                    costs[y, x] = 5f; // Dangerous — AI avoids
+                else
+                    costs[y, x] = 1f; // Normal walkable
+            }
+        }
+
+        return costs;
+    }
+
+    /// <summary>
+    /// Builds cost grid from Tiled custom property "move_cost".
+    /// Set per-tile in tileset: move_cost=1 (normal), 2 (difficult), -1 (wall).
+    /// </summary>
+    public static float[,] BuildFromCustomProperty(
+        TiledMapTileLayer layer, TiledMap map, string propertyName = "move_cost")
+    {
+        var costs = new float[layer.Height, layer.Width];
+
+        for (int y = 0; y < layer.Height; y++)
+        {
+            for (int x = 0; x < layer.Width; x++)
+            {
+                TiledMapTile? tile = layer.GetTile((ushort)x, (ushort)y);
+                if (!tile.HasValue || tile.Value.GlobalIdentifier == 0)
+                {
+                    costs[y, x] = 1f; // Empty = walkable
+                    continue;
+                }
+
+                TiledMapTileset? tileset = map.GetTilesetByTileGlobalIdentifier(
+                    tile.Value.GlobalIdentifier);
+                if (tileset == null)
+                {
+                    costs[y, x] = 1f;
+                    continue;
+                }
+
+                int localId = tile.Value.GlobalIdentifier -
+                    tileset.FirstGlobalIdentifier;
+                TiledMapTilesetTile? tsTile = tileset.Tiles
+                    .FirstOrDefault(t => t.LocalTileIdentifier == localId);
+
+                if (tsTile?.Properties != null &&
+                    tsTile.Properties.ContainsKey(propertyName))
+                {
+                    costs[y, x] = float.Parse(
+                        tsTile.Properties[propertyName].ToString()!);
+                }
+                else
+                {
+                    costs[y, x] = 1f;
+                }
+            }
+        }
+
+        return costs;
+    }
+}
+```
+
+### 12.2 A* on Tile Grid
+
+```csharp
+/// <summary>
+/// A* pathfinding optimized for tile grids.
+/// Supports 4-directional and 8-directional movement.
+/// </summary>
+public sealed class TileAStarPathfinder
+{
+    private readonly float[,] _costs;
+    private readonly int _cols;
+    private readonly int _rows;
+    private readonly bool _allowDiagonal;
+
+    private static readonly (int dx, int dy, float cost)[] Cardinals =
+    {
+        (0, -1, 1f), (1, 0, 1f), (0, 1, 1f), (-1, 0, 1f)
+    };
+
+    private static readonly (int dx, int dy, float cost)[] Diagonals =
+    {
+        (0, -1, 1f), (1, 0, 1f), (0, 1, 1f), (-1, 0, 1f),
+        (1, -1, 1.414f), (1, 1, 1.414f),
+        (-1, 1, 1.414f), (-1, -1, 1.414f)
+    };
+
+    public TileAStarPathfinder(float[,] costGrid, bool allowDiagonal = true)
+    {
+        _costs = costGrid;
+        _rows = costGrid.GetLength(0);
+        _cols = costGrid.GetLength(1);
+        _allowDiagonal = allowDiagonal;
+    }
+
+    public List<Point>? FindPath(Point start, Point goal)
+    {
+        if (!InBounds(start) || !InBounds(goal)) return null;
+        if (_costs[goal.Y, goal.X] < 0) return null; // Goal is impassable
+
+        var open = new PriorityQueue<Point, float>();
+        var gScore = new Dictionary<Point, float>();
+        var cameFrom = new Dictionary<Point, Point>();
+        var neighbors = _allowDiagonal ? Diagonals : Cardinals;
+
+        open.Enqueue(start, 0);
+        gScore[start] = 0;
+
+        while (open.Count > 0)
+        {
+            Point current = open.Dequeue();
+
+            if (current == goal)
+                return ReconstructPath(cameFrom, current);
+
+            float currentG = gScore[current];
+
+            foreach (var (dx, dy, moveCost) in neighbors)
+            {
+                Point next = new(current.X + dx, current.Y + dy);
+                if (!InBounds(next)) continue;
+
+                float tileCost = _costs[next.Y, next.X];
+                if (tileCost < 0) continue; // Impassable
+
+                // Diagonal corner-cutting check
+                if (dx != 0 && dy != 0)
+                {
+                    if (_costs[current.Y + dy, current.X] < 0 ||
+                        _costs[current.Y, current.X + dx] < 0)
+                        continue; // Can't cut corners
+                }
+
+                float tentativeG = currentG + moveCost * tileCost;
+
+                if (!gScore.TryGetValue(next, out float existingG) ||
+                    tentativeG < existingG)
+                {
+                    gScore[next] = tentativeG;
+                    float h = Heuristic(next, goal);
+                    cameFrom[next] = current;
+                    open.Enqueue(next, tentativeG + h);
+                }
+            }
+        }
+
+        return null; // No path exists
+    }
+
+    private float Heuristic(Point a, Point b)
+    {
+        if (_allowDiagonal)
+        {
+            // Octile distance (optimal for 8-directional)
+            int dx = Math.Abs(a.X - b.X);
+            int dy = Math.Abs(a.Y - b.Y);
+            return Math.Max(dx, dy) + 0.414f * Math.Min(dx, dy);
+        }
+        // Manhattan distance (optimal for 4-directional)
+        return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
+    }
+
+    private bool InBounds(Point p) =>
+        p.X >= 0 && p.X < _cols && p.Y >= 0 && p.Y < _rows;
+
+    private static List<Point> ReconstructPath(
+        Dictionary<Point, Point> cameFrom, Point current)
+    {
+        var path = new List<Point> { current };
+        while (cameFrom.ContainsKey(current))
+        {
+            current = cameFrom[current];
+            path.Add(current);
+        }
+        path.Reverse();
+        return path;
+    }
+
+    /// <summary>
+    /// Converts a tile-coordinate path to world-pixel positions
+    /// (centered on each tile).
+    /// </summary>
+    public static List<Vector2> ToWorldPath(List<Point> tilePath,
+        int tileWidth, int tileHeight)
+    {
+        return tilePath.Select(p => new Vector2(
+            p.X * tileWidth + tileWidth / 2f,
+            p.Y * tileHeight + tileHeight / 2f
+        )).ToList();
+    }
+}
+```
+
+### 12.3 Incremental Cost Updates
+
+When tiles change at runtime (doors open, bridges built, terrain destroyed), update the cost grid without rebuilding:
+
+```csharp
+public sealed class IncrementalCostUpdater
+{
+    private readonly float[,] _costGrid;
+    private readonly TileAStarPathfinder _pathfinder;
+
+    public IncrementalCostUpdater(float[,] costGrid)
+    {
+        _costGrid = costGrid;
+        _pathfinder = new TileAStarPathfinder(costGrid);
+    }
+
+    /// <summary>
+    /// Updates a single tile's cost. Call when tiles are
+    /// placed, destroyed, or modified.
+    /// </summary>
+    public void UpdateTileCost(int col, int row, float newCost)
+    {
+        _costGrid[row, col] = newCost;
+        // Existing pathfinder automatically uses updated costs
+        // because it references the same array
+    }
+
+    /// <summary>
+    /// Batch update for efficiency (e.g., explosion destroys area).
+    /// </summary>
+    public void UpdateRegion(int startCol, int startRow,
+        int endCol, int endRow, Func<int, int, float> costFunc)
+    {
+        for (int y = startRow; y <= endRow; y++)
+            for (int x = startCol; x <= endCol; x++)
+                _costGrid[y, x] = costFunc(x, y);
+    }
+
+    public TileAStarPathfinder Pathfinder => _pathfinder;
+}
+```
+
+---
+
+## 13 — Runtime Tile Modification
+
+For games where players or systems modify tiles at runtime — destructible terrain, building placement, level editors. See [G66](./G66_building_placement_systems.md) for building systems.
+
+### 13.1 Tile Modification Manager
+
+```csharp
+/// <summary>
+/// Centralized tile modification with undo support and event notification.
+/// </summary>
+public sealed class TileModificationManager
+{
+    private readonly int[,] _tileData;
+    private readonly int _cols;
+    private readonly int _rows;
+    private readonly Stack<TileChange[]> _undoStack = new();
+    private readonly List<TileChange> _pendingChanges = new();
+
+    public record struct TileChange(
+        int Col, int Row,
+        int OldGid, int NewGid,
+        TileFlags OldFlags, TileFlags NewFlags);
+
+    public event Action<TileChange[]>? OnTilesChanged;
+
+    public TileModificationManager(int[,] tileData)
+    {
+        _tileData = tileData;
+        _rows = tileData.GetLength(0);
+        _cols = tileData.GetLength(1);
+    }
+
+    /// <summary>
+    /// Sets a single tile. Batches changes until Commit() is called.
+    /// </summary>
+    public void SetTile(int col, int row, int newGid,
+        TileFlags newFlags = TileFlags.None)
+    {
+        if (col < 0 || col >= _cols || row < 0 || row >= _rows) return;
+
+        int oldGid = _tileData[row, col];
+        _pendingChanges.Add(new TileChange(
+            col, row, oldGid, newGid, TileFlags.None, newFlags));
+    }
+
+    /// <summary>
+    /// Applies all pending changes atomically. Notifies listeners.
+    /// Pushes to undo stack.
+    /// </summary>
+    public void Commit()
+    {
+        if (_pendingChanges.Count == 0) return;
+
+        var changes = _pendingChanges.ToArray();
+        foreach (var change in changes)
+            _tileData[change.Row, change.Col] = change.NewGid;
+
+        _undoStack.Push(changes);
+        _pendingChanges.Clear();
+
+        OnTilesChanged?.Invoke(changes);
+    }
+
+    /// <summary>
+    /// Reverts the last committed batch of changes.
+    /// </summary>
+    public bool Undo()
+    {
+        if (_undoStack.Count == 0) return false;
+
+        var changes = _undoStack.Pop();
+        foreach (var change in changes)
+            _tileData[change.Row, change.Col] = change.OldGid;
+
+        // Notify with reversed changes
+        var reversed = changes.Select(c => new TileChange(
+            c.Col, c.Row, c.NewGid, c.OldGid,
+            c.NewFlags, c.OldFlags)).ToArray();
+        OnTilesChanged?.Invoke(reversed);
+
+        return true;
+    }
+}
+```
+
+### 13.2 Destructible Terrain
+
+```csharp
+/// <summary>
+/// Per-tile health for destructible terrain.
+/// Integrates with the damage pipeline (see G64).
+/// </summary>
+public record struct DestructibleTileGrid(
+    int Cols, int Rows,
+    int[] Health,             // Current HP per tile (0 = destroyed)
+    int[] MaxHealth,          // Max HP per tile
+    int[] DamagedGid,         // GID for "damaged" visual state
+    int[] DestroyedGid        // GID for "destroyed" visual state (or 0 for empty)
+);
+
+public sealed class DestructibleTerrainSystem
+{
+    private DestructibleTileGrid _grid;
+    private readonly TileModificationManager _modManager;
+    private readonly IncrementalCostUpdater? _costUpdater;
+
+    public DestructibleTerrainSystem(DestructibleTileGrid grid,
+        TileModificationManager modManager,
+        IncrementalCostUpdater? costUpdater = null)
+    {
+        _grid = grid;
+        _modManager = modManager;
+        _costUpdater = costUpdater;
+    }
+
+    /// <summary>
+    /// Applies damage to a tile. Returns true if tile was destroyed.
+    /// </summary>
+    public bool DamageTile(int col, int row, int damage)
+    {
+        int idx = row * _grid.Cols + col;
+        if (idx < 0 || idx >= _grid.Health.Length) return false;
+        if (_grid.Health[idx] <= 0) return false; // Already destroyed
+
+        _grid.Health[idx] = Math.Max(0, _grid.Health[idx] - damage);
+
+        if (_grid.Health[idx] <= 0)
+        {
+            // Destroyed — swap to destroyed GID (or empty)
+            int destroyedGid = _grid.DestroyedGid[idx];
+            _modManager.SetTile(col, row, destroyedGid);
+            _modManager.Commit();
+
+            // Update pathfinding: destroyed tile becomes walkable
+            _costUpdater?.UpdateTileCost(col, row,
+                destroyedGid == 0 ? 1f : 2f);
+
+            return true;
+        }
+        else if (_grid.Health[idx] < _grid.MaxHealth[idx] / 2)
+        {
+            // Damaged visual state (below 50% HP)
+            int damagedGid = _grid.DamagedGid[idx];
+            if (damagedGid != 0)
+            {
+                _modManager.SetTile(col, row, damagedGid);
+                _modManager.Commit();
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Area damage (explosions). Applies falloff from center.
+    /// </summary>
+    public List<(int Col, int Row)> DamageRadius(
+        int centerCol, int centerRow, int radius, int baseDamage)
+    {
+        var destroyed = new List<(int, int)>();
+        int r2 = radius * radius;
+
+        for (int dy = -radius; dy <= radius; dy++)
+        {
+            for (int dx = -radius; dx <= radius; dx++)
+            {
+                int distSq = dx * dx + dy * dy;
+                if (distSq > r2) continue;
+
+                int col = centerCol + dx;
+                int row = centerRow + dy;
+
+                // Falloff: damage decreases with distance
+                float falloff = 1f - (float)distSq / r2;
+                int damage = (int)(baseDamage * falloff);
+
+                if (DamageTile(col, row, damage))
+                    destroyed.Add((col, row));
+            }
+        }
+
+        return destroyed;
+    }
+
+    /// <summary>
+    /// Repairs a tile to full health and restores original GID.
+    /// </summary>
+    public void RepairTile(int col, int row, int originalGid)
+    {
+        int idx = row * _grid.Cols + col;
+        if (idx < 0 || idx >= _grid.Health.Length) return;
+
+        _grid.Health[idx] = _grid.MaxHealth[idx];
+        _modManager.SetTile(col, row, originalGid);
+        _modManager.Commit();
+
+        // Restored tile becomes a wall again
+        _costUpdater?.UpdateTileCost(col, row, -1f);
+    }
+}
+```
+
+### 13.3 Tile Placement (Level Editor / Building)
+
+```csharp
+/// <summary>
+/// Validates and places tiles for building systems or level editors.
+/// Integrates with autotiling (§3) for seamless placement.
+/// </summary>
+public sealed class TilePlacementSystem
+{
+    private readonly TileModificationManager _modManager;
+    private readonly TileCollisionGrid _collisionGrid;
+    private readonly AutotileSystem? _autotiler;
+
+    public TilePlacementSystem(TileModificationManager modManager,
+        TileCollisionGrid collisionGrid,
+        AutotileSystem? autotiler = null)
+    {
+        _modManager = modManager;
+        _collisionGrid = collisionGrid;
+        _autotiler = autotiler;
+    }
+
+    /// <summary>
+    /// Checks if a tile can be placed at the given position.
+    /// Override for custom placement rules per game.
+    /// </summary>
+    public bool CanPlace(int col, int row, int tileType)
+    {
+        if (col < 0 || col >= _collisionGrid.Cols ||
+            row < 0 || row >= _collisionGrid.Rows)
+            return false;
+
+        // Can't place on occupied tiles
+        if (_collisionGrid.Solid[row * _collisionGrid.Cols + col])
+            return false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Places a tile and recomputes autotiling in the surrounding area.
+    /// </summary>
+    public bool PlaceTile(int col, int row, int gid, int tileType)
+    {
+        if (!CanPlace(col, row, tileType)) return false;
+
+        _modManager.SetTile(col, row, gid);
+        _modManager.Commit();
+
+        // Update collision grid
+        _collisionGrid.Solid[row * _collisionGrid.Cols + col] = true;
+
+        // Recompute autotiling in the 3x3 area around placement
+        if (_autotiler != null)
+        {
+            _autotiler.SetTile(col, row, tileType);
+            var changes = _autotiler.RecomputeRegion(
+                Math.Max(0, col - 1), Math.Max(0, row - 1),
+                Math.Min(_collisionGrid.Cols - 1, col + 1),
+                Math.Min(_collisionGrid.Rows - 1, row + 1));
+
+            foreach (var (c, r, tileIdx) in changes)
+                _modManager.SetTile(c, r, tileIdx);
+
+            _modManager.Commit();
+        }
+
+        return true;
+    }
+}
+```
+
+---
+
+## 14 — Fog of War & Tile Visibility
+
+Tile-based fog of war tracks three states per tile: **Hidden** (never seen), **Explored** (seen before, dimmed), **Visible** (currently in line of sight). See [fog-of-war-theory](../../core/concepts/fog-of-war-theory.md) for algorithms and [G54](./G54_stealth_mechanics.md) for stealth game integration.
+
+### 14.1 Visibility Grid
+
+```csharp
+public enum TileVisibility : byte
+{
+    Hidden   = 0,  // Never seen — fully obscured
+    Explored = 1,  // Previously visible — dimmed/desaturated
+    Visible  = 2   // Currently in line of sight
+}
+
+public sealed class FogOfWarGrid
+{
+    public readonly int Cols;
+    public readonly int Rows;
+    public readonly TileVisibility[] Tiles;
+
+    public FogOfWarGrid(int cols, int rows)
+    {
+        Cols = cols;
+        Rows = rows;
+        Tiles = new TileVisibility[rows * cols];
+    }
+
+    public TileVisibility Get(int col, int row) =>
+        Tiles[row * Cols + col];
+
+    public void Set(int col, int row, TileVisibility vis) =>
+        Tiles[row * Cols + col] = vis;
+
+    /// <summary>
+    /// Call at the start of each turn/frame: demote all Visible → Explored.
+    /// Then re-reveal tiles in line of sight.
+    /// </summary>
+    public void ResetVisibility()
+    {
+        for (int i = 0; i < Tiles.Length; i++)
+        {
+            if (Tiles[i] == TileVisibility.Visible)
+                Tiles[i] = TileVisibility.Explored;
+        }
+    }
+}
+```
+
+### 14.2 Bresenham Line-of-Sight Reveal
+
+```csharp
+public static class FogRevealer
+{
+    /// <summary>
+    /// Reveals tiles in a radius using Bresenham ray casting.
+    /// Rays stop at solid tiles (walls block vision).
+    /// </summary>
+    public static void RevealRadius(FogOfWarGrid fog,
+        TileCollisionGrid collision,
+        int centerCol, int centerRow, int radius)
+    {
+        // Reveal the center tile
+        fog.Set(centerCol, centerRow, TileVisibility.Visible);
+
+        // Cast rays to the perimeter of the circle
+        int r2 = radius * radius;
+        for (int dy = -radius; dy <= radius; dy++)
+        {
+            for (int dx = -radius; dx <= radius; dx++)
+            {
+                if (dx * dx + dy * dy > r2) continue;
+
+                // Only cast to perimeter tiles
+                int adx = Math.Abs(dx);
+                int ady = Math.Abs(dy);
+                if (adx != radius && ady != radius &&
+                    (adx + 1) * (adx + 1) + dy * dy <= r2 &&
+                    dx * dx + (ady + 1) * (ady + 1) <= r2)
+                    continue;
+
+                CastRay(fog, collision,
+                    centerCol, centerRow,
+                    centerCol + dx, centerRow + dy);
+            }
+        }
+    }
+
+    private static void CastRay(FogOfWarGrid fog,
+        TileCollisionGrid collision,
+        int x0, int y0, int x1, int y1)
+    {
+        // Bresenham's line algorithm
+        int dx = Math.Abs(x1 - x0);
+        int dy = Math.Abs(y1 - y0);
+        int sx = x0 < x1 ? 1 : -1;
+        int sy = y0 < y1 ? 1 : -1;
+        int err = dx - dy;
+
+        int cx = x0;
+        int cy = y0;
+
+        while (true)
+        {
+            if (cx < 0 || cx >= fog.Cols || cy < 0 || cy >= fog.Rows)
+                break;
+
+            fog.Set(cx, cy, TileVisibility.Visible);
+
+            // Stop at walls (but reveal the wall tile itself)
+            if (collision.Solid[cy * collision.Cols + cx] &&
+                (cx != x0 || cy != y0))
+                break;
+
+            if (cx == x1 && cy == y1) break;
+
+            int e2 = 2 * err;
+            if (e2 > -dy) { err -= dy; cx += sx; }
+            if (e2 < dx) { err += dx; cy += sy; }
+        }
+    }
+}
+```
+
+### 14.3 Fog Rendering Overlay
+
+```csharp
+/// <summary>
+/// Renders the fog of war as a semi-transparent overlay above the map.
+/// Hidden = solid black, Explored = 60% black, Visible = transparent.
+/// </summary>
+public sealed class FogRenderer
+{
+    private readonly SpriteBatch _spriteBatch;
+    private readonly Texture2D _pixel;
+
+    private static readonly Color HiddenColor = Color.Black;
+    private static readonly Color ExploredColor = new(0, 0, 0, 153); // 60% opacity
+    private static readonly Color VisibleColor = Color.Transparent;
+
+    public FogRenderer(SpriteBatch spriteBatch, GraphicsDevice graphics)
+    {
+        _spriteBatch = spriteBatch;
+        _pixel = new Texture2D(graphics, 1, 1);
+        _pixel.SetData(new[] { Color.White });
+    }
+
+    public void Draw(FogOfWarGrid fog, int tileWidth, int tileHeight,
+        Rectangle cameraBounds, Matrix cameraTransform)
+    {
+        int startCol = Math.Max(0, cameraBounds.X / tileWidth - 1);
+        int startRow = Math.Max(0, cameraBounds.Y / tileHeight - 1);
+        int endCol = Math.Min(fog.Cols - 1,
+            (cameraBounds.Right) / tileWidth + 1);
+        int endRow = Math.Min(fog.Rows - 1,
+            (cameraBounds.Bottom) / tileHeight + 1);
+
+        _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+            SamplerState.PointClamp, null, null, null, cameraTransform);
+
+        for (int row = startRow; row <= endRow; row++)
+        {
+            for (int col = startCol; col <= endCol; col++)
+            {
+                Color color = fog.Get(col, row) switch
+                {
+                    TileVisibility.Hidden => HiddenColor,
+                    TileVisibility.Explored => ExploredColor,
+                    _ => VisibleColor
+                };
+
+                if (color == Color.Transparent) continue;
+
+                _spriteBatch.Draw(_pixel,
+                    new Rectangle(col * tileWidth, row * tileHeight,
+                        tileWidth, tileHeight),
+                    color);
+            }
+        }
+
+        _spriteBatch.End();
+    }
+}
+
+// Integration in main Draw:
+// 1. Draw tilemap background layers
+// 2. Draw entities (only if tile is Visible or Explored)
+// 3. Draw tilemap foreground layers
+// 4. Draw fog overlay (last — covers everything below)
+```
+
+---
+
+## 15 — Common Mistakes & Troubleshooting
+
+### ❌ 1. Tile Bleeding / Edge Lines Between Tiles
+
+**Symptom:** Faint lines appear between tiles, especially when camera moves or zooms.
+
+```csharp
+// ❌ Wrong — default sampler causes sub-pixel bleeding
+spriteBatch.Begin();
+
+// ✅ Fix — PointClamp eliminates filtering artifacts
+spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+    SamplerState.PointClamp, null, null, null, cameraTransform);
+```
+
+Also add **2px padding** (extrude) around each tile in your tileset texture. Most tools support this: Tiled's "Margin" and "Spacing" properties, or TexturePacker's "Extrude" option.
+
+### ❌ 2. Off-By-One in Viewport Culling
+
+**Symptom:** Tiles pop in/out at screen edges as camera moves.
+
+```csharp
+// ❌ Wrong — no margin, tiles vanish one frame before reaching edge
+int startCol = cameraBounds.X / tileW;
+int endCol = (cameraBounds.X + cameraBounds.Width) / tileW;
+
+// ✅ Fix — add 1-tile margin on all sides
+int startCol = Math.Max(0, cameraBounds.X / tileW - 1);
+int endCol = Math.Min(mapCols - 1,
+    (cameraBounds.X + cameraBounds.Width) / tileW + 1);
+```
+
+### ❌ 3. Collision Grid Doesn't Match Visuals
+
+**Symptom:** Player walks through walls or gets stuck on invisible tiles.
+
+**Cause:** Collision grid is built from the wrong layer, or tile GIDs are offset by `firstGid`.
+
+```csharp
+// ❌ Wrong — using "Ground" layer for collision (has decorative tiles)
+var collisionGrid = TileCollisionExtractor.BuildFromTileLayer(
+    map.TileLayers.First(l => l.Name == "Ground"), map);
+
+// ✅ Fix — use the dedicated "Collision" layer
+var collisionGrid = TileCollisionExtractor.BuildFromTileLayer(
+    map.TileLayers.First(l => l.Name == "Collision"), map);
+```
+
+**Debug tip:** Render the collision grid as a semi-transparent overlay to visually verify alignment.
+
+### ❌ 4. Entities Spawn at Wrong Positions
+
+**Symptom:** Player or enemies appear offset from their Tiled object positions.
+
+**Cause:** Tiled objects use top-left origin, but your sprites may use center origin. Also, Tiled positions are in pixels, not tile coordinates.
+
+```csharp
+// ❌ Wrong — using position directly as center
+Vector2 spawnPos = new(obj.Position.X, obj.Position.Y);
+
+// ✅ Fix — offset for sprite origin (center-bottom is common)
+Vector2 spawnPos = new(
+    obj.Position.X + obj.Size.Width / 2f,
+    obj.Position.Y + obj.Size.Height  // Bottom of object → feet position
+);
+```
+
+### ❌ 5. Chunk Boundaries Have Seams
+
+**Symptom:** Visible line at chunk borders, or autotiling breaks between chunks.
+
+```csharp
+// ❌ Wrong — autotiling only considers tiles within current chunk
+byte mask = Autotiler.Compute4BitMask(chunkTileData, col, row, type);
+
+// ✅ Fix — pass a function that can read neighbor chunk tiles
+byte mask = Autotiler.Compute4BitMask(
+    GetGlobalTileType, globalCol, globalRow, type);
+
+// Where GetGlobalTileType reads from the correct chunk:
+int GetGlobalTileType(int globalCol, int globalRow)
+{
+    int chunkX = globalCol / chunkWidth;
+    int chunkY = globalRow / chunkHeight;
+    if (_loadedChunks.TryGetValue((chunkX, chunkY), out var chunk))
+    {
+        int localCol = globalCol % chunkWidth;
+        int localRow = globalRow % chunkHeight;
+        return chunk.TileData[localRow, localCol];
+    }
+    return 0; // Unloaded chunks = empty
+}
+```
+
+### ❌ 6. Animated Tiles Desync Across Map
+
+**Symptom:** Same tile type has different animation frames in different parts of the map.
+
+```csharp
+// ❌ Wrong — each tile tracks its own elapsed time
+tile.ElapsedTime += deltaTime;
+int frame = (int)(tile.ElapsedTime / frameDuration) % frameCount;
+
+// ✅ Fix — single global clock (§6.3), all tiles of the same type
+// display the same frame:
+int gid = _animSystem.GetDisplayGid(originalGid, _animRegistry);
+```
+
+### ❌ 7. Memory Spike When Loading Large Maps
+
+**Symptom:** GC stalls or out-of-memory when loading maps > 500×500 tiles.
+
+```csharp
+// ❌ Wrong — loading entire map into a single flat array
+int[] allTiles = new int[5000 * 5000]; // 100MB for int32
+
+// ✅ Fix — use chunk-based streaming (§5)
+// Only keep ~9 chunks loaded (3×3 grid around camera)
+// Each 32×32 chunk = 4KB instead of 100MB total
+var chunkManager = new ChunkManager
+{
+    ChunkWidthTiles = 32,
+    ChunkHeightTiles = 32,
+    LoadRadius = 1, // 3×3 = 9 chunks loaded at once
+    LoadedChunks = new Dictionary<(int, int), MapChunk>()
+};
+```
+
+### Quick Diagnostic Checklist
+
+| Symptom | Check | Fix | Section |
+|---|---|---|---|
+| Lines between tiles | SamplerState | Use `PointClamp` | §2.3 |
+| Tiles pop at edges | Culling margin | Add ±1 tile margin | §2.4 |
+| Walk through walls | Collision layer | Use dedicated collision layer | §4.1 |
+| Entities offset | Origin mismatch | Adjust for sprite pivot | §7.3 |
+| Chunk seams | Autotile boundary | Read neighbor chunk tiles | §5, §3.6 |
+| Anim desync | Per-tile timers | Use global animation clock | §6.3 |
+| Memory spike | Flat array | Use chunk streaming | §5 |
+| Pathfinding ignores doors | Stale cost grid | Incrementally update costs | §12.3 |
+| Fog reveals through walls | Missing LOS check | Add wall collision to ray cast | §14.2 |
+
+---
+
+## Performance Checklist

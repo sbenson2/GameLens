@@ -9,7 +9,7 @@
 
 **Your AI forgets everything mid-project. Give it permanent game development knowledge.**
 
-GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 140+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
+GameDev MCP Server is a knowledge layer for AI coding assistants. It provides 144+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
 
 > Works with **Claude Code**, **Claude Desktop**, **Cursor**, **Windsurf**, **Cline**, and any MCP-compatible tool.
 
@@ -26,11 +26,11 @@ Every game dev using AI hits the same wall: your assistant starts strong, then f
 | 🎮 **Game Design** | Genre systems, game feel, balancing, progression | 12 |
 | 🏗️ **Architecture** | ECS, state machines, scene management, signals | 18 |
 | 💻 **Programming** | Design patterns, data structures, algorithms | 15 |
-| 🎯 **Engine Guides** | MonoGame (78 guides), Godot (11 docs), Unity (planned) | 89+ |
+| 🎯 **Engine Guides** | MonoGame (79 guides), Godot (14 docs), Unity (planned) | 93+ |
 | 🔧 **Core Concepts** | Camera, physics, pathfinding, networking, combat, particles, UI | 19 |
 | 📋 **Project Mgmt** | Scope control, sprint planning, art pipeline | 7 |
 
-**140+ docs. 4MB+ of curated knowledge. Zero external dependencies.**
+**144+ docs. 4MB+ of curated knowledge. Zero external dependencies.**
 
 ## Quick Start
 
@@ -74,8 +74,8 @@ GameDev MCP Server uses a modular architecture. Core knowledge (design, patterns
 | Module | Status | Docs | Description |
 |--------|--------|------|-------------|
 | `core` | ✅ Stable | 52 | Engine-agnostic game dev knowledge |
-| `monogame-arch` | ✅ Stable | 78 | MonoGame + Arch ECS — guides G1–G69, architecture, library reference |
-| `godot-arch` | 🚧 Active | 11 | Godot 4.4+ — architecture, GDScript/C#, scene composition, state machines, signals, input, physics, camera, tilemaps, animation |
+| `monogame-arch` | ✅ Stable | 79 | MonoGame + Arch ECS — guides G1–G69, architecture, library reference |
+| `godot-arch` | 🚧 Active | 14 | Godot 4.4+ — architecture, GDScript/C#, scene composition, state machines, signals, input, physics, camera, tilemaps, animation, UI/controls, audio, save/load |
 | `unity-arch` | 📋 Planned | — | Unity 6 — URP, ECS, modern patterns |
 | `bevy-arch` | 📋 Planned | — | Bevy ECS — Rust game dev |
 
@@ -97,11 +97,12 @@ Without `GAMEDEV_MODULES`, all available modules load automatically.
 |------|-------------|
 | Tool | Description |
 |------|-------------|
-| **`search_docs`** | Full-text search across all docs with TF-IDF ranking, category/module/engine filters, cross-engine grouping |
+| **`search_docs`** | Full-text search across all docs with TF-IDF ranking, synonym expansion, category/module/engine filters, cross-engine grouping |
 | **`get_doc`** | Fetch a doc by ID with optional `section` extraction and `maxLength` for context efficiency |
 | **`list_docs`** | Browse docs by category and module, with compact `summary` mode |
 | **`list_modules`** | Discover available engine modules and their status |
 | **`compare_engines`** | Compare how different engines approach the same topic (e.g., camera, physics, input) |
+| **`migration_guide`** | Get migration guidance between engines (e.g., Unity → Godot) |
 | **`random_doc`** | Discover docs serendipitously — great for exploration and learning |
 | **`genre_lookup`** | Genre → required systems mapping (platformer, roguelike, tower defense, etc.) |
 | **`session`** | Dev session co-pilot — structured workflows for planning, debugging, scoping |
@@ -113,7 +114,7 @@ Unlike tool-heavy MCP servers that dump 50K+ tokens of schemas into your context
 
 - **Section extraction** — `get_doc("G64", section: "Knockback")` returns just the knockback section, not the full 52KB doc
 - **`maxLength` param** — Cap any response to fit your context budget
-- **9 focused tools** — Minimal schema overhead, maximum utility. Compare to Godot MCP servers with 95+ tools burning half your context on schema alone
+- **10 focused tools** — Minimal schema overhead, maximum utility. Compare to Godot MCP servers with 95+ tools burning half your context on schema alone
 - **stdio transport** — No network exposure, no attack surface ([MCP security is a real concern](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/))
 
 ## Free vs Pro

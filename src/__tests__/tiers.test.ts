@@ -1,19 +1,34 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { isToolAllowed, isModuleAllowed, getTierFeatures, Tier } from "../tiers.js";
+import { isToolAllowed, isModuleAllowed, getTierFeatures, Tier, ToolAccess } from "../tiers.js";
 
 describe("Tier System", () => {
-  it("should allow search_docs for free tier", () => {
+  it("should return 'limited' for search_docs on free tier", () => {
     const result = isToolAllowed("free" as Tier, "search_docs");
-    assert.ok(result !== false, "search_docs should be allowed for free tier");
+    assert.equal(result, "limited", "search_docs should be limited for free tier");
   });
 
-  it("should allow all tools for pro tier", () => {
-    const tools = ["search_docs", "get_doc", "list_docs", "genre_lookup"];
+  it("should return 'full' for all tools on pro tier", () => {
+    const tools = ["search_docs", "get_doc", "list_docs", "genre_lookup", "session", "compare_engines"];
     for (const tool of tools) {
       const result = isToolAllowed("pro" as Tier, tool);
-      assert.ok(result !== false, `${tool} should be allowed for pro tier`);
+      assert.equal(result, "full", `${tool} should be full for pro tier`);
     }
+  });
+
+  it("should return 'denied' for session on free tier", () => {
+    const result = isToolAllowed("free" as Tier, "session");
+    assert.equal(result, "denied", "session should be denied for free tier");
+  });
+
+  it("should return 'denied' for unknown tools on free tier", () => {
+    const result = isToolAllowed("free" as Tier, "unknown_tool");
+    assert.equal(result, "denied", "unknown tools should be denied for free tier");
+  });
+
+  it("should return 'full' for unknown tools on pro tier", () => {
+    const result = isToolAllowed("pro" as Tier, "unknown_tool");
+    assert.equal(result, "full", "unknown tools should be full for pro tier");
   });
 
   it("should allow core module for free tier", () => {

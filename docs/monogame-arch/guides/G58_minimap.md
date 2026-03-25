@@ -2,7 +2,7 @@
 
 
 
-> **Category:** Guide · **Related:** [G37 Tilemap Systems](./G37_tilemap_systems.md) · [G54 Fog of War](./G54_fog_of_war.md) · [G20 Camera Systems](./G20_camera_systems.md) · [G5 UI Framework](./G5_ui_framework.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md)
+> **Category:** Guide · **Related:** [G37 Tilemap Systems](./G37_tilemap_systems.md) · [G54 Fog of War](./G54_fog_of_war.md) · [G20 Camera Systems](./G20_camera_systems.md) · [G5 UI Framework](./G5_ui_framework.md) · [G2 Rendering & Graphics](./G2_rendering_and_graphics.md) · [G67 Object Pooling](./G67_object_pooling.md) · [Camera Theory](../../core/concepts/camera-theory.md) · [Fog of War Theory](../../core/concepts/fog-of-war-theory.md)
 
 ---
 

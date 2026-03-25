@@ -17,7 +17,7 @@
  * - Idempotent processing (safe to receive duplicates)
  */
 
-import type { Env } from "./types.js";
+import type { Env, RouteHandler } from "./types.js";
 import { jsonResponse, errorResponse } from "./helpers.js";
 
 const SIGNATURE_HEADER = "X-Signature";

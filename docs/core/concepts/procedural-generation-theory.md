@@ -211,4 +211,17 @@ Define probability distributions per context (early game, late game, boss drop).
 
 ---
 
-*Implementation examples are available in engine-specific modules.*
+## Related Engine Guides
+
+### MonoGame
+- [G37 Tilemap Systems](../../monogame-arch/guides/G37_tilemap_systems.md) — Tilemap rendering, chunked worlds, auto-tiling, and tile data management
+- [G66 Building & Placement Systems](../../monogame-arch/guides/G66_building_placement_systems.md) — Grid-based placement validation, construction queues, wall auto-connect bitmask
+- [G54 Fog of War](../../monogame-arch/guides/G54_fog_of_war.md) — Exploration tracking for procedurally generated maps
+- [G67 Object Pooling](../../monogame-arch/guides/G67_object_pooling.md) — Efficient entity recycling for spawned procedural content
+- [G64 Combat & Damage Systems](../../monogame-arch/guides/G64_combat_damage_systems.md) — Loot tables, weighted random drops referenced in the Loot section
+
+### Godot
+- [G7 TileMap & Terrain](../../godot-arch/guides/G7_tilemap_and_terrain.md) — BSP dungeon generator, cellular automata caves, simplified WFC, chunk-based infinite worlds, A* pathfinding — all implemented in GDScript for Godot 4.4+
+
+### Core
+- [Fog of War Theory](./fog-of-war-theory.md) — Exploration and visibility systems that layer on top of procedurally generated maps

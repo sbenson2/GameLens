@@ -23,12 +23,21 @@ const DOCS_ROOT = path.resolve(__dirname, "../../docs");
 const FREE_MODULES = ["core"];
 const ACTIVE_MODULES = ["core", "monogame-arch", "godot-arch"];
 
+/** Map module IDs to engine labels */
+const ENGINE_MAP: Record<string, string> = {
+  "monogame-arch": "MonoGame",
+  "godot-arch": "Godot",
+  "bevy-arch": "Bevy",
+  "unity-arch": "Unity",
+};
+
 interface DocEntry {
   id: string;
   title: string;
   description: string;
   category: string;
   module: string;
+  engine: string | null;
   tier: "free" | "pro";
   sizeBytes: number;
   sections: string[];
@@ -143,6 +152,7 @@ function loadDocsFromDir(dirPath: string, module: string, existingIds: Set<strin
 
       const tier = FREE_MODULES.includes(module) ? "free" : "pro";
       const category = dirToCategory(fullPath);
+      const engine = ENGINE_MAP[module] ?? null;
 
       docs.push({
         id,
@@ -150,6 +160,7 @@ function loadDocsFromDir(dirPath: string, module: string, existingIds: Set<strin
         description: extractDescription(content),
         category,
         module,
+        engine,
         tier,
         sizeBytes: Buffer.byteLength(content, "utf-8"),
         sections: extractSections(content),
@@ -184,6 +195,7 @@ function main() {
     description: d.description,
     category: d.category,
     module: d.module,
+    engine: d.engine,
     tier: d.tier,
     sizeBytes: d.sizeBytes,
     sections: d.sections,
@@ -196,6 +208,7 @@ function main() {
     description: d.description,
     category: d.category,
     module: d.module,
+    engine: d.engine,
     tier: d.tier,
     tokens: d.tokens,
   }));

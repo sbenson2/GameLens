@@ -11,6 +11,7 @@ import { corsPreflightResponse, errorResponse } from "./helpers.js";
 import {
   handleHealth,
   handleListDocs,
+  handleRandomDoc,
   handleGetDoc,
   handleSearch,
   handleLicenseValidate,
@@ -19,13 +20,14 @@ import { handleLemonSqueezyWebhook } from "./webhooks.js";
 
 const router = new Router();
 
-// Register routes
-router.get("/v1/health", handleHealth as any);
-router.get("/v1/docs", handleListDocs as any);
-router.get("/v1/docs/:id", handleGetDoc as any);
-router.get("/v1/search", handleSearch as any);
-router.post("/v1/license/validate", handleLicenseValidate as any);
-router.post("/v1/webhooks/lemonsqueezy", handleLemonSqueezyWebhook as any);
+// Register routes (order matters — /random must come before /:id)
+router.get("/v1/health", handleHealth);
+router.get("/v1/docs/random", handleRandomDoc);
+router.get("/v1/docs", handleListDocs);
+router.get("/v1/docs/:id", handleGetDoc);
+router.get("/v1/search", handleSearch);
+router.post("/v1/license/validate", handleLicenseValidate);
+router.post("/v1/webhooks/lemonsqueezy", handleLemonSqueezyWebhook);
 
 export default {
   async fetch(
@@ -45,7 +47,7 @@ export default {
     const match = router.match(request.method, pathname);
     if (match) {
       try {
-        return await match.handler(request, match.params, env as any);
+        return await match.handler(request, match.params, env);
       } catch (err) {
         console.error("Handler error:", err);
         return errorResponse(

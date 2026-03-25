@@ -1,10 +1,10 @@
 name = "gamedev-mcp-api"
 main = "src/index.ts"
-compatibility_date = "2024-12-01"
+compatibility_date = "2025-12-01"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
-API_VERSION = "1.0.0"
+API_VERSION = "1.1.0"
 LEMONSQUEEZY_STORE_ID = ""
 
 # Secrets (set via `wrangler secret put`):

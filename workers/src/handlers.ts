@@ -32,15 +32,41 @@ function getClientIp(request: Request): string {
   );
 }
 
+/** Resolve engine name to matching modules (case-insensitive, partial match) */
+function resolveEngine(
+  engineQuery: string,
+  manifest: DocMeta[]
+): { modules: string[]; engineLabel: string | null } {
+  const q = engineQuery.toLowerCase();
+  const engineModules = new Map<string, string>(); // module → engine label
+
+  for (const doc of manifest) {
+    if (doc.engine && !engineModules.has(doc.module)) {
+      engineModules.set(doc.module, doc.engine);
+    }
+  }
+
+  // Find matching engine(s)
+  const matched: string[] = [];
+  let matchedLabel: string | null = null;
+  for (const [mod, engine] of engineModules) {
+    if (engine.toLowerCase().includes(q) || mod.toLowerCase().includes(q)) {
+      matched.push(mod);
+      matchedLabel = engine;
+    }
+  }
+
+  return { modules: matched, engineLabel: matchedLabel };
+}
+
 // --- Handlers ---
 
 /** GET /v1/health */
 export async function handleHealth(
-  request: Request,
+  _request: Request,
   _params: Record<string, string>,
   env: Env
 ): Promise<Response> {
-  // Count docs in KV (stored as metadata on the index key)
   let docsCount = 0;
   try {
     const indexRaw = await env.DOCS_KV.get("index:manifest", "json");
@@ -81,6 +107,8 @@ export async function handleListDocs(
   const url = new URL(request.url);
   const moduleFilter = url.searchParams.get("module");
   const categoryFilter = url.searchParams.get("category");
+  const engineFilter = url.searchParams.get("engine");
+  const summary = url.searchParams.get("summary") === "true";
 
   // Load manifest from KV
   let manifest: DocMeta[] = [];
@@ -98,11 +126,89 @@ export async function handleListDocs(
 
   // Apply filters
   let filtered = manifest;
+
+  if (engineFilter) {
+    // Engine filter requires Pro for non-core
+    if (tier === "free") {
+      return addRateLimitHeaders(
+        errorResponse(
+          "Filtering by engine requires a Pro license. Get one at https://gamedev-mcp.lemonsqueezy.com",
+          403
+        ),
+        rateResult
+      );
+    }
+    const { modules } = resolveEngine(engineFilter, manifest);
+    if (modules.length === 0) {
+      return addRateLimitHeaders(
+        errorResponse(`Unknown engine: "${engineFilter}"`, 400),
+        rateResult
+      );
+    }
+    // Include matching engine modules + always include core
+    filtered = filtered.filter(
+      (d) => modules.includes(d.module) || d.module === "core"
+    );
+  }
+
   if (moduleFilter) {
     filtered = filtered.filter((d) => d.module === moduleFilter);
   }
   if (categoryFilter) {
     filtered = filtered.filter((d) => d.category === categoryFilter);
+  }
+
+  // Summary mode — compact counts per module/category
+  if (summary) {
+    const groups: Record<
+      string,
+      Record<string, { count: number; ids: string[] }>
+    > = {};
+
+    for (const d of filtered) {
+      if (!groups[d.module]) groups[d.module] = {};
+      if (!groups[d.module][d.category]) {
+        groups[d.module][d.category] = { count: 0, ids: [] };
+      }
+      groups[d.module][d.category].count++;
+      if (groups[d.module][d.category].ids.length < 10) {
+        groups[d.module][d.category].ids.push(d.id);
+      }
+    }
+
+    const summaryData: Record<
+      string,
+      {
+        total: number;
+        categories: Record<
+          string,
+          { count: number; ids: string[]; hasMore: boolean }
+        >;
+      }
+    > = {};
+
+    for (const [mod, cats] of Object.entries(groups)) {
+      let modTotal = 0;
+      const catData: Record<
+        string,
+        { count: number; ids: string[]; hasMore: boolean }
+      > = {};
+      for (const [cat, info] of Object.entries(cats)) {
+        modTotal += info.count;
+        catData[cat] = {
+          count: info.count,
+          ids: info.ids,
+          hasMore: info.count > 10,
+        };
+      }
+      summaryData[mod] = { total: modTotal, categories: catData };
+    }
+
+    const response = jsonResponse({
+      ok: true,
+      data: { summary: summaryData, total: filtered.length, tier },
+    });
+    return addRateLimitHeaders(response, rateResult);
   }
 
   const response = jsonResponse({
@@ -113,12 +219,131 @@ export async function handleListDocs(
         title: d.title,
         description: d.description,
         module: d.module,
+        engine: d.engine,
         category: d.category,
         tier: d.tier,
         sizeBytes: d.sizeBytes,
       })),
       total: filtered.length,
       tier,
+    },
+  });
+
+  return addRateLimitHeaders(response, rateResult);
+}
+
+/** GET /v1/docs/random — get a random doc */
+export async function handleRandomDoc(
+  request: Request,
+  _params: Record<string, string>,
+  env: Env
+): Promise<Response> {
+  const { tier, licenseKey } = await resolveAuth(request, env);
+  const clientIp = getClientIp(request);
+  const rateResult = await checkRateLimit(licenseKey ?? clientIp, tier, env);
+
+  if (!rateResult.allowed) {
+    return addRateLimitHeaders(
+      errorResponse("Rate limit exceeded", 429),
+      rateResult
+    );
+  }
+
+  const url = new URL(request.url);
+  const moduleFilter = url.searchParams.get("module");
+  const categoryFilter = url.searchParams.get("category");
+  const engineFilter = url.searchParams.get("engine");
+
+  // Load manifest
+  let manifest: DocMeta[] = [];
+  try {
+    const raw = await env.DOCS_KV.get("index:manifest", "json");
+    if (Array.isArray(raw)) manifest = raw as DocMeta[];
+  } catch {
+    return addRateLimitHeaders(
+      errorResponse("Failed to load doc index", 500),
+      rateResult
+    );
+  }
+
+  let filtered = manifest;
+
+  // Engine filter
+  if (engineFilter) {
+    if (tier === "free") {
+      return addRateLimitHeaders(
+        errorResponse("Engine filter requires Pro", 403),
+        rateResult
+      );
+    }
+    const { modules } = resolveEngine(engineFilter, manifest);
+    if (modules.length === 0) {
+      return addRateLimitHeaders(
+        errorResponse(`Unknown engine: "${engineFilter}"`, 400),
+        rateResult
+      );
+    }
+    filtered = filtered.filter(
+      (d) => modules.includes(d.module) || d.module === "core"
+    );
+  }
+
+  // Free tier: core only
+  if (tier === "free") {
+    filtered = filtered.filter((d) => d.module === "core");
+  }
+
+  if (moduleFilter) filtered = filtered.filter((d) => d.module === moduleFilter);
+  if (categoryFilter) filtered = filtered.filter((d) => d.category === categoryFilter);
+
+  if (filtered.length === 0) {
+    return addRateLimitHeaders(
+      errorResponse("No docs match the given filters", 404),
+      rateResult
+    );
+  }
+
+  // Pick random doc
+  const meta = filtered[Math.floor(Math.random() * filtered.length)];
+
+  // Get preview (first ~500 chars)
+  let preview: string | null = null;
+  try {
+    const content = await env.DOCS_KV.get(`doc:${meta.id}`);
+    if (content) {
+      const lines = content.split("\n");
+      const previewLines: string[] = [];
+      let pastTitle = false;
+      for (const line of lines) {
+        if (line.startsWith("# ")) { pastTitle = true; continue; }
+        if (!pastTitle) continue;
+        const trimmed = line.trim();
+        if (trimmed === "" && previewLines.length > 0) break;
+        if (trimmed && !trimmed.startsWith("#") && !trimmed.startsWith("---")) {
+          previewLines.push(trimmed);
+        }
+        if (previewLines.join(" ").length > 500) break;
+      }
+      preview = previewLines.join(" ").slice(0, 500);
+    }
+  } catch {
+    // Preview is best-effort
+  }
+
+  const response = jsonResponse({
+    ok: true,
+    data: {
+      id: meta.id,
+      title: meta.title,
+      description: meta.description,
+      module: meta.module,
+      engine: meta.engine,
+      category: meta.category,
+      tier: meta.tier,
+      sizeBytes: meta.sizeBytes,
+      sections: meta.sections,
+      preview,
+      message: `Use GET /v1/docs/${meta.id} for full content.`,
     },
   });
 
@@ -183,6 +408,7 @@ export async function handleGetDoc(
           id: meta.id,
           title: meta.title,
           module: meta.module,
+          engine: meta.engine,
           category: meta.category,
           tier: meta.tier,
           sections: meta.sections,
@@ -242,6 +468,7 @@ export async function handleGetDoc(
       id: meta.id,
       title: meta.title,
       module: meta.module,
+      engine: meta.engine,
       category: meta.category,
       tier: meta.tier,
       content: finalContent,
@@ -283,6 +510,7 @@ export async function handleSearch(
   const query = url.searchParams.get("q");
   const moduleFilter = url.searchParams.get("module");
   const categoryFilter = url.searchParams.get("category");
+  const engineFilter = url.searchParams.get("engine");
   const limitStr = url.searchParams.get("limit");
   const limit = limitStr ? Math.min(parseInt(limitStr, 10), 20) : 10;
 
@@ -307,8 +535,46 @@ export async function handleSearch(
     );
   }
 
-  // Free tier: force core module
   let filteredIndex = searchIndex;
+
+  // Engine filter
+  if (engineFilter) {
+    if (tier === "free") {
+      return addRateLimitHeaders(
+        errorResponse(
+          "Engine-filtered search requires a Pro license. Get one at https://gamedev-mcp.lemonsqueezy.com",
+          403
+        ),
+        rateResult
+      );
+    }
+    // Build engine→module map from search index
+    const engineModules = new Map<string, string>();
+    for (const entry of searchIndex) {
+      if (entry.engine && !engineModules.has(entry.module)) {
+        engineModules.set(entry.module, entry.engine);
+      }
+    }
+    const q = engineFilter.toLowerCase();
+    const matchedModules: string[] = [];
+    for (const [mod, engine] of engineModules) {
+      if (engine.toLowerCase().includes(q) || mod.toLowerCase().includes(q)) {
+        matchedModules.push(mod);
+      }
+    }
+    if (matchedModules.length === 0) {
+      return addRateLimitHeaders(
+        errorResponse(`Unknown engine: "${engineFilter}"`, 400),
+        rateResult
+      );
+    }
+    // Include matched + always include core
+    filteredIndex = filteredIndex.filter(
+      (d) => matchedModules.includes(d.module) || d.module === "core"
+    );
+  }
+
+  // Free tier: restrict non-core module searches
   if (tier === "free") {
     if (moduleFilter && moduleFilter !== "core") {
       return addRateLimitHeaders(
@@ -319,7 +585,6 @@ export async function handleSearch(
         rateResult
       );
     }
-    // Still include pro results in listing but without snippets
   }
 
   // Apply filters
@@ -348,49 +613,27 @@ export async function handleSearch(
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 
-  // Build results — snippets only for accessible docs
-  const results = await Promise.all(
-    scored.map(async ({ entry, score }) => {
-      const isAccessible = tier === "pro" || entry.module === "core";
-      let snippet: string | null = null;
+  // Build results — use description as snippet (avoids N+1 KV reads)
+  const results = scored.map(({ entry, score }) => {
+    const isAccessible = tier === "pro" || entry.module === "core";
+    return {
+      id: entry.id,
+      title: entry.title,
+      description: entry.description,
+      module: entry.module,
+      engine: entry.engine,
+      category: entry.category,
+      tier: entry.tier,
+      score: Math.round(score * 100) / 100,
+      snippet: isAccessible ? entry.description : null,
+    };
+  });
 
-      if (isAccessible) {
-        // Fetch first ~500 chars of content for snippet
-        const content = await env.DOCS_KV.get(`doc:${entry.id}`);
-        if (content) {
-          // Find first paragraph after title
-          const lines = content.split("\n");
-          let snippetLines: string[] = [];
-          let pastTitle = false;
-          for (const line of lines) {
-            if (line.startsWith("# ")) {
-              pastTitle = true;
-              continue;
-            }
-            if (!pastTitle) continue;
-            const trimmed = line.trim();
-            if (trimmed === "" && snippetLines.length > 0) break;
-            if (trimmed && !trimmed.startsWith("#") && !trimmed.startsWith("---")) {
-              snippetLines.push(trimmed);
-            }
-            if (snippetLines.join(" ").length > 300) break;
-          }
-          snippet = snippetLines.join(" ").slice(0, 300);
-        }
-      }
-
-      return {
-        id: entry.id,
-        title: entry.title,
-        description: entry.description,
-        module: entry.module,
-        category: entry.category,
-        tier: entry.tier,
-        score: Math.round(score * 100) / 100,
-        snippet,
-      };
-    })
+  // Auto-group by engine when results span multiple engines
+  const uniqueEngines = new Set(
+    results.filter((r) => r.engine).map((r) => r.engine)
   );
+  const grouped = uniqueEngines.size > 1 && results.length >= 4;
 
   const response = jsonResponse({
     ok: true,
@@ -399,6 +642,7 @@ export async function handleSearch(
       query,
       tier,
       total: results.length,
+      grouped,
     },
   });
 

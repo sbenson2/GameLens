@@ -1,30 +1,26 @@
 /** Minimal router for Cloudflare Workers */
 
-type Handler = (
-  request: Request,
-  params: Record<string, string>,
-  ...extra: unknown[]
-) => Response | Promise<Response>;
+import type { RouteHandler } from "./types.js";
 
 interface Route {
   method: string;
   pattern: RegExp;
   paramNames: string[];
-  handler: Handler;
+  handler: RouteHandler;
 }
 
 export class Router {
   private routes: Route[] = [];
 
-  get(path: string, handler: Handler): void {
+  get(path: string, handler: RouteHandler): void {
     this.addRoute("GET", path, handler);
   }
 
-  post(path: string, handler: Handler): void {
+  post(path: string, handler: RouteHandler): void {
     this.addRoute("POST", path, handler);
   }
 
-  private addRoute(method: string, path: string, handler: Handler): void {
+  private addRoute(method: string, path: string, handler: RouteHandler): void {
     const paramNames: string[] = [];
     // Convert /v1/docs/:id to regex with named groups
     const pattern = path.replace(/:(\w+)/g, (_match, name) => {
@@ -42,7 +38,7 @@ export class Router {
   match(
     method: string,
     pathname: string
-  ): { handler: Handler; params: Record<string, string> } | null {
+  ): { handler: RouteHandler; params: Record<string, string> } | null {
     for (const route of this.routes) {
       if (route.method !== method) continue;
       const match = pathname.match(route.pattern);

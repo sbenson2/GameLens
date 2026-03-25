@@ -2,7 +2,7 @@
 
 
 
-> **Category:** Guide · **Related:** [G9 Networking](./G9_networking.md) · [G36 Publishing & Distribution](./G36_publishing_distribution.md) · [G47 Achievements](./G47_achievements.md) · [G10 Custom Game Systems](./G10_custom_game_systems.md)
+> **Category:** Guide · **Related:** [G9 Networking](./G9_networking.md) · [G36 Publishing & Distribution](./G36_publishing_distribution.md) · [G47 Achievements](./G47_achievements.md) · [G10 Custom Game Systems](./G10_custom_game_systems.md) · [G69 Save/Load Serialization](./G69_save_load_serialization.md) · [Networking Theory](../../core/concepts/networking-theory.md) · [G12 Design Patterns](./G12_design_patterns.md)
 
 ---
 

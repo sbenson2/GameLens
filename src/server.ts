@@ -19,6 +19,7 @@ import { validateLicense, getLicenseKey } from "./license.js";
 import { checkSearchLimit, checkGetDocLimit, getUsageStats } from "./rate-limit.js";
 import {
   Tier,
+  ToolAccess,
   isToolAllowed,
   isModuleAllowed,
   getTierFeatures,
@@ -129,7 +130,7 @@ export async function createServer() {
 
   server.tool(
     "search_docs",
-    "Search game development documentation by keyword. Returns up to 10 results ranked by relevance with doc IDs and snippets. Use this when you need to find guides, references, or explanations for a specific gamedev topic. Use `engine` to filter by engine (e.g. 'Godot', 'MonoGame'). Cross-engine results are automatically grouped for comparison. Follow up with get_doc to read the full document.",
+    "Search gamedev docs by keyword. Returns ranked results with IDs and snippets. Use `engine` to filter by engine. Cross-engine results auto-grouped. Follow up with get_doc for full content.",
     {
       query: z.string().describe("Search query (e.g. 'camera follow', 'A* pathfinding', 'ECS architecture')"),
       category: z.enum(CATEGORIES).optional().describe("Filter by category"),
@@ -140,7 +141,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "search_docs");
-        if (access === false) { analytics.recordProGate("search_docs"); return proGateResponse(); }
+        if (access === "denied") { analytics.recordProGate("search_docs"); return proGateResponse(); }
 
         // Free tier: force module to 'core'
         if (access === "limited") {
@@ -199,7 +200,7 @@ export async function createServer() {
 
   server.tool(
     "get_doc",
-    "Fetch a specific game development doc by ID. Returns the full document content. For large docs (50KB+), use `section` to extract a specific heading or `maxLength` to limit output size — this keeps your context window efficient. Use list_docs or search_docs to find IDs.",
+    "Fetch a gamedev doc by ID. For large docs, use `section` to extract a heading or `maxLength` to limit size. Use list_docs or search_docs to find IDs.",
     {
       id: z.string().describe("Doc ID (e.g. 'G52', 'E6', 'P0', 'camera-theory')"),
       section: z.string().optional().describe("Extract a specific section by heading substring (e.g. 'Combat System', 'Knockback', 'Save/Load'). Case-insensitive. Returns the matched heading and all content until the next heading of equal or higher level."),
@@ -208,7 +209,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "get_doc");
-        if (access === false) { analytics.recordProGate("get_doc"); return proGateResponse(); }
+        if (access === "denied") { analytics.recordProGate("get_doc"); return proGateResponse(); }
 
         if (access === "limited") {
           // Check if doc belongs to a non-core module
@@ -272,7 +273,7 @@ export async function createServer() {
 
   server.tool(
     "list_docs",
-    "Browse available game development docs. Filter by category and/or module. Use summary=true to get compact counts and IDs only (saves tokens). Use full mode (default) for titles and descriptions.",
+    "Browse available gamedev docs. Filter by category/module. Use summary=true for compact counts and IDs (saves tokens).",
     {
       category: z.enum(CATEGORIES).optional().describe("Filter by category"),
       module: z.string().optional().describe("Filter by module (e.g. 'core', 'monogame-arch')"),
@@ -293,13 +294,13 @@ export async function createServer() {
 
   server.tool(
     "session",
-    "Dev session co-pilot — structured workflows for game development planning, decisions, feature design, debugging, and scope management.",
+    "Dev session co-pilot — planning, decisions, feature design, debugging, and scope workflows.",
     {
       action: z.enum(SESSION_ACTIONS).describe("Session action to perform"),
     },
     async (args) => {
       try {
-        if (!isToolAllowed(tier, "session")) { analytics.recordProGate("session"); return proGateResponse(); }
+        if (isToolAllowed(tier, "session") === "denied") { analytics.recordProGate("session"); return proGateResponse(); }
         const sessionStart = Date.now();
         const sessionResult = handleSession(args);
         analytics.recordToolCall("session", Date.now() - sessionStart);
@@ -313,14 +314,14 @@ export async function createServer() {
 
   server.tool(
     "genre_lookup",
-    "Quick genre → required systems mapping. Returns required systems, recommended docs, and a starter checklist for a given game genre.",
+    "Genre → required systems mapping. Returns systems, recommended docs, and starter checklist for any game genre.",
     {
       genre: z.string().describe("Game genre (e.g. 'platformer', 'roguelike', 'metroidvania', 'tower-defense', 'rpg')"),
     },
     async (args) => {
       try {
         const access = isToolAllowed(tier, "genre_lookup");
-        if (access === false) { analytics.recordProGate("genre_lookup"); return proGateResponse(); }
+        if (access === "denied") { analytics.recordProGate("genre_lookup"); return proGateResponse(); }
 
         const genreStart = Date.now();
         const result = handleGenreLookup(args);
@@ -352,7 +353,7 @@ export async function createServer() {
 
   server.tool(
     "license_info",
-    "Show current license tier, what tools and modules are unlocked, and upgrade URL.",
+    "Show license tier, unlocked tools/modules, and usage stats.",
     {},
     async () => {
       try {
@@ -405,7 +406,7 @@ export async function createServer() {
 
   server.tool(
     "list_modules",
-    "List all discovered engine modules with metadata — labels, doc counts, engines, and sections. Use to understand what knowledge is available across engines and find the right module for a project.",
+    "List available engine modules with doc counts, engines, and access info.",
     {
       engine: z.string().optional().describe("Filter by engine name (e.g. 'Godot', 'MonoGame', 'Unity')"),
     },
@@ -483,7 +484,7 @@ export async function createServer() {
 
   server.tool(
     "random_doc",
-    "Get a random game development doc for discovery and learning. Returns a preview with metadata — use get_doc to read the full document. Great for exploring what knowledge is available or finding inspiration. Optionally filter by category, module, or engine.",
+    "Get a random gamedev doc for discovery. Returns preview + metadata. Filter by category, module, or engine.",
     {
       category: z.enum(CATEGORIES).optional().describe("Filter by category (e.g. 'guide', 'concept', 'architecture')"),
       module: z.string().optional().describe("Filter by module ID (e.g. 'core', 'monogame-arch', 'godot-arch')"),
@@ -492,7 +493,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "random_doc");
-        if (access === false) { analytics.recordProGate("random_doc"); return proGateResponse(); }
+        if (access === "denied") { analytics.recordProGate("random_doc"); return proGateResponse(); }
 
         // Free tier: restrict to core module
         if (access === "limited") {
@@ -524,7 +525,7 @@ export async function createServer() {
 
   server.tool(
     "compare_engines",
-    "Compare how different game engines handle the same topic (e.g. 'camera', 'physics', 'state machine'). Shows the core theory doc, engine-specific implementations side by side, and a quick comparison table. Great for choosing an engine or understanding architectural differences.",
+    "Compare how engines handle the same topic. Shows theory foundation, engine-specific docs, and comparison table.",
     {
       topic: z.string().describe("Topic to compare across engines (e.g. 'camera', 'state machine', 'physics', 'input handling', 'scene management')"),
       engines: z.array(z.string()).optional().describe("Specific engines to compare (e.g. ['Godot', 'MonoGame']). Omit to compare all available engines."),
@@ -533,7 +534,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "compare_engines");
-        if (access === false) { analytics.recordProGate("compare_engines"); return proGateResponse(); }
+        if (access === "denied") { analytics.recordProGate("compare_engines"); return proGateResponse(); }
 
         // Free tier: comparison requires cross-engine access (Pro)
         if (access === "limited") {
@@ -554,7 +555,7 @@ export async function createServer() {
 
   server.tool(
     "migration_guide",
-    "Get migration guidance between two game engines. Shows concept mappings (how architecture/physics/input/etc translate), engine-specific gotchas, relevant docs from both engines, and a migration strategy. Great for developers switching engines or porting games.",
+    "Engine migration guidance — concept mappings, gotchas, relevant docs, and migration strategy between two engines.",
     {
       from: z.string().describe("Source engine to migrate FROM (e.g. 'Unity', 'Godot', 'MonoGame')"),
       to: z.string().describe("Target engine to migrate TO (e.g. 'Godot', 'MonoGame', 'Unity')"),
@@ -564,7 +565,7 @@ export async function createServer() {
     async (args) => {
       try {
         const access = isToolAllowed(tier, "migration_guide");
-        if (access === false) { analytics.recordProGate("migration_guide"); return proGateResponse(); }
+        if (access === "denied") { analytics.recordProGate("migration_guide"); return proGateResponse(); }
 
         // Free tier: migration requires cross-engine access (Pro)
         if (access === "limited") {

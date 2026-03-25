@@ -14,6 +14,7 @@ export interface DocMeta {
   description: string;
   category: string;
   module: string;
+  engine: string | null;  // e.g. "Godot", "MonoGame", null for core
   tier: "free" | "pro";
   sizeBytes: number;
   sections: string[];
@@ -43,9 +44,17 @@ export interface SearchIndexEntry {
   description: string;
   category: string;
   module: string;
+  engine: string | null;
   tier: "free" | "pro";
   tokens: string[]; // pre-tokenized for search
 }
+
+/** Handler function signature */
+export type RouteHandler = (
+  request: Request,
+  params: Record<string, string>,
+  env: Env
+) => Response | Promise<Response>;
 
 /** Standard API response envelope */
 export interface ApiResponse<T = unknown> {

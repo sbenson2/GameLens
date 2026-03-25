@@ -2,34 +2,37 @@
 
 export type Tier = "free" | "pro";
 
+/** Tool access level — replaces the old boolean | "limited" union */
+export type ToolAccess = "full" | "limited" | "denied";
+
 export const UPGRADE_URL = "https://gamedev-mcp.lemonsqueezy.com";
 export const PRO_GATE_MESSAGE = `This feature requires a Pro license. Get one at ${UPGRADE_URL}`;
 
 /** Which tools are available per tier */
-const TOOL_ACCESS: Record<Tier, Record<string, boolean | "limited">> = {
+const TOOL_ACCESS: Record<Tier, Record<string, ToolAccess>> = {
   free: {
-    list_docs: true,
-    list_modules: true,     // discovery — shows what Pro unlocks (conversion driver)
-    search_docs: "limited", // core module only
-    get_doc: "limited",     // core module only
-    session: false,
-    genre_lookup: "limited", // generic info only
-    license_info: true,
-    random_doc: "limited",  // core module only
-    compare_engines: false,  // pro only — cross-engine access
-    migration_guide: false,  // pro only — cross-engine access
+    list_docs: "full",
+    list_modules: "full",       // discovery — shows what Pro unlocks (conversion driver)
+    search_docs: "limited",     // core module only
+    get_doc: "limited",         // core module only
+    session: "denied",
+    genre_lookup: "limited",    // generic info only
+    license_info: "full",
+    random_doc: "limited",      // core module only
+    compare_engines: "denied",  // pro only — cross-engine access
+    migration_guide: "denied",  // pro only — cross-engine access
   },
   pro: {
-    list_docs: true,
-    list_modules: true,
-    search_docs: true,
-    get_doc: true,
-    session: true,
-    genre_lookup: true,
-    license_info: true,
-    random_doc: true,
-    compare_engines: true,
-    migration_guide: true,
+    list_docs: "full",
+    list_modules: "full",
+    search_docs: "full",
+    get_doc: "full",
+    session: "full",
+    genre_lookup: "full",
+    license_info: "full",
+    random_doc: "full",
+    compare_engines: "full",
+    migration_guide: "full",
   },
 };
 
@@ -39,9 +42,9 @@ const MODULE_ACCESS: Record<Tier, string[]> = {
   pro: [], // empty = all modules
 };
 
-export function isToolAllowed(tier: Tier, tool: string): boolean | "limited" {
+export function isToolAllowed(tier: Tier, tool: string): ToolAccess {
   const access = TOOL_ACCESS[tier]?.[tool];
-  if (access === undefined) return tier === "pro"; // new tools default to pro-only
+  if (access === undefined) return tier === "pro" ? "full" : "denied"; // new tools default to pro-only
   return access;
 }
 

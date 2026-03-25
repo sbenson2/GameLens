@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.0] - 2026-03-24
 
 ### Added
+- **SECURITY.md** — Security policy documenting stdio-only architecture, read-only design, zero runtime deps, and vulnerability reporting process. Addresses RSAC 2026 MCP security concerns.
+- **Schema quality optimization** — All 10 tool descriptions compressed for minimal token cost (avg 60% shorter) while preserving discoverability. Targets A-grade agent-friendliness per MCP schema quality benchmarks.
+- **CI dependency review** — New `dependency-review-action` job on PRs blocks high-severity vulns and GPL-3.0/AGPL-3.0 licenses.
+- **`.nvmrc`** — Pins Node.js 22 for consistent developer environments.
 - **Analytics & conversion tracking** — Pro gate impression recording, tool call timing, search/doc access metrics, startup metrics, graceful shutdown flush
 - **Godot docs:**
   - `G7` TileMap & Terrain Systems (~80KB) — TileMapLayer migration, auto-tiling, custom data layers, procedural generation (BSP, cellular automata, WFC), chunk-based infinite worlds, isometric/hex tilemaps, fog of war, destructible terrain, A* pathfinding integration. **Godot module hits 50% milestone (10/20 docs).**
@@ -26,11 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - 187 tests, all passing (up from 164)
-- README updated: 140+ docs, 11 Godot docs (55% milestone), 187 tests, context-efficiency positioning sharpened
+- README updated: 144+ docs, 14 Godot docs (60% milestone), 187 tests, context-efficiency positioning sharpened
 - TOPIC_DOC_MAP expanded with 37 new keywords (G7 tilemaps, G8 animation, combat-theory, ui-theory)
+- Tool descriptions optimized for schema token efficiency — avg 60% shorter while preserving clarity
 
 ### Fixed
 - Doc audit #5: E6 broken E4 link, P11 title "# 15" → "# P11", G63 missing cross-references to G67/G64, G7 missing G52/G15/G30 links, E7 missing combat-theory/G68 links
+- Doc fixes: procedural-generation-theory, C2 game feel, P4 playtesting, G48 online services, G58 minimap cross-references and content corrections
 - Search quality round 4: identified synonym gaps (chase→pathfind, follow→ai) — fixes pending
 
 ## [1.2.0] - 2026-03-22
