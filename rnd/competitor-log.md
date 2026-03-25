@@ -4,6 +4,110 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-24 (6pm PT) — AI Coding Tool Updates & MCP Ecosystem Shift
+
+### 🔥 HEADLINE: Claude Code Ships "Auto Mode" (TODAY — TechCrunch), 1M Token Context + Voice Mode + /loop This Month. MCP Becoming "Invisible Infrastructure" Per OpenAI SDK Velocity. All Major IDEs Now Support MCP. Windsurf Drops Credits for Quotas. GPT-5.3-Codex Gets LTS. Understand-Anything (2.4K⭐) Shows Browser-Only MCP Codebase Analysis.
+
+---
+
+### Claude Code March 2026 — The Most Aggressive Month Yet
+
+Claude Code went from v2.1.63 to v2.1.80 in March. Key updates:
+
+| Feature | Version | Impact on Us |
+|---------|---------|-------------|
+| **Auto Mode** (TODAY) | v2.1.80+ | AI decides which actions are safe to run without permission. TechCrunch coverage. Research preview for Enterprise/API. Only works with Sonnet 4.6 / Opus 4.6. Safer alternative to `--dangerously-skip-permissions`. More autonomous agents = more MCP tool calls = more value from our knowledge server. |
+| **1M Token Context** | v2.1.75 | Opus 4.6 now has 1M token context for Max/Team/Enterprise. Massive leap from 200K. Devs can hold entire codebases in context — but STILL need domain knowledge. Our docs complement long context (fill knowledge gaps, not just file access). |
+| **Push-to-Talk Voice Mode** | v2.1.76+ | Voice coding with /voice command. 20 languages. Rolling out to ~5% of users. Voice workflows make MCP tools even more natural — "search for camera systems in Godot" is easier spoken than typed. |
+| **/loop Command** | v2.1.71 | Built-in cron (`/loop 5m check the deploy`). Session-level recurring tasks. |
+| **/effort Command** | v2.1.76 | Three-level effort control (Low/Medium/High). "ultrathink" for max. |
+| **MCP Elicitation** | v2.1.76 | MCP servers can request structured input mid-task (forms, URLs). Opens interactive scenarios. |
+| **Opus 4.6 Default** | v2.1.68 | Opus 4 and 4.1 removed from first-party API. All users migrated to 4.6. |
+| **MCP Tool Search** | v2.1.7x | Lazy loading reduces context by 95-99% for tool schemas. Partially neutralizes our "lean server" advantage for Claude users, but Cursor/Windsurf/Copilot don't have this. |
+| **autoMemoryDirectory** | v2.1.74 | Custom directory for automatic memory files with timestamps. |
+| **Performance** | Various | Memory leak fixed, base memory -16MB, bundle -510KB, prompt re-renders -74%. |
+
+**Strategic implications:**
+- Auto Mode + 1M context = developers running longer, more autonomous sessions. More agent autonomy → more MCP tool calls per session → our knowledge server delivers more value per user.
+- MCP Elicitation opens door for interactive Pro-tier upgrade prompts mid-session (future opportunity).
+- Claude Code's $2.5B run rate + 300K business customers (Fortune) means massive MCP distribution surface.
+
+### AI Coding Tool Landscape — March 2026 Snapshot
+
+| Tool | Price | MCP Support | Key March 2026 Update |
+|------|-------|-------------|----------------------|
+| **Claude Code** | Max $100/mo, Pro $20/mo | ✅ Native | Auto Mode, 1M context, voice, /loop |
+| **Cursor** | $20/mo | ✅ Native | Multi-model orchestration (picks model per task), Composer 2 with own model (61.3 CursorBench) |
+| **GitHub Copilot** | $10/mo individual | ✅ Native | GPT-5.3-Codex LTS (Feb 2026, available through Feb 2027), code review agent, Extensions ecosystem, multi-model (Claude/GPT/Gemini) |
+| **Windsurf** (Cognition) | $15/mo Pro | ✅ Native | Dropped credit system → quota-based pricing. Acquired by Cognition. Most beginner-friendly. |
+| **OpenAI Codex** | Pro $20/mo+ | ✅ Via Agents SDK | v0.12.x rapid shipping (5 releases in 10 days). MCP retry + error normalization baked in. |
+| **Qwen Code** | Free/OSS | ✅ Native | readOnlyTools config for MCP servers (parallel batching). Growing in China/Asia. |
+
+**Key takeaway: ALL major AI coding tools now support MCP.** This is no longer a differentiator — it's table stakes. The question isn't "does my IDE support MCP?" but "which MCP servers should I use?" Our distribution surface is the ENTIRE developer ecosystem, not just Claude users.
+
+### MCP Ecosystem Status — "Invisible Infrastructure"
+
+Context Studios blog analysis (running 154 MCP tools in production) on the v1.27.1 release:
+
+- **MCP is becoming invisible infrastructure** — OpenAI Agents SDK shipped 5 MCP-related releases in 10 days, silently normalizing MCP errors, adding retries, exposing auth config. MCP is being absorbed into the plumbing.
+- **Auth is the #1 production friction** — "Works in demo, breaks in production" pattern. OAuth flows in MCP are fragile. Our stdio-only approach avoids this entirely.
+- **SEP-1730 governance formalized** — Breaking changes will be announced/sequenced via MCP Enhancement Proposals. Reduces the "surprise breaking change" risk (Vercel AI SDK v2.0-beta disruption was the latest example).
+- **Streaming elicitation landed** in v1.27.0 — long-running tool calls can emit incremental output. Useful for agents that need progress feedback.
+- **Transport errors no longer silently swallowed** (v1.27.1) — onerror callbacks now fire reliably. This was a major debugging nightmare.
+- **34,700 dependent projects** on npm for MCP TypeScript SDK, 18K weekly downloads.
+
+**MCP by the numbers:**
+- 5,000+ community MCP servers (Apify estimate)
+- ~7,000 internet-exposed servers (Qualys scan)
+- 97M monthly SDK downloads (Feb 2026)
+- Linux Foundation governance since late 2025
+
+### New Notable MCP Servers This Week
+
+| Server | Category | Notes |
+|--------|----------|-------|
+| **Lens Desktop MCP** | DevOps | Built-in MCP for Kubernetes IDE (1M+ users). Major enterprise adoption signal. |
+| **CODA MCP** (Conductor Quantum) | Science | Quantum computing via MCP. Shows MCP expanding beyond coding. |
+| **Talk Python MCP** | Education | Podcast + course content via MCP. **Validates paid-education-via-MCP model** (like us). |
+| **Understand-Anything** | Code Analysis | 2.4K⭐ in days. Browser-only codebase mapping with 5 AI agents via MCP. Zero-server (WASM). |
+| **Google Stitch MCP** | Design | Stitch integration failing in Claude Code CLI (GitHub issue #36228). Works on claude.ai only. |
+| **Godot MCP Setup** (LobeHub) | Gamedev | New LobeHub skill for setting up Godot MCP pipelines. More gamedev+MCP crossover. |
+
+### Indie Dev Pain Points — Confirmed Again
+
+- **Tangy TD viral success** ($250K first week) getting Kotaku/PC Gamer/Polygon coverage. Solo dev, tower defense genre. Makes our TD guides (G64/G65/G66) extremely timely.
+- **"250 wishlists in 8 months"** YouTube analysis video (yesterday) dissecting why an indie game failed — store page, marketing, and discoverability. Confirms that **marketing is the #1 indie struggle**, not engineering.
+- **"AI push giving indie devs a golden ticket"** article (waytoomany.games) — framing is that AAA anti-AI sentiment creates opportunity for indie devs who DO use AI effectively. Our exact audience.
+- **GDC recap: "Every conversation turned to AI"** (Deconstructor of Fun) — not AI games, but AI pipelines, agents, tooling. The question: "can organizations change fast enough?"
+- **Arm GDC session on ML pipeline in Godot** drew a full house — open-source ML models + community plugins integrated into Godot engine. Shows growing demand for AI+Godot workflows.
+
+### Competitive Star Tracking
+
+| Server | Stars | Change | Notes |
+|--------|-------|--------|-------|
+| Coding-Solo/godot-mcp | ~2,580+ | +20/day sustained | 95+ tools, editor-integration |
+| Godogen | ~2,000+ | +150/day trajectory | Claude Code skills for Godot game gen |
+| IvanMurzak/Unity-MCP | ~1,475+ | +18/day | Pushed this week |
+| CoderGamester/mcp-unity | ~1,540+ | +50/day | Biggest daily jumps |
+| claude-plugins-official | 14,000 | 14K in 4 months | Anthropic's official plugin ecosystem |
+| Understand-Anything | 2,400 | NEW | Browser-only codebase MCP mapping |
+
+### Strategic Implications
+
+1. **Claude Code Auto Mode is the biggest shift this week.** More autonomous agents → more MCP tool calls → more value from knowledge servers. Our docs become the "always-available expert" that Auto Mode consults without asking the dev.
+
+2. **The "all IDEs support MCP" convergence is COMPLETE.** Claude Code, Cursor, Copilot, Windsurf, Codex, Qwen Code — all have native MCP. This means our TAM is the entire AI-assisted dev population, not just one tool's users.
+
+3. **1M token context doesn't kill us — it helps us.** Longer context means devs can hold more project files, but domain knowledge (game patterns, architecture, anti-patterns) still needs an external source. 1M tokens of YOUR code still doesn't tell you how to implement camera shake or state machines.
+
+4. **Talk Python MCP validates our model directly.** A paid education platform delivering content via MCP server. Proves the "paid knowledge via MCP" business model works beyond our specific niche.
+
+5. **Windsurf's credit→quota shift** signals pricing simplification across AI tools. Users want predictable costs. Aligns with our flat $9/mo model vs per-call alternatives.
+
+6. **npm v1.2.0 STILL not published (Day 8).** Every one of these tools supports MCP. Every one of their users could discover us. But we're invisible on npm. This is the most expensive delay in the project.
+
+---
+
 ## 2026-03-24 (6pm) — Tuesday Community Research Deep Dive: GDC 2026 Aftermath, MCP Context Crisis Goes Mainstream, Indie Dev Pain Points Confirm Our Thesis
 
 ### 🔥 HEADLINE: GDC 2026 Survey — 52% Anti-AI But 36% Using It Daily (Our Target Market). Perplexity DROPS MCP Citing 72% Context Waste — Claude Code Ships Lazy-Loading Fix. Context7 (50K⭐, #1 MCP Server) Scores F on Schema Quality. DLSS 5 Backlash Validates "Invisible AI = Good" Rule. Indie Devs' #1 Missing Resource: Marketing, Not Tools.
@@ -1303,3 +1407,105 @@ Researched: r/gamedev, r/godot, Godot Forum, MCP ecosystem blogs, gaming press. 
 5. **Pricing:** All competitors are free/open-source (MIT licensed mostly). No paid gamedev MCP servers found.
 
 6. **Article coverage:** Medium article "7 Best MCP Servers for Game Developers" (Jul 2025) covers Blender MCP, Discord MCP, and engine integrations — no docs/knowledge servers mentioned. Potential PR opportunity.
+
+---
+
+## 2026-03-24 (11:40am) — Tuesday Competitor Scan: VibeUE Enters Unreal MCP Space, MCP Enterprise Roadmap Drops, Godogen Approaching 2K⭐, Star Count Updates
+
+### 🔥 HEADLINE: New Unreal MCP "VibeUE" posted on Epic Forums (open-source, in-editor AI chat). MCP 2026 roadmap officially published with enterprise readiness as top-4 priority. Godogen at 1,988⭐ (approaching 2K milestone). Context7 surpassed 50K⭐. MCP ecosystem at 5,000+ servers (down from inflated 10K+ estimates). Figma enforcing AI credit limits March 2026.
+
+---
+
+### Star Count Updates (March 24, 2026)
+
+| Server | Stars | Change (vs Mar 23) | Last Push | Notes |
+|--------|-------|---------------------|-----------|-------|
+| Context7 (upstash) | **50,442** | — (first track) | Today | #1 MCP server globally. Now tracked. |
+| Coding-Solo/godot-mcp | **2,600** | +44 | Mar 18 | Steady growth but hasn't pushed in 6 days |
+| htdt/godogen | **1,988** | +139 | Today | Approaching 2K milestone, pushed TODAY |
+| IvanMurzak/Unity-MCP | **1,621** | +165 | Today | Biggest jump — accelerating |
+| CoderGamester/mcp-unity | **1,508** | +18 | Today | Steady, both pushing daily |
+| punkpeye/awesome-mcp | **83,991** | — | — | Primary MCP discovery channel |
+| StraySpark (Unreal) | — | — | Mar 19 | 207 tools, Epic Forums presence |
+
+**Notable movements:**
+- **IvanMurzak/Unity-MCP surging** — +165 stars since last count (1,456→1,621). Biggest single-period jump tracked. Both Unity MCP servers pushing daily, fierce competition.
+- **Godogen approaching 2K** — sustained growth over 2 weeks. 1,988 stars. Still pushing daily (Mar 24). The "four rewrites" narrative getting coverage on chyshkala.com, SimpleNews, TopAIProduct, PromptZone.
+- **Coding-Solo/godot-mcp stalled at code level** — 2,600⭐ but last push was Mar 18 (6 days ago). 95+ tools but no recent development activity.
+- **Context7 at 50,442⭐** — first time tracking. Despite the F-grade on schema quality (1,020 tokens for 2 tools), sheer volume of stars makes it the #1 MCP server. General-purpose docs, not gamedev-specific, but worth monitoring for any gamedev content additions.
+
+### New Entrant: VibeUE (Unreal MCP)
+
+**VibeUE** — open-source MCP server for UE5 posted on Epic Developer Community Forums TODAY (March 24). Key details:
+- Free, open-source, community-driven
+- In-editor AI chat integration (connects AI coding tools directly to live Unreal Editor)
+- Adds to the Unreal MCP fragmentation alongside StraySpark (207 tools) and chongdashu/Unreal-MCP (1,600⭐)
+- **Three Unreal MCP servers now competing** for the same editor-integration niche
+- Reinforces our positioning: engine integration space is crowded and fragmenting, knowledge layer is uncontested
+
+### MCP 2026 Roadmap — Enterprise Readiness (WorkOS Analysis)
+
+The official MCP 2026 roadmap was published by lead maintainer David Soria Parra. WorkOS published a detailed analysis (March 22). Key takeaways:
+
+**Four priority areas:**
+1. Transport evolution (streamable HTTP)
+2. Agent communication
+3. **Enterprise readiness** (NEW — first time as top priority)
+4. Governance maturation (Linux Foundation)
+
+**Enterprise readiness specifics:**
+- Audit trails & observability — standard logging for compliance (what did this agent do, when, with whose auth?)
+- Enterprise-managed auth — SSO integration, moving away from static secrets
+- Gateway behavior standardization — undefined today
+- Configuration portability — settings don't travel between clients
+
+**What it means for us:**
+- Enterprise items are **pre-RFC** — no specs yet, just "directional proposals"
+- No dedicated Enterprise Working Group exists — they want practitioners to define it
+- Most enterprise features will be **extensions, not core spec changes** — keeps base protocol light
+- Our stdio-only architecture naturally sidesteps most enterprise auth/gateway concerns
+- The roadmap validates MCP as **transitioning from developer tool to enterprise infrastructure** — legitimizes the entire ecosystem for commercial offerings like ours
+
+### MCP Ecosystem Data Points
+
+- **5,000+ community-built MCP servers** (NxCode, March 21) — more conservative than the "10,000+" claim from GrowthSpree. The 5K number aligns better with other sources.
+- **GitHub secret scanning** now available via GitHub MCP Server (March 17) — scans code for exposed secrets before commit. Security features being added to official MCP servers.
+- **Amazon Ads MCP Server** now in open beta (March 24) — enterprise adoption continuing to accelerate
+- **Azure DevOps Remote MCP Server** in public preview (March 17) — Microsoft fully committed to MCP
+- **AppSignal MCP Server** launched — monitoring data accessible to AI agents
+- **Docker MCP CLI** — `docker mcp gateway run` command documented for containerized MCP management
+- **Figma enforcing AI credit limits** starting March 2026, with subscription or pay-as-you-go options. Validates credit-based monetization for AI tools.
+- **Microsoft 365 Copilot Wave 3** includes MCP connectors with read/write capabilities in ChatGPT Enterprise
+
+### Monetization Updates
+
+- **Figma AI credit enforcement** (March 2026) — additional credit subscription or pay-as-you-go. This is the largest design tool adopting per-use AI pricing, further normalizing the model.
+- **Stormy.ai "2026 Skill Economy"** article describes building and selling Claude Code skills + MCP servers as a business model. "Triple Crown" of agentic standards: MCP + A2A + ACP. Validates the commercial MCP ecosystem thesis.
+- **Talk Python launched MCP server** — education platform using MCP for content delivery. Validates paid-education-via-MCP model (directly parallel to our approach).
+
+### Godot Ecosystem
+
+- **New LobeHub entry** — `neversight-skills_feed-godot-mcp-setup` (March 21). Auto-installs and configures Godot MCP for agent-driven scene manipulation. LobeHub continues to be a Godot MCP aggregation hub.
+- **Fifth Japanese article** on Godot MCP — blog post (March 18) describing Claude Code controlling Godot engine via MCP. Japan adoption of gamedev+MCP continues accelerating.
+- **Godogen coverage expanding** — SimpleNews.ai, TopAIProduct, PromptZone, chyshkala.com all published analysis pieces. The "four rewrites" narrative (creator spent a year building custom GDScript docs) continues to validate our thesis.
+
+### Claude Code MCP Tool Search (Lazy Loading)
+
+- **Claude Code v2.1.7** shipped "MCP Tool Search" — reduces context by 95-99% by lazy-loading tool schemas
+- **Impact on us**: Partially neutralizes our "lean 7-tool server" advantage for Claude Code users specifically. But Cursor, Windsurf, Copilot don't have this. Our efficiency advantage persists on non-Anthropic clients.
+- **Counter-positioning**: Even with lazy loading, our docs CONTENT is the differentiator, not our tool count. Lean schemas are a nice bonus, but the 144 curated docs are the moat.
+
+### Security Landscape
+
+- **Qualys TotalAI** continues fingerprinting MCP servers — "MCP Servers: The New Shadow IT for AI in 2026" updated (March 19). Discovery across network, host, and supply chain.
+- **Bright Security** published MCP security playbook (March 20) — includes benchmark application with dedicated MCP surface, session handling, and end-to-end security tests.
+- **Security narrative solidified**: MCP is now an AppSec concern, not just a developer convenience. Our stdio-only architecture remains the strongest security posture in the gamedev MCP space.
+
+### Key Takeaways
+
+1. **IvanMurzak/Unity-MCP acceleration** (+165 stars) is the biggest movement this period. Unity MCP competition is intensifying while our Unity knowledge-layer niche remains uncontested.
+2. **VibeUE makes THREE Unreal MCP servers** — extreme fragmentation benefits our "one knowledge server" positioning across ALL engines.
+3. **MCP enterprise roadmap** validates the protocol's commercial trajectory. Enterprise features as extensions (not core) keeps stdio servers like ours compatible.
+4. **Godogen at 1,988⭐** approaching the 2K psychological milestone. The sustained press coverage (4+ analysis articles this week) proves demand for curated GDScript knowledge.
+5. **Claude Code lazy loading** partially commoditizes the "lean server" advantage but doesn't touch our content moat.
+6. **npm v1.2.0 still not published** — Day 8 overdue. IvanMurzak pushed TODAY. CoderGamester pushed TODAY. Godogen pushed TODAY. Our competitors are shipping daily while we're stuck at v1.0.0.
