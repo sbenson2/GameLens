@@ -1,4 +1,4 @@
-# 02 — Pre-Production Checklist
+# P1 — Pre-Production Checklist
 > **Phase:** Pre-Production (Weeks 2–3) · **Goal:** Answer every major question before writing game code
 > **Related:** [00 Master Playbook](./00_master_playbook.md) · [E4 Solo Project Management](E4_project_management.md) · [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) · [E9 Solo Dev Playbook](E9_solo_dev_playbook.md)
 
@@ -662,8 +662,8 @@ Follow the structure in [R3 Project Structure](../../monogame-arch/reference/R3_
     build:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v4
-        - uses: actions/setup-dotnet@v4
+        - uses: actions/checkout@v6
+        - uses: actions/setup-dotnet@v6
           with:
             dotnet-version: '9.0.x'
         - run: dotnet build --configuration Release

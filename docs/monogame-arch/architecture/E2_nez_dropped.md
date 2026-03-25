@@ -1,5 +1,5 @@
 # E2 — Why Nez Was Dropped
-> **Category:** Explanation · **Related:** [E1 Architecture Overview](./E1_architecture_overview.md) · [E8 MonoGameStudio Post-Mortem](./E8_monogamestudio_postmortem.md) · [R1 Library Stack](../reference/R1_library_stack.md)
+> **Category:** Explanation · **Related:** [E1 Architecture Overview](./E1_architecture_overview.md) · [E8 MonoGameStudio Post-Mortem](./E8_monogamestudio_postmortem.md) · [R1 Library Stack](../reference/R1_library_stack.md) · [Combat Theory](../../core/concepts/combat-theory.md) · [Networking Theory](../../core/concepts/networking-theory.md)
 
 ---
 

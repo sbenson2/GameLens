@@ -1,5 +1,5 @@
 # E1 — Architecture Overview
-> **Category:** Explanation · **Related:** [E2 GDScript vs C#](./E2_gdscript_vs_csharp.md) · [E3 Project Structure](./E3_project_structure.md) · [G1 Scene Composition](../guides/G1_scene_composition.md) · [G3 Signal Architecture](../guides/G3_signal_architecture.md)
+> **Category:** Explanation · **Related:** [E2 GDScript vs C#](./E2_gdscript_vs_csharp.md) · [G1 Scene Composition](../guides/G1_scene_composition.md) · [G3 Signal Architecture](../guides/G3_signal_architecture.md)
 
 ---
 
@@ -397,7 +397,6 @@ Godot is the best free 2D game engine available. For 3D, it's rapidly improving 
 ## Next Steps
 
 - [E2 GDScript vs C#](./E2_gdscript_vs_csharp.md) — Deep-dive into language choice
-- [E3 Project Structure](./E3_project_structure.md) — Directory layout, naming, autoload organization
 - [G1 Scene Composition](../guides/G1_scene_composition.md) — Hands-on guide to building with scenes
 - [G2 State Machine](../guides/G2_state_machine.md) — Full implementation of the node-based FSM
 - [G3 Signal Architecture](../guides/G3_signal_architecture.md) — When to use direct signals vs bus vs groups

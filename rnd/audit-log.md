@@ -506,3 +506,29 @@ Uses `../R/R1_library_stack.md` and `../G/G1_custom_code_recipes.md` patterns. F
 - Core theory docs consistently lack cross-references to engine implementation guides (same pattern found in audit #2 with other concept docs)
 - G17 Testing covers collision testing and benchmarks extensively but never links to the actual physics or performance guides — topical cross-refs should be added when a guide deeply covers another guide's domain
 - Recently created docs (G5, created 2026-03-22) are clean; older docs accumulate link rot and version drift
+
+---
+
+## Audit #6 — 2026-03-25 (7am cron)
+
+**Docs audited:** godot-rules.md, P13_release_pipeline.md, E2_nez_dropped.md, E1_architecture_overview.md (Godot), P1_pre_production.md
+
+**Issues found and fixed (7 total):**
+
+1. **E1_architecture_overview.md (Godot)**: 2 broken links to `E3_project_structure.md` — file does not exist. Removed from Related header and Next Steps section. No E3 has been created for Godot yet.
+2. **P13_release_pipeline.md**: Title was `# 17` instead of `# P13` (P-file numbering mismatch, same systemic issue found in audits #3 and #5). Fixed.
+3. **P13_release_pipeline.md**: 6 outdated GitHub Actions references (`actions/checkout@v4`, `actions/setup-dotnet@v4`, `actions/upload-artifact@v4`, `actions/download-artifact@v4`). Updated all to `@v6` per Dependabot PRs already merged in the repo.
+4. **P1_pre_production.md**: Title was `# 02` instead of `# P1`. Fixed.
+5. **P1_pre_production.md**: 2 outdated GitHub Actions references (`actions/checkout@v4`, `actions/setup-dotnet@v4`). Updated to `@v6`.
+6. **godot-rules.md**: No cross-references to Godot guides G1-G9 despite being the entry-point rules doc. Added Related Guides section with links to all 9 existing guides.
+7. **E2_nez_dropped.md**: Missing cross-references to combat-theory.md and networking-theory.md (created on Day 7). Added to Related header since the doc's replacement map covers AI, physics, and other systems that these theory docs complement.
+
+**Library version checks:**
+- Apos.Input v2.5.0 in E2: ✅ Correct (NuGet latest is 2.5.0)
+- MonoGame.Aseprite v6.3.1 in E2: ✅ Correct (NuGet latest is 6.3.1)
+
+**Patterns observed:**
+- P-file title numbering mismatch is STILL being found (P1, P13 this round; P3, P12 in prior audits). This is a systemic issue across all P-files — a bulk audit of P-file titles is overdue.
+- Entry-point/rules docs (like godot-rules.md) accumulate stale cross-reference sections as new guides are created — they should be updated whenever a new guide is added to the module.
+- The E3_project_structure.md for Godot was planned but never created — links to it existed prematurely. Lesson: don't add links to docs that don't exist yet; add them when the doc is created.
+- GitHub Actions versions in example code snippets go stale as the ecosystem moves forward — docs with CI/CD examples need periodic version sweeps.

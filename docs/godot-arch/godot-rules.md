@@ -449,3 +449,19 @@ These Godot rules build on top of the core rules. Specifically:
 - **Task structure** from core rules applies — tasks should be completable in one session.
 
 When core rules and Godot rules could conflict, Godot rules take precedence for Godot projects.
+
+---
+
+## Related Guides
+
+For deeper implementation details, see these Godot-specific guides:
+
+- [G1 Scene Composition](./guides/G1_scene_composition.md) — Component scenes, hitbox/hurtbox, instancing
+- [G2 State Machine](./guides/G2_state_machine.md) — Enum, node-based, HSM, and pushdown automaton patterns
+- [G3 Signal Architecture](./guides/G3_signal_architecture.md) — Direct signals, signal bus, groups
+- [G4 Input Handling](./guides/G4_input_handling.md) — InputMap, movement patterns, input buffering, rebinding
+- [G5 Physics & Collision](./guides/G5_physics_and_collision.md) — Body types, collision layers, raycasting
+- [G6 Camera Systems](./guides/G6_camera_systems.md) — Follow, deadzone, shake, zoom, multi-target
+- [G7 TileMap & Terrain](./guides/G7_tilemap_and_terrain.md) — TileMapLayer, auto-tiling, procedural generation
+- [G8 Animation Systems](./guides/G8_animation_systems.md) — AnimationPlayer, AnimationTree, tweens, hit effects
+- [G9 UI & Control Systems](./guides/G9_ui_control_systems.md) — HUD, inventory, dialogue, menus, settings

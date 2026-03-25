@@ -1,4 +1,4 @@
-# 17 — Release Build Pipeline
+# P13 — Release Build Pipeline
 
 
 
@@ -1037,10 +1037,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -1062,7 +1062,7 @@ jobs:
         run: chmod +x ./publish/${{ matrix.artifact }}/${{ env.PROJECT_NAME }}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.PROJECT_NAME }}-${{ matrix.artifact }}
           path: ./publish/${{ matrix.artifact }}
@@ -1075,7 +1075,7 @@ jobs:
 
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: ./artifacts
 
@@ -1112,7 +1112,7 @@ You can extend the workflow to auto-upload to stores:
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Download Windows artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: ${{ env.PROJECT_NAME }}-windows
           path: ./steam/content_windows
@@ -1134,7 +1134,7 @@ You can extend the workflow to auto-upload to stores:
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: ./artifacts
 
