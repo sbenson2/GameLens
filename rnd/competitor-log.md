@@ -4,6 +4,139 @@ Daily scan of MCP registries, GitHub, community forums, and market trends.
 
 ---
 
+## 2026-03-25 (6pm PT) — Community Research Deep Dive: Tutorial-to-Project Gap, Claude Code Gamedev Postmortem, AI Gamedev Goes Mainstream
+
+### 🔥 HEADLINE: r/gamedev's #1 pain point this week: "I understand tutorials but can't build by myself." Claude Code gamedev postmortem goes viral on r/ClaudeCode — 15-year dev shipped 2 mobile 3D games, validates CLAUDE.md + Skills + MCP workflow but calls out context loss as top pain point. Kevuru Games publishes comprehensive "Claude AI in Game Development" article citing 95% studio AI adoption (Unity 2026 report). Vibe coding hits Vox/TechTimes mainstream coverage. MCP ecosystem: 5,000+ servers confirmed, top 50 have 622K+ monthly searches worldwide. Anti-AI friendly fire on r/godot escalating — competent devs accused of using AI for shipping polished work.
+
+---
+
+### Community Pain Points — r/gamedev (This Week)
+
+**1. "Tutorial Hell → Project Heaven" Gap (TOP THREAD)**
+- Dev: "I've done 15-20 tutorials, understand how things work... but can't make a game by myself"
+- Tried to break down "make turret shoot bullet to enemy" into sub-steps, still stumped
+- Says "Googling the small steps didn't help, more so AI code"
+- **Our angle**: This is EXACTLY what structured knowledge solves. Tutorials teach individual mechanics; our docs teach how systems connect (combat → hitbox → damage pipeline → knockback → camera shake). The architecture gap between "I know how X works" and "I can build X from scratch" is our product's sweet spot.
+
+**2. "Gamedev Advice Falls Apart When You Test It" (HOT THREAD)**
+- Dev frustrated that common advice doesn't survive practical testing
+- Commenters: "Half the 'rules' are written by people who spend more time debating theory than actually shipping"
+- **Our angle**: Our docs are implementation-focused, not theoretical platitudes. Every guide has runnable code, tuning tables, and "common mistakes" sections. The anti-patterns sections directly address the "advice that sounds good but doesn't work" problem.
+
+**3. "What's Missing as an Indie Dev?" (43 comments)**
+- Options: art team, engineering team, mentor, marketing team, design team
+- Marketing consistently cited as #1 gap across comments
+- **Our angle**: We can't solve marketing, but we CAN solve "engineering team" — our MCP gives solo devs the architecture knowledge that a senior engineer would provide. Position as "your senior gamedev engineer, always available."
+
+**4. Burnout + Scope Creep (Recurring)**
+- Multiple posts this week: solo dev sharing pain about year-long project, mental rut posts, Tangy TD dev who spent 4 YEARS making a tower defense game (viral story)
+- **Our angle**: E4 Solo Project Management directly addresses scope management, kill criteria, burnout prevention. The pre-mortem exercise and pivot decision framework are highest-value sections.
+
+### Community Pain Points — r/godot (This Week)
+
+**1. Anti-AI Friendly Fire ESCALATING**
+- Dev with decades of web experience shipped polished Godot project after 1 month of learning
+- Community members accused them of using AI: "Disappointed to see you used AI for some stuff like your sprite and shader"
+- Dev had to explicitly defend: "I used the godot editor, didn't install any plugin to get helped from AI agents"
+- **CRITICAL for launch strategy**: Our r/godot launch post must NOT mention AI in the headline. Frame as "gamedev documentation server" not "AI knowledge MCP." The community's default assumption is that anything polished + AI-adjacent = lazy AI slop.
+
+**2. Code Structure for Beginners (Recurring)**
+- Comment in beginner showcase: "I can imagine when starting to learn Godot, you will have a tendency to put everything in one function, one class/node"
+- This is exactly what G1 Scene Composition addresses — but beginners don't know to search for it
+
+**3. Save/Load for Runtime Nodes (Godot Forum, STILL active)**
+- Godot 4.6 user trying to save complex levels with runtime-created nodes
+- PackedScene.pack() approach vs JSON approach — confusion about which is correct for what
+- **Our G11 Save/Load guide covers this comprehensively** but no one knows it exists yet
+
+**4. GDScript Learning Plateau (Godot Forum, TODAY)**
+- User: "I have been trying to code and understand GDScript for maybe 2 Years now... I only really understand If, While, loops, functions a little bit"
+- Another thread: complete beginner asking for learning resources
+- **Our angle**: These users don't need a tutorial — they need architecture patterns (state machines, signals, scene composition) that show how to THINK about code structure. Our Godot module fills this exact gap.
+
+### r/ClaudeCode — Gamedev Goes Mainstream
+
+**🔥 "Gamedev with Claude Code — A Postmortem" (VIRAL, 6 days ago)**
+- Author: 15-year senior web/mobile dev, first-time 3D game developer
+- **Shipped 2 complete mobile 3D games** (Block Orbit + Gridrise) "almost entirely with Claude Code"
+- Tech: Swift/Metal 3, React Native/Three.js
+- **What worked**: Speed (day-long features in 1 hour), Claude Skills for image generation + App Store screenshots, shader code generation, game-feel iteration through conversation
+- **What was harder**: "You still need to know what you want" — generic prompts = generic output. Context management required detailed CLAUDE.md + multiple .md architecture files. Debugging visual/rendering issues is rough (Claude can't see the screen). AI introduces subtle bugs while fixing others.
+- **KEY QUOTE**: "Context management on a large codebase requires effort. I maintained a detailed CLAUDE.md with the full architecture and several .md files that had (game-design) specifics. Without that it would constantly lose track of how things connect."
+- **Comment from Unity dev**: "I'm trying to make my first game in unity. Even with the unity mcp, since I lack the unity experience it's been the hardest part."
+- **OUR THESIS VALIDATED**: This developer independently built the exact workflow our MCP replaces — hand-maintained .md files with architecture knowledge to prevent context loss. We ARE the pre-built, searchable, cross-engine version of those .md files.
+
+**"AI Game Developer" for Unity (r/ClaudeCode)**
+- Full solution for Claude Code + Unity: CLI, Skills, MCP, Reflection, Roslyn
+- Claims ~95% of game dev workflow coverage
+- Shows the AI+Unity gamedev ecosystem is maturing fast — editor-integration tools proliferating
+
+**Claude Code + Google Stitch (r/ClaudeCode, TODAY)**
+- Thread about generating full UI designs with Stitch via Claude Code
+- Our G_stitch_ui_workflow.md is already ahead of this trend
+
+### AI + Gamedev — Mainstream Coverage
+
+**Kevuru Games: "Using Claude AI in Game Development" (Published TODAY)**
+- Comprehensive 3,000+ word article with industry statistics
+- **95% of game studios worldwide now use AI** (Unity 2026 Gaming Report, 300+ studios surveyed, 5M creators)
+- 62% use AI agents for backend/coding, 44% for narrative/lore, 35% for visual prototyping
+- **AI in games market: $5.85B (2024) → $8.4B (2026)**, CAGR >20.5%
+- Claude Code's $2.5B revenue run rate cited, 41% confidence rating
+- Article explicitly describes MCP as game-changer: "Instead of simply generating code, it can now communicate with real software systems"
+- **Mentions Claude Skills** as key differentiator — "A package of instructions and resources that teaches Claude how to perform a specific task"
+- **Our takeaway**: The market is being educated about MCP + gamedev. This article is written for studios evaluating AI tools. When they search for "gamedev MCP server" after reading this, we need to be findable.
+
+**Vox, TechTimes: Vibe Coding Goes Fully Mainstream (TODAY)**
+- Vox: "Vibe coding and what it means for the future of programming, explained"
+- TechTimes: "10 Best Vibe Coding Tools in 2026"
+- Product Hunt now has a dedicated "Vibe Coding" category
+- METR study cited: experienced devs using AI actually 19% SLOWER, despite believing 20% faster
+- **Our angle**: The METR study supports our thesis — raw AI coding tools SLOW you down without structured knowledge. Our MCP prevents the floundering that causes the slowdown (wrong patterns, hallucinated APIs, missing architecture context).
+
+### MCP Ecosystem Updates
+
+**5,000+ community MCP servers confirmed** (NxCode, Apify, multiple sources)
+- Down from the "11,400+" number seen earlier — unclear if methodology changed or earlier counts were inflated
+- Top 50 have 622K+ monthly searches worldwide (MCPManager.ai data)
+- **Engineers driving 84% of adoption** (42/50 top servers are engineering tools)
+
+**MCP 2026 Roadmap: Enterprise Readiness (WorkOS)**
+- Conformance test suites for spec verification
+- SDK tiering and reference implementations
+- Enterprise features: audit trails, SSO-integrated auth
+- **Our takeaway**: MCP is transitioning from "dev tool" to "enterprise infrastructure." Our stdio-only transport + simple schema is an advantage during this transition — we're easy to audit and secure.
+
+**MCP Security Narrative Continues**
+- Qualys TotalAI now fingerprints MCP servers (confirmed again this week)
+- InstaTunnel Medium post: "Securing MCP Servers: The 2026 Guide to AI Tool Tunneling"
+- Scalable transport via Streamable HTTP, governance, enterprise readiness all trending topics
+- **Our stdio-only architecture remains cleanest security story**
+
+### Competitor Star Tracking
+
+| Server | Stars (approx) | Change | Notes |
+|--------|----------------|--------|-------|
+| Godogen (htdt) | ~2,000+ | Sustained | YouTube mainstream coverage, likely past 2K |
+| Coding-Solo/godot-mcp | ~2,560+ | Steady | 95+ tools, biggest Godot editor MCP |
+| CoderGamester/mcp-unity | ~1,500+ | Surging | Biggest single-day jumps |
+| IvanMurzak/Unity-MCP | ~1,460+ | Steady | Pushed this week |
+| godot-mcp-docs | 51 | Dead | Unchanged since Jul 2025 |
+
+### Strategic Implications
+
+1. **The Claude Code gamedev postmortem is our strongest external validation yet.** A 15-year dev independently created the exact workflow our MCP replaces (hand-maintained .md architecture files to prevent context loss). Marketing should quote: "Without [architecture docs] it would constantly lose track of how things connect."
+
+2. **95% studio AI adoption (Unity 2026 report) kills the "AI isn't used in gamedev" narrative.** This is now the MAJORITY behavior, not early adopter territory. Our TAM is effectively the entire game industry.
+
+3. **The "tutorial hell" pain point is perfectly addressed by our docs.** Tutorials teach isolated mechanics; our guides teach connected systems. The r/gamedev poster who can break down "turret shoots at enemy" into sub-steps but can't implement them needs exactly what our damage pipeline + projectile system + AI targeting docs provide — connected, implementation-ready architecture.
+
+4. **Anti-AI sentiment on r/godot is now at "guilty until proven innocent" level.** Even non-AI users are being accused. Our launch framing must be: "Cross-engine gamedev documentation" — NO mention of AI in the headline, no mention of MCP in the tagline. Lead with what it IS (147+ architecture guides), not HOW it's delivered (MCP protocol for AI agents).
+
+5. **The METR "19% slower with AI" study is a GIFT for our positioning.** Raw AI tools slow you down because they lack structured knowledge → hallucinate → require rework. Our MCP prevents this by providing correct, tested patterns from the start. Marketing angle: "AI makes you slower? Only if your AI doesn't know how games work."
+
+---
+
 ## 2026-03-25 (8am PT) — MCP Top 50 List Published, PolicyNote Paid MCP in OpenAI Store, Docker MCP Gateway v2, Context Window Debate Peaks
 
 ### 🔥 HEADLINE: MCPManager.ai publishes definitive "50 Most Popular MCP Servers" by Ahrefs search volume (642K+ monthly worldwide). FiscalNote launches PAID PolicyNote MCP in OpenAI App Store (TODAY). Docker MCP Gateway v2 gets enterprise traction. "MCP Won. MCP Might Also Be Dead." DEV article captures the dual narrative perfectly. Context7 F-grade (1,020 tokens/2 tools) article now live on DEV Community. Claude Code /context command now warns about MCP context bloat. MCP gateway market emerging (Bifrost, TrueFoundry, Lunar.dev, Kong, Docker).
