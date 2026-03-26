@@ -1,207 +1,247 @@
 # Feature Roadmap — gamedev-mcp-server
 
 **Created:** 2026-03-21 (Week B strategic rotation)  
-**Last updated:** 2026-03-21
+**Last updated:** 2026-03-25 (Week B Cycle 2)
 
 ---
 
-## Current State: v1.1.0 (prepped, not published)
+## Current State: v1.3.0 (local, GitHub suspended)
 
-- 130 docs across 3 modules (core 49, MonoGame 76, Godot 5)
-- 6 MCP tools: search_docs, get_doc, list_docs, list_modules, genre_lookup, session
-- TF-IDF search with section extraction + maxLength
+- **147 docs** across 3 modules (core 51, MonoGame 80, Godot 16)
+- **10 MCP tools**: search_docs, get_doc, list_docs, list_modules, genre_lookup, compare_engines, migration_guide, random_doc, session, license_info
+- **190 tests**, 28 suites, 1.5s runtime
+- Godot module at **80%** (16/20 planned) — viable product
+- MonoGame at **100%** genre coverage
+- TF-IDF search with section extraction, maxLength, cross-engine filtering, synonym expansion
 - Free/Pro tier gating via LemonSqueezy
 - Module auto-discovery (zero-config engine additions)
-- Cloudflare Workers API scaffolded (Phase 3 complete)
-- CI/CD pipeline (GitHub Actions, 36 tests)
-- npm published (v1.0.0 live, v1.1.0 ready)
+- Cloudflare Workers API scaffolded + local smoke-tested (5 endpoints)
+- Client-side caching (disk cache + stale fallback + hybrid provider)
+- CI/CD pipeline (GitHub Actions, Node 18/20/22/24 matrix, CodeQL, Dependabot)
+- Analytics conversion tracking (pro gate impressions, tool call timing, search recording)
+- npm published at v1.0.0 only — **v1.3.0 NOT published (Day 9 overdue)**
+- **🔴 GitHub account SUSPENDED** — all external distribution blocked
+
+### What shipped since v1.0.0 (unpublished)
+| Feature | Version | Status |
+|---------|---------|--------|
+| Section extraction + maxLength | v1.1.0 | ✅ Built, not published |
+| Module auto-discovery + list_modules | v1.1.0 | ✅ Built, not published |
+| Cross-engine search with engine filter | v1.2.0 | ✅ Built, not published |
+| compare_engines tool | v1.2.0 | ✅ Built, not published |
+| random_doc tool | v1.2.0 | ✅ Built, not published |
+| migration_guide tool | v1.3.0 | ✅ Built, not published |
+| list_docs summary mode | v1.1.0 | ✅ Built, not published |
+| Client-side caching (disk + stale fallback) | v1.2.0 | ✅ Built, not published |
+| Workers API scaffold + smoke test | v1.2.0 | ✅ Built, not published |
+| Analytics/conversion tracking | v1.3.0 | ✅ Built, not published |
+| Godot 0% → 80% (16 docs, 480KB) | v1.1–v1.3 | ✅ Built, not published |
+| Search P1-P3 fixes + quality rounds 1-4 | v1.1.0 | ✅ Built, not published |
+| 190 tests (from 19 at v1.0.0) | v1.1–v1.3 | ✅ Built, not published |
+
+**The gap between what's built and what's shipped is the #1 strategic problem.**
 
 ---
 
-## v1.1.0 — Ship & Stabilize (NOW → April 2026)
+## v1.3.0 — UNBLOCK & SHIP (NOW — immediate)
 
-**Theme:** Get what we've built into users' hands. Zero new features, 100% distribution.
+**Theme:** Remove the GitHub blocker, publish everything, get real users. Zero new features.
 
-### Must-ship
-- [ ] **npm v1.1.0 publish** — release workflow dispatch or manual
-- [ ] **MCP registry submissions** — mcp.so, smithery.ai, mcpmarket.com, Cline marketplace
-- [ ] **claudefa.st "50+ Best" list** — discovery opportunity
-- [ ] **GitHub repo polish** — topics, description, social preview image
-- [ ] **.well-known/mcp.json** — MCP 2026 roadmap prioritizes server metadata discovery; early adoption signals maturity
+### Critical path (blocking order)
+1. **🔴 Resolve GitHub suspension** — Wes contacts support.github.com. Check email for reason. Without this, steps 2-6 are impossible.
+2. **🔴 `git push`** — 140 local commits queued. Single push catches up remote.
+3. **🔴 `npm publish`** — v1.3.0 to npm. Manual publish if OIDC pipeline untested. Day 9 overdue.
+4. **🟠 MCP registry submissions** — mcp.so, smithery.ai, mcpservers.org, LobeHub, Cline, awesome lists. All 9 drafts ready in `rnd/marketing/registry-submissions.md`.
+5. **🟠 GitHub repo polish** — Topics, description, social preview image, .well-known/mcp.json.
+6. **🟡 Launch posts** — DEV Community + r/aigamedev + r/gamedev. Drafts ready in `rnd/marketing/blog-post-launch.md`.
 
-### Should-ship
-- [ ] **Search P4: basic stemming** — "animations" ≠ "animation" still fails; medium effort, high search quality impact
-- [ ] **Godot E2 GDScript vs C#** — highest-demand Godot doc; ship with v1.1.0 content
-- [ ] **Godot G4 Input Handling** — every game needs InputMap + actions
+### Contingency (if GitHub suspension >1 week)
+- [ ] Set up GitLab mirror for remote backup
+- [ ] Verify npm auth is independent of GitHub (npm token vs GitHub OIDC)
+- [ ] Prepare alternative repo URLs for registry submissions
+- [ ] Consider npm publish from local if npm token works without GitHub
 
-### Metrics to track
-- npm weekly downloads (baseline: 0 — we've had no real users yet)
-- GitHub stars (baseline: 0)
-- MCP registry impressions (if exposed)
-- Free → Pro conversion (LemonSqueezy dashboard)
+### Ship criteria
+- npm download count > 0 (literally any real user)
+- Listed on ≥3 MCP registries
+- At least 1 community post published
+
+### What we will NOT do in this phase
+- No new docs. No new tools. No new features.
+- The 147 docs and 10 tools are the product. Ship it.
 
 ---
 
-## v1.2.0 — Content Depth & API Live (April–May 2026)
+## v1.4.0 — Polish & Learn (1-2 weeks after ship)
 
-**Theme:** Godot module to 50%+, Workers API deployed, cross-engine search.
+**Theme:** Respond to real user feedback. Fix what matters, not what we imagine.
+
+### Planned (pending user signal)
+- [ ] **Search P4: synonym map** — 10-15 entries for known gaps (chase→pathfind, follow→ai, spawn→pool). Highest-leverage search improvement remaining. ~30 min work.
+- [ ] **Search P5: basic stemming** — "animations" ≠ "animation". Medium effort. Deferred until we know if users hit this.
+- [ ] **Godot G14 Navigation** — last HIGH-priority gap, boosts 5 genres by 10-15% each
+- [ ] **Godot G15 Particles** — completes visual effects coverage
+- [ ] **Godot E3 Project Structure** — the planned doc that left broken links in E1
+- [ ] **Godot E4 Autoloads & Singletons** — foundational pattern referenced everywhere
+- [ ] **Schema efficiency audit** — Context7 scored F (1,020 tokens/2 tools). Audit our 10-tool schema, optimize descriptions to <200 chars each, market the grade.
+- [ ] **list_modules in free tier** — metadata-only, no content leak. Improves discovery UX.
+- [ ] **Bulk cross-reference pass** — 4 consecutive doc audits found the same issue: older docs lack backlinks to newer docs. One-time bulk fix.
+
+### Metrics to watch
+- npm weekly downloads → is anyone installing?
+- Search query patterns → what are users actually looking for?
+- Pro gate hit rate → what content drives upgrade interest?
+- GitHub issues → what's broken/missing?
+- Tool call distribution → which of our 10 tools get used?
+
+### Decision gates
+- **If downloads < 10/week after 2 weeks:** Problem is discovery, not product. Double down on registry submissions + community posts.
+- **If downloads > 50/week but 0 Pro conversions:** Free tier too generous, or Pro content not compelling enough. Revisit tier gating.
+- **If specific search queries consistently fail:** Add targeted synonym entries, don't rebuild search.
+- **If Godot users dominate:** Prioritize Godot G14-G20 completion over Unity module.
+- **If MonoGame users dominate:** Prioritize MonoGame polish over new engines.
+
+---
+
+## v2.0.0 — Unity Module & Monetization Live (June–August 2026)
+
+**Theme:** Second engine, real revenue, API production deploy.
 
 ### Features
 
-#### Cross-Engine Search (HIGH)
-- Search results annotated with engine/module source
-- `engine` filter param for search_docs: `search_docs("camera follow", engine: "godot")`
-- When a doc exists in multiple engines, surface both and note differences
-- **Why now:** With Godot at 10+ docs, cross-engine search becomes meaningful. This is our core differentiator vs single-engine MCPs.
+#### Unity Module Launch (HIGH) — ZERO knowledge-layer competitors exist
+- **Phase 1** (4 docs): unity-rules.md, E1 Architecture (Unity 6/URP, NOT HDRP), G1 Scene Setup (GameObjects vs ECS decision), G2 MonoBehaviour Patterns
+- **Phase 2** (4 docs): G3 Input System, G4 Physics, G5 UI Toolkit (not UGUI — deprecated), G6 ECS/DOTS Intro
+- **Phase 3** (4 docs): G7 Addressables, G8 Shader Graph, G9 Animation (Animator + Timeline), G10 Networking (Netcode for GameObjects)
+- **Why v2.0:** Unity 6.4 made ECS core (not optional), HDRP is maintenance-only, CoreCLR coming in 6.8, UI Toolkit replacing UGUI. Four simultaneous paradigm shifts = massive "which pattern is correct?" confusion that AI agents get wrong. unity-rules.md constraining AI to 2026 patterns is the single highest-leverage doc we can create.
+- **Competitive moat:** Unity has 8+ editor-integration MCPs, ZERO knowledge-layer MCPs. Unity AI Beta adding MCP Gateway means every Unity dev will learn what MCP is → awareness for third-party knowledge servers.
+- **Timing:** STS2 + CS2 narrative ("Godot ships $92M hits while Unity's biggest game failed") is peak. Unity devs exploring alternatives need cross-engine comparison docs.
 
 #### Cloudflare Workers API — Production Deploy (HIGH)
-- Phase 4: Client-side caching (HTTP client, disk cache, fallback to bundled)
-- Phase 5: Integration testing (E2E, tier gating, offline fallback)
-- Deploy to `api.gamedev-mcp.com` or workers.dev subdomain
-- **Why now:** Pro content gating is client-side only — trivially bypassed. Server-side gating is the monetization foundation.
+- Deploy to production (workers.dev subdomain or custom domain)
+- KV populated with all 147+ docs
+- Real rate limiting, real tier gating, real caching
+- **Why v2.0:** Server-side Pro gating is the monetization foundation. Client-side gating is trivially bypassed.
+- Scaffold + smoke test already done (Day 8). Deployment is infrastructure setup, not code.
 
-#### Godot Module Expansion to 50% (HIGH)
-- Target: 10/20 docs (5 more: E2, G4, G5, G6, G7)
-- G5 Physics (CharacterBody2D/RigidBody2D/Area2D) — Godot's core
-- G6 Camera — Camera2D is fundamentally different from MonoGame
-- G7 TileMap — TileMapLayer 4.3+ breaking changes
-- **Why now:** 5 docs is a demo. 10 docs is a product. Devs won't pay for 5 Godot guides.
+#### LemonSqueezy Subscription Live (HIGH)
+- $9/mo or $79/yr (27% annual discount)
+- Product page on LemonSqueezy
+- License validation integrated (already coded, needs production keys)
+- Setup guide created at `rnd/marketing/lemonsqueezy-setup.md`
+- **Why v2.0:** Can't have Pro users without a payment method. This is table stakes.
 
-#### `compare_engines` Tool (MEDIUM)
-- Given a concept (e.g., "state machine", "camera", "signals"), return side-by-side comparison
-- Uses existing docs from both modules + structured diffing
-- Maps MonoGame concepts → Godot equivalents (ECS → nodes, systems → signals, etc.)
-- **Why now:** Engine migration is the #2 search intent after "how do I build X." Devs moving Unity→Godot (accelerating per DEV Community trends) would kill for this.
+#### Godot Module to 100% (MEDIUM)
+- Remaining 4 docs: G14 Navigation, G15 Particles, E3 Project Structure, E4 Autoloads
+- Brings module to 20/20 planned
+- **Why v2.0:** Completeness is a marketing message. "Full Godot coverage" > "80% Godot coverage."
 
-#### Core Theory Gap Fill (MEDIUM)
-- combat-theory.md — referenced by 8/11 genres, no theory doc
-- state-machine-theory.md — cross-engine fundamental
-- save-system-theory.md — confirmed community gap (Godot Forum, 2 days ago)
-- **Why now:** Theory docs serve ALL engines. Higher leverage per doc than engine-specific content.
-
-#### `random_doc` Tool (LOW)
-- Returns a random doc appropriate for the user's tier
-- Optional category/engine filter
-- Use case: "teach me something new about gamedev" — serendipitous discovery
-- **Why now:** Low effort, high delight. Good for demos and content marketing.
-
-### Pricing changes
-- None — $9/mo confirmed in Week A analysis. Hold until we have users to optimize for.
+### Pricing updates
+- $9/mo validated by 5+ external data points (Ref, Talk Python MCP, GodotIQ, Ludo.ai, Figma credits)
+- **NEW: Dual-model architecture planned** — subscription for humans (LemonSqueezy $9/mo), per-call for agents (x402 paidTool wrapper, $0.01/search, $0.03/get_doc) as PAYG tier
+- x402-mcp npm package exists (Vercel, Apache 2.0) — ~5 lines to add PAYG to any tool
+- Stripe MPP launched March 18 (50+ services) — native MCP transport binding available
+- PAYG deferred to v2.0 launch or v2.1 — need human subscriber data first before adding agent pricing
 
 ---
 
-## v2.0.0 — Multi-Engine & Monetization (June–August 2026)
+## v2.5.0 — Agent-Native & Scale (Q4 2026)
 
-**Theme:** Unity module launch, agent-native features, real revenue.
+**Theme:** Meet agents where they are. Scale to 200+ docs with better search.
 
 ### Features
 
-#### Unity Module Launch (HIGH)
-- Phase 1 (4 docs): unity-rules.md, E1 Architecture (Unity 6/URP focus), G1 Scene Setup, G2 MonoBehaviour Patterns
-- Phase 2 (4 docs): G3 Input System, G4 Physics, G5 UI Toolkit, G6 ECS Intro
-- Phase 3 (4 docs): G7 Addressables, G8 Shader Graph, G9 Animation, G10 Networking
-- **Why v2.0:** Unity is the largest potential market but also the most complex (HDRP deprecated, ECS becoming core, Unity 6 breaking changes). Needs substantial prep. C# overlap with MonoGame accelerates creation.
-- **Competitive note:** ZERO knowledge-layer MCP servers exist for Unity. 6+ editor-integration servers but nobody doing curated guides. We'd be first.
+#### Bevy Module (MEDIUM)
+- Start with bevy-rules.md (standalone viral potential, like godot-rules.md)
+- 6-doc focused module (not 20 like Godot/Unity) — Bevy's 3-month breaking release cycle makes broad docs a maintenance burden
+- E1 Architecture (ECS-first), G1 System Ordering, G2 State Management, G3 Asset Loading, G4 UI (biggest community pain), G5 Audio
+- Market bigger than estimated: 44K+ GitHub stars (~40% of Godot's)
+- ZERO knowledge-layer Bevy MCPs (100% whitespace after 6 research rotations)
+- **Timing risk:** 0.19-dev already in CI. bevy-rules.md should ship BEFORE 0.19 to capture the 0.18→0.19 transition window
 
-#### Streamable HTTP Transport (HIGH)
-- MCP 2026 roadmap priority: evolving transport for remote services
-- Migrate from stdio-only to support streamable HTTP (alongside stdio for local use)
-- Enables: remote hosting, load balancing, session-less operation
-- Required for: marketplace distribution (MCPize, MCP-Hive), enterprise adoption
-- **Why v2.0:** Spec hasn't stabilized yet. Wait for MCP Working Group to land the SEPs, then adopt. Don't build on shifting sand.
-
-#### `migration_guide` Tool (HIGH)
-- Given source engine + target engine + concept, generate migration guidance
-- "I'm moving my platformer from Unity to Godot — what changes?"
-- Pulls from engine-specific docs + core theory to produce actionable migration steps
-- **Why v2.0:** Needs 10+ docs in at least 2 engine modules to be useful. Can't ship until Unity or Godot is substantial.
+#### Semantic Search (MEDIUM)
+- Replace/augment TF-IDF with lightweight embeddings
+- Options: Cloudflare Vectorize (Workers-native), local transformers.js
+- Enables concept-level matching: "my character falls through the floor" → physics/collision docs
+- **Why v2.5:** TF-IDF adequate at 147 docs. At 200+ docs with 3 engines, keyword matching breaks down.
 
 #### Agent-Native Billing (MEDIUM)
-- x402 / Google UCP — emerging protocols for AI-agent payments
-- Per-call pricing as an alternative to subscription
-- Potential: agents autonomously purchase Pro access when they need a doc
-- **Why v2.0:** Protocols aren't ready for primetime in March 2026. Monitor, architect for it, don't build yet.
+- x402 paidTool overlay for PAYG
+- Stripe MPP for session-based streaming payments
+- Per-call: $0.01/search, $0.03/get_doc, $0.10/migration_guide
+- **Why v2.5:** Need subscription data first. Agent-only users who'd never visit a pricing page need a way to pay.
 
-#### Team Tier ($29/mo) (MEDIUM)
-- 5 seats, shared config
-- Priority API rate limits
-- Usage analytics dashboard (which docs are agents pulling most?)
-- **Why v2.0:** Need individual traction first. Don't build team features before proving solo product-market fit.
-
-#### Semantic Search Upgrade (MEDIUM)
-- Replace TF-IDF with lightweight embedding-based search
-- Options: Cloudflare Vectorize (Workers-native), local embeddings via transformers.js
-- Enables: concept-level matching ("my character falls through the floor" → physics/collision docs)
-- **Why v2.0:** TF-IDF is adequate at 130 docs. At 200+ docs with 3 engines, keyword matching breaks down. Invest when scale demands it.
+#### Streamable HTTP Transport (MEDIUM)
+- MCP 2026 roadmap priority: stateless HTTP transport for remote services
+- Add alongside stdio (not replacing it)
+- Enables: marketplace distribution (MCPize, MCP-Hive), load balancing, enterprise adoption
+- **Why v2.5:** MCP spec Working Groups still iterating. Wait for stability, then adopt quickly.
 
 #### `explain_error` Tool (LOW → MEDIUM)
-- Paste a game engine error message → get relevant docs + fix suggestions
-- Uses error pattern matching + search
-- High-value for Godot (cryptic error messages are a known pain point)
-- **Why v2.0:** Needs a curated error→solution mapping. Build as docs reach critical mass.
+- Paste engine error message → get relevant docs + fix suggestions
+- High-value for Godot (cryptic errors) and Unity (ECS/DOTS confusion)
+- Needs curated error→solution mapping
+
+#### AGENTS.md + Claude Code Skill Packaging (MEDIUM)
+- Add AGENTS.md to repo root for agent-native discovery
+- Package as Claude Code Skill for Stripe/Cloudflare-style distribution
+- Karpathy's "Build. For. Agents." — this is the MCP equivalent of "mobile first"
 
 ---
 
-## v3.0.0 — Platform (2026 Q4+)
+## v3.0.0 — Platform (2027+)
 
-**Theme:** From tool to platform. Community content, Bevy module, API ecosystem.
+**Theme:** From tool to platform. Community, ecosystem, enterprise.
 
-### Speculative Features (subject to market validation)
-
-#### Bevy Module
-- Rust ECS engine — growing fast, AI-friendly (text-based, strong types)
-- Wait for Bevy 0.15+ stability before investing
-- Community might contribute if we open the content format
-
-#### Community-Contributed Docs
-- Standardized doc format + submission pipeline
-- Review process for quality control
-- Revenue share for Pro community docs?
-- Risk: quality dilution. Mitigate with strict templates + editorial review.
-
-#### IDE/Editor Plugins
-- VS Code extension: one-click MCP server setup
-- Cursor/Windsurf native listing
-- Godot editor plugin (search docs from within engine)
-
-#### Interactive Tutorials
-- Step-by-step guides that verify code at each step
-- "Build a platformer in Godot" with AI-guided progression
-- Substantially more complex than docs — different product category
-
-#### API Ecosystem
-- Public API for third-party integrations
-- Webhooks for new doc notifications
-- Embeddable doc widgets for game dev blogs/courses
+### Speculative
+- Community-contributed docs with review pipeline + revenue share
+- IDE/editor plugins (VS Code one-click setup, Godot editor plugin)
+- Interactive tutorials with AI-guided progression
+- Public API + webhooks for third-party integrations
+- Team tier ($29/mo, 5 seats, usage analytics)
+- Enterprise tier (SSO, audit trails, self-hosted)
 
 ---
 
 ## Anti-Roadmap: Things We Won't Build
 
-These come up repeatedly but are intentionally excluded:
-
 | Idea | Why Not |
 |------|---------|
-| **Editor integration tools** (scene manipulation, node creation) | Crowded market (7+ Godot MCPs). Not our niche. |
+| **Editor integration tools** (scene manipulation, node creation) | Crowded market (10+ Godot MCPs, 8+ Unity). Not our niche. |
 | **Code generation** | AI models do this natively. We provide knowledge, not codegen. |
-| **Asset generation** (sprites, audio, 3D models) | Completely different product. Ludo.ai does this. |
+| **Asset generation** (sprites, audio, 3D models) | Different product entirely. Ludo.ai does this. |
 | **Engine-specific project scaffolding** | One-time use. Low recurring value. |
-| **Chat/forum community** | Discord/Reddit exist. Don't build what already works. |
-| **Video tutorials** | Different medium, different skills, different audience. |
+| **Chat/forum community** | Discord/Reddit exist. Don't build what works. |
+| **Video tutorials** | Different medium, different audience. |
+| **Broad docs MCP** (competing with Context7) | Gamedev niche is our moat. Context7 has 240K weekly downloads but generic = shallow. |
 
 ---
 
-## MCP Spec Alignment
+## Market Timing Notes (updated 2026-03-25)
 
-Key MCP 2026 priorities that affect us:
+### Tailwinds
+- **All major IDEs support MCP natively** — Claude Code, Cursor, Copilot, Windsurf, Codex, Qwen Code. TAM = entire AI-assisted dev population.
+- **97M monthly MCP SDK downloads** (Feb 2026). Protocol entrenched.
+- **95% of game studios use AI** (Unity 2026 report). 36% of individual devs (GDC 2026).
+- **STS2 $92M on Godot** — biggest indie launch in history. Godot credibility at all-time high.
+- **Claude Code postmortem (viral r/ClaudeCode)** — senior dev maintained CLAUDE.md + architecture .md files = exactly what our MCP replaces.
+- **Talk Python MCP** — paid education content delivered via MCP. Direct business model validation.
+- **Stripe MPP + x402** — agent-native payments now production-ready.
+- **MCP security crisis benefits us** — 7,000 exposed HTTP servers, RSAC "unfixable" verdict. Our stdio-only transport is the antidote.
+- **Context7 scored F on schema quality** (1,020 tokens/2 tools). Our lean 10-tool server is the counterexample.
 
-| MCP Priority | Our Response | Timeline |
-|-------------|-------------|----------|
-| **Transport evolution** (streamable HTTP, stateless sessions) | Add HTTP transport alongside stdio in v2.0 | Q3 2026 |
-| **Server metadata** (.well-known/mcp.json) | Early adopt in v1.1 — low effort, signals maturity | Now |
-| **OAuth/Elicitation** | Watch — relevant for Workers API auth but LemonSqueezy keys work today | v2.0+ |
-| **Agent communication** (Tasks primitive) | Not relevant yet — we're a knowledge server, not an agent orchestrator | v3.0+ |
-| **Enterprise readiness** (governance, compliance) | Team tier addresses this | v2.0 |
+### Headwinds
+- **GitHub account suspended** — all distribution frozen.
+- **npm v1.0.0 stale for 9 days** — every day without publishing wastes the STS2 hype window.
+- **Anti-AI sentiment in r/godot** — friendly fire pattern (competent devs accused of AI usage). Launch framing must avoid AI as headline.
+- **Claude Code lazy MCP loading** (v2.1.7) — reduces context by 95-99%, partially neutralizes "lean server" advantage for Claude users. Cursor/Windsurf/Copilot don't have this yet.
+- **MCP fatigue emerging** — users complaining about too many servers. Position as "the ONE knowledge server" not "another MCP."
+- **Perplexity dropped MCP internally** (72% context waste) — but from Apideck's 40-tool servers, not 7-tool servers like ours.
+
+### Time-sensitive windows
+- **STS2 Godot hype** — still active (AllKeyShop article Mar 25), but fading. Ship within 1-2 weeks to ride it.
+- **Bevy 0.18→0.19 transition** — bevy-rules.md has highest value during the transition period when old patterns break.
+- **Unity 6.4 confusion** — ECS-as-core just landed. Unity devs are asking "which pattern?" RIGHT NOW.
 
 ---
 
@@ -209,10 +249,46 @@ Key MCP 2026 priorities that affect us:
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2026-03-19 | $9/mo, LemonSqueezy | Matches Ref pricing, validated by Week A analysis |
+| 2026-03-19 | $9/mo, LemonSqueezy | Matches Ref pricing, validated by 5+ data points |
 | 2026-03-19 | Cloudflare Workers for API | Cheapest, global edge, generous free tier |
 | 2026-03-20 | Section extraction before more content | Context efficiency is competitive differentiator |
 | 2026-03-21 | Unity before Bevy | 10x larger market, C# overlap with MonoGame |
 | 2026-03-21 | No editor integration | Deliberate niche focus — knowledge layer only |
 | 2026-03-21 | HTTP transport waits for MCP spec stability | Don't build on shifting sand |
 | 2026-03-21 | Delay semantic search until 200+ docs | TF-IDF adequate at current scale |
+| 2026-03-24 | Dual-model pricing (sub + PAYG) | x402 + Stripe MPP now production-ready; agent-only users need a payment path |
+| 2026-03-25 | v1.3.0 = ship-only, zero new features | 9 days of unpublished work. Distribution debt > content debt. |
+| 2026-03-25 | bevy-rules.md may ship before full module | Standalone viral potential + 0.18→0.19 window closing |
+| 2026-03-25 | r/godot launch avoids "AI" in headline | Anti-AI friendly fire pattern makes AI framing toxic |
+| 2026-03-25 | Schema efficiency is a marketing dimension | Context7 F-grade article created public benchmark |
+
+---
+
+## Progress vs Original Roadmap (March 21 → March 25)
+
+| Original v1.1 item | Status |
+|---------------------|--------|
+| npm publish | ❌ BLOCKED (GitHub suspended) |
+| Registry submissions | ❌ BLOCKED (need working GitHub URLs) |
+| Godot E2 GDScript vs C# | ✅ Done (33KB) |
+| Godot G4 Input Handling | ✅ Done (43KB) |
+| Search P4 stemming | ⏳ Deferred to v1.4 |
+
+| Original v1.2 item | Status |
+|---------------------|--------|
+| Cross-engine search | ✅ Done |
+| Workers API deploy | ⏳ Scaffold done, deploy blocked |
+| Godot to 50% | ✅ Done — hit **80%** |
+| compare_engines tool | ✅ Done |
+| combat-theory.md | ✅ Done (34KB) |
+| random_doc tool | ✅ Done |
+
+| Original v2.0 item | Status |
+|---------------------|--------|
+| Unity module | ⏳ Research done, creation not started |
+| migration_guide tool | ✅ Done (was planned for v2.0, shipped v1.3) |
+| Streamable HTTP | ⏳ Correctly deferred |
+| Agent-native billing | ⏳ Architecture planned, x402 path identified |
+| Semantic search | ⏳ Correctly deferred |
+
+**Summary:** We've built 80% of the original v1.2 and pulled features from v2.0, but shipped 0% to users. The product is ahead of schedule internally and behind schedule externally. One GitHub suspension fix unlocks everything.

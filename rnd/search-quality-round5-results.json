@@ -1,0 +1,512 @@
+{
+  "timestamp": "2026-03-26T06:03:03.038Z",
+  "corpus": 148,
+  "queries": [
+    {
+      "query": "how do I add a health bar to my game",
+      "description": "Beginner asking about HUD/health display",
+      "top3": [
+        {
+          "id": "G_stitch_ui_workflow",
+          "title": "G — Stitch UI Workflow for Game Development",
+          "score": 1.1784262361069318
+        },
+        {
+          "id": "G38",
+          "title": "G38 — Scene & Game State Management",
+          "score": 1.1777568260520976
+        },
+        {
+          "id": "godot-arch/G3",
+          "title": "G3 — Signal Architecture",
+          "score": 1.1737239971189946
+        }
+      ],
+      "top5": [
+        {
+          "id": "G_stitch_ui_workflow",
+          "title": "G — Stitch UI Workflow for Game Development",
+          "score": 1.1784262361069318
+        },
+        {
+          "id": "G38",
+          "title": "G38 — Scene & Game State Management",
+          "score": 1.1777568260520976
+        },
+        {
+          "id": "godot-arch/G3",
+          "title": "G3 — Signal Architecture",
+          "score": 1.1737239971189946
+        },
+        {
+          "id": "godot-arch/G9",
+          "title": "G9 — UI & Control Systems",
+          "score": 1.1650485293979829
+        },
+        {
+          "id": "ui-theory",
+          "title": "UI Architecture — Theory & Concepts",
+          "score": 1.0679724849344314
+        }
+      ],
+      "verdict": "ACCEPTABLE",
+      "notes": "Partial: ui (1/4). Score: 1.18"
+    },
+    {
+      "query": "my character keeps sliding on slopes",
+      "description": "Physics debugging — slopes + CharacterBody",
+      "top3": [
+        {
+          "id": "G52",
+          "title": "G52 — 2D Platformer Character Controller",
+          "score": 2.65727508116997
+        },
+        {
+          "id": "character-controller-theory",
+          "title": "2D Character Controller -- Theory & Concepts",
+          "score": 2.469896032493681
+        },
+        {
+          "id": "godot-arch/G5",
+          "title": "G5 — Physics & Collision",
+          "score": 1.1368730942435405
+        }
+      ],
+      "top5": [
+        {
+          "id": "G52",
+          "title": "G52 — 2D Platformer Character Controller",
+          "score": 2.65727508116997
+        },
+        {
+          "id": "character-controller-theory",
+          "title": "2D Character Controller -- Theory & Concepts",
+          "score": 2.469896032493681
+        },
+        {
+          "id": "godot-arch/G5",
+          "title": "G5 — Physics & Collision",
+          "score": 1.1368730942435405
+        },
+        {
+          "id": "godot-arch/G2",
+          "title": "G2 — State Machines",
+          "score": 0.9087791299995849
+        },
+        {
+          "id": "G56",
+          "title": "G56 — Side-Scrolling Perspective",
+          "score": 0.8212855657420388
+        }
+      ],
+      "verdict": "PASS",
+      "notes": "Matched topics: physics, character, collision, controller (4/4)"
+    },
+    {
+      "query": "best way to handle different weapons",
+      "description": "Combat architecture — weapon variety",
+      "top3": [
+        {
+          "id": "G11",
+          "title": "G11 — Programming Principles",
+          "score": 1.0005487547968883
+        },
+        {
+          "id": "monogame-arch/G11",
+          "title": "G11 — Programming Principles",
+          "score": 1.0005487547968883
+        },
+        {
+          "id": "godot-arch/G2",
+          "title": "G2 — State Machines",
+          "score": 0.8489275432378418
+        }
+      ],
+      "top5": [
+        {
+          "id": "G11",
+          "title": "G11 — Programming Principles",
+          "score": 1.0005487547968883
+        },
+        {
+          "id": "monogame-arch/G11",
+          "title": "G11 — Programming Principles",
+          "score": 1.0005487547968883
+        },
+        {
+          "id": "godot-arch/G2",
+          "title": "G2 — State Machines",
+          "score": 0.8489275432378418
+        },
+        {
+          "id": "godot-arch/G8",
+          "title": "G8 — Animation Systems",
+          "score": 0.6398578182271445
+        },
+        {
+          "id": "G59",
+          "title": "G59 — 2D Skeletal Animation",
+          "score": 0.6059720571981053
+        }
+      ],
+      "verdict": "ACCEPTABLE",
+      "notes": "Partial: none (0/4). Score: 1.00"
+    },
+    {
+      "query": "godot autoload vs dependency injection",
+      "description": "Godot architecture decision",
+      "top3": [
+        {
+          "id": "godot-arch/E2",
+          "title": "E2 — GDScript vs C#: Language Choice Deep-Dive",
+          "score": 1.9043263556918462
+        },
+        {
+          "id": "godot-rules",
+          "title": "Godot 4.x — AI Code Generation Rules",
+          "score": 1.125388428043135
+        },
+        {
+          "id": "godot-arch/E1",
+          "title": "E1 — Architecture Overview",
+          "score": 0.9999074473153756
+        }
+      ],
+      "top5": [
+        {
+          "id": "godot-arch/E2",
+          "title": "E2 — GDScript vs C#: Language Choice Deep-Dive",
+          "score": 1.9043263556918462
+        },
+        {
+          "id": "godot-rules",
+          "title": "Godot 4.x — AI Code Generation Rules",
+          "score": 1.125388428043135
+        },
+        {
+          "id": "godot-arch/E1",
+          "title": "E1 — Architecture Overview",
+          "score": 0.9999074473153756
+        },
+        {
+          "id": "godot-arch/G11",
+          "title": "G11 — Save & Load Systems",
+          "score": 0.7150096237467723
+        },
+        {
+          "id": "godot-arch/G10",
+          "title": "G10 — Audio Systems",
+          "score": 0.6682202825841095
+        }
+      ],
+      "verdict": "PASS",
+      "notes": "Matched topics: godot, architecture (2/5)"
+    },
+    {
+      "query": "how to make smooth camera transitions between rooms",
+      "description": "Camera + room transitions",
+      "top3": [
+        {
+          "id": "godot-arch/G6",
+          "title": "G6 — Camera Systems",
+          "score": 2.161862952675977
+        },
+        {
+          "id": "G20",
+          "title": "G20 — Camera Systems",
+          "score": 2.0078368579729773
+        },
+        {
+          "id": "godot-arch/G7",
+          "title": "G7 — TileMap & Terrain Systems",
+          "score": 1.5662401482807813
+        }
+      ],
+      "top5": [
+        {
+          "id": "godot-arch/G6",
+          "title": "G6 — Camera Systems",
+          "score": 2.161862952675977
+        },
+        {
+          "id": "G20",
+          "title": "G20 — Camera Systems",
+          "score": 2.0078368579729773
+        },
+        {
+          "id": "godot-arch/G7",
+          "title": "G7 — TileMap & Terrain Systems",
+          "score": 1.5662401482807813
+        },
+        {
+          "id": "G58",
+          "title": "G58 — Minimap Systems",
+          "score": 1.5240691918528335
+        },
+        {
+          "id": "G56",
+          "title": "G56 — Side-Scrolling Perspective",
+          "score": 1.4829341224741006
+        }
+      ],
+      "verdict": "ACCEPTABLE",
+      "notes": "Partial: camera (1/3). Score: 2.16"
+    },
+    {
+      "query": "procedural dungeon generation roguelike",
+      "description": "PCG for roguelike genre",
+      "top3": [
+        {
+          "id": "procedural-generation-theory",
+          "title": "Procedural Generation -- Theory & Concepts",
+          "score": 2.247240471267943
+        },
+        {
+          "id": "G53",
+          "title": "G53 — Procedural Generation",
+          "score": 1.6631792718686902
+        },
+        {
+          "id": "godot-arch/G7",
+          "title": "G7 — TileMap & Terrain Systems",
+          "score": 1.284574865924835
+        }
+      ],
+      "top5": [
+        {
+          "id": "procedural-generation-theory",
+          "title": "Procedural Generation -- Theory & Concepts",
+          "score": 2.247240471267943
+        },
+        {
+          "id": "G53",
+          "title": "G53 — Procedural Generation",
+          "score": 1.6631792718686902
+        },
+        {
+          "id": "godot-arch/G7",
+          "title": "G7 — TileMap & Terrain Systems",
+          "score": 1.284574865924835
+        },
+        {
+          "id": "godot-rules",
+          "title": "Godot 4.x — AI Code Generation Rules",
+          "score": 1.1764081178901205
+        },
+        {
+          "id": "G10",
+          "title": "G10 — Custom Game Systems",
+          "score": 0.9585735667382382
+        }
+      ],
+      "verdict": "PASS",
+      "notes": "Matched topics: procedural, generation, dungeon, tilemap (4/4)"
+    },
+    {
+      "query": "networking predict client movement lag compensation",
+      "description": "Advanced multiplayer networking",
+      "top3": [
+        {
+          "id": "networking-theory",
+          "title": "Networking & Multiplayer -- Theory & Concepts",
+          "score": 4.912240873467268
+        },
+        {
+          "id": "godot-arch/G13",
+          "title": "G13 — Networking & Multiplayer",
+          "score": 3.2077621138654995
+        },
+        {
+          "id": "G9",
+          "title": "G9 — Networking",
+          "score": 2.0095337100158743
+        }
+      ],
+      "top5": [
+        {
+          "id": "networking-theory",
+          "title": "Networking & Multiplayer -- Theory & Concepts",
+          "score": 4.912240873467268
+        },
+        {
+          "id": "godot-arch/G13",
+          "title": "G13 — Networking & Multiplayer",
+          "score": 3.2077621138654995
+        },
+        {
+          "id": "G9",
+          "title": "G9 — Networking",
+          "score": 2.0095337100158743
+        },
+        {
+          "id": "P10",
+          "title": "14 — System Integration Map",
+          "score": 1.090432440010771
+        },
+        {
+          "id": "pathfinding-theory",
+          "title": "Pathfinding -- Theory & Concepts",
+          "score": 1.0724561859240471
+        }
+      ],
+      "verdict": "PASS",
+      "notes": "Matched topics: network, multiplayer (2/4)"
+    },
+    {
+      "query": "pixel art animation import workflow",
+      "description": "Art pipeline for pixel games",
+      "top3": [
+        {
+          "id": "G59",
+          "title": "G59 — 2D Skeletal Animation",
+          "score": 1.9246116804774847
+        },
+        {
+          "id": "P5",
+          "title": "09 — Art Production Pipeline",
+          "score": 1.7742064877296302
+        },
+        {
+          "id": "animation-theory",
+          "title": "Animation Systems -- Theory & Concepts",
+          "score": 1.5338376644488436
+        }
+      ],
+      "top5": [
+        {
+          "id": "G59",
+          "title": "G59 — 2D Skeletal Animation",
+          "score": 1.9246116804774847
+        },
+        {
+          "id": "P5",
+          "title": "09 — Art Production Pipeline",
+          "score": 1.7742064877296302
+        },
+        {
+          "id": "animation-theory",
+          "title": "Animation Systems -- Theory & Concepts",
+          "score": 1.5338376644488436
+        },
+        {
+          "id": "G8",
+          "title": "G8 — Content Pipeline",
+          "score": 1.44997753394906
+        },
+        {
+          "id": "G_stitch_ui_workflow",
+          "title": "G — Stitch UI Workflow for Game Development",
+          "score": 1.3954341774493422
+        }
+      ],
+      "verdict": "PASS",
+      "notes": "Matched topics: animation, sprite, art (3/4)"
+    },
+    {
+      "query": "entity component system vs object oriented",
+      "description": "Architecture — ECS vs OOP",
+      "top3": [
+        {
+          "id": "G43",
+          "title": "G43 — Entity Prefabs & Blueprint System",
+          "score": 1.447687067270003
+        },
+        {
+          "id": "G4",
+          "title": "G4 — AI Systems",
+          "score": 1.3124967361084439
+        },
+        {
+          "id": "ai-theory",
+          "title": "AI Systems -- Theory & Concepts",
+          "score": 1.008866929687984
+        }
+      ],
+      "top5": [
+        {
+          "id": "G43",
+          "title": "G43 — Entity Prefabs & Blueprint System",
+          "score": 1.447687067270003
+        },
+        {
+          "id": "G4",
+          "title": "G4 — AI Systems",
+          "score": 1.3124967361084439
+        },
+        {
+          "id": "ai-theory",
+          "title": "AI Systems -- Theory & Concepts",
+          "score": 1.008866929687984
+        },
+        {
+          "id": "G64",
+          "title": "G64 — Combat & Damage Systems",
+          "score": 0.8991572404789896
+        },
+        {
+          "id": "camera-theory",
+          "title": "Camera Systems -- Theory & Concepts",
+          "score": 0.8389234847384962
+        }
+      ],
+      "verdict": "ACCEPTABLE",
+      "notes": "Partial: entity (1/4). Score: 1.45"
+    },
+    {
+      "query": "how to make a dialog tree with choices",
+      "description": "Dialogue/narrative system",
+      "top3": [
+        {
+          "id": "ui-theory",
+          "title": "UI Architecture — Theory & Concepts",
+          "score": 1.1174929300421754
+        },
+        {
+          "id": "godot-arch/G11",
+          "title": "G11 — Save & Load Systems",
+          "score": 0.6489163576352573
+        },
+        {
+          "id": "G5",
+          "title": "G5 — UI Framework",
+          "score": 0.6033140294315784
+        }
+      ],
+      "top5": [
+        {
+          "id": "ui-theory",
+          "title": "UI Architecture — Theory & Concepts",
+          "score": 1.1174929300421754
+        },
+        {
+          "id": "godot-arch/G11",
+          "title": "G11 — Save & Load Systems",
+          "score": 0.6489163576352573
+        },
+        {
+          "id": "G5",
+          "title": "G5 — UI Framework",
+          "score": 0.6033140294315784
+        },
+        {
+          "id": "G62",
+          "title": "G62 — Narrative & Branching Story Systems",
+          "score": 0.6020213742456907
+        },
+        {
+          "id": "G10",
+          "title": "G10 — Custom Game Systems",
+          "score": 0.582043960248488
+        }
+      ],
+      "verdict": "ACCEPTABLE",
+      "notes": "Partial: ui (1/4). Score: 1.12"
+    }
+  ],
+  "summary": {
+    "pass": 5,
+    "acceptable": 5,
+    "fail": 0,
+    "zeroResults": 0
+  }
+}

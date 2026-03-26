@@ -81,7 +81,7 @@ export async function createServer() {
   const searchEngine = new SearchEngine();
   searchEngine.index(docStore.getAllDocs());
 
-  const allDocs = docStore.getAllDocs();
+  const allDocs = [...docStore.getAllDocs()]; // spread to avoid closing over mutable internal array
 
   // Validate license
   const { tier, message: licenseMessage } = await validateLicense();

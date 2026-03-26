@@ -32,7 +32,10 @@
 22. [Debug Visualization](#22--debug-visualization)
 23. [Complete ECS System](#23--complete-ecs-system)
 24. [Common Mistakes & Troubleshooting](#24--common-mistakes--troubleshooting)
-25. [Tuning Reference Table](#25--tuning-reference-table)
+25. [Surface Types & Friction Modifiers](#25--surface-types--friction-modifiers)
+26. [Rope & Grappling Hook](#26--rope--grappling-hook)
+27. [Tuning Reference Tables](#27--tuning-reference-tables)
+28. [Cross-Reference Guide](#28--cross-reference-guide)
 
 ---
 
@@ -3229,6 +3232,68 @@ if (!CollisionResolver.OverlapsAnySolid(pos, standCol, solids))
 
 ---
 
+### ❌ 8. Ice / Slippery Surfaces Feel Identical to Normal Ground
+
+**Symptom:** You added surface friction but the player still stops instantly on ice.
+
+**Cause:** Your deceleration logic uses a flat deceleration rate that overrides the surface modifier. Ice needs reduced deceleration AND reduced acceleration.
+
+**Fix:** Multiply both acceleration and deceleration by the surface friction (see §25):
+
+```csharp
+float surfaceFriction = grounded.SurfaceFriction; // 1.0 = normal, 0.2 = ice
+float effectiveAccel = ctrl.GroundAcceleration * surfaceFriction;
+float effectiveDecel = ctrl.GroundDeceleration * surfaceFriction;
+
+// Use these modified values in horizontal movement
+if (MathF.Abs(inputX) > 0.1f)
+    vel.X = MoveToward(vel.X, inputX * ctrl.MoveSpeed, effectiveAccel * dt);
+else
+    vel.X = MoveToward(vel.X, 0, effectiveDecel * dt);
+```
+
+---
+
+### ❌ 9. Grapple Rope Stretches or Clips Through Walls
+
+**Symptom:** Rope physics causes the player to clip through geometry or stretch beyond the rope length.
+
+**Cause:** Verlet rope integration doesn't enforce distance constraints after collision resolution, or collision is skipped on the last iteration.
+
+**Fix:** Always run collision AFTER constraint solving, and iterate enough times (see §26):
+
+```csharp
+for (int i = 0; i < ConstraintIterations; i++)
+{
+    EnforceRopeLength(ref ropePoints);  // Distance constraint
+    ResolveCollisions(ref ropePoints, solids);  // Then push out of walls
+}
+// Player snaps to last rope point AFTER all iterations
+```
+
+---
+
+### ❌ 10. Conveyor Belt Momentum Stacks Infinitely
+
+**Symptom:** Standing on a conveyor belt, the player keeps accelerating forever in one direction.
+
+**Cause:** Conveyor force is additive to player velocity without a cap relative to conveyor speed.
+
+**Fix:** Apply conveyor as a velocity floor/ceiling, not additive force (see §25):
+
+```csharp
+// Wrong: additive force (stacks infinitely)
+vel.X += conveyorSpeed * dt;
+
+// Right: move toward conveyor speed if below it
+if (MathF.Abs(vel.X) < MathF.Abs(conveyorSpeed) || MathF.Sign(vel.X) != MathF.Sign(conveyorSpeed))
+{
+    vel.X = MoveToward(vel.X, conveyorSpeed, conveyorAccel * dt);
+}
+```
+
+---
+
 ### Quick Diagnostic Checklist
 
 | Symptom | First Check | Second Check |
@@ -3239,4 +3304,731 @@ if (!CollisionResolver.OverlapsAnySolid(pos, standCol, solids))
 | Slides on flat ground | Is deceleration > 0? | Is `MoveToward` reaching 0? |
 | Double jump triggers on ground | Is first jump consuming from `JumpsRemaining`? | Counting issue with MaxJumps? |
 | Dash goes through walls | Is `MoveAndCollide` used during dash? | Cap dash speed to prevent tunneling |
-| Velocity feels wrong between builds
+| Velocity feels wrong between builds | Fixed timestep vs variable delta? | Are gravity/speed tuned for 60fps then breaking at 144fps? |
+| Rope clips through walls | Enough constraint iterations? | Collision checked after constraint solve? |
+| Slides on ice same as ground | Surface friction applied to accel AND decel? | Is deceleration overriding friction? |
+| Conveyor stacks speed | Using additive force? | Switch to MoveToward with cap |
+| Grapple player oscillates | Damping too low? | Apply velocity damping when near anchor |
+| Wall slide too fast | Is `WallSlideSpeed` set? | Gravity override active during wall state? |
+
+---
+
+## 25 — Surface Types & Friction Modifiers
+
+Different surfaces change how the controller feels without rewriting movement logic. The key: surfaces modify **acceleration, deceleration, and max speed** — not velocity directly.
+
+### Surface Component
+
+```csharp
+/// <summary>Attached to terrain or platform entities to modify player movement.</summary>
+public record struct SurfaceProperties
+{
+    /// <summary>Multiplier for ground acceleration (0.2 = ice, 1.0 = normal, 1.5 = grip).</summary>
+    public float AccelerationScale;
+
+    /// <summary>Multiplier for ground deceleration (0.1 = ice, 1.0 = normal, 2.0 = sticky).</summary>
+    public float DecelerationScale;
+
+    /// <summary>Multiplier for max move speed (0.5 = mud, 1.0 = normal, 1.3 = speed boost).</summary>
+    public float MaxSpeedScale;
+
+    /// <summary>Constant velocity added each frame (conveyor belt direction × speed).</summary>
+    public float ConveyorVelocity;
+
+    /// <summary>Multiplier for jump velocity (0.8 = mud, 1.0 = normal, 1.3 = trampoline).</summary>
+    public float JumpScale;
+
+    /// <summary>Override gravity while on this surface (null = use default).</summary>
+    public float? GravityOverride;
+
+    public static SurfaceProperties Normal => new()
+    {
+        AccelerationScale = 1f, DecelerationScale = 1f,
+        MaxSpeedScale = 1f, ConveyorVelocity = 0f,
+        JumpScale = 1f, GravityOverride = null
+    };
+}
+```
+
+### Surface Detection
+
+Detect surface type during ground detection (§4). When the ground ray hits a tile or entity, read its surface properties:
+
+```csharp
+public static class SurfaceDetection
+{
+    /// <summary>
+    /// After ground detection finds a hit, resolve the surface properties
+    /// from the tile metadata or entity component.
+    /// </summary>
+    public static SurfaceProperties Resolve(
+        int groundTileIndex, TilemapData tilemap, World world)
+    {
+        // Check tile metadata first (see G37 §7 for tile properties)
+        if (tilemap.TryGetProperty(groundTileIndex, "surface", out string surfaceType))
+        {
+            return surfaceType switch
+            {
+                "ice"       => Presets.Ice,
+                "mud"       => Presets.Mud,
+                "conveyor_r" => Presets.ConveyorRight,
+                "conveyor_l" => Presets.ConveyorLeft,
+                "bounce"    => Presets.Trampoline,
+                "sticky"    => Presets.Sticky,
+                _           => SurfaceProperties.Normal
+            };
+        }
+
+        return SurfaceProperties.Normal;
+    }
+}
+```
+
+### Applying Surface Modifiers to Movement
+
+Modify horizontal movement (§5) to incorporate surface properties:
+
+```csharp
+public static class HorizontalMovement
+{
+    public static void Apply(
+        ref Velocity vel, ref PlayerController ctrl,
+        float inputX, float dt, bool isGrounded,
+        in SurfaceProperties surface)
+    {
+        float maxSpeed = ctrl.MoveSpeed * surface.MaxSpeedScale;
+        float accel, decel;
+
+        if (isGrounded)
+        {
+            accel = ctrl.GroundAcceleration * surface.AccelerationScale;
+            decel = ctrl.GroundDeceleration * surface.DecelerationScale;
+        }
+        else
+        {
+            accel = ctrl.AirAcceleration;
+            decel = ctrl.AirDeceleration;
+        }
+
+        // Player input
+        if (MathF.Abs(inputX) > 0.1f)
+        {
+            float targetSpeed = inputX * maxSpeed;
+            vel = vel with { X = MoveToward(vel.X, targetSpeed, accel * dt) };
+            ctrl.FacingDirection = inputX > 0 ? 1 : -1;
+        }
+        else
+        {
+            vel = vel with { X = MoveToward(vel.X, 0, decel * dt) };
+        }
+
+        // Conveyor belt — apply as a velocity floor, not additive
+        if (MathF.Abs(surface.ConveyorVelocity) > 0.01f)
+        {
+            float conveyorDir = MathF.Sign(surface.ConveyorVelocity);
+            float conveyorSpeed = MathF.Abs(surface.ConveyorVelocity);
+
+            // Only push if player isn't already moving faster in conveyor direction
+            if (vel.X * conveyorDir < conveyorSpeed)
+            {
+                vel = vel with { X = MoveToward(vel.X, surface.ConveyorVelocity,
+                    conveyorSpeed * 3f * dt) };
+            }
+        }
+
+        // Cap to max speed (allow conveyor to exceed slightly for feel)
+        float speedCap = maxSpeed + MathF.Abs(surface.ConveyorVelocity);
+        vel = vel with { X = Math.Clamp(vel.X, -speedCap, speedCap) };
+    }
+
+    public static float MoveToward(float current, float target, float maxDelta)
+    {
+        if (MathF.Abs(target - current) <= maxDelta) return target;
+        return current + MathF.Sign(target - current) * maxDelta;
+    }
+}
+```
+
+### Surface Presets
+
+```csharp
+public static class Presets
+{
+    /// <summary>Low friction — player slides. Classic ice level.</summary>
+    public static SurfaceProperties Ice => new()
+    {
+        AccelerationScale = 0.2f,   // Very slow to reach target speed
+        DecelerationScale = 0.08f,  // Almost no stopping power
+        MaxSpeedScale = 1.1f,       // Slightly faster max (sliding momentum)
+        ConveyorVelocity = 0f,
+        JumpScale = 0.9f,           // Slightly weaker jumps (slippery push-off)
+        GravityOverride = null
+    };
+
+    /// <summary>High friction — player slows down. Swamp / mud.</summary>
+    public static SurfaceProperties Mud => new()
+    {
+        AccelerationScale = 0.5f,   // Sluggish start
+        DecelerationScale = 2.0f,   // Stops fast (resistance)
+        MaxSpeedScale = 0.5f,       // Half normal speed
+        ConveyorVelocity = 0f,
+        JumpScale = 0.7f,           // Weaker jumps (feet sink)
+        GravityOverride = null
+    };
+
+    /// <summary>Moves the player rightward at constant speed.</summary>
+    public static SurfaceProperties ConveyorRight => new()
+    {
+        AccelerationScale = 1f, DecelerationScale = 1f,
+        MaxSpeedScale = 1f, ConveyorVelocity = 120f,
+        JumpScale = 1f, GravityOverride = null
+    };
+
+    /// <summary>Moves the player leftward at constant speed.</summary>
+    public static SurfaceProperties ConveyorLeft => new()
+    {
+        AccelerationScale = 1f, DecelerationScale = 1f,
+        MaxSpeedScale = 1f, ConveyorVelocity = -120f,
+        JumpScale = 1f, GravityOverride = null
+    };
+
+    /// <summary>Amplifies jump on contact (bounce pad / trampoline).</summary>
+    public static SurfaceProperties Trampoline => new()
+    {
+        AccelerationScale = 1f, DecelerationScale = 1f,
+        MaxSpeedScale = 1f, ConveyorVelocity = 0f,
+        JumpScale = 1.8f,          // Nearly double jump height
+        GravityOverride = null
+    };
+
+    /// <summary>Ultra-high friction — player sticks. Spider web, tar.</summary>
+    public static SurfaceProperties Sticky => new()
+    {
+        AccelerationScale = 0.3f,
+        DecelerationScale = 5.0f,   // Nearly instant stop
+        MaxSpeedScale = 0.3f,       // Barely moving
+        ConveyorVelocity = 0f,
+        JumpScale = 0.5f,           // Struggle to jump
+        GravityOverride = null
+    };
+}
+```
+
+### Surface Type Reference Table
+
+| Surface | Accel | Decel | Max Speed | Jump | Conveyor | Feel |
+|---------|-------|-------|-----------|------|----------|------|
+| Normal | 1.0× | 1.0× | 1.0× | 1.0× | 0 | Baseline |
+| Ice | 0.2× | 0.08× | 1.1× | 0.9× | 0 | Sliding, momentum-heavy |
+| Mud | 0.5× | 2.0× | 0.5× | 0.7× | 0 | Sluggish, resistant |
+| Conveyor (R) | 1.0× | 1.0× | 1.0× | 1.0× | +120 px/s | Push rightward |
+| Conveyor (L) | 1.0× | 1.0× | 1.0× | 1.0× | −120 px/s | Push leftward |
+| Trampoline | 1.0× | 1.0× | 1.0× | 1.8× | 0 | Super-bounce |
+| Sticky | 0.3× | 5.0× | 0.3× | 0.5× | 0 | Stuck, struggling |
+| Sand | 0.7× | 1.5× | 0.7× | 0.85× | 0 | Soft, slightly slow |
+| Speed Boost | 1.5× | 0.5× | 1.5× | 1.0× | 0 | Fast, hard to stop |
+| Crumbling | 1.0× | 1.0× | 1.0× | 1.0× | 0 | Normal feel, but tile breaks after timer |
+
+> 💡 **Tip:** Surface properties integrate with [G37 Tilemap Systems](./G37_tilemap_systems.md) §7 (Tile Properties & Metadata). Set `surface=ice` in your Tiled custom properties and read it during ground detection.
+
+---
+
+## 26 — Rope & Grappling Hook
+
+Grappling hooks and rope swinging are increasingly common in modern platformers (Ori, Flinthook, Bionic Commando, Spelunky 2). There are two fundamental approaches: **point-and-swing** (pendulum) and **Verlet rope** (segmented physics).
+
+### Approach Decision
+
+```
+Need rope to wrap around corners?
+├── Yes → Verlet Rope (segmented, wraps geometry)
+│         More complex, Spelunky 2 / Worms style
+└── No  → Pendulum Swing (single pivot point)
+          Simpler, Spider-Man / Ori style
+```
+
+### Pendulum Grapple (Point-and-Swing)
+
+The simpler approach: the player swings around a fixed anchor point. No rope segments, no wrapping.
+
+```csharp
+public record struct GrappleState
+{
+    public bool IsGrappling;
+    public Vector2 AnchorPoint;      // World position of the grapple target
+    public float RopeLength;          // Distance from anchor (fixed after attach)
+    public float SwingAngle;          // Current angle from vertical (radians)
+    public float SwingAngularVelocity; // Angular speed (rad/s)
+    public float DampingFactor;       // 0.98 = slight energy loss per frame
+    public float SwingInputForce;     // Player push force (radians/s²)
+}
+
+public static class PendulumGrapple
+{
+    /// <summary>
+    /// Attempt to fire grapple. Returns true if a valid anchor was found.
+    /// </summary>
+    public static bool TryAttach(
+        ref GrappleState grapple, in Position pos,
+        Vector2 aimDirection, float maxRange,
+        RectF[] solids, int solidCount)
+    {
+        // Raycast in aim direction to find a grapple point
+        // (reuse raycast from §16 or G3 Physics)
+        if (Raycast.Cast(new Vector2(pos.X, pos.Y), aimDirection,
+            maxRange, solids, solidCount, out var hit))
+        {
+            grapple.IsGrappling = true;
+            grapple.AnchorPoint = hit.Point;
+            grapple.RopeLength = Vector2.Distance(
+                new Vector2(pos.X, pos.Y), hit.Point);
+
+            // Calculate initial angle from vertical
+            Vector2 toPlayer = new Vector2(pos.X, pos.Y) - hit.Point;
+            grapple.SwingAngle = MathF.Atan2(toPlayer.X, toPlayer.Y);
+            grapple.SwingAngularVelocity = 0f;
+
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Update pendulum physics. Call instead of normal gravity/movement while grappling.
+    /// </summary>
+    public static void Update(
+        ref Position pos, ref Velocity vel,
+        ref GrappleState grapple, ref PlayerController ctrl,
+        float inputX, float dt)
+    {
+        // Pendulum equation: α = -(g/L) × sin(θ) + input
+        float gravity = ctrl.Gravity;
+        float alpha = -(gravity / grapple.RopeLength) * MathF.Sin(grapple.SwingAngle);
+
+        // Player input adds angular force (push the swing)
+        alpha += inputX * grapple.SwingInputForce;
+
+        // Integrate angular velocity
+        grapple.SwingAngularVelocity += alpha * dt;
+        grapple.SwingAngularVelocity *= grapple.DampingFactor;
+
+        // Integrate angle
+        grapple.SwingAngle += grapple.SwingAngularVelocity * dt;
+
+        // Convert polar back to cartesian position
+        float newX = grapple.AnchorPoint.X + grapple.RopeLength * MathF.Sin(grapple.SwingAngle);
+        float newY = grapple.AnchorPoint.Y + grapple.RopeLength * MathF.Cos(grapple.SwingAngle);
+
+        // Derive velocity from position change (for launch momentum)
+        vel = new Velocity(
+            (newX - pos.X) / dt,
+            (newY - pos.Y) / dt
+        );
+
+        pos = new Position(newX, newY);
+    }
+
+    /// <summary>
+    /// Detach and launch. Velocity is preserved from the swing for momentum transfer.
+    /// </summary>
+    public static void Detach(ref GrappleState grapple, ref Velocity vel,
+        float launchMultiplier = 1.2f)
+    {
+        grapple.IsGrappling = false;
+
+        // Boost velocity slightly for satisfying launch feel
+        vel = new Velocity(vel.X * launchMultiplier, vel.Y * launchMultiplier);
+    }
+}
+```
+
+### Verlet Rope (Segmented, Wraps Geometry)
+
+For ropes that wrap around corners and terrain. Uses Verlet integration with distance constraints.
+
+```csharp
+public class VerletRope
+{
+    public struct RopePoint
+    {
+        public Vector2 Position;
+        public Vector2 PreviousPosition;
+        public bool Pinned; // True for the anchor point
+    }
+
+    private RopePoint[] _points;
+    private readonly float _segmentLength;
+    private readonly int _constraintIterations;
+    private readonly float _gravity;
+    private readonly float _damping;
+
+    public VerletRope(Vector2 anchor, Vector2 playerPos,
+        int segments = 10, float gravity = 600f,
+        int constraintIterations = 8, float damping = 0.99f)
+    {
+        _segmentLength = Vector2.Distance(anchor, playerPos) / segments;
+        _constraintIterations = constraintIterations;
+        _gravity = gravity;
+        _damping = damping;
+
+        _points = new RopePoint[segments + 1];
+
+        for (int i = 0; i <= segments; i++)
+        {
+            float t = (float)i / segments;
+            Vector2 pos = Vector2.Lerp(anchor, playerPos, t);
+            _points[i] = new RopePoint
+            {
+                Position = pos,
+                PreviousPosition = pos,
+                Pinned = (i == 0) // First point is the anchor
+            };
+        }
+    }
+
+    /// <summary>
+    /// Update rope physics. Call each frame.
+    /// The last point is the player — set its position after this returns.
+    /// </summary>
+    public void Update(Vector2 playerPos, RectF[] solids, int solidCount, float dt)
+    {
+        // Attach last point to player
+        _points[^1].Position = playerPos;
+
+        // ── 1. Verlet integration (apply gravity + inertia) ──
+        for (int i = 0; i < _points.Length; i++)
+        {
+            if (_points[i].Pinned) continue;
+            if (i == _points.Length - 1) continue; // Player-controlled
+
+            var p = _points[i];
+            Vector2 velocity = (p.Position - p.PreviousPosition) * _damping;
+            p.PreviousPosition = p.Position;
+            p.Position += velocity;
+            p.Position.Y += _gravity * dt * dt; // Gravity
+            _points[i] = p;
+        }
+
+        // ── 2. Constraint solving + collision ──
+        for (int iter = 0; iter < _constraintIterations; iter++)
+        {
+            // Distance constraints (keep segments at fixed length)
+            for (int i = 0; i < _points.Length - 1; i++)
+            {
+                var a = _points[i];
+                var b = _points[i + 1];
+                Vector2 delta = b.Position - a.Position;
+                float dist = delta.Length();
+                float diff = (dist - _segmentLength) / dist;
+
+                if (!a.Pinned && i + 1 != _points.Length - 1)
+                {
+                    a.Position += delta * 0.5f * diff;
+                    b.Position -= delta * 0.5f * diff;
+                }
+                else if (!a.Pinned)
+                {
+                    a.Position += delta * diff;
+                }
+                else
+                {
+                    b.Position -= delta * diff;
+                }
+
+                _points[i] = a;
+                _points[i + 1] = b;
+            }
+
+            // Push points out of solid geometry
+            for (int i = 0; i < _points.Length; i++)
+            {
+                if (_points[i].Pinned) continue;
+                _points[i].Position = PushOutOfSolids(
+                    _points[i].Position, solids, solidCount);
+            }
+        }
+    }
+
+    /// <summary>Get the corrected player position (last rope point).</summary>
+    public Vector2 GetPlayerPosition() => _points[^1].Position;
+
+    /// <summary>Get all rope points for rendering.</summary>
+    public ReadOnlySpan<RopePoint> Points => _points;
+
+    private static Vector2 PushOutOfSolids(Vector2 pos, RectF[] solids, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            ref readonly var s = ref solids[i];
+            if (pos.X > s.Left && pos.X < s.Right &&
+                pos.Y > s.Top && pos.Y < s.Bottom)
+            {
+                // Push out via shortest axis
+                float dLeft = pos.X - s.Left;
+                float dRight = s.Right - pos.X;
+                float dTop = pos.Y - s.Top;
+                float dBottom = s.Bottom - pos.Y;
+                float min = MathF.Min(MathF.Min(dLeft, dRight), MathF.Min(dTop, dBottom));
+
+                if (min == dLeft)  pos.X = s.Left;
+                else if (min == dRight) pos.X = s.Right;
+                else if (min == dTop) pos.Y = s.Top;
+                else pos.Y = s.Bottom;
+            }
+        }
+        return pos;
+    }
+}
+```
+
+### Rope Rendering
+
+```csharp
+/// <summary>Draw the rope as a series of connected lines or a catenary curve.</summary>
+public static void DrawRope(SpriteBatch batch, VerletRope rope,
+    Texture2D pixelTexture, Color color, float thickness = 2f)
+{
+    var points = rope.Points;
+    for (int i = 0; i < points.Length - 1; i++)
+    {
+        DrawLine(batch, pixelTexture,
+            points[i].Position, points[i + 1].Position,
+            color, thickness);
+    }
+}
+
+private static void DrawLine(SpriteBatch batch, Texture2D pixel,
+    Vector2 a, Vector2 b, Color color, float thickness)
+{
+    Vector2 delta = b - a;
+    float length = delta.Length();
+    float angle = MathF.Atan2(delta.Y, delta.X);
+
+    batch.Draw(pixel, a, null, color, angle,
+        Vector2.Zero, new Vector2(length, thickness),
+        SpriteEffects.None, 0f);
+}
+```
+
+### Grapple State Machine Integration
+
+Integrate grapple with the controller state machine (see §20):
+
+```
+┌──────────┐  grapple input   ┌──────────────┐
+│  Normal   │ ──────────────→  │  GrappleAim  │
+│ Movement  │                  │  (time slow)  │
+└──────────┘                  └──────────────┘
+     ↑                              │ release aim
+     │                              ▼
+     │ detach              ┌──────────────────┐
+     │ (launch)            │  GrappleSwinging  │
+     └──────────────────── │  (pendulum/verlet)│
+                           └──────────────────┘
+```
+
+### Grapple Tuning Reference
+
+| Parameter | Short Range (Spelunky) | Mid Range (Ori) | Long Range (Spider-Man) |
+|-----------|----------------------|-----------------|------------------------|
+| Max Range | 128–192 px | 256–384 px | 512–768 px |
+| Rope Segments | 6–8 | 10–14 | 16–24 |
+| Swing Input Force | 8–12 rad/s² | 5–8 rad/s² | 3–5 rad/s² |
+| Damping | 0.96–0.97 | 0.98–0.99 | 0.99–0.995 |
+| Launch Multiplier | 1.0–1.1× | 1.2–1.3× | 1.3–1.5× |
+| Constraint Iterations | 6 | 8 | 12 |
+| Aim Time Slow | 0.3× | 0.5× | 0.7× |
+
+> 💡 **Cross-reference:** For rope rendering with camera follow, see [G20 Camera Systems](./G20_camera_systems.md). For rope-attached enemies/objects, see [G3 Physics & Collision](./G3_physics_and_collision.md) §Verlet. For grapple animation (throw → attach → swing → detach), see [G31 Animation & State Machines](./G31_animation_state_machines.md).
+
+---
+
+## 27 — Tuning Reference Tables
+
+The most important section for game feel. These tables are starting points — playtest and adjust for YOUR game.
+
+### Gravity Derivation Quick Reference
+
+Every parameter below derives from two designer-friendly values: **jump height** and **time to apex**.
+
+```
+Jump Height (H) = desired peak height in pixels
+Time to Apex (T) = seconds from ground to peak
+
+Gravity    = 2H / T²
+JumpVelocity = 2H / T
+```
+
+```csharp
+public static (float gravity, float jumpVelocity) DeriveJump(float height, float timeToApex)
+{
+    float gravity = 2f * height / (timeToApex * timeToApex);
+    float jumpVel = 2f * height / timeToApex;
+    return (gravity, jumpVel);
+}
+```
+
+### Game Feel Profiles
+
+These profiles recreate the feel of well-known platformers. **Don't copy exactly** — use them as starting points and tune from there.
+
+#### Profile: Tight & Precise (Celeste / Super Meat Boy)
+
+Instant response, high air control, fast fall. The player feels "attached" to the controls.
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| Move Speed | 220 px/s | Fast but controllable |
+| Ground Acceleration | 2200 px/s² | Nearly instant ramp-up |
+| Ground Deceleration | 2400 px/s² | Stops faster than it starts |
+| Air Acceleration | 1800 px/s² | High air control (80% of ground) |
+| Air Deceleration | 1200 px/s² | Moderate air decel |
+| Turn Multiplier | 3.0× | Snap turn, no sliding |
+| Jump Height | 80 px | ~5 tiles |
+| Time to Apex | 0.32 s | Quick jump arc |
+| Fall Multiplier | 1.8× | Fast descent |
+| Max Fall Speed | 400 px/s | Terminal velocity |
+| Coyote Time | 0.08 s | ~5 frames (short but present) |
+| Jump Buffer | 0.10 s | ~6 frames |
+| Apex Float | 0.7× gravity when |vel.Y| < 40 | Hang time at peak |
+| Wall Slide Speed | 80 px/s | Slow wall descent |
+| Wall Cling Time | 0.15 s | Brief wall grab |
+| Dash Speed | 450 px/s | Burst movement |
+| Dash Duration | 0.12 s | Quick |
+| Corner Correction | 5 px | Nudge past thin ledges |
+
+#### Profile: Floaty & Forgiving (Kirby / LittleBigPlanet)
+
+Loose, airy movement. Jumps are tall and slow. Great for casual or co-op games.
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| Move Speed | 160 px/s | Slower pace |
+| Ground Acceleration | 800 px/s² | Gradual ramp |
+| Ground Deceleration | 600 px/s² | Slides a bit |
+| Air Acceleration | 500 px/s² | Less air control |
+| Air Deceleration | 300 px/s² | Floaty stops |
+| Turn Multiplier | 1.5× | Gradual turns |
+| Jump Height | 100 px | ~6.5 tiles (tall) |
+| Time to Apex | 0.50 s | Slow, floaty arc |
+| Fall Multiplier | 1.2× | Gentle descent |
+| Max Fall Speed | 250 px/s | Slow falling |
+| Coyote Time | 0.15 s | ~9 frames (generous) |
+| Jump Buffer | 0.167 s | ~10 frames (generous) |
+| Apex Float | 0.5× gravity when |vel.Y| < 60 | Long hang time |
+| Multi-Jump | 3–6 extra jumps | Kirby-style flight |
+| Corner Correction | 8 px | Very forgiving |
+
+#### Profile: Weighty & Committed (Hollow Knight / Dark Souls 2D)
+
+Movement has momentum and commitment. Jumping and dashing are commitments with recovery frames.
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| Move Speed | 180 px/s | Moderate |
+| Ground Acceleration | 1400 px/s² | Moderate ramp |
+| Ground Deceleration | 1800 px/s² | Reasonably snappy stop |
+| Air Acceleration | 600 px/s² | Limited air control |
+| Air Deceleration | 400 px/s² | Committed to jumps |
+| Turn Multiplier | 2.0× | Some momentum |
+| Jump Height | 72 px | ~4.5 tiles (moderate) |
+| Time to Apex | 0.38 s | Medium speed |
+| Fall Multiplier | 1.6× | Noticeable descent |
+| Max Fall Speed | 350 px/s | Moderate terminal velocity |
+| Coyote Time | 0.10 s | ~6 frames (standard) |
+| Jump Buffer | 0.10 s | ~6 frames (standard) |
+| Apex Float | None | No apex assist |
+| Dash Speed | 380 px/s | Strong but not instant |
+| Dash Duration | 0.16 s | Slightly longer |
+| Dash Cooldown | 0.5 s | Punishes spam |
+| Wall Slide Speed | 120 px/s | Faster slide |
+| Corner Correction | 3 px | Less forgiving |
+
+#### Profile: Classic / Retro (Mega Man / Castlevania)
+
+Fixed jump arc (no variable height), committed horizontal movement in air.
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| Move Speed | 140 px/s | Deliberate pace |
+| Ground Acceleration | 9999 px/s² | Instant (no ramp) |
+| Ground Deceleration | 9999 px/s² | Instant stop |
+| Air Acceleration | 0 px/s² | **Zero air control** (Castlevania) |
+| Air Deceleration | 0 px/s² | Committed to jump direction |
+| Turn Multiplier | ∞ | Instant turn |
+| Jump Height | 64 px | ~4 tiles |
+| Time to Apex | 0.35 s | |
+| Fall Multiplier | 1.0× | Symmetric arc |
+| Max Fall Speed | 300 px/s | |
+| Coyote Time | 0 s | None (retro-hard) |
+| Jump Buffer | 0 s | None (retro-hard) |
+| Apex Float | None | Symmetric parabola |
+| Variable Jump | **No** | Fixed height always |
+
+> 🎯 **Key insight:** The difference between "tight" and "floaty" is primarily **acceleration, deceleration, and fall multiplier** — not max speed. Two controllers with the same max speed but different accel curves feel completely different. See [C2 Game Feel & Genre Craft](../../core/game-design/C2_game_feel_and_genre_craft.md) for the theory behind why these numbers create distinct feelings.
+
+### Timer Duration Reference
+
+| Timer | Frames @60fps | Seconds | When to Use |
+|-------|--------------|---------|-------------|
+| Coyote Time | 4–10 | 0.067–0.167 | After leaving a ledge |
+| Jump Buffer | 5–10 | 0.083–0.167 | Before landing |
+| Wall Cling | 6–12 | 0.10–0.20 | After touching a wall |
+| Wall Jump Input Lock | 6–9 | 0.10–0.15 | After wall jumping |
+| Dash Duration | 6–12 | 0.10–0.20 | Active dash frames |
+| Dash Cooldown | 12–36 | 0.20–0.60 | Between dashes |
+| Corner Correction | N/A | N/A | Pixel range: 3–8 px |
+| Drop-Through Ignore | 6–12 | 0.10–0.20 | After pressing down+jump |
+| Crouch Transition | 3–6 | 0.05–0.10 | Collider resize |
+| Invincibility (hit) | 30–90 | 0.50–1.50 | After taking damage (see [G64](./G64_combat_damage_systems.md) §3) |
+
+### Speed & Distance Quick Math
+
+At 16 pixels per tile:
+
+| Speed (px/s) | Tiles/second | Feel |
+|-------------|-------------|------|
+| 80 | 5 | Crawling |
+| 140 | 8.75 | Deliberate (Castlevania) |
+| 180 | 11.25 | Standard (Hollow Knight) |
+| 220 | 13.75 | Fast (Celeste) |
+| 300 | 18.75 | Very fast (Super Meat Boy) |
+| 450 | 28.125 | Dash speed |
+
+### Gravity & Jump Height Quick Math
+
+| Jump Height | Tiles (16px) | Time to Apex | Gravity | Jump Velocity |
+|-------------|-------------|-------------|---------|---------------|
+| 48 px | 3 | 0.28 s | 1224 px/s² | 343 px/s |
+| 64 px | 4 | 0.32 s | 1250 px/s² | 400 px/s |
+| 80 px | 5 | 0.35 s | 1306 px/s² | 457 px/s |
+| 96 px | 6 | 0.40 s | 1200 px/s² | 480 px/s |
+| 112 px | 7 | 0.45 s | 1109 px/s² | 498 px/s |
+| 128 px | 8 | 0.50 s | 1024 px/s² | 512 px/s |
+
+---
+
+## 28 — Cross-Reference Guide
+
+Every section of this guide connects to other systems. Use this map to navigate the full picture.
+
+| This Section | Related Guides | Why |
+|---|---|---|
+| §4 Ground Detection | [G3 Physics](./G3_physics_and_collision.md) §Raycast, [G37 Tilemap](./G37_tilemap_systems.md) §4 | Ground rays test against physics geometry |
+| §5 Movement | [C2 Game Feel](../../core/game-design/C2_game_feel_and_genre_craft.md), §25 Surface Types | Acceleration curves define game feel |
+| §6 Jump | [G30 Game Feel Tooling](./G30_game_feel_tooling.md) | Tuning tools for jump curves |
+| §8 Jump Buffer | [G7 Input Handling](./G7_input_handling.md) §Generic Input Buffer | Reusable buffer pattern |
+| §9 Wall Mechanics | [G53 Side-Scrolling](./G53_side_scrolling.md) | Level design for wall-jump areas |
+| §10 Slopes | [G3 Physics](./G3_physics_and_collision.md) §Slope, [G37 Tilemap](./G37_tilemap_systems.md) §4 | Slope collision from tilemap data |
+| §12 Moving Platforms | [G3 Physics](./G3_physics_and_collision.md) §Moving Bodies | Platform physics |
+| §14 Dash | [G64 Combat](./G64_combat_damage_systems.md) §I-Frames | Dash invincibility integration |
+| §16 Collision | [G3 Physics](./G3_physics_and_collision.md) §AABB Sweep | Core collision resolution |
+| §18 Swimming | [G3 Physics](./G3_physics_and_collision.md) §Trigger Zones | Water zone detection |
+| §20 State Machine | [G31 Animation](./G31_animation_state_machines.md) | Animation state mirrors controller state |
+| §21 Camera | [G20 Camera Systems](./G20_camera_systems.md) §Events | Landing shake, dash effects |
+| §22 Debug Viz | [G33 Profiling](./G33_profiling_tools.md) | Performance overlay integration |
+| §25 Surfaces | [G37 Tilemap](./G37_tilemap_systems.md) §7 | Tile metadata drives surface type |
+| §26 Grapple | [G3 Physics](./G3_physics_and_collision.md) §Verlet | Verlet rope physics |
+| §26 Grapple | [G67 Object Pooling](./G67_object_pooling.md) | Pool rope VFX segments |
+| Combat Integration | [G64 Combat](./G64_combat_damage_systems.md) §Knockback | Hit reactions modify velocity |
+| Combat Integration | [combat-theory](../../core/concepts/combat-theory.md) §Hit Reactions | Theory behind knockback/hitstop |

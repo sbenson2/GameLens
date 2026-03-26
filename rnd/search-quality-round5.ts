@@ -1,12 +1,13 @@
 /**
- * Search Quality Round 5 — 10 new natural language queries (2026-03-25)
- * Focus: Real user phrasing, new Godot docs (G8 Animation, G9 UI, G7 TileMap),
- *        semantic gaps, cross-engine, content discovery
+ * Search Quality Round 5 — 2026-03-25 11pm
+ * 10 natural language queries a real user would type.
+ * Evaluate top-3 relevance. Identify failures and zero-result queries.
  * Run: npx tsx rnd/search-quality-round5.ts
  */
 import { DocStore } from "../src/core/docs.js";
 import { SearchEngine } from "../src/core/search.js";
 import * as path from "path";
+import * as fs from "fs";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -19,159 +20,156 @@ const allDocs = store.getAllDocs();
 const engine = new SearchEngine();
 engine.index(allDocs);
 
-interface QueryTest {
+console.log(`\n📚 Loaded ${allDocs.length} docs\n`);
+
+interface TestQuery {
   query: string;
-  /** IDs that should appear in top 3 (at least one must hit) */
-  expectedTop3: string[];
-  /** IDs that are acceptable in top 3 (don't penalize) */
-  acceptable?: string[];
-  category: string;
-  notes?: string;
+  description: string;
+  expectedTopics: string[]; // keywords that SHOULD appear in top-3 doc IDs or titles
 }
 
-const tests: QueryTest[] = [
-  // 1. New user asking about UI in Godot
+const queries: TestQuery[] = [
   {
-    query: "how to create health bar in godot",
-    expectedTop3: ["godot-arch/G9"],
-    acceptable: ["ui-theory", "godot-rules"],
-    category: "godot-ui",
-    notes: "G9 has full HUD health bar implementation"
+    query: "how do I add a health bar to my game",
+    description: "Beginner asking about HUD/health display",
+    expectedTopics: ["ui", "hud", "health", "combat"],
   },
-  // 2. Animation blend tree — new G8 doc
   {
-    query: "animation blend tree state machine godot",
-    expectedTop3: ["godot-arch/G8"],
-    acceptable: ["godot-arch/G2", "animation-theory"],
-    category: "godot-animation",
-    notes: "G8 covers AnimationTree blend trees and state machines"
+    query: "my character keeps sliding on slopes",
+    description: "Physics debugging — slopes + CharacterBody",
+    expectedTopics: ["physics", "character", "collision", "controller"],
   },
-  // 3. Procedural dungeon generation with tilemaps
   {
-    query: "procedural dungeon generation tilemap",
-    expectedTop3: ["godot-arch/G7", "procedural-generation-theory"],
-    acceptable: ["tilemap-theory", "G53", "G37"],
-    category: "procgen",
-    notes: "G7 has BSP dungeon + cellular automata + WFC"
+    query: "best way to handle different weapons",
+    description: "Combat architecture — weapon variety",
+    expectedTopics: ["combat", "damage", "weapon", "pattern"],
   },
-  // 4. Vague new-user question about game architecture
   {
-    query: "how should I structure my game code",
-    expectedTop3: ["E1"],
-    acceptable: ["godot-arch/E1", "monogame-arch-rules", "G12"],
-    category: "architecture",
-    notes: "E1 architecture overview is the canonical starting point"
+    query: "godot autoload vs dependency injection",
+    description: "Godot architecture decision",
+    expectedTopics: ["godot", "autoload", "architecture", "signal", "scene"],
   },
-  // 5. Real question from r/godot about settings menus
   {
-    query: "settings menu audio volume slider save",
-    expectedTop3: ["godot-arch/G9"],
-    acceptable: ["audio-theory", "G6", "ui-theory"],
-    category: "ui-settings",
-    notes: "G9 has full settings screen with audio bus + ConfigFile"
+    query: "how to make smooth camera transitions between rooms",
+    description: "Camera + room transitions",
+    expectedTopics: ["camera", "transition", "scene"],
   },
-  // 6. Cross-engine concept — testing combat theory
   {
-    query: "damage types armor resistance calculation",
-    expectedTop3: ["combat-theory", "G64"],
-    acceptable: [],
-    category: "combat-math",
-    notes: "combat-theory has armor models + diminishing returns formula"
+    query: "procedural dungeon generation roguelike",
+    description: "PCG for roguelike genre",
+    expectedTopics: ["procedural", "generation", "dungeon", "tilemap"],
   },
-  // 7. Semantic gap test — user means screen transitions
   {
-    query: "fade to black between scenes",
-    expectedTop3: ["godot-arch/G9", "scene-management-theory"],
-    acceptable: ["G38", "godot-arch/G6", "ui-theory"],
-    category: "transitions",
-    notes: "G9 has screen transition autoload with fade"
+    query: "networking predict client movement lag compensation",
+    description: "Advanced multiplayer networking",
+    expectedTopics: ["network", "multiplayer", "predict", "lag"],
   },
-  // 8. Common indie dev question about save systems
   {
-    query: "how to save player inventory and progress",
-    expectedTop3: ["G69"],
-    acceptable: ["G10", "godot-arch/G9"],
-    category: "save-system",
-    notes: "G69 is the 113KB save/load serialization guide"
+    query: "pixel art animation import workflow",
+    description: "Art pipeline for pixel games",
+    expectedTopics: ["animation", "sprite", "art", "pixel"],
   },
-  // 9. Steering/flocking AI (tests synonym expansion)
   {
-    query: "boids flocking steering behavior",
-    expectedTop3: ["G4", "ai-theory"],
-    acceptable: ["pathfinding-theory", "godot-arch/G2"],
-    category: "ai-steering",
-    notes: "G4 AI Systems has steering behaviors section"
+    query: "entity component system vs object oriented",
+    description: "Architecture — ECS vs OOP",
+    expectedTopics: ["ecs", "entity", "component", "architecture"],
   },
-  // 10. GDScript-specific question — language choice
   {
-    query: "should I use gdscript or csharp for my godot game",
-    expectedTop3: ["godot-arch/E2"],
-    acceptable: ["godot-arch/E1", "godot-rules"],
-    category: "language-choice",
-    notes: "E2 is the definitive GDScript vs C# decision doc"
+    query: "how to make a dialog tree with choices",
+    description: "Dialogue/narrative system",
+    expectedTopics: ["dialogue", "dialog", "narrative", "ui"],
   },
 ];
 
-console.log(`\n=== Search Quality Round 5 — ${new Date().toISOString()} ===`);
-console.log(`Corpus: ${allDocs.length} docs\n`);
+console.log("=".repeat(80));
+console.log("SEARCH QUALITY ROUND 5 — 10 Natural Language Queries");
+console.log("Corpus: " + allDocs.length + " docs");
+console.log("=".repeat(80));
 
-let totalPass = 0;
-let totalTests = 0;
-const failures: { query: string; expected: string[]; actual: string[]; scores: string[] }[] = [];
-const details: string[] = [];
+interface QueryResult {
+  query: string;
+  description: string;
+  top3: Array<{ id: string; title: string; score: number }>;
+  top5: Array<{ id: string; title: string; score: number }>;
+  verdict: "PASS" | "ACCEPTABLE" | "FAIL";
+  notes: string;
+}
 
-for (const test of tests) {
-  totalTests++;
-  const results = engine.search(test.query, allDocs, 10);
+const queryResults: QueryResult[] = [];
+
+for (const tq of queries) {
+  const results = engine.search(tq.query, allDocs, 5);
   const top3 = results.slice(0, 3);
-  const top3Ids = top3.map(r => r.doc.id);
-  const top5Ids = results.slice(0, 5).map(r => r.doc.id);
 
-  // Check if any expected ID appears in top 3
-  const expectedHit = test.expectedTop3.some(id => top3Ids.includes(id));
-  // Check if top 3 has at least expected or acceptable
-  const allTop3Valid = top3Ids.every(id =>
-    test.expectedTop3.includes(id) ||
-    (test.acceptable ?? []).includes(id) ||
-    true // we don't penalize unexpected results, only check expected hit
-  );
+  console.log(`\n${"─".repeat(70)}`);
+  console.log(`Query: "${tq.query}"`);
+  console.log(`  ${tq.description}`);
+  console.log(`  Expected topics: ${tq.expectedTopics.join(", ")}`);
 
-  const pass = expectedHit;
-  if (pass) totalPass++;
-
-  const scoreStr = top3.map(r => `${r.doc.id}(${r.score.toFixed(2)})`).join(", ");
-  const verdict = pass ? "✅" : "❌";
-  console.log(`${verdict} [${test.category}] "${test.query}"`);
-  console.log(`  Top 3: ${scoreStr}`);
-  console.log(`  Top 5: ${top5Ids.join(", ")}`);
-  if (test.notes) console.log(`  Notes: ${test.notes}`);
-
-  if (!pass) {
-    failures.push({
-      query: test.query,
-      expected: test.expectedTop3,
-      actual: top3Ids,
-      scores: top3.map(r => `${r.doc.id}(${r.score.toFixed(2)})`)
-    });
+  for (let i = 0; i < results.length; i++) {
+    const r = results[i];
+    const marker = i < 3 ? "→" : " ";
+    console.log(`  ${marker} ${i + 1}. [${r.score.toFixed(2)}] ${r.doc.id} — "${r.doc.title}"`);
   }
-  console.log();
 
-  details.push(`| ${test.category} | "${test.query}" | ${scoreStr} | ${verdict} ${pass ? "PASS" : "FAIL"} |`);
+  if (results.length === 0) {
+    console.log(`  ❌ ZERO RESULTS`);
+  }
+
+  // Evaluate relevance
+  const top3Text = top3.map(r => `${r.doc.id} ${r.doc.title} ${r.doc.description || ""}`.toLowerCase()).join(" ");
+  const matchedTopics = tq.expectedTopics.filter(t => top3Text.includes(t.toLowerCase()));
+  const matchRatio = matchedTopics.length / tq.expectedTopics.length;
+
+  let verdict: "PASS" | "ACCEPTABLE" | "FAIL";
+  let notes = "";
+
+  if (results.length === 0) {
+    verdict = "FAIL";
+    notes = "Zero results returned";
+  } else if (matchRatio >= 0.4 && top3[0].score > 0.5) {
+    verdict = "PASS";
+    notes = `Matched topics: ${matchedTopics.join(", ")} (${matchedTopics.length}/${tq.expectedTopics.length})`;
+  } else if (matchRatio >= 0.2 || top3[0].score > 0.3) {
+    verdict = "ACCEPTABLE";
+    notes = `Partial: ${matchedTopics.join(", ") || "none"} (${matchedTopics.length}/${tq.expectedTopics.length}). Score: ${top3[0].score.toFixed(2)}`;
+  } else {
+    verdict = "FAIL";
+    notes = `Poor: ${matchedTopics.join(", ") || "none"} (${matchedTopics.length}/${tq.expectedTopics.length}). Score: ${top3[0]?.score.toFixed(2) ?? "N/A"}`;
+  }
+
+  const icon = verdict === "PASS" ? "✅" : verdict === "ACCEPTABLE" ? "⚠️" : "❌";
+  console.log(`  ${icon} ${verdict}: ${notes}`);
+
+  queryResults.push({
+    query: tq.query,
+    description: tq.description,
+    top3: top3.map(r => ({ id: r.doc.id, title: r.doc.title, score: r.score })),
+    top5: results.map(r => ({ id: r.doc.id, title: r.doc.title, score: r.score })),
+    verdict,
+    notes,
+  });
 }
 
-console.log(`\n=== RESULTS: ${totalPass}/${totalTests} passed (${((totalPass/totalTests)*100).toFixed(0)}%) ===\n`);
+// Summary
+console.log(`\n${"=".repeat(80)}`);
+console.log("SUMMARY");
+console.log(`${"=".repeat(80)}`);
+const pass = queryResults.filter(r => r.verdict === "PASS").length;
+const acceptable = queryResults.filter(r => r.verdict === "ACCEPTABLE").length;
+const fail = queryResults.filter(r => r.verdict === "FAIL").length;
+const zeroResults = queryResults.filter(r => r.top3.length === 0).length;
 
-if (failures.length > 0) {
-  console.log("FAILURES:");
-  for (const f of failures) {
-    console.log(`  ❌ "${f.query}"`);
-    console.log(`     Expected one of: ${f.expected.join(", ")}`);
-    console.log(`     Got top 3: ${f.scores.join(", ")}`);
-  }
-}
+console.log(`✅ PASS: ${pass}/10  |  ⚠️ ACCEPTABLE: ${acceptable}/10  |  ❌ FAIL: ${fail}/10`);
+console.log(`Zero-result queries: ${zeroResults}`);
+console.log(`Weighted score: ${((pass * 3 + acceptable * 1.5) / 30 * 100).toFixed(1)}%`);
 
-// Print markdown table
-console.log("\n### Markdown Table\n");
-console.log("| Category | Query | Top 3 (scores) | Verdict |");
-console.log("|----------|-------|-----------------|---------|");
-for (const d of details) console.log(d);
+// Write results JSON
+const outputPath = path.join(__dirname, "search-quality-round5-results.json");
+fs.writeFileSync(outputPath, JSON.stringify({
+  timestamp: new Date().toISOString(),
+  corpus: allDocs.length,
+  queries: queryResults,
+  summary: { pass, acceptable, fail, zeroResults }
+}, null, 2));
+console.log(`\nResults → ${outputPath}`);

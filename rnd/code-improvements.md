@@ -146,33 +146,13 @@ export function handleSearchDocs(...): ToolResult {
 
 **Not urgent** — stdio servers only start once per session. Would matter if the server were ever HTTP-based.
 
-#### 9. Resource Registration Loop Creates Closures Over Mutable State (server.ts:166-177)
+#### ✅ 9. Resource Registration Loop Closure Over Mutable State — DONE 2026-03-26
 
-**Problem:** The `for (const doc of allDocs)` loop creates resource handlers that close over `doc` and `uri`. Since `const` is used in the loop, this is actually fine in modern JS. But `allDocs` is a reference to `docStore.getAllDocs()` which returns the internal array — if the array were ever mutated, all resource handlers would see the mutation.
+**Implemented:** `allDocs` is now spread (`[...docStore.getAllDocs()]`) to avoid closing over the mutable internal array. Also fixed duplicate TOPIC_DOC_MAP keys (`cutscene`, `typewriter`) that caused TS1117 build errors — merged entries into their first occurrence. Commit: see git log.
 
-**Minor risk.** Could be hardened by spreading: `const allDocs = [...docStore.getAllDocs()]`.
+#### ✅ 10. `isToolAllowed` Returns ToolAccess Enum — DONE (previously refactored)
 
-#### 10. `isToolAllowed` Returns `boolean | "limited"` — Awkward Union Type (tiers.ts:29)
-
-**Problem:** Using `boolean | "limited"` as a return type forces callers to do `=== false`, `=== "limited"`, and `=== true` checks, which is error-prone. A simple `if (!access)` would incorrectly treat `"limited"` as truthy.
-
-**Suggestion:** Use a proper enum:
-```typescript
-type ToolAccess = 'full' | 'limited' | 'denied';
-
-export function isToolAllowed(tier: Tier, tool: string): ToolAccess {
-  // ...
-}
-```
-
-This makes caller code much clearer:
-```typescript
-switch (isToolAllowed(tier, 'search_docs')) {
-  case 'denied': return proGateResponse();
-  case 'limited': /* restrict */ break;
-  case 'full': /* allow */ break;
-}
-```
+**Implemented:** `ToolAccess = "full" | "limited" | "denied"` type already in tiers.ts. All callers in server.ts use proper `=== "denied"` / `=== "limited"` checks. No `boolean | "limited"` union remains anywhere in the codebase.
 
 #### 11. Session State is Global Singleton (tools/session.ts:8)
 
