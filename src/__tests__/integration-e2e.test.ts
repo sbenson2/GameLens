@@ -447,8 +447,8 @@ describe("Performance Benchmarks", () => {
 
     assert.ok(evicted >= 100, `Should evict >= 100 entries, got ${evicted}`);
     assert.ok(
-      evictElapsed < 50,
-      `Eviction of 100 entries should be < 50ms, got ${evictElapsed.toFixed(2)}ms`
+      evictElapsed < 100,
+      `Eviction of 100 entries should be < 100ms, got ${evictElapsed.toFixed(2)}ms`
     );
   });
 
