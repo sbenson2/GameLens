@@ -53,7 +53,7 @@ Every task should read this before starting and append learnings when done.
 ### Open
 - **P-file title numbering mismatch** — Cosmetic only, low priority
 - **Remaining code improvements (from audit)**: Cache shape validation, section extraction for large docs, summary mode for list_docs, random_doc tool, richer tool descriptions. See `rnd/code-improvements.md`.
-- **Search P4 (stemming)** — Not yet implemented. Medium impact, needs careful testing.
+- ~~**Search P4 (stemming)**~~: ✅ DONE 2026-03-28 — Lightweight suffix stemmer (20+ rules, length guards), 7 dedicated tests. Verified plural/gerund/past-tense/suffix matching across 147-doc corpus.
 - **npm v1.0.0 published** — need to set up GitHub Actions OIDC trusted publishing for future releases
 - **MCP registry submissions pending** — mcp.so, mcpmarket.com, smithery.ai, Cline marketplace
 

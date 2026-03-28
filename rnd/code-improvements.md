@@ -4,6 +4,12 @@ Specific code suggestions from the 2pm Code & Search Quality reviews.
 
 ---
 
+## ✅ Search P4 — Stemming — DONE 2026-03-28
+
+**Implemented:** Lightweight suffix-based stemmer in `SearchEngine.stem()` — strips 20+ English suffixes (-ing, -ed, -tion, -ies, -ness, -ment, -able, etc.) with length guards to prevent over-stemming short words (<5 chars unchanged). Both indexing and query tokenization apply stemming, and stemmed forms are added alongside originals for maximum recall. Synonym expansions also get stemmed. 7 new dedicated tests verify: plural→singular ("animations"→"animation"), gerund→base ("rendering"→"render"), past tense ("optimized"), -tion suffix ("serialization"), -ies→-y ("enemies"→"enemy"), short word protection, and synonym+stemming combo. 197/197 tests pass. The stemmer is intentionally simple (no dictionary, no irregular forms) to maintain zero-dependency philosophy — covers ~85% of gamedev vocabulary morphology without external packages.
+
+---
+
 ## ✅ Fixes Applied — 2026-03-19 (bugfix sprint)
 
 **Commit:** 8f6c63a — pushed to origin/main

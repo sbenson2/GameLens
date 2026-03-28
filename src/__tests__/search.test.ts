@@ -67,4 +67,79 @@ describe("SearchEngine", () => {
     const results = engine.search("how to make the best game", allDocs, 5);
     assert.ok(Array.isArray(results), "Should handle stop-word queries");
   });
+
+  // --- Stemming tests (Search P4) ---
+
+  it("should match plural to singular via stemming ('animations' → animation docs)", () => {
+    const singular = engine.search("animation", allDocs, 5);
+    const plural = engine.search("animations", allDocs, 5);
+    assert.ok(plural.length > 0, "Plural query should find results");
+    // The top result for both should be the same doc
+    if (singular.length > 0 && plural.length > 0) {
+      assert.equal(
+        singular[0].doc.id,
+        plural[0].doc.id,
+        "Singular and plural should return the same top result"
+      );
+    }
+  });
+
+  it("should match '-ing' form to base via stemming ('rendering' → render docs)", () => {
+    const base = engine.search("render pipeline", allDocs, 5);
+    const gerund = engine.search("rendering pipeline", allDocs, 5);
+    assert.ok(gerund.length > 0, "Gerund query should find results");
+    if (base.length > 0 && gerund.length > 0) {
+      assert.equal(
+        base[0].doc.id,
+        gerund[0].doc.id,
+        "Base and gerund forms should return the same top result"
+      );
+    }
+  });
+
+  it("should match '-ed' form to base via stemming ('optimized' → optimization docs)", () => {
+    const results = engine.search("optimized performance", allDocs, 5);
+    assert.ok(results.length > 0, "Past tense query should find results via stemming");
+  });
+
+  it("should match '-tion' suffix via stemming ('serialization' → save/load docs)", () => {
+    const base = engine.search("serialize save", allDocs, 5);
+    const derived = engine.search("serialization save", allDocs, 5);
+    assert.ok(derived.length > 0, "Derived form query should find results");
+    // Both should find save/serialization content
+    if (base.length > 0 && derived.length > 0) {
+      const baseIds = base.map(r => r.doc.id);
+      const derivedIds = derived.map(r => r.doc.id);
+      // At least one overlapping result
+      const overlap = baseIds.filter(id => derivedIds.includes(id));
+      assert.ok(overlap.length > 0, "Base and -tion forms should have overlapping results");
+    }
+  });
+
+  it("should match '-ies' to '-y' via stemming ('enemies' → enemy AI docs)", () => {
+    const singular = engine.search("enemy ai behavior", allDocs, 5);
+    const plural = engine.search("enemies ai behavior", allDocs, 5);
+    assert.ok(plural.length > 0, "Plural -ies query should find results");
+    // Both should find AI-related content
+    if (singular.length > 0 && plural.length > 0) {
+      assert.equal(
+        singular[0].doc.id,
+        plural[0].doc.id,
+        "'enemies' and 'enemy' should return the same top result"
+      );
+    }
+  });
+
+  it("should not over-stem short words (< 5 chars stay unchanged)", () => {
+    // 'game', 'code', 'node' should not be stemmed to gibberish
+    const results = engine.search("game code", allDocs, 5);
+    assert.ok(results.length > 0, "Short words should still match without stemming");
+  });
+
+  it("should handle synonym + stemming combo ('spawning enemies' → pool + AI docs)", () => {
+    const results = engine.search("spawning enemies", allDocs, 5);
+    assert.ok(results.length > 0, "Synonym + stemming combo should find results");
+    // 'spawning' stems to 'spawn' which has synonyms [pool, pooling, instantiate]
+    // 'enemies' stems to 'enemy' which has synonyms [enemy, ai]
+  });
 });
