@@ -162,3 +162,19 @@ These apply to any 2D or 3D game project.
 - Update docs when the code changes. Stale docs are worse than no docs.
 - Use code examples in docs. Abstract descriptions without examples are useless.
 - Prefer structured formats (tables, lists, templates) over prose.
+
+---
+
+## Engine-Specific Rules
+
+These engine-agnostic rules apply universally. For engine-specific AI rules, see:
+
+- [MonoGame + Arch ECS Rules](../../monogame-arch/monogame-arch-rules.md) — C#/MonoGame-specific patterns, naming conventions, and ECS architecture rules
+- [Godot 4.x Rules](../../godot-arch/godot-rules.md) — GDScript/Godot-specific patterns, Godot 3→4 migration pitfalls, node tree conventions
+
+## Related Guides
+
+- [E5 AI Workflow](./E5_ai_workflow.md) — AI-assisted development workflow and session management
+- [G11 Programming Principles](../programming/G11_programming_principles.md) — SOLID, DRY, KISS, YAGNI applied to game development
+- [G12 Design Patterns](../programming/G12_design_patterns.md) — Implementation patterns referenced by these rules
+- [E4 Project Management](../project-management/E4_project_management.md) — Task structure, milestone planning, and scope control in depth

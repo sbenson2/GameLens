@@ -3214,4 +3214,20 @@ public class Match3System
             return true;
 
         // Check vertical (up 2)
-        if (y >=
+        if (y >= 2 && board.Get(x, y - 1) == color && board.Get(x, y - 2) == color)
+            return true;
+
+        return false;
+    }
+}
+```
+
+---
+
+## Related Guides
+
+- [G69 Save/Load Serialization](./G69_save_load_serialization.md) — Binary and JSON serialization for puzzle save states and level progress
+- [G70 Replay & Recording Systems](./G70_replay_recording_systems.md) — Ghost replay and move recording for puzzle solution playback
+- [ui-theory](../../core/concepts/ui-theory.md) — Engine-agnostic UI patterns for menus, layout, and screen management
+- [G64 Combat & Damage Systems](./G64_combat_damage_systems.md) — Damage pipeline patterns applicable to physics puzzle hazards
+- [G61 Tutorial & Onboarding](./G61_tutorial_onboarding.md) — Tutorial flow and hint system patterns for puzzle onboarding

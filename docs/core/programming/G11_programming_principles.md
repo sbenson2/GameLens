@@ -1,5 +1,5 @@
 # G11 — Programming Principles
-> **Category:** Guide · **Related:** [G12 Design Patterns](./G12_design_patterns.md) · [E1 Architecture Overview](../../monogame-arch/architecture/E1_architecture_overview.md) · [E5 AI Workflow](../ai-workflow/E5_ai_workflow.md)
+> **Category:** Guide · **Related:** [G12 Design Patterns](./G12_design_patterns.md) · [G14 Data Structures](./G14_data_structures.md) · [G18 Game Programming Patterns](./G18_game_programming_patterns.md) · [G13 C# Performance](../../monogame-arch/guides/G13_csharp_performance.md) · [E1 Architecture Overview](../../monogame-arch/architecture/E1_architecture_overview.md) · [E5 AI Workflow](../ai-workflow/E5_ai_workflow.md)
 
 ---
 
@@ -188,3 +188,13 @@ Modern game architecture strongly favors composition. Inheritance is rigid — g
 **Use composition for:** "has-a" relationships, runtime flexibility, abilities that change, combining capabilities from multiple sources.
 
 In Arch ECS, composition is the default. Entities are just IDs. Components are pure data structs. Systems process component combinations. A player is `Position + Velocity + PlayerTag + Health + Inventory`. An enemy is `Position + Velocity + EnemyTag + Health + AIState`. Shared components (Position, Velocity, Health) work identically for both — no inheritance needed.
+
+---
+
+## Related Guides
+
+- [G12 Design Patterns](./G12_design_patterns.md) — Concrete pattern implementations (State, Observer, Command, etc.)
+- [G14 Data Structures](./G14_data_structures.md) — Spatial hashing, priority queues, and game-specific data structures
+- [G18 Game Programming Patterns](./G18_game_programming_patterns.md) — Game-specific patterns (Game Loop, Update Method, Component, etc.)
+- [G13 C# Performance](../../monogame-arch/guides/G13_csharp_performance.md) — Performance-oriented C# patterns and profiling
+- [combat-theory](../concepts/combat-theory.md) — Damage pipeline architecture demonstrating SRP and composition in practice

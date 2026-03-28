@@ -3062,4 +3062,21 @@ public static class ReplayValidator
             {
                 return new ValidationResult(
                     ValidationLevel.SnapshotMismatch,
-                    $"Desync at tick {targetTick}: {diff
+                    $"Desync at tick {targetTick}: {diff.Summary}");
+            }
+        }
+
+        return new ValidationResult(ValidationLevel.Valid, "Replay verified — all snapshots match.");
+    }
+}
+```
+
+---
+
+## Related Guides
+
+- [G13 C# Performance](./G13_csharp_performance.md) — Struct layout, memory optimization, and profiling for replay buffers
+- [G71 Spatial Partitioning](./G71_spatial_partitioning.md) — Spatial hashing for efficient replay entity queries
+- [networking-theory](../../core/concepts/networking-theory.md) — Client prediction, state sync, and delta compression concepts used by network replay
+- [G69 Save/Load Serialization](./G69_save_load_serialization.md) — Binary serialization patterns reused by demo file format
+- [G68 Puzzle Game Systems](./G68_puzzle_game_systems.md) — Puzzle replay and ghost system integration

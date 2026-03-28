@@ -532,3 +532,30 @@ Uses `../R/R1_library_stack.md` and `../G/G1_custom_code_recipes.md` patterns. F
 - Entry-point/rules docs (like godot-rules.md) accumulate stale cross-reference sections as new guides are created — they should be updated whenever a new guide is added to the module.
 - The E3_project_structure.md for Godot was planned but never created — links to it existed prematurely. Lesson: don't add links to docs that don't exist yet; add them when the doc is created.
 - GitHub Actions versions in example code snippets go stale as the ecosystem moves forward — docs with CI/CD examples need periodic version sweeps.
+
+---
+
+## Audit #7 — 2026-03-28 (cron: 7am doc audit)
+
+**Docs audited:** G11 Programming Principles, G70 Replay & Recording, P12 Performance Budget (redirect stub), gamedev-rules.md, G68 Puzzle Game Systems
+
+**Issues found and fixed (7):**
+
+1. **G11 Programming Principles — missing cross-references:** Header only linked G12, E1, E5. Missing links to sibling docs G14 Data Structures, G18 Game Programming Patterns, G13 C# Performance, and combat-theory (which demonstrates SRP/composition in practice). Added Related Guides section at end with all 5 links.
+
+2. **G70 Replay & Recording — TRUNCATED FILE:** File cut off at line 3064 mid-code (inside string interpolation `$"Desync at tick {targetTick}: {diff`). Completed the truncated validation method and added closing braces. This was a data loss issue — the anti-cheat validation section was incomplete.
+
+3. **G70 Replay & Recording — missing cross-references:** No links to G13 C# Performance (replay buffers need perf awareness), G71 Spatial Partitioning (replay entity queries), networking-theory (network replay concepts), G69 Save/Load (binary serialization reuse), or G68 Puzzle Systems (puzzle replay integration). Added Related Guides section.
+
+4. **gamedev-rules.md — ZERO cross-references:** Engine-agnostic rules doc had no links to ANY other docs — not even the engine-specific rules files it's meant to complement. Added Engine-Specific Rules section linking monogame-arch-rules.md and godot-rules.md, plus Related Guides section linking E5, G11, G12, and E4.
+
+5. **G68 Puzzle Game Systems — TRUNCATED FILE:** File cut off at line 3216 mid-code (inside `WouldMatch` method, `if (y >=` incomplete). Completed the vertical match check and closing braces for the match-3 board generator.
+
+6. **G68 Puzzle Game Systems — missing cross-references:** No links to G69 Save/Load (has save/load section), G70 Replay (has replay section), or ui-theory (puzzle UI patterns). Added Related Guides section with 5 links.
+
+7. **P12 redirect stub — verified:** Redirect link is valid and target doc exists. No fix needed — functioning correctly.
+
+**Patterns observed:**
+- **File truncation is a new systemic issue.** Two of 5 randomly audited docs (G68, G70) had truncated endings — code cut off mid-statement. These are large docs (3000+ lines) likely created by cron agents that hit output limits. A bulk check for truncated files (ending mid-code without proper closing) is warranted.
+- **Entry-point/rules docs lacking cross-references** confirmed for 5th consecutive audit. gamedev-rules.md is the most linked-to AI workflow doc but had zero outbound links.
+- **Sibling docs in same directory not cross-referenced** — G11 didn't link to G14, G18 despite being in the same `programming/` directory and covering complementary topics.
