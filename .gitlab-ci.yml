@@ -1,0 +1,91 @@
+# GitLab CI/CD — equivalent of .github/workflows/ci.yml
+# GitHub Actions workflows in .github/ are kept for reference but inactive on GitLab.
+
+stages:
+  - test
+  - publish
+
+variables:
+  NODE_VERSION: "22"
+
+# ── Build & Test (matrix: Node 18, 20, 22, 24) ──
+.test-template:
+  stage: test
+  image: node:${TEST_NODE_VERSION}
+  cache:
+    key: npm-${TEST_NODE_VERSION}
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - npm run build
+    - test -f packages/server/dist/index.js
+    - npm run typecheck
+    - npm test
+    - npm pack --dry-run --workspace=gamecodex
+
+test:node-18:
+  extends: .test-template
+  variables:
+    TEST_NODE_VERSION: "18"
+
+test:node-20:
+  extends: .test-template
+  variables:
+    TEST_NODE_VERSION: "20"
+
+test:node-22:
+  extends: .test-template
+  variables:
+    TEST_NODE_VERSION: "22"
+
+test:node-24:
+  extends: .test-template
+  variables:
+    TEST_NODE_VERSION: "24"
+  allow_failure: true
+
+# ── Lint ──
+lint:
+  stage: test
+  image: node:${NODE_VERSION}
+  cache:
+    key: npm-lint
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - npx prettier --check "packages/server/src/**/*.ts" || true
+    - npx eslint "packages/server/src/**/*.ts" 2>/dev/null || true
+
+# ── Security Audit ──
+audit:
+  stage: test
+  image: node:${NODE_VERSION}
+  cache:
+    key: npm-audit
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - npm audit --omit=dev || true
+
+# ── Publish to npm (manual, on tags only) ──
+publish:
+  stage: publish
+  image: node:${NODE_VERSION}
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+      when: manual
+  cache:
+    key: npm-publish
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - npm run build
+    - test -f packages/server/dist/index.js
+    - npm run typecheck
+    - npm test
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish --workspace=gamecodex --access public

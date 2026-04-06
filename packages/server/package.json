@@ -1,0 +1,67 @@
+{
+  "name": "gamecodex",
+  "version": "0.1.0",
+  "description": "AI game dev co-pilot — MCP server with 150+ docs, project scaffolding, and teaching tools for MonoGame, Godot, and Phaser.",
+  "main": "dist/index.js",
+  "bin": {
+    "gamecodex": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "node --import tsx --test src/__tests__/*.test.ts",
+    "test:ci": "node --import tsx --test src/__tests__/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "version:patch": "npm version patch --no-git-tag-version",
+    "version:minor": "npm version minor --no-git-tag-version",
+    "version:major": "npm version major --no-git-tag-version",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "mcp",
+    "gamedev",
+    "game-development",
+    "gamecodex",
+    "monogame",
+    "godot",
+    "phaser",
+    "ecs",
+    "ai",
+    "claude",
+    "cursor",
+    "windsurf",
+    "model-context-protocol",
+    "game-ai",
+    "copilot"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbenson2/GameCodex.git"
+  },
+  "homepage": "https://github.com/sbenson2/GameCodex",
+  "bugs": {
+    "url": "https://github.com/sbenson2/GameCodex/-/issues"
+  },
+  "author": "sbenson2",
+  "dependencies": {
+    "@huggingface/transformers": "^4.0.1",
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist",
+    "docs/core",
+    "docs/monogame-arch",
+    "docs/godot-arch",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

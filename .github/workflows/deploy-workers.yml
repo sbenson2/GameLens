@@ -73,6 +73,6 @@ jobs:
         run: |
           # Wait for deployment to propagate
           sleep 10
-          HEALTH=$(curl -sf https://gamedev-mcp-api.sbenson2.workers.dev/v1/health)
+          HEALTH=$(curl -sf https://gamecodex-api.sbenson2.workers.dev/v1/health)
           echo "Health check: $HEALTH"
           echo "$HEALTH" | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["ok"], "Health check failed"'

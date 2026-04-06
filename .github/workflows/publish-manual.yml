@@ -55,7 +55,7 @@ jobs:
       - name: Check version vs npm registry
         run: |
           LOCAL_VERSION=$(node -p 'require("./package.json").version')
-          NPM_VERSION=$(npm view gamedev-mcp-server version 2>/dev/null || echo "not-published")
+          NPM_VERSION=$(npm view gamecodex version 2>/dev/null || echo "not-published")
           echo "Local: v${LOCAL_VERSION}"
           echo "npm:   v${NPM_VERSION}"
           if [ "$LOCAL_VERSION" = "$NPM_VERSION" ]; then
@@ -80,7 +80,7 @@ jobs:
         if: ${{ !inputs.dry_run }}
         run: |
           sleep 10
-          PUBLISHED=$(npm view gamedev-mcp-server version 2>/dev/null)
+          PUBLISHED=$(npm view gamecodex version 2>/dev/null)
           echo "Published version: ${PUBLISHED}"
           if [ "$PUBLISHED" != "$VERSION" ]; then
             echo "::warning::Published version doesn't match expected. May need propagation time."
