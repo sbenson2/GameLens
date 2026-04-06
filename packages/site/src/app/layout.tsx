@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "GameCodex — AI Game Dev Assistant",
-  description: "The ultimate AI game development assistant. Any engine, any language. 150+ curated guides. Describe your game, get code that runs.",
+  title: "GameCodex — AI Game Dev Co-Pilot",
+  description: "The AI game dev co-pilot that never forgets. 150+ curated guides, 22 tools, any engine. Describe your game, get code that runs.",
+  keywords: ["game development", "AI assistant", "MCP server", "Godot", "MonoGame", "Unity", "Phaser", "game dev tools"],
+  openGraph: {
+    title: "GameCodex — AI Game Dev Co-Pilot",
+    description: "Your AI forgets game dev mid-project. This one doesn't. 150+ curated guides, any engine, any language.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -23,10 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

@@ -1,113 +1,405 @@
-import Link from 'next/link';
+'use client';
 
-const ENGINES = ['Godot', 'MonoGame', 'Unity', 'Pygame', 'Phaser', 'Love2D', 'Bevy', 'GameMaker'];
-const FEATURES = [
-  { icon: '🎮', title: 'Any Engine', desc: 'Godot, Unity, MonoGame, Pygame, Phaser, and more' },
-  { icon: '🧠', title: 'Deep Knowledge', desc: '150+ curated guides on game systems and architecture' },
-  { icon: '🔧', title: 'Your AI, Your Key', desc: 'Bring Claude, GPT, or Gemini. We never see your data.' },
-  { icon: '⚡', title: 'Concept to Code', desc: 'Describe your game. Get code that runs.' },
+import Link from 'next/link';
+import { useEffect, useRef } from 'react';
+
+/* ─── Data ─── */
+const ENGINES = [
+  { name: 'Godot', icon: '◈' },
+  { name: 'MonoGame', icon: '◆' },
+  { name: 'Unity', icon: '▣' },
+  { name: 'Phaser', icon: '◇' },
+  { name: 'Pygame', icon: '◉' },
+  { name: 'Love2D', icon: '♥' },
+  { name: 'Bevy', icon: '⬡' },
+  { name: 'GameMaker', icon: '✦' },
 ];
 
+const STATS = [
+  { value: '150+', label: 'Curated Guides' },
+  { value: '22', label: 'AI Tools' },
+  { value: '8+', label: 'Engines' },
+  { value: '0', label: 'Data Collected' },
+];
+
+const BENTO_FEATURES = [
+  {
+    title: 'Any Engine. One Brain.',
+    desc: 'Godot, Unity, MonoGame, Phaser, Pygame — GameCodex speaks them all fluently. Switch engines mid-conversation without losing context.',
+    span: 'col-span-2',
+    accent: true,
+  },
+  {
+    title: 'Your AI, Your Rules',
+    desc: 'Works with Claude, GPT, or Gemini through your own MCP client. Your keys never leave your machine.',
+    span: 'col-span-1',
+  },
+  {
+    title: 'Debug Like a Mentor',
+    desc: 'Paste an error, get a diagnosis. Not a generic Stack Overflow link — a real explanation of what went wrong and how to fix it.',
+    span: 'col-span-1',
+  },
+  {
+    title: 'From Concept to Running Code',
+    desc: 'Describe your game in plain English. Get architecture, scaffolding, and starter code that actually compiles. Every snippet includes comments explaining why.',
+    span: 'col-span-2',
+  },
+  {
+    title: '150+ Deep Guides',
+    desc: 'Not blog posts — structured knowledge on ECS, physics, pathfinding, shaders, state machines, and 100+ more game systems.',
+    span: 'col-span-1',
+  },
+  {
+    title: 'Teach Mode',
+    desc: 'Interactive learning paths that adapt to your level. Learn collision detection, not just copy-paste it.',
+    span: 'col-span-1',
+  },
+];
+
+const STEPS = [
+  {
+    num: '01',
+    title: 'Install',
+    desc: 'One command. Works with Claude Code, Cursor, Windsurf, or any MCP-compatible client.',
+    code: 'npx gamecodex setup',
+  },
+  {
+    num: '02',
+    title: 'Connect',
+    desc: 'Bring your own AI model. Claude, GPT, Gemini — your choice, your key, your privacy.',
+    code: 'Provider: Claude Sonnet 4.6',
+  },
+  {
+    num: '03',
+    title: 'Build',
+    desc: 'Ask anything about game dev. Get grounded answers from 150+ curated docs — not hallucinations.',
+    code: '> scaffold a roguelike in Godot',
+  },
+];
+
+const TERMINAL_LINES = [
+  { type: 'prompt', text: '> How do I add ECS to my MonoGame project?' },
+  { type: 'response', text: 'I\'ll search the knowledge base for ECS integration with MonoGame...' },
+  { type: 'tool', text: '⚡ search_docs("monogame ECS architecture") → 12 results' },
+  { type: 'response', text: 'Here\'s a complete ECS setup using Arch with MonoGame:' },
+  { type: 'code', text: '// Create the world and register systems\nvar world = World.Create();\nworld.Create(new Position(0, 0), new Velocity(1, 0));\n\n// Query entities with specific components\nworld.Query(in (ref Position pos, ref Velocity vel) => {\n    pos.X += vel.X * deltaTime;\n    pos.Y += vel.Y * deltaTime;\n});' },
+  { type: 'response', text: 'This uses Arch\'s source-generated queries for zero-allocation iteration. The `in` keyword marks read-only access, enabling safe parallelism.' },
+];
+
+/* ─── Scroll Reveal Hook ─── */
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('revealed');
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
+
+function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className={`reveal-on-scroll ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  );
+}
+
+/* ─── Page ─── */
 export default function Home() {
   return (
-    <div className="min-h-dvh noise-overlay scanlines flex flex-col">
-      {/* Nav */}
-      <nav className="flex items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-2.5">
-          <div
-            className="w-7 h-7 rounded-md flex items-center justify-center font-bold text-sm animate-glow-breathe"
-            style={{ background: 'var(--forge)', color: 'var(--void)', fontFamily: 'var(--font-display)' }}
-          >
-            G
+    <div className="relative min-h-dvh noise-overlay scanlines">
+      {/* Ambient gradient blobs */}
+      <div className="ambient-glow ambient-glow-1" />
+      <div className="ambient-glow ambient-glow-2" />
+      <div className="ambient-glow ambient-glow-3" />
+
+      {/* ═══ NAV ═══ */}
+      <nav className="glass-nav">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="logo-mark">G</div>
+            <span className="text-base font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)', color: 'var(--white)' }}>
+              Game<span style={{ color: 'var(--forge)' }}>Codex</span>
+            </span>
+          </Link>
+          <div className="flex items-center gap-6">
+            <a
+              href="https://github.com/sbenson2/GameCodex"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm transition-colors duration-200 hidden sm:block"
+              style={{ color: 'var(--ash)', fontFamily: 'var(--font-display)' }}
+            >
+              GitLab
+            </a>
+            <a
+              href="https://www.npmjs.com/package/gamecodex"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-cta"
+            >
+              Get Started
+            </a>
           </div>
-          <span className="text-base font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)', color: 'var(--white)' }}>
-            Game<span style={{ color: 'var(--forge)' }}>Forge</span>
-          </span>
         </div>
-        <Link
-          href="/chat"
-          className="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:brightness-110"
-          style={{ background: 'var(--forge)', color: 'var(--void)', fontFamily: 'var(--font-display)' }}
-        >
-          Start Building
-        </Link>
       </nav>
 
-      {/* Hero */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 text-center">
-        <div className="max-w-2xl">
+      {/* ═══ HERO ═══ */}
+      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+        <div className="max-w-5xl mx-auto">
           {/* Badge */}
-          <div
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-8"
-            style={{ background: 'var(--forge-ember)', border: '1px solid rgba(0,255,136,0.15)', color: 'var(--forge)', fontFamily: 'var(--font-mono)' }}
-          >
-            <div className="w-1.5 h-1.5 rounded-full animate-pulse-forge" style={{ background: 'var(--forge)' }} />
-            Powered by your choice of AI
-          </div>
+          <Reveal>
+            <div className="hero-badge">
+              <div className="w-1.5 h-1.5 rounded-full animate-pulse-forge" style={{ background: 'var(--forge)' }} />
+              MCP Server · CLI Tool · Web App
+            </div>
+          </Reveal>
 
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.1] mb-5"
-            style={{ fontFamily: 'var(--font-display)', color: 'var(--white)' }}
-          >
-            Your AI forgets<br />
-            <span style={{ color: 'var(--forge)' }} className="forge-glow-text">game dev</span> mid-project.
-            <br />
-            <span style={{ color: 'var(--ash)', fontWeight: 500, fontSize: '0.65em' }}>
-              This one doesn&apos;t.
-            </span>
-          </h1>
+          {/* Headline */}
+          <Reveal delay={100}>
+            <h1 className="hero-headline">
+              Your AI forgets<br />
+              <span className="hero-gradient-text">game dev</span> mid-project.
+            </h1>
+          </Reveal>
 
-          <p className="text-lg mb-10 max-w-md mx-auto" style={{ color: 'var(--smoke)', fontFamily: 'var(--font-display)' }}>
-            150+ curated guides. Any engine. Any language.
-            <br />Describe your game. Get code that runs.
-          </p>
+          <Reveal delay={200}>
+            <p className="hero-sub">
+              GameCodex gives any AI instant access to 150+ curated game development guides.
+              <br className="hidden sm:block" />
+              Any engine. Any language. Zero hallucinations.
+            </p>
+          </Reveal>
 
-          <Link
-            href="/chat"
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-base font-bold transition-all duration-200 hover:brightness-110 hover:translate-y-[-1px] forge-glow"
-            style={{ background: 'var(--forge)', color: 'var(--void)', fontFamily: 'var(--font-display)' }}
-          >
-            Start Building
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </Link>
-
-          {/* Engine ticker */}
-          <div className="mt-10 flex items-center justify-center gap-3 flex-wrap">
-            {ENGINES.map(e => (
-              <span
-                key={e}
-                className="px-3 py-1 rounded-md text-xs"
-                style={{ background: 'var(--iron)', border: '1px solid var(--steel)', color: 'var(--ash)', fontFamily: 'var(--font-mono)' }}
+          {/* CTAs */}
+          <Reveal delay={300}>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-10">
+              <a
+                href="https://www.npmjs.com/package/gamecodex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-cta-primary"
               >
-                {e}
-              </span>
+                Get Started
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <div className="hero-cta-secondary" style={{ cursor: 'default' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85em' }}>npx gamecodex setup</span>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Engine pills */}
+          <Reveal delay={400}>
+            <div className="flex items-center justify-center gap-2 mt-12 flex-wrap">
+              {ENGINES.map((e, i) => (
+                <span key={e.name} className="engine-pill" style={{ animationDelay: `${i * 60}ms` }}>
+                  <span className="engine-pill-icon">{e.icon}</span>
+                  {e.name}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ═══ STATS BAR ═══ */}
+      <section className="relative py-12 border-y" style={{ borderColor: 'var(--steel)' }}>
+        <div className="max-w-5xl mx-auto px-6">
+          <Reveal>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+              {STATS.map((s, i) => (
+                <div key={i} className="text-center">
+                  <div className="stat-value">{s.value}</div>
+                  <div className="stat-label">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ═══ BENTO FEATURES ═══ */}
+      <section className="py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <div className="text-center mb-16">
+              <h2 className="section-title">Everything your AI is missing</h2>
+              <p className="section-sub">
+                GameCodex plugs directly into your AI workflow — no context window wasted, no outdated training data.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="bento-grid">
+            {BENTO_FEATURES.map((f, i) => (
+              <Reveal key={i} delay={i * 80} className={f.span}>
+                <div className={`bento-card ${f.accent ? 'bento-card-accent' : ''}`}>
+                  <h3 className="bento-title">{f.title}</h3>
+                  <p className="bento-desc">{f.desc}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
-      </main>
+      </section>
 
-      {/* Features */}
-      <section className="px-6 pb-16">
-        <div className="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {FEATURES.map((f, i) => (
-            <div
-              key={i}
-              className="px-4 py-4 rounded-xl"
-              style={{ background: 'var(--iron)', border: '1px solid var(--steel)' }}
-            >
-              <div className="text-xl mb-2">{f.icon}</div>
-              <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--white)', fontFamily: 'var(--font-display)' }}>
-                {f.title}
-              </h3>
-              <p className="text-xs leading-relaxed" style={{ color: 'var(--ash)' }}>
-                {f.desc}
-              </p>
+      {/* ═══ HOW IT WORKS ═══ */}
+      <section className="py-24 px-6" style={{ background: 'var(--abyss)' }}>
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <div className="text-center mb-16">
+              <h2 className="section-title">Three steps. That&apos;s it.</h2>
+              <p className="section-sub">From install to building your game in under two minutes.</p>
             </div>
-          ))}
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {STEPS.map((s, i) => (
+              <Reveal key={i} delay={i * 120}>
+                <div className="step-card">
+                  <div className="step-num">{s.num}</div>
+                  <h3 className="step-title">{s.title}</h3>
+                  <p className="step-desc">{s.desc}</p>
+                  <div className="step-code">{s.code}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
+
+      {/* ═══ TERMINAL DEMO ═══ */}
+      <section className="py-24 px-6">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <div className="text-center mb-12">
+              <h2 className="section-title">See it in action</h2>
+              <p className="section-sub">Real answers grounded in real documentation — not training data guesses.</p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="terminal-window">
+              <div className="terminal-header">
+                <div className="terminal-dots">
+                  <span className="dot dot-red" />
+                  <span className="dot dot-yellow" />
+                  <span className="dot dot-green" />
+                </div>
+                <span className="terminal-title">GameCodex</span>
+                <div style={{ width: 52 }} />
+              </div>
+              <div className="terminal-body">
+                {TERMINAL_LINES.map((line, i) => (
+                  <div key={i} className={`terminal-line terminal-${line.type}`} style={{ animationDelay: `${i * 150}ms` }}>
+                    {line.type === 'code' ? (
+                      <pre className="terminal-code-block">{line.text}</pre>
+                    ) : (
+                      <span>{line.text}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ═══ ENGINES ═══ */}
+      <section className="py-24 px-6" style={{ background: 'var(--abyss)' }}>
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <div className="text-center mb-16">
+              <h2 className="section-title">Your engine. Our knowledge.</h2>
+              <p className="section-sub">Deep, structured documentation for every major game engine — not surface-level blog posts.</p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {ENGINES.map((e, i) => (
+                <div key={e.name} className="engine-card" style={{ animationDelay: `${i * 50}ms` }}>
+                  <span className="engine-card-icon">{e.icon}</span>
+                  <span className="engine-card-name">{e.name}</span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ═══ FINAL CTA ═══ */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="cta-glow" />
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <Reveal>
+            <h2 className="cta-headline">
+              Stop debugging your AI.<br />
+              <span className="hero-gradient-text">Start building your game.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <p className="section-sub mb-10">
+              Free to try. No credit card. No account required.
+            </p>
+          </Reveal>
+          <Reveal delay={200}>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="https://www.npmjs.com/package/gamecodex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-cta-primary"
+              >
+                Install GameCodex
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <a
+                href="https://github.com/sbenson2/GameCodex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-cta-secondary"
+              >
+                View Source
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ═══ FOOTER ═══ */}
+      <footer className="border-t px-6 py-10" style={{ borderColor: 'var(--steel)' }}>
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <div className="logo-mark" style={{ width: 22, height: 22, fontSize: '0.7rem' }}>G</div>
+            <span className="text-sm" style={{ color: 'var(--ash)', fontFamily: 'var(--font-display)' }}>
+              GameCodex — AI Game Dev Co-Pilot
+            </span>
+          </div>
+          <div className="flex items-center gap-6 text-sm" style={{ color: 'var(--silver)' }}>
+            <a href="https://github.com/sbenson2/GameCodex" target="_blank" rel="noopener noreferrer" className="footer-link">GitLab</a>
+            <a href="https://www.npmjs.com/package/gamecodex" target="_blank" rel="noopener noreferrer" className="footer-link">npm</a>
+            <a href="https://www.npmjs.com/package/gamecodex" target="_blank" rel="noopener noreferrer" className="footer-link">Install</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

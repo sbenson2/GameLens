@@ -213,6 +213,11 @@ function main() {
     tokens: d.tokens,
   }));
 
+  // Always write manifest.json for the npm package (lightweight metadata)
+  const manifestOutPath = path.resolve(__dirname, "../../docs/manifest.json");
+  fs.writeFileSync(manifestOutPath, JSON.stringify(manifest, null, 2));
+  console.log(`Wrote manifest.json (${manifest.length} entries) to ${manifestOutPath}`);
+
   if (!writeMode) {
     console.log("\nManifest preview (first 5):");
     for (const doc of manifest.slice(0, 5)) {
