@@ -98,6 +98,7 @@ publish:
 # ── Deploy site to GitLab Pages ──
 pages:
   stage: deploy
+  needs: []
   image: node:${NODE_VERSION}
   cache:
     key: npm-pages
