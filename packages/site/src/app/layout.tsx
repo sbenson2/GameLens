@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "GameCodex — AI Game Dev Co-Pilot",
-  description: "The AI game dev co-pilot that never forgets. 150+ curated guides, 22 tools, any engine. Describe your game, get code that runs.",
+  description: "The AI game dev co-pilot that never forgets. 150+ curated guides, 5 power tools, any engine. Describe your game, get code that runs.",
   keywords: ["game development", "AI assistant", "MCP server", "Godot", "MonoGame", "Unity", "Phaser", "game dev tools"],
   openGraph: {
     title: "GameCodex — AI Game Dev Co-Pilot",

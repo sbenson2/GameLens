@@ -3,22 +3,28 @@ import assert from "node:assert/strict";
 import { isToolAllowed, isModuleAllowed, getTierFeatures, Tier, ToolAccess } from "../tiers.js";
 
 describe("Tier System", () => {
-  it("should return 'limited' for search_docs on free tier", () => {
-    const result = isToolAllowed("free" as Tier, "search_docs");
-    assert.equal(result, "limited", "search_docs should be limited for free tier");
+  // v0.2.0 — 5 tools
+  it("should return 'limited' for docs on free tier", () => {
+    const result = isToolAllowed("free" as Tier, "docs");
+    assert.equal(result, "limited", "docs should be limited for free tier");
   });
 
   it("should return 'full' for all tools on pro tier", () => {
-    const tools = ["search_docs", "get_doc", "list_docs", "genre_lookup", "session", "compare_engines"];
+    const tools = ["project", "design", "docs", "build", "meta"];
     for (const tool of tools) {
       const result = isToolAllowed("pro" as Tier, tool);
       assert.equal(result, "full", `${tool} should be full for pro tier`);
     }
   });
 
-  it("should return 'denied' for session on free tier", () => {
-    const result = isToolAllowed("free" as Tier, "session");
-    assert.equal(result, "denied", "session should be denied for free tier");
+  it("should return 'full' for project on free tier", () => {
+    const result = isToolAllowed("free" as Tier, "project");
+    assert.equal(result, "full", "project should be full for free tier");
+  });
+
+  it("should return 'limited' for build on free tier", () => {
+    const result = isToolAllowed("free" as Tier, "build");
+    assert.equal(result, "limited", "build should be limited for free tier");
   });
 
   it("should return 'denied' for unknown tools on free tier", () => {
@@ -51,5 +57,7 @@ describe("Tier System", () => {
     const pro = getTierFeatures("pro" as Tier);
     assert.ok(free, "Free tier should have features");
     assert.ok(pro, "Pro tier should have features");
+    assert.equal(Object.keys(pro.tools).length, 5, "Pro should have 5 tools");
+    assert.equal(Object.keys(free.tools).length, 5, "Free should have 5 tools");
   });
 });

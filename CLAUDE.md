@@ -1,15 +1,15 @@
 # GameCodex Monorepo
 
-AI game dev co-pilot — MCP server + marketing site.
+AI game dev co-pilot — interactive MCP server with personality for solo/indie devs.
 
 ## Monorepo Structure
 
 ```
 GameCodex/
 ├── packages/
-│   ├── server/    <- MCP server (CLI + 22 tools, 150+ docs)
+│   ├── server/    <- MCP server (5 tools, 150+ docs)
 │   └── site/      <- Marketing site (Next.js)
-├── package.json   <- npmuao workspaces root
+├── package.json   <- npm workspaces root
 └── CLAUDE.md      <- This file
 ```
 
@@ -30,36 +30,38 @@ npm run lint:site      # eslint on site
 
 ## Server (`packages/server/`)
 
-- **Entry:** `src/server.ts` — MCP server setup, tool registration via registry
+- **Entry:** `src/server.ts` — MCP server setup, 5-tool registration
 - **Tool registry:** `src/tool-registry.ts` — centralized registration with tier checks, analytics, error handling
 - **Tool interface:** `src/tool-definition.ts` — metadata: isReadOnly, isConcurrencySafe, isDestructive (fail-closed defaults)
-- **Tools (20 handlers):** `src/tools/` — one file per tool
-- **Core systems:** `src/core/` — search, docs, modules, sessions, memory, vector search
+- **5 tools:** `src/tools/` — project.ts, design.ts, docs.ts, build.ts, meta.ts
+- **Handler utilities:** `src/tools/` — existing handler functions delegated to by the 5 tools
+- **Core systems:** `src/core/` — personality, project-store, health-tracker, search, docs, modules, vector search
 - **Tiers/licensing:** `src/tiers.ts`, `src/license.ts`
-- **CLI:** `src/cli/setup.ts` — interactive `gamecodex setup` command for license activation
-- **Analytics:** `src/analytics.ts`
 - **Knowledge base:** `docs/` — core (52), monogame-arch (80), godot-arch (18)
-- **Config dir at runtime:** `~/.gamecodex/` (embeddings cache, memory, project contexts)
-- **Dependencies:** `@modelcontextprotocol/sdk` ^1.12.1, `@huggingface/transformers` ^4.0.1
+- **Config dir:** `~/.gamecodex/` (projects, embeddings, learning progress)
 
-### Tool Inventory (22 tools)
+### Tool Inventory (v0.2.0 — 5 tools)
 
-**Original (v1.3.0):** search_docs, get_doc, list_docs, list_modules, session, genre_lookup, random_doc, compare_engines, migration_guide, license_info
+| Tool | Actions | What it does |
+|------|---------|-------------|
+| `project` | hello, get, set, suggest, decide, goal, milestone, note, recall, health, scope, list | Interactive co-pilot — onboarding, project state, goals, decisions, scope health. Personality adapts to genre/phase. |
+| `design` | gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
+| `docs` | search, get, browse, modules | Knowledge base — search/browse 150+ game dev docs |
+| `build` | scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
+| `meta` | status, analytics, license, modules, health, about | Server internals — diagnostics, license info, help |
 
-**Phase 1:** explain_concept, scaffold_project, generate_gdd, review_architecture, project_context
+### Core Modules (v0.2.0)
 
-**Phase 2:** teach (interactive learning paths)
-
-**Phase 2.5:** memory (persistent project memory), diagnostics (server health/stats)
-
-**Phase 3:** debug_guide (error diagnosis), generate_starter (feature starter code), phase_checklist (project phase tracker), asset_guide (asset pipeline helper)
+- `core/personality.ts` — Template-based tone engine (13 genre tones, phase emphasis)
+- `core/project-store.ts` — Unified persistence (JSON files at ~/.gamecodex/projects/)
+- `core/health-tracker.ts` — Scope creep detection, feature evaluation
 
 ### Adding a New Tool
 
-1. Create handler in `packages/server/src/tools/<name>.ts`
-2. Follow the `ToolDefinition` interface from `packages/server/src/tool-definition.ts`
-3. Register in `packages/server/src/tool-registry.ts`
-4. Wire into `packages/server/src/server.ts`
+1. Create tool def in `packages/server/src/tools/<name>.ts` exporting a `GameCodexToolDef`
+2. Use `action` enum param for routing multiple operations through one tool
+3. Register in `packages/server/src/server.ts` `registerAllTools()`
+4. Add tier access in `packages/server/src/tiers.ts`
 5. Add tests in `packages/server/src/__tests__/<name>.test.ts`
 
 ## Site (`packages/site/`)
@@ -73,9 +75,9 @@ npm run lint:site      # eslint on site
 - Tool results return structured JSON, not prose
 - Generated code includes educational comments explaining WHY
 - Never hallucinate engine APIs — reference knowledge base docs
-- Support MonoGame, Godot, and Phaser consistently for engine-specific features
-- Keep tool descriptions concise (local LLM compatibility)
-- Tool count stays under 30
+- Support MonoGame, Godot, and Phaser consistently
+- Keep tool count at 5 — add actions, not tools
+- Each tool = one domain, `action` param for routing
 
 ## Blockers
 

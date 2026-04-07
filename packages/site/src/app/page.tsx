@@ -17,7 +17,7 @@ const ENGINES = [
 
 const STATS = [
   { value: '150+', label: 'Curated Guides' },
-  { value: '22', label: 'AI Tools' },
+  { value: '5', label: 'Power Tools' },
   { value: '8+', label: 'Engines' },
   { value: '0', label: 'Data Collected' },
 ];
@@ -50,8 +50,8 @@ const BENTO_FEATURES = [
     span: 'col-span-1',
   },
   {
-    title: 'Teach Mode',
-    desc: 'Interactive learning paths that adapt to your level. Learn collision detection, not just copy-paste it.',
+    title: 'Scope Guardian',
+    desc: 'Built-in scope creep detection and project health tracking. Knows when to say "cut this" before your game becomes vaporware.',
     span: 'col-span-1',
   },
 ];
@@ -80,7 +80,7 @@ const STEPS = [
 const TERMINAL_LINES = [
   { type: 'prompt', text: '> How do I add ECS to my MonoGame project?' },
   { type: 'response', text: 'I\'ll search the knowledge base for ECS integration with MonoGame...' },
-  { type: 'tool', text: '⚡ search_docs("monogame ECS architecture") → 12 results' },
+  { type: 'tool', text: '⚡ docs.search("monogame ECS architecture") → 12 results' },
   { type: 'response', text: 'Here\'s a complete ECS setup using Arch with MonoGame:' },
   { type: 'code', text: '// Create the world and register systems\nvar world = World.Create();\nworld.Create(new Position(0, 0), new Velocity(1, 0));\n\n// Query entities with specific components\nworld.Query(in (ref Position pos, ref Velocity vel) => {\n    pos.X += vel.X * deltaTime;\n    pos.Y += vel.Y * deltaTime;\n});' },
   { type: 'response', text: 'This uses Arch\'s source-generated queries for zero-allocation iteration. The `in` keyword marks read-only access, enabling safe parallelism.' },

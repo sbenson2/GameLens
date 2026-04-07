@@ -99,12 +99,16 @@ export interface ToolDependencies {
   hybridProvider: any;   // HybridProvider
   discoveredModules: any[];
   sessionManager: any;   // SessionManager
-  memory: any;           // MemoryStore
+  memory: any;           // MemoryStore (deprecated — use projectStore)
   analytics: any;        // Analytics
   tier: "free" | "pro";
   serverVersion: string;
   activeModules: string[];
   allDocs: any[];
+  // v0.2.0 additions
+  projectStore: any;     // ProjectStore (unified persistence)
+  personality: any;      // PersonalityEngine (tone/personality)
+  healthTracker: any;    // HealthTracker (scope/pace/burnout)
 }
 
 // ---- Built tool (with defaults applied) ----

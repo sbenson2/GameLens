@@ -1,7 +1,7 @@
 {
   "name": "gamecodex",
-  "version": "0.1.1",
-  "description": "AI game dev co-pilot — MCP server with 150+ docs, project scaffolding, and teaching tools for MonoGame, Godot, and Phaser.",
+  "version": "0.2.0",
+  "description": "AI game dev co-pilot — interactive MCP server with personality, 150+ docs, scope management, and lifecycle tools for indie/solo devs.",
   "main": "dist/index.js",
   "bin": {
     "gamecodex": "dist/index.js"
