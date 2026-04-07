@@ -38,6 +38,9 @@ import { getAnalytics } from "./analytics.js";
 import { getToolRegistry } from "./tool-registry.js";
 import { ToolDependencies } from "./tool-definition.js";
 
+// Prompts
+import { registerPrompts } from "./prompts.js";
+
 const SERVER_VERSION = "0.2.0";
 
 // ---- Helpers ----
@@ -184,6 +187,9 @@ export async function createServer() {
   });
 
   registry.wireToServer(server);
+
+  // ---- Prompts (workflow entry points) ----
+  registerPrompts(server);
 
   // ---- Resources ----
 

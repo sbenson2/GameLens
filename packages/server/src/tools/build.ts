@@ -7,6 +7,8 @@
 
 import { z } from "zod";
 import { GameCodexToolDef, ToolResult, ToolDependencies } from "../tool-definition.js";
+import { miss, unknownAction } from "../core/error-helpers.js";
+import { getToolHelp } from "../core/help-generator.js";
 import { handleScaffoldProject } from "./scaffold-project.js";
 import { handleGenerateStarter } from "./generate-starter.js";
 import { handleAssetGuide } from "./asset-guide.js";
@@ -15,10 +17,10 @@ import { handleReviewArchitecture } from "./review-architecture.js";
 
 export const buildToolDef: GameCodexToolDef = {
   name: "build",
-  description: "Build your game — scaffold projects, generate feature code, get asset pipeline help, diagnose errors, or review architecture. Actions: scaffold, code, assets, debug, review.",
+  description: "Use when: starting a new project, writing game code, setting up art/audio pipelines, fixing errors, reviewing architecture. Build your game. Actions: scaffold, code, assets, debug, review.",
   inputSchema: {
-    action: z.enum(["scaffold", "code", "assets", "debug", "review"]).describe(
-      "scaffold: create project structure | code: generate feature code | assets: art/audio pipeline | debug: diagnose errors | review: architecture check"
+    action: z.enum(["help", "scaffold", "code", "assets", "debug", "review"]).describe(
+      "scaffold: create project structure (use when user says 'new project' or 'start a game') | code: generate feature starter code (use when user wants to implement a feature) | assets: art/audio pipeline guide | debug: diagnose errors (use when user shares an error message) | review: architecture check (use when user shares project structure)"
     ),
     engine: z.string().optional().describe("Engine: 'monogame', 'godot', or 'phaser'"),
     // scaffold
@@ -41,9 +43,12 @@ export const buildToolDef: GameCodexToolDef = {
     const action = args.action as string;
 
     switch (action) {
+      case "help":
+        return getToolHelp("build");
+
       case "scaffold": {
-        if (!args.engine) return miss("engine", "scaffold");
-        if (!args.name) return miss("name", "scaffold");
+        if (!args.engine) return miss("engine", "build", "scaffold");
+        if (!args.name) return miss("name", "build", "scaffold");
         return handleScaffoldProject({
           engine: args.engine as string,
           name: args.name as string,
@@ -52,8 +57,8 @@ export const buildToolDef: GameCodexToolDef = {
       }
 
       case "code": {
-        if (!args.engine) return miss("engine", "code");
-        if (!args.feature) return miss("feature", "code");
+        if (!args.engine) return miss("engine", "build", "code");
+        if (!args.feature) return miss("feature", "build", "code");
         return handleGenerateStarter(
           {
             engine: args.engine as string,
@@ -66,8 +71,8 @@ export const buildToolDef: GameCodexToolDef = {
       }
 
       case "assets": {
-        if (!args.assetType) return miss("assetType", "assets");
-        if (!args.engine) return miss("engine", "assets");
+        if (!args.assetType) return miss("assetType", "build", "assets");
+        if (!args.engine) return miss("engine", "build", "assets");
         return handleAssetGuide({
           assetType: args.assetType as string,
           engine: args.engine as string,
@@ -76,7 +81,7 @@ export const buildToolDef: GameCodexToolDef = {
       }
 
       case "debug": {
-        if (!args.error) return miss("error", "debug");
+        if (!args.error) return miss("error", "build", "debug");
         return handleDebugGuide(
           {
             error: args.error as string,
@@ -88,7 +93,7 @@ export const buildToolDef: GameCodexToolDef = {
       }
 
       case "review": {
-        if (!args.structure) return miss("structure", "review");
+        if (!args.structure) return miss("structure", "build", "review");
         return handleReviewArchitecture(
           {
             structure: args.structure as string,
@@ -100,7 +105,7 @@ export const buildToolDef: GameCodexToolDef = {
       }
 
       default:
-        return { content: [{ type: "text", text: `Unknown action "${action}". Use: scaffold, code, assets, debug, review` }] };
+        return unknownAction(action, ["help", "scaffold", "code", "assets", "debug", "review"], "build");
     }
   },
   isReadOnly: true,
@@ -109,6 +114,3 @@ export const buildToolDef: GameCodexToolDef = {
   activityDescription: "Building",
 };
 
-function miss(param: string, action: string): ToolResult {
-  return { content: [{ type: "text", text: `Please provide \`${param}\` for the "${action}" action.` }] };
-}

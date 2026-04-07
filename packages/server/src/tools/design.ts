@@ -7,6 +7,8 @@
 
 import { z } from "zod";
 import { GameCodexToolDef, ToolResult, ToolDependencies } from "../tool-definition.js";
+import { miss, unknownAction } from "../core/error-helpers.js";
+import { getToolHelp } from "../core/help-generator.js";
 import { handleGenerateGDD } from "./generate-gdd.js";
 import { handlePhaseChecklist } from "./phase-checklist.js";
 import { ProjectStore } from "../core/project-store.js";
@@ -24,14 +26,14 @@ function toSnapshot(data: any): ProjectSnapshot {
 
 export const designToolDef: GameCodexToolDef = {
   name: "design",
-  description: "Plan and ship — create GDD, track phases, evaluate scope, get marketing/launch guidance, or find architecture patterns. Actions: gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns.",
+  description: "Use when: creating a GDD, planning phases, evaluating scope, preparing to launch or market a game, choosing architecture patterns. Plan and ship your game. Actions: gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns.",
   inputSchema: {
     action: z.enum([
-      "gdd", "phase", "scope_check",
+      "help", "gdd", "phase", "scope_check",
       "launch", "store_page", "pricing", "marketing", "trailer",
       "patterns",
     ]).describe(
-      "gdd: create GDD | phase: checklist | scope_check: evaluate feature | launch/store_page/pricing/marketing/trailer: shipping | patterns: architecture advice"
+      "gdd: create a Game Design Document (use when user describes their game idea) | phase: get checklist for current dev phase | scope_check: evaluate if a feature fits | launch: pre-launch checklist | store_page: store page writing guide | pricing: pricing strategy | marketing: marketing timeline | trailer: trailer creation guide | patterns: architecture pattern advice (ECS, state machines, etc.)"
     ),
     project: z.string().optional().describe("Project name"),
     // GDD
@@ -58,10 +60,13 @@ export const designToolDef: GameCodexToolDef = {
     const projectName = (args.project as string)?.trim() || "default";
 
     switch (action) {
+      case "help":
+        return getToolHelp("design");
+
       // ---- Planning ----
 
       case "gdd": {
-        if (!args.description) return miss("description");
+        if (!args.description) return miss("description", "design", "gdd");
         const gddResult = handleGenerateGDD({
           description: args.description as string,
           genre: args.genre as string | undefined,
@@ -96,7 +101,7 @@ export const designToolDef: GameCodexToolDef = {
       }
 
       case "scope_check": {
-        if (!args.feature) return miss("feature");
+        if (!args.feature) return miss("feature", "design", "scope_check");
         const data = store.get(projectName);
         return { content: [{ type: "text", text: healthTracker.evaluateFeature(data, args.feature as string) }] };
       }
@@ -130,7 +135,7 @@ export const designToolDef: GameCodexToolDef = {
       // ---- Architecture patterns ----
 
       case "patterns": {
-        if (!args.topic) return miss("topic");
+        if (!args.topic) return miss("topic", "design", "patterns");
         const topic = args.topic as string;
 
         const searchResults = deps.searchEngine.search(topic, deps.docStore.getAllDocs(), 10);
@@ -160,7 +165,10 @@ export const designToolDef: GameCodexToolDef = {
       }
 
       default:
-        return { content: [{ type: "text", text: `Unknown action "${action}".` }] };
+        return unknownAction(action, [
+          "help", "gdd", "phase", "scope_check", "launch", "store_page",
+          "pricing", "marketing", "trailer", "patterns",
+        ], "design");
     }
   },
   isReadOnly: false,
@@ -169,9 +177,6 @@ export const designToolDef: GameCodexToolDef = {
   activityDescription: "Designing",
 };
 
-function miss(param: string): ToolResult {
-  return { content: [{ type: "text", text: `Please provide \`${param}\`.` }] };
-}
 
 // ---- Launch helpers (from launch.ts) ----
 

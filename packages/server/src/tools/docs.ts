@@ -7,6 +7,8 @@
 
 import { z } from "zod";
 import { GameCodexToolDef, ToolResult, ToolDependencies } from "../tool-definition.js";
+import { miss, unknownAction } from "../core/error-helpers.js";
+import { getToolHelp } from "../core/help-generator.js";
 import { handleSearchDocs } from "./search-docs.js";
 import { handleGetDoc, handleGetDocHybrid } from "./get-doc.js";
 import { handleListDocs } from "./list-docs.js";
@@ -19,10 +21,10 @@ const CATEGORIES = [
 
 export const docsToolDef: GameCodexToolDef = {
   name: "docs",
-  description: "Game dev knowledge base — search, fetch, or browse 150+ curated docs on design, architecture, debugging, and engine-specific patterns. Actions: search (keyword query), get (fetch by ID), browse (list/filter), modules (list engines).",
+  description: "Use when: looking up how to do something, finding engine-specific patterns, searching best practices, browsing available knowledge. 150+ curated game dev docs on design, architecture, debugging, and engine patterns. Actions: search, get, browse, modules.",
   inputSchema: {
-    action: z.enum(["search", "get", "browse", "modules"]).describe(
-      "search: keyword query | get: fetch doc by ID | browse: list/filter docs | modules: list available engines"
+    action: z.enum(["help", "search", "get", "browse", "modules"]).describe(
+      "search: keyword query (use when user asks 'how do I...' or needs to find a pattern) | get: fetch full doc by ID (use after search to read a specific doc) | browse: list/filter all docs | modules: list available engines and doc counts"
     ),
     query: z.string().optional().describe("Search query (for 'search' action)"),
     id: z.string().optional().describe("Doc ID to fetch (for 'get' action, e.g. 'G52', 'E6', 'P0')"),
@@ -38,10 +40,11 @@ export const docsToolDef: GameCodexToolDef = {
     const action = args.action as string;
 
     switch (action) {
+      case "help":
+        return getToolHelp("docs");
+
       case "search": {
-        if (!args.query) {
-          return { content: [{ type: "text", text: "Please provide a `query` for search." }] };
-        }
+        if (!args.query) return miss("query", "docs", "search");
         const result = await handleSearchDocs(
           {
             query: args.query as string,
@@ -64,9 +67,7 @@ export const docsToolDef: GameCodexToolDef = {
       }
 
       case "get": {
-        if (!args.id) {
-          return { content: [{ type: "text", text: "Please provide an `id` to fetch a doc." }] };
-        }
+        if (!args.id) return miss("id", "docs", "get");
         // Module check for free tier
         if (isToolAllowed(deps.tier, "docs") === "limited") {
           const doc =
@@ -160,9 +161,7 @@ export const docsToolDef: GameCodexToolDef = {
       }
 
       default:
-        return {
-          content: [{ type: "text", text: `Unknown action "${action}". Use: search, get, browse, modules` }],
-        };
+        return unknownAction(action, ["help", "search", "get", "browse", "modules"], "docs");
     }
   },
   isReadOnly: true,

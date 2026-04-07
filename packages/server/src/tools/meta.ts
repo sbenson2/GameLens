@@ -6,6 +6,8 @@
 
 import { z } from "zod";
 import { GameCodexToolDef, ToolResult, ToolDependencies } from "../tool-definition.js";
+import { unknownAction } from "../core/error-helpers.js";
+import { getToolHelp } from "../core/help-generator.js";
 import { handleDiagnostics, DiagnosticsContext } from "./diagnostics.js";
 import { getTierFeatures, UPGRADE_URL } from "../tiers.js";
 
@@ -18,15 +20,21 @@ export function setDiagnosticsContext(ctx: DiagnosticsContext): void {
 
 export const metaToolDef: GameCodexToolDef = {
   name: "meta",
-  description: "Server info — health status, usage analytics, license tier, available modules, and GameCodex overview. Actions: status, analytics, license, modules, health, about.",
+  description: "Use when: checking server health, viewing usage stats, managing license, listing engines/modules, or explaining what GameCodex is. Actions: status, analytics, license, modules, health, about.",
   inputSchema: {
-    action: z.enum(["status", "analytics", "license", "modules", "health", "about"]).describe(
-      "status: overview | analytics: usage stats | license: tier + access | modules: engines | health: quick check | about: what is GameCodex"
+    action: z.enum(["help", "status", "analytics", "license", "modules", "health", "about"]).describe(
+      "status: server overview and uptime | analytics: usage statistics | license: tier info and access details | modules: list available engines | health: quick server health check | about: what is GameCodex (use when user asks 'what is this' or 'help')"
     ),
     project: z.string().optional().describe("Project name for session queries"),
   },
   handler: async (args: Record<string, unknown>, deps: ToolDependencies): Promise<ToolResult> => {
     const action = args.action as string;
+    const validActions = ["help", "status", "analytics", "license", "modules", "health", "about"];
+    if (!validActions.includes(action)) {
+      return unknownAction(action, validActions, "meta");
+    }
+
+    if (action === "help") return getToolHelp("meta");
 
     if (action === "about") {
       let output = `# GameCodex v${deps.serverVersion}\n\n`;

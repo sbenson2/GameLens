@@ -10,6 +10,8 @@ import { GameCodexToolDef, ToolResult, ToolDependencies } from "../tool-definiti
 import { ProjectStore } from "../core/project-store.js";
 import { PersonalityEngine, ProjectSnapshot } from "../core/personality.js";
 import { HealthTracker } from "../core/health-tracker.js";
+import { miss, unknownAction } from "../core/error-helpers.js";
+import { getToolHelp } from "../core/help-generator.js";
 
 function toSnapshot(data: any): ProjectSnapshot {
   return {
@@ -26,15 +28,15 @@ function toSnapshot(data: any): ProjectSnapshot {
 
 export const projectToolDef: GameCodexToolDef = {
   name: "project",
-  description: "Your game dev co-pilot — manages project state, tracks decisions/goals/milestones, monitors scope health, and adapts to your genre and phase. Actions: hello (onboarding), get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, list.",
+  description: "Use when: starting a session, tracking progress, logging decisions, setting goals, checking scope health. Your game dev co-pilot — project state, decisions, goals, milestones, scope health. Adapts to your genre and phase. Actions: hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list.",
   inputSchema: {
     action: z.enum([
-      "hello", "get", "set", "suggest",
+      "help", "hello", "get", "set", "suggest",
       "decide", "goal", "complete_goal", "clear_goals",
       "milestone", "note", "recall", "clear_notes",
       "health", "scope", "add_feature", "list",
     ]).describe(
-      "hello: onboarding/welcome | get: full state | set: update fields | suggest: what to do next | decide: log decision | goal: add goal | health: scope check | scope: evaluate feature | list: all projects"
+      "hello: start here, first interaction or new session | get: view full project state | set: configure engine/genre/phase/skill | suggest: what to work on next | decide: log a design decision | goal: add a goal | complete_goal: mark goal done | milestone: celebrate progress | note/recall: save/retrieve notes | health: check scope creep | scope: evaluate a feature idea | add_feature: log a new feature | list: show all projects"
     ),
     project: z.string().optional().describe("Project name (default: 'default')"),
     // set fields
@@ -56,6 +58,9 @@ export const projectToolDef: GameCodexToolDef = {
     const projectName = (args.project as string)?.trim() || "default";
 
     switch (action) {
+      case "help":
+        return getToolHelp("project");
+
       // ---- Guide actions ----
 
       case "hello": {
@@ -127,19 +132,19 @@ export const projectToolDef: GameCodexToolDef = {
       }
 
       case "decide": {
-        if (!args.content) return miss("content");
+        if (!args.content) return miss("content", "project", "decide");
         const data = store.addDecision(projectName, args.content as string);
         return { content: [{ type: "text", text: `Decision logged: "${args.content}"\n\n${store.format(data)}` }] };
       }
 
       case "goal": {
-        if (!args.content) return miss("content");
+        if (!args.content) return miss("content", "project", "goal");
         const data = store.addGoal(projectName, args.content as string);
         return { content: [{ type: "text", text: `Goal added: "${args.content}"\n\n${store.format(data)}` }] };
       }
 
       case "complete_goal": {
-        if (!args.content) return miss("content");
+        if (!args.content) return miss("content", "project", "complete_goal");
         const data = store.completeGoal(projectName, args.content as string);
         const snapshot = toSnapshot(data);
         const msg = personality.getMilestoneMessage(`Goal completed: ${args.content}`, snapshot);
@@ -152,7 +157,7 @@ export const projectToolDef: GameCodexToolDef = {
       }
 
       case "milestone": {
-        if (!args.content) return miss("content");
+        if (!args.content) return miss("content", "project", "milestone");
         const data = store.addMilestone(projectName, args.content as string);
         const snapshot = toSnapshot(data);
         const msg = personality.getMilestoneMessage(args.content as string, snapshot);
@@ -201,13 +206,13 @@ export const projectToolDef: GameCodexToolDef = {
       }
 
       case "scope": {
-        if (!args.feature) return miss("feature");
+        if (!args.feature) return miss("feature", "project", "scope");
         const data = store.get(projectName);
         return { content: [{ type: "text", text: healthTracker.evaluateFeature(data, args.feature as string) }] };
       }
 
       case "add_feature": {
-        if (!args.feature) return miss("feature");
+        if (!args.feature) return miss("feature", "project", "add_feature");
         const data = store.addFeature(projectName);
         store.addDecision(projectName, `Added feature: ${args.feature}`);
         const snapshot = toSnapshot(data);
@@ -229,7 +234,11 @@ export const projectToolDef: GameCodexToolDef = {
       }
 
       default:
-        return { content: [{ type: "text", text: `Unknown action "${action}".` }] };
+        return unknownAction(action, [
+          "help", "hello", "get", "set", "suggest", "decide", "goal", "complete_goal",
+          "clear_goals", "milestone", "note", "recall", "clear_notes",
+          "health", "scope", "add_feature", "list",
+        ], "project");
     }
   },
   isReadOnly: false,
@@ -238,6 +247,3 @@ export const projectToolDef: GameCodexToolDef = {
   activityDescription: "Managing project",
 };
 
-function miss(param: string): ToolResult {
-  return { content: [{ type: "text", text: `Please provide \`${param}\`.` }] };
-}

@@ -47,7 +47,8 @@
   "author": "sbenson2",
   "dependencies": {
     "@huggingface/transformers": "^4.0.1",
-    "@modelcontextprotocol/sdk": "^1.12.1"
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "fastest-levenshtein": "^1.0.16"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",

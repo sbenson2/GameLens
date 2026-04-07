@@ -25,6 +25,7 @@ import {
   buildTool,
 } from "./tool-definition.js";
 import { isToolAllowed, PRO_GATE_MESSAGE, UPGRADE_URL } from "./tiers.js";
+import { enhanceResponse } from "./core/response-enhancer.js";
 
 // ---- Concurrency control (from MooBot's MAX_CONCURRENT pattern) ----
 
@@ -92,14 +93,18 @@ export class ToolRegistry {
     for (const tool of this.tools.values()) {
       if (!tool.isEnabled) continue;
 
-      server.tool(
-        tool.name,
-        tool.description,
-        tool.inputSchema,
-        async (args: Record<string, unknown>) => {
-          return this.executeTool(tool, args);
-        }
-      );
+      server.registerTool(tool.name, {
+        description: tool.description,
+        inputSchema: tool.inputSchema,
+        annotations: {
+          title: tool.activityDescription,
+          readOnlyHint: tool.isReadOnly,
+          destructiveHint: tool.isDestructive,
+          idempotentHint: tool.isConcurrencySafe,
+        },
+      }, async (args: Record<string, unknown>) => {
+        return this.executeTool(tool, args);
+      });
     }
   }
 
@@ -176,7 +181,16 @@ export class ToolRegistry {
         // 6. Record analytics
         analytics.recordToolCall(tool.name, durationMs);
 
-        return result;
+        // 7. Enhance response with breadcrumb + next steps
+        const enhanced = enhanceResponse(
+          result,
+          tool.name,
+          args.action as string ?? "",
+          this.deps,
+          args.project as string | undefined,
+        );
+
+        return enhanced;
       } finally {
         activeToolCalls--;
       }
