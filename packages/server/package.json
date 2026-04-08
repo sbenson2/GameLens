@@ -1,6 +1,6 @@
 {
   "name": "gamecodex",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Game dev AI assistant — MCP server with 150+ docs, structured workflows, scope management, and lifecycle tools for game developers.",
   "main": "dist/index.js",
   "bin": {
