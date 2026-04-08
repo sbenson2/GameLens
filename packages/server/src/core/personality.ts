@@ -210,7 +210,7 @@ export class PersonalityEngine {
   getOnboarding(): string {
     return [
       "# Welcome to GameCodex\n",
-      "I'm your game dev co-pilot. Just tell me about your game and what you need help with — I'll take it from there.\n",
+      "I'm your game dev AI assistant. Just tell me about your game and what you need help with — I'll take it from there.\n",
       "Some things I can help with:",
       "- **Plan** — scope, GDD, design pillars, what to build next",
       "- **Build** — code generation, architecture patterns, asset pipelines",

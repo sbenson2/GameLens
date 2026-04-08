@@ -38,7 +38,7 @@ export const metaToolDef: GameCodexToolDef = {
 
     if (action === "about") {
       let output = `# GameCodex v${deps.serverVersion}\n\n`;
-      output += `**AI game dev co-pilot** for game developers.\n\n`;
+      output += `**Game dev AI assistant** for game developers.\n\n`;
       output += `Just describe what you need — GameCodex gives your AI game dev expertise it doesn't have on its own.\n\n`;
       output += `## What I can help with\n\n`;
       output += `| Area | Examples |\n`;

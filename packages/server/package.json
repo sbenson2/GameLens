@@ -1,7 +1,7 @@
 {
   "name": "gamecodex",
   "version": "0.3.5",
-  "description": "AI game dev co-pilot — MCP server with 150+ docs, structured workflows, scope management, and lifecycle tools for game developers.",
+  "description": "Game dev AI assistant — MCP server with 150+ docs, structured workflows, scope management, and lifecycle tools for game developers.",
   "main": "dist/index.js",
   "bin": {
     "gamecodex": "dist/index.js"
@@ -33,7 +33,7 @@
     "windsurf",
     "model-context-protocol",
     "game-ai",
-    "copilot"
+    "ai-assistant"
   ],
   "license": "MIT",
   "repository": {

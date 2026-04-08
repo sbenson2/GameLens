@@ -1,6 +1,6 @@
 # GameCodex Monorepo
 
-AI game dev co-pilot — MCP server with 150+ docs, structured workflows, and guidance for game developers.
+Game dev AI assistant — MCP server with 150+ docs, structured workflows, and guidance for game developers.
 
 ## Monorepo Structure
 
@@ -44,7 +44,7 @@ npm run lint:site      # eslint on site
 
 | Tool | Actions | What it does |
 |------|---------|-------------|
-| `project` | help, hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list | Interactive co-pilot — onboarding, project state, goals, decisions, scope health. Personality adapts to genre/phase. |
+| `project` | help, hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list | Interactive AI assistant — onboarding, project state, goals, decisions, scope health. Personality adapts to genre/phase. |
 | `design` | help, gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
 | `docs` | help, search, get, browse, modules | Knowledge base — search/browse 150+ game dev docs |
 | `build` | help, scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |

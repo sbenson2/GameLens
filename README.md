@@ -1,6 +1,6 @@
 # GameCodex
 
-AI game dev co-pilot. An MCP server with 150+ curated docs and 22 tools for MonoGame, Godot, and Phaser.
+Game dev AI assistant. An MCP server with 150+ curated docs and 22 tools for MonoGame, Godot, and Phaser.
 
 GameCodex connects to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) — Claude Desktop, Claude Code, Cursor, Windsurf, Continue.dev, and more.
 
@@ -115,7 +115,7 @@ Add to your MCP configuration:
 ### Project Management
 | Tool | Description |
 |------|-------------|
-| `session` | Dev session co-pilot for planning and decisions |
+| `session` | Dev session AI assistant for planning and decisions |
 | `project_context` | Per-project context tracking |
 | `memory` | Persistent project memory across sessions |
 | `review_architecture` | Analyze project structure with engine-specific checks |

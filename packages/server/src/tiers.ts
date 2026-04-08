@@ -11,7 +11,7 @@ export const PRO_GATE_MESSAGE = `This feature requires a Pro license. Get one at
 /** Which tools are available per tier (5 tools) */
 const TOOL_ACCESS: Record<Tier, Record<string, ToolAccess>> = {
   free: {
-    project: "full",       // co-pilot drives adoption + retention
+    project: "full",       // AI assistant drives adoption + retention
     design: "full",        // planning + shipping drives adoption
     docs: "limited",       // core module only (Pro for engine-specific)
     build: "limited",      // scaffold+code+assets+debug free, review pro-only
@@ -51,7 +51,7 @@ export function getTierFeatures(tier: Tier): {
   if (tier === "pro") {
     return {
       tools: {
-        project: "Co-pilot — onboarding, goals, decisions, scope health, personality",
+        project: "AI assistant — onboarding, goals, decisions, scope health, personality",
         design: "GDD, phase checklists, scope analysis, marketing, launch, patterns",
         docs: "All modules — search, get, browse 150+ docs",
         build: "Scaffold, starter code, asset pipeline, debug, architecture review",

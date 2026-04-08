@@ -1,5 +1,5 @@
 /**
- * project — The Brain. Interactive co-pilot with personality.
+ * project — The Brain. Interactive AI assistant with personality.
  *
  * Consolidates: guide (onboarding, suggestions) + project (state, decisions, goals)
  * + health (scope, burnout). Personality applied to all responses.
@@ -38,7 +38,7 @@ function toSnapshot(data: any): ProjectSnapshot {
 
 export const projectToolDef: GameCodexToolDef = {
   name: "project",
-  description: "Use when: starting a session, tracking progress, logging decisions, setting goals, checking scope health, running structured workflows. Your game dev co-pilot — project state, decisions, goals, milestones, scope health, session orchestration. Adapts to your genre and phase. Actions: hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list, session.",
+  description: "Use when: starting a session, tracking progress, logging decisions, setting goals, checking scope health, running structured workflows. Your game dev AI assistant — project state, decisions, goals, milestones, scope health, session orchestration. Adapts to your genre and phase. Actions: hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list, session.",
   inputSchema: {
     action: z.enum([
       "help", "hello", "get", "set", "suggest",

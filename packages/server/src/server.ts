@@ -210,7 +210,7 @@ export async function createServer() {
     server.resource(
       "prompt-session",
       "gamedev://prompts/session",
-      { mimeType: "text/markdown", description: "Session co-pilot system prompt" },
+      { mimeType: "text/markdown", description: "Session AI assistant system prompt" },
       async () => ({
         contents: [{
           uri: "gamedev://prompts/session",

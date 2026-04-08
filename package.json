@@ -2,7 +2,7 @@
   "name": "gamecodex-monorepo",
   "version": "0.1.0",
   "private": true,
-  "description": "GameCodex — AI game dev co-pilot. Monorepo for the MCP server and marketing site.",
+  "description": "GameCodex — Game dev AI assistant. Monorepo for the MCP server and marketing site.",
   "workspaces": [
     "packages/*"
   ],

@@ -1,4 +1,4 @@
-/** Session co-pilot state and logic */
+/** Session AI assistant state and logic */
 
 export interface SessionState {
   phase: "briefing" | "working";

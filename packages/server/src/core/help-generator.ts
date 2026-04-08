@@ -26,7 +26,7 @@ interface ToolHelpDef {
 
 const TOOL_HELP: Record<string, ToolHelpDef> = {
   project: {
-    description: "Your game dev co-pilot — project state, decisions, goals, scope health",
+    description: "Your game dev AI assistant — project state, decisions, goals, scope health",
     actions: [
       { name: "hello", description: "Start here — onboarding or welcome back", required: [], optional: ["project"], example: 'project(action: "hello")' },
       { name: "get", description: "View full project state", required: [], optional: ["project"], example: 'project(action: "get")' },
