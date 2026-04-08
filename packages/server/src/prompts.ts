@@ -13,7 +13,7 @@ export function registerPrompts(server: McpServer): void {
   // ---- /start-project ----
   server.prompt(
     "start-project",
-    "Start a new game project — walks through engine selection, genre, scope, and creates initial GDD",
+    "Start a new game project — engine selection, GDD, goals, and first steps",
     {
       engine: z.string().optional().describe("Engine: godot, monogame, or phaser"),
       genre: z.string().optional().describe("Game genre (e.g., roguelike, platformer, RPG)"),
@@ -53,7 +53,7 @@ export function registerPrompts(server: McpServer): void {
   // ---- /debug-error ----
   server.prompt(
     "debug-error",
-    "Diagnose a game dev error — analyzes the error, searches docs, and suggests a fix",
+    "Diagnose a game dev error — analyze, search docs, suggest a fix",
     {
       error: z.string().describe("The error message or symptom"),
       engine: z.string().optional().describe("Engine: godot, monogame, or phaser"),
@@ -85,7 +85,7 @@ export function registerPrompts(server: McpServer): void {
   // ---- /ship-game ----
   server.prompt(
     "ship-game",
-    "Prepare to launch your game — checklists, store page, marketing, and pricing guidance",
+    "Prepare to launch your game — checklists, store page, marketing, pricing",
     {
       platform: z.string().optional().describe("Platform: steam, itch, google-play, or app-store"),
     },
@@ -107,6 +107,46 @@ export function registerPrompts(server: McpServer): void {
                 `3. Call \`design\` with action \`marketing\` for the marketing timeline`,
                 `4. Call \`design\` with action \`pricing\` for pricing strategy`,
                 `5. Summarize the key deadlines and action items`,
+              ].join("\n"),
+            },
+          },
+        ],
+      };
+    },
+  );
+
+  // ---- /session ----
+  server.prompt(
+    "session",
+    "Start a structured dev session — plan, decide, build features, debug, or manage scope",
+    {
+      intent: z.string().optional().describe("What you want to work on (e.g., 'debug collision issue', 'plan my next sprint', 'add inventory system')"),
+      project: z.string().optional().describe("Project name (default: 'default')"),
+    },
+    async (args) => {
+      const intent = args.intent || "[ask the user what they want to work on today]";
+      const project = args.project || "default";
+
+      return {
+        messages: [
+          {
+            role: "user" as const,
+            content: {
+              type: "text" as const,
+              text: [
+                `I want to start a structured dev session.`,
+                ``,
+                `What I'm working on: ${intent}`,
+                `Project: ${project}`,
+                ``,
+                `Please start by calling \`project\` with action \`session\` and pass my intent as \`content\`. If I described a focus area, pass it as \`focus\` too.`,
+                ``,
+                `The session tool will return structured JSON with:`,
+                `- The workflow path and current step`,
+                `- Specific tool calls to make next`,
+                `- Relevant docs for my topic`,
+                ``,
+                `Follow the tool recommendations step by step. After completing each step, call \`project\` with action \`session\` and \`advance: true\` to move to the next step. Continue until the path is complete.`,
               ].join("\n"),
             },
           },
