@@ -3,7 +3,6 @@
 
 stages:
   - test
-  - publish
   - deploy
 
 variables:
@@ -71,29 +70,7 @@ audit:
     - npm ci
     - npm audit --omit=dev || true
 
-# ── Publish to npm (on version tags, uses OIDC Trusted Publishers) ──
-publish:
-  stage: publish
-  image: node:${NODE_VERSION}
-  id_tokens:
-    SIGSTORE_ID_TOKEN:
-      aud: https://npm.pkg.github.com
-    NPM_ID_TOKEN:
-      aud: https://registry.npmjs.org
-  rules:
-    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
-      when: manual
-  cache:
-    key: npm-publish
-    paths:
-      - node_modules/
-  script:
-    - npm ci
-    - npm run build
-    - test -f packages/server/dist/index.js
-    - npm run typecheck
-    - npm test
-    - npm publish --workspace=gamecodex --access public --provenance
+# npm publish is done locally (see /publish skill or memory/reference_npm_publish.md)
 
 # ── Deploy site to GitLab Pages ──
 pages:
