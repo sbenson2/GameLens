@@ -6,6 +6,7 @@
  */
 
 import { ToolResult, ToolDependencies } from "../tool-definition.js";
+import { PATH_STEPS, getStepToolRecommendations } from "./session.js";
 
 // ---- Types ----
 
@@ -22,6 +23,9 @@ interface ProjectSnapshot {
   phase: string;
   goalCount: number;
   featureCount: number;
+  sessionPath?: string;
+  sessionStep?: number;
+  sessionTotalSteps?: number;
 }
 
 // ---- Breadcrumb ----
@@ -30,7 +34,8 @@ function getSnapshot(deps: ToolDependencies, projectName: string): ProjectSnapsh
   try {
     const data = deps.projectStore.get(projectName);
     if (!data || data.engine === "not set") return null;
-    return {
+
+    const snapshot: ProjectSnapshot = {
       name: data.name,
       engine: data.engine,
       genre: data.genre,
@@ -38,6 +43,21 @@ function getSnapshot(deps: ToolDependencies, projectName: string): ProjectSnapsh
       goalCount: data.goals?.filter((g: any) => !g.completed).length ?? 0,
       featureCount: data.featureCount ?? 0,
     };
+
+    // Add session context if active
+    try {
+      const session = deps.sessionManager.getActiveSession(projectName);
+      if (session?.workflowState) {
+        const ws = JSON.parse(session.workflowState);
+        if (ws.path !== "none" && ws.phase === "working") {
+          snapshot.sessionPath = ws.path;
+          snapshot.sessionStep = ws.step;
+          snapshot.sessionTotalSteps = ws.totalSteps;
+        }
+      }
+    } catch { /* non-critical */ }
+
+    return snapshot;
   } catch {
     return null;
   }
@@ -51,6 +71,11 @@ export function getBreadcrumb(snapshot: ProjectSnapshot | null): string {
     snapshot.phase,
     `${snapshot.goalCount} goal${snapshot.goalCount !== 1 ? "s" : ""}`,
   ];
+
+  if (snapshot.sessionPath) {
+    parts.push(`${snapshot.sessionPath} ${snapshot.sessionStep}/${snapshot.sessionTotalSteps}`);
+  }
+
   return `\`[${parts.join(" · ")}]\``;
 }
 
@@ -217,7 +242,24 @@ export function enhanceResponse(
 
   const snapshot = getSnapshot(deps, projectName || "default");
   const breadcrumb = getBreadcrumb(snapshot);
-  const nextSteps = getNextSteps(toolName, action);
+
+  // Session-aware next steps: if a session workflow is active, use its tool recommendations
+  let nextSteps: NextStep[];
+  if (snapshot?.sessionPath && snapshot.sessionStep) {
+    const stepTools = getStepToolRecommendations(snapshot.sessionPath, snapshot.sessionStep);
+    if (stepTools.length > 0) {
+      nextSteps = stepTools.map(t => ({
+        tool: t.tool,
+        action: t.action,
+        description: t.description,
+      }));
+    } else {
+      nextSteps = getNextSteps(toolName, action);
+    }
+  } else {
+    nextSteps = getNextSteps(toolName, action);
+  }
+
   const nextStepsText = formatNextSteps(nextSteps);
 
   // Nothing to add

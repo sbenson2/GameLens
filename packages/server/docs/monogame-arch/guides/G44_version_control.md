@@ -2,7 +2,7 @@
 
 
 
-> **Category:** Guide · **Related:** [E4 Solo Project Management](../../core/project-management/E4_project_management.md) · [R3 Project Structure](../reference/R3_project_structure.md) · [G8 Content Pipeline](./G8_content_pipeline.md)
+> **Category:** Guide · **Related:** [E4 Game Dev Project Management](../../core/project-management/E4_project_management.md) · [R3 Project Structure](../reference/R3_project_structure.md) · [G8 Content Pipeline](./G8_content_pipeline.md)
 
 ---
 
@@ -12,7 +12,7 @@ Game projects die in silence. Not from bad code — from lost code. A corrupted 
 regretted refactor with no way back, an asset change that broke everything three days ago
 and you only just noticed. Version control is your undo button for the entire project.
 
-Even as a solo dev, Git isn't optional. It's the difference between "I can try anything
+Even as a game dev, Git isn't optional. It's the difference between "I can try anything
 fearlessly" and "I'm afraid to touch this code because it finally works."
 
 This guide covers Git workflows specifically tuned for MonoGame / .NET 8 game projects —
@@ -268,7 +268,7 @@ binary gibberish, LFS.
 - **Data packs:** $5/month for 50 GB storage + 50 GB bandwidth
 - **GitLab Free:** 5 GB total repo size (including LFS)
 
-For a typical indie game:
+For a typical game project:
 - Small project (< 500 MB assets): Free tier is fine
 - Medium project (1–5 GB assets): Budget ~$5/month or self-host
 - Large project (5+ GB): Consider self-hosted Git or dedicated asset storage
@@ -505,7 +505,7 @@ git checkout v0.1.0
 
 ### Versioning Scheme
 
-For indie games, keep it simple:
+For game projects, keep it simple:
 
 ```
 v0.1.0  — First playable (core loop works)

@@ -301,7 +301,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 ## 10 · Audio Juice
 
-**When to use:** Everywhere. Audio is 50% of game feel and the most underinvested area in indie games.
+**When to use:** Everywhere. Audio is 50% of game feel and the most underinvested area in game projects.
 
 **Intensity:** 🔥 Dramatic impact. Audio feedback is almost never "too much."
 
@@ -397,7 +397,7 @@ tween(sprite.scale, (1.0, 1.0), 0.2, ease_out_back)
 
 **When to use:** Sparingly. Post-processing is seasoning, not the main course.
 
-**Intensity:** ⚡ Minimal to subtle. Heavy post-processing is the #1 "indie game that looks amateur" tell.
+**Intensity:** ⚡ Minimal to subtle. Heavy post-processing is the #1 "game project that looks amateur" tell.
 
 > Reference: [G27: Shaders & Effects](../../monogame-arch/guides/G27_shaders_and_effects.md)
 
@@ -453,7 +453,7 @@ Environmental polish rewards *observation*. The player who walks slowly through 
 
 ## 15 · The Polish Priority List
 
-Not everything is equal. When you're a solo dev with limited time, polish in this order — highest impact per effort first:
+Not everything is equal. When you're a game dev with limited time, polish in this order — highest impact per effort first:
 
 | Priority | Technique | Effort | Impact | Why |
 |---|---|---|---|---|

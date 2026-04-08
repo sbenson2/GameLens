@@ -207,7 +207,7 @@ const LEARNING_PATHS: LearningPath[] = [
         title: "Scope Management",
         outcome: "Ship a game by ruthlessly cutting scope.",
         docs: ["P8", "E9"],
-        keywords: ["scope", "scope creep", "solo dev", "MVP", "cut features"],
+        keywords: ["scope", "scope creep", "game dev", "MVP", "cut features"],
         exercise:
           "Take your game idea and create 3 scope tiers: Jam (3 days), Demo (2 weeks), Full (3 months). Identify what to cut at each tier.",
         estimatedMinutes: 20,

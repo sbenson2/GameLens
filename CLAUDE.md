@@ -1,6 +1,6 @@
 # GameCodex Monorepo
 
-AI game dev co-pilot — interactive MCP server with personality for solo/indie devs.
+AI game dev co-pilot — MCP server with 150+ docs, structured workflows, and guidance for game developers.
 
 ## Monorepo Structure
 
@@ -24,7 +24,7 @@ npm run dev            # server watch mode
 npm run dev:site       # site dev server
 npm start              # start MCP server
 npm run typecheck      # tsc --noEmit on server
-npm test               # run all tests (228 passing)
+npm test               # run all tests (270 passing)
 npm run lint:site      # eslint on site
 ```
 
@@ -35,26 +35,41 @@ npm run lint:site      # eslint on site
 - **Tool interface:** `src/tool-definition.ts` — metadata: isReadOnly, isConcurrencySafe, isDestructive (fail-closed defaults)
 - **5 tools:** `src/tools/` — project.ts, design.ts, docs.ts, build.ts, meta.ts
 - **Handler utilities:** `src/tools/` — existing handler functions delegated to by the 5 tools
-- **Core systems:** `src/core/` — personality, project-store, health-tracker, search, docs, modules, vector search
+- **Core systems:** `src/core/` — personality, project-store, health-tracker, search, docs, modules, vector search, error-helpers, response-enhancer, help-generator
 - **Tiers/licensing:** `src/tiers.ts`, `src/license.ts`
 - **Knowledge base:** `docs/` — core (52), monogame-arch (80), godot-arch (18)
 - **Config dir:** `~/.gamecodex/` (projects, embeddings, learning progress)
 
-### Tool Inventory (v0.2.0 — 5 tools)
+### Tool Inventory (v0.3.5 — 5 tools)
 
 | Tool | Actions | What it does |
 |------|---------|-------------|
-| `project` | hello, get, set, suggest, decide, goal, milestone, note, recall, health, scope, list | Interactive co-pilot — onboarding, project state, goals, decisions, scope health. Personality adapts to genre/phase. |
-| `design` | gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
-| `docs` | search, get, browse, modules | Knowledge base — search/browse 150+ game dev docs |
-| `build` | scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
-| `meta` | status, analytics, license, modules, health, about | Server internals — diagnostics, license info, help |
+| `project` | help, hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list | Interactive co-pilot — onboarding, project state, goals, decisions, scope health. Personality adapts to genre/phase. |
+| `design` | help, gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
+| `docs` | help, search, get, browse, modules | Knowledge base — search/browse 150+ game dev docs |
+| `build` | help, scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
+| `meta` | help, status, analytics, license, modules, health, about | Server internals — diagnostics, license info, help |
 
-### Core Modules (v0.2.0)
+### Core Modules (v0.3.5)
 
 - `core/personality.ts` — Template-based tone engine (13 genre tones, phase emphasis)
 - `core/project-store.ts` — Unified persistence (JSON files at ~/.gamecodex/projects/)
 - `core/health-tracker.ts` — Scope creep detection, feature evaluation
+- `core/error-helpers.ts` — Enriched errors with valid values, examples, fuzzy matching (fastest-levenshtein)
+- `core/response-enhancer.ts` — Breadcrumb status line + next-step suggestions on every response
+- `core/help-generator.ts` — Self-documenting help action for all 5 tools
+
+### CLI Commands
+
+- `gamecodex` — Start the MCP server (default)
+- `gamecodex setup` — Interactive Pro license activation
+- `gamecodex init` — Auto-detect AI tools + engine, write MCP config
+
+### MCP Prompts (workflow entry points)
+
+- `start-project` — Guided new project setup (engine → GDD → goals → suggest)
+- `debug-error` — Error diagnosis workflow (debug → docs search → fix)
+- `ship-game` — Launch checklist (launch → store page → marketing → pricing)
 
 ### Adding a New Tool
 
@@ -82,4 +97,4 @@ npm run lint:site      # eslint on site
 ## Blockers
 
 - Migrated from GitHub (`sbenson2`, suspended) to GitLab (`sbenson2/GameCodex`)
-- npm stuck at v1.0.0 — local install only (use `npm pack` for distribution)
+- npm publish ready (CI configured with OIDC) — needs `git tag v0.3.5` + manual trigger in GitLab CI

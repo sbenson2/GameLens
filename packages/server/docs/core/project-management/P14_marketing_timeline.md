@@ -2,7 +2,7 @@
 
 
 
-> A 12-month marketing plan for solo and small-team indie developers.
+> A 12-month marketing plan for solo and small-team game developers.
 > No budget required. No marketing degree needed. Just consistency.
 
 ---
@@ -29,13 +29,13 @@
 
 ### The Hard Truth
 
-Most indie games don't fail because they're bad. They fail because nobody knows they exist.
+Most game projects don't fail because they're bad. They fail because nobody knows they exist.
 
 The Steam catalog adds **10,000+ games per year**. Your game — no matter how polished, how innovative, how lovingly crafted — will drown in that flood unless you actively push it in front of people. "Build it and they'll come" is a myth. Nobody is coming. You have to go get them.
 
 ### Marketing Is Part of the Job
 
-If you're a solo dev, marketing is **30–50% of your job**. That's not a typo. For every hour you spend coding or making art, you should be spending a proportional chunk of time telling people about it.
+If you're a game dev, marketing is **30–50% of your job**. That's not a typo. For every hour you spend coding or making art, you should be spending a proportional chunk of time telling people about it.
 
 This doesn't mean you need to become a social media influencer. It means:
 
@@ -48,7 +48,7 @@ This doesn't mean you need to become a social media influencer. It means:
 
 Marketing compounds like interest. A tweet today might get 12 likes. But it plants a seed. Someone sees your game name for the third time and finally clicks. Someone shares your GIF in a Discord. A journalist scrolls past your post and files it away mentally. None of these things feel productive in the moment. All of them matter.
 
-**The single biggest predictor of indie game commercial success (besides game quality) is how early and how consistently you marketed.**
+**The single biggest predictor of game project commercial success (besides game quality) is how early and how consistently you marketed.**
 
 ---
 
@@ -193,7 +193,7 @@ The announcement excitement has faded. Now comes the grind — the phase that se
   - If accepted, you'll need a playable demo
   - Next Fest can generate **thousands of wishlists** in a single week
   - Schedule a livestream during Next Fest (even a simple "playing my own game" stream)
-- [ ] **Research indie game festivals and showcases:**
+- [ ] **Research game project festivals and showcases:**
   - Day of the Devs
   - The MIX
   - Indie Arena Booth (Gamescom)
@@ -203,7 +203,7 @@ The announcement excitement has faded. Now comes the grind — the phase that se
 
 ### Month 8: Press & Streamer Outreach
 
-- [ ] **Build a press list** — 20–50 journalists and outlets that cover indie games
+- [ ] **Build a press list** — 20–50 journalists and outlets that cover game projects
   - Check who reviewed games similar to yours
   - Look at indie-focused outlets: Rock Paper Shotgun, PC Gamer indie section, Kotaku, Destructoid
   - Follow them on Twitter first. Engage with their work. Then email.
@@ -349,7 +349,7 @@ Before launch day ends, tease what's coming next:
 
 **Goal:** Keep the game alive. Build toward long-term revenue.
 
-Launch is not the finish line. For most indie games, the majority of lifetime revenue comes **after** the first month — through updates, sales, and word of mouth.
+Launch is not the finish line. For most game projects, the majority of lifetime revenue comes **after** the first month — through updates, sales, and word of mouth.
 
 ### The First 30 Days
 
@@ -396,13 +396,13 @@ The best marketing for your next game is a good first game. Carry your community
 
 ### Twitter/X
 
-The de facto hub for indie game marketing. Here's what works:
+The de facto hub for game project marketing. Here's what works:
 
 - **Always include visuals.** A GIF or screenshot gets 5–10x more engagement than text alone.
 - **Hashtags that matter:** `#indiedev`, `#gamedev`, `#indiegame`, `#screenshotsaturday`, `#wishlistwednesday`, `#madewith[engine]`
 - **Threads work.** "10 things I learned making my first game" threads get shared widely.
 - **Post 3–5 times per week.** Daily is better if you can sustain it.
-- **Engage with other devs.** The indie dev community on Twitter is genuinely supportive. Give to get.
+- **Engage with other devs.** The game dev community on Twitter is genuinely supportive. Give to get.
 - **Pin your most important tweet** — Usually your trailer or store link.
 - **GIFs > screenshots > text.** Always.
 
@@ -414,7 +414,7 @@ Powerful but unforgiving. Reddit hates self-promotion — unless you do it right
 
 | Subreddit | Notes |
 |-----------|-------|
-| r/indiegaming | Most welcoming for indie devs. Post trailers, GIFs, devlogs. |
+| r/indiegaming | Most welcoming for game devs. Post trailers, GIFs, devlogs. |
 | r/indiegames | Similar to above, slightly different community. |
 | r/gamedev | Dev-focused. Share process, not promotions. |
 | r/indiedev | Dev community. Process posts, devlogs, discussion. |
@@ -456,7 +456,7 @@ Your Discord server is your most engaged community. Treat it well.
 
 ### TikTok
 
-Underrated for indie games. Short devlog clips can reach audiences you'll never find on Twitter.
+Underrated for game projects. Short devlog clips can reach audiences you'll never find on Twitter.
 
 - **Format:** 15–60 second clips. Vertical video.
 - **What works:** Before/after comparisons, satisfying gameplay loops, "I made this in [engine]" videos, funny bugs, process timelapses
@@ -622,7 +622,7 @@ Your Steam capsule art is the **single most clicked-on asset** in your entire ma
 
 If you can't make a good trailer yourself, pay someone. A bad trailer actively hurts you.
 
-- Freelance editors on Fiverr or Twitter — Search "indie game trailer editor"
+- Freelance editors on Fiverr or Twitter — Search "game project trailer editor"
 - Provide them with raw gameplay footage and let them cut it
 - A good 30–60 second trailer is worth more than a mediocre 2-minute one
 
@@ -632,9 +632,9 @@ Services like Keymailer or Woovit help distribute keys to verified streamers/pre
 
 #### 4. Paid Ads — Usually NOT Worth It
 
-- **Facebook/Instagram ads:** Low conversion for indie games. Expensive per click.
-- **Twitter/X ads:** Slightly better, but still poor ROI for most indie games.
-- **Google ads:** Can work for established brands. Not for unknown indie games.
+- **Facebook/Instagram ads:** Low conversion for game projects. Expensive per click.
+- **Twitter/X ads:** Slightly better, but still poor ROI for most game projects.
+- **Google ads:** Can work for established brands. Not for unknown game projects.
 - **Reddit ads:** Better targeting, but still rarely worth it for games under $20.
 
 **The exception:** If you have a very specific, niche audience (say, a farming sim for cozy game fans), targeted ads on TikTok or Instagram with strong creative can occasionally work. But test with $20–50 first. Don't blow your budget.
@@ -650,7 +650,7 @@ Services like Keymailer or Woovit help distribute keys to verified streamers/pre
 | Paid ads | $50–200 | ★ (test only) |
 | **Total realistic budget** | **$350–900** | |
 
-Most successful indie games were marketed for less than $500 total. Your time and consistency are worth more than any ad buy.
+Most successful game projects were marketed for less than $500 total. Your time and consistency are worth more than any ad buy.
 
 ---
 
@@ -671,7 +671,7 @@ Someone asks a question in your Discord? Someone comments on your Steam page? So
 You're posting about your game but there's no Steam page to wishlist? You're wasting effort. **Get your store page live as soon as you have 5 screenshots and a description.** Wishlists are the currency of indie marketing.
 
 **5. Launching into the Void**
-Your game is done, you hit publish, and... silence. No press contacts, no streamer outreach, no community, no wishlists. This is the #1 way indie games die. **If you only read one section of this document, read Month 10–11.**
+Your game is done, you hit publish, and... silence. No press contacts, no streamer outreach, no community, no wishlists. This is the #1 way game projects die. **If you only read one section of this document, read Month 10–11.**
 
 **6. Marketing Only at Launch**
 "I'll focus on the game now and market it when it's done." This is the most common and most deadly mistake. By the time you launch, you need **months** of built-up wishlists, community, and press relationships. You can't build that in a week.
@@ -699,7 +699,7 @@ Subject: [Game Name] — [Genre] launching [Season/Date] on Steam
 
 Hi [Name],
 
-I'm [Your Name], a solo/indie developer working on [Game Name], 
+I'm [Your Name], a solo/game developer working on [Game Name], 
 a [genre] game about [one-sentence description].
 
 [Game Name] launches on [date/window] on Steam. I'd love to share 
@@ -850,7 +850,7 @@ If you take nothing else from this document:
 
 **Post something with a visual, twice a week, every week, for a year.**
 
-That's it. That alone puts you ahead of 80% of indie devs who ship a game into silence. You don't need to be a marketing expert. You don't need a budget. You don't need to go viral. You just need to show up, consistently, and let people see what you're building.
+That's it. That alone puts you ahead of 80% of game devs who ship a game into silence. You don't need to be a marketing expert. You don't need a budget. You don't need to go viral. You just need to show up, consistently, and let people see what you're building.
 
 The game you're making deserves to be seen. Go show it to people.
 

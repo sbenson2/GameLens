@@ -147,7 +147,7 @@ For the ECS animation system, extract frame rectangles and timing data from the 
 
 Several developer resources stand out for their technical depth on 3/4 view pipelines. The **CrossCode developer blog** (radicalfishgames.com) documents their modular architecture, JSON-driven data pipeline, and the decision to rewrite Impact.js. Radical Fish's lead developer Lachsen details how they separated assets from code — critical for an RPG with hundreds of maps — and built a feature-based modular system where camera, combat, and GUI are reusable extensions.
 
-**Eastward's creators** shared their art pipeline in a Game Developer interview: pixel art in Aseprite → divided into layers (rooftop, wall) → rebuilt in 3D → hand-painted with bump maps → imported into their Gii engine. This is perhaps the most sophisticated pixel art pipeline of any indie game, turning flat sprites into dynamically-lit assets.
+**Eastward's creators** shared their art pipeline in a Game Developer interview: pixel art in Aseprite → divided into layers (rooftop, wall) → rebuilt in 3D → hand-painted with bump maps → imported into their Gii engine. This is perhaps the most sophisticated pixel art pipeline of any game project, turning flat sprites into dynamically-lit assets.
 
 The **Unreal Engine spotlight on Octopath Traveler** details how a team of just 6 programmers achieved HD-2D by placing pixel sprite billboards in 3D UE4 environments with point lights synchronized to visual effects. The **Hyper Light Drifter GDC 2017 talk** ("Secrets of Kickstarter, Design, & Pizza") reveals their custom in-game level editor built inside GameMaker — overcoming tiling issues and enabling artists to place assets directly in game context.
 

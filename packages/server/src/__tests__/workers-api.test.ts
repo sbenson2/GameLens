@@ -110,8 +110,8 @@ function createTestManifest() {
     },
     {
       id: "E4",
-      title: "Solo Project Management",
-      description: "Managing projects as a solo dev",
+      title: "Game Dev Project Management",
+      description: "Managing game dev projects",
       category: "playbook",
       module: "core",
       tier: "free",
@@ -161,12 +161,12 @@ function createTestSearchIndex() {
     },
     {
       id: "E4",
-      title: "Solo Project Management",
-      description: "Managing projects as a solo dev",
+      title: "Game Dev Project Management",
+      description: "Managing game dev projects",
       category: "playbook",
       module: "core",
       tier: "free",
-      tokens: ["project", "management", "scope", "burnout", "kanban", "sprint", "solo", "dev", "pivot"],
+      tokens: ["project", "management", "scope", "burnout", "kanban", "sprint", "game", "dev", "pivot"],
     },
   ];
 }
@@ -176,7 +176,7 @@ const TEST_DOC_CONTENT: Record<string, string> = {
   "G64": "# Combat & Damage Systems\n\nFull implementation guide for combat mechanics.\n\n## Health & Armor\n\nInteger HP with shield layers.\n\n## Hitbox/Hurtbox\n\nSeparation of attack and vulnerability volumes.\n\n## Damage Pipeline\n\n10-stage canonical damage pipeline.\n\n## Knockback\n\nImpulse and curve-based knockback with weight classes.",
   "G20": "# Camera Systems\n\nMonoGame camera implementation with multiple follow modes.\n\n## Follow Modes\n\nInstant, smooth, and exponential smoothing.\n\n## Deadzone\n\nConfigurable deadzone with debug visualization.\n\n## Shake\n\nPerlin noise trauma shake system.\n\n## Zoom\n\nSmooth scroll-wheel zoom with zoom-to-cursor.",
   "godot-arch/G5": "# Physics & Collision\n\nComprehensive Godot physics and collision guide.\n\n## Body Types\n\nStaticBody2D, CharacterBody2D, RigidBody2D, Area2D.\n\n## Collision Layers\n\n10-layer recommended setup.\n\n## Raycasting\n\nRayCast2D nodes and direct space queries.",
-  "E4": "# Solo Project Management\n\nManaging game projects as a solo developer.\n\n## Scope Management\n\nDefine MVP, cut ruthlessly.\n\n## Burnout Prevention\n\nEnergy management and sustainable pace.\n\n## Pivot Decision\n\nKill criteria and when to pivot.",
+  "E4": "# Game Dev Project Management\n\nManaging game dev projects.\n\n## Scope Management\n\nDefine MVP, cut ruthlessly.\n\n## Burnout Prevention\n\nEnergy management and sustainable pace.\n\n## Pivot Decision\n\nKill criteria and when to pivot.",
 };
 
 // --- Tests ---

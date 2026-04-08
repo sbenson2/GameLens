@@ -131,10 +131,10 @@ export const KNOWLEDGE_INDEX: KnowledgeEntry[] = [
   },
   {
     id: "project-management",
-    title: "Solo Dev Project Management",
+    title: "Game Dev Project Management",
     tags: ["scope", "management", "sprint", "burnout", "deadline", "mvp", "prototype", "launch"],
     engines: ["all"],
-    summary: "Scope management, sprint planning for solo devs, avoiding burnout, MVP mindset, feature creep prevention, playtesting strategies, launch preparation, post-mortem analysis.",
+    summary: "Scope management, sprint planning, avoiding burnout, MVP mindset, feature creep prevention, playtesting strategies, launch preparation, post-mortem analysis.",
   },
   {
     id: "game-feel",
@@ -609,10 +609,10 @@ Share common data between similar objects. All trees share one TreeType (mesh, t
 ## Service Locator
 Global access point for services (audio, input, save). Better than singletons because you can swap implementations (mock audio for testing).`,
 
-  "project-management": `# Solo Dev Project Management
+  "project-management": `# Game Dev Project Management
 
 ## Scope Is Everything
-The #1 killer of indie games is scope creep. Every feature you add delays launch.
+The #1 killer of game projects is scope creep. Every feature you add delays launch.
 - Start with a 1-page design doc, not a 20-page one
 - List features as Must Have / Nice to Have / Cut
 - If you can't describe the core loop in 2 sentences, scope down
@@ -626,7 +626,7 @@ Build the minimum playable version first:
 That's your prototype. Playtest it. Is it fun? If not, pivot BEFORE building more.
 
 ## Sprint Planning
-Weekly sprints work well for solo devs:
+Weekly sprints work well for game dev:
 - Monday: Plan 3-5 tasks for the week
 - Daily: Work on one task at a time
 - Friday: Playtest and review

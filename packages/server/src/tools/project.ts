@@ -12,6 +12,16 @@ import { PersonalityEngine, ProjectSnapshot } from "../core/personality.js";
 import { HealthTracker } from "../core/health-tracker.js";
 import { miss, unknownAction } from "../core/error-helpers.js";
 import { getToolHelp } from "../core/help-generator.js";
+import {
+  SessionState,
+  createDefaultState,
+  startPath,
+  resolvePathFromContent,
+  advanceStep,
+  getWorkflowState,
+  getRelevantDocs,
+} from "../core/session.js";
+import { SessionManager } from "../core/session-manager.js";
 
 function toSnapshot(data: any): ProjectSnapshot {
   return {
@@ -28,15 +38,15 @@ function toSnapshot(data: any): ProjectSnapshot {
 
 export const projectToolDef: GameCodexToolDef = {
   name: "project",
-  description: "Use when: starting a session, tracking progress, logging decisions, setting goals, checking scope health. Your game dev co-pilot — project state, decisions, goals, milestones, scope health. Adapts to your genre and phase. Actions: hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list.",
+  description: "Use when: starting a session, tracking progress, logging decisions, setting goals, checking scope health, running structured workflows. Your game dev co-pilot — project state, decisions, goals, milestones, scope health, session orchestration. Adapts to your genre and phase. Actions: hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list, session.",
   inputSchema: {
     action: z.enum([
       "help", "hello", "get", "set", "suggest",
       "decide", "goal", "complete_goal", "clear_goals",
       "milestone", "note", "recall", "clear_notes",
-      "health", "scope", "add_feature", "list",
+      "health", "scope", "add_feature", "list", "session",
     ]).describe(
-      "hello: start here, first interaction or new session | get: view full project state | set: configure engine/genre/phase/skill | suggest: what to work on next | decide: log a design decision | goal: add a goal | complete_goal: mark goal done | milestone: celebrate progress | note/recall: save/retrieve notes | health: check scope creep | scope: evaluate a feature idea | add_feature: log a new feature | list: show all projects"
+      "hello: start here, first interaction or new session | get: view full project state | set: configure engine/genre/phase/skill | suggest: what to work on next | decide: log a design decision | goal: add a goal | complete_goal: mark goal done | milestone: celebrate progress | note/recall: save/retrieve notes | health: check scope creep | scope: evaluate a feature idea | add_feature: log a new feature | list: show all projects | session: start/continue/advance a structured work session"
     ),
     project: z.string().optional().describe("Project name (default: 'default')"),
     // set fields
@@ -49,6 +59,9 @@ export const projectToolDef: GameCodexToolDef = {
     section: z.string().optional().describe("Memory section name (for note/recall)"),
     // scope
     feature: z.string().optional().describe("Feature description (for scope/add_feature)"),
+    // session
+    advance: z.boolean().optional().describe("Advance to the next workflow step (for session)"),
+    focus: z.string().optional().describe("Topic focus for the session — used for doc lookup and tool params"),
   },
   handler: async (args: Record<string, unknown>, deps: ToolDependencies): Promise<ToolResult> => {
     const store = deps.projectStore as ProjectStore;
@@ -233,11 +246,73 @@ export const projectToolDef: GameCodexToolDef = {
         return { content: [{ type: "text", text: output }] };
       }
 
+      // ---- Session orchestration ----
+
+      case "session": {
+        const sm = deps.sessionManager as SessionManager;
+        const session = sm.getOrCreateSession(projectName);
+
+        // Load workflow state from session metadata, or create fresh
+        let ws: SessionState;
+        if (session.workflowState) {
+          try {
+            ws = JSON.parse(session.workflowState) as SessionState;
+          } catch {
+            ws = createDefaultState();
+          }
+        } else {
+          ws = createDefaultState();
+        }
+
+        const content = (args.content as string) ?? "";
+        const shouldAdvance = (args.advance as boolean) ?? false;
+        const focus = (args.focus as string) ?? "";
+
+        if (shouldAdvance) {
+          advanceStep(ws);
+        } else if (content && ws.path === "none") {
+          // Resolve freeform intent to a path
+          const resolved = resolvePathFromContent(content);
+          if (resolved !== "none") {
+            const { state } = startPath(ws, resolved);
+            Object.assign(ws, state);
+          }
+        }
+
+        // Set focus if provided
+        if (focus) {
+          ws.currentFocus = focus;
+        }
+
+        // Build structured response
+        const response = getWorkflowState(ws);
+
+        // Enrich relevant docs from focus
+        if (focus || ws.currentFocus) {
+          response.relevantDocs = getRelevantDocs(focus || ws.currentFocus);
+        }
+
+        // Persist workflow state back to session
+        sm.updateWorkflowState(projectName, JSON.stringify(ws));
+        const phaseMap: Record<string, "idle" | "planning" | "working" | "reviewing"> = {
+          briefing: "planning",
+          working: "working",
+        };
+        sm.updatePhase(projectName, phaseMap[ws.phase] ?? "idle", ws.currentFocus);
+
+        return {
+          content: [{
+            type: "text",
+            text: JSON.stringify(response, null, 2),
+          }],
+        };
+      }
+
       default:
         return unknownAction(action, [
           "help", "hello", "get", "set", "suggest", "decide", "goal", "complete_goal",
           "clear_goals", "milestone", "note", "recall", "clear_notes",
-          "health", "scope", "add_feature", "list",
+          "health", "scope", "add_feature", "list", "session",
         ], "project");
     }
   },

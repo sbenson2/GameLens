@@ -2,7 +2,7 @@
 
 
 
-A practical guide to creating, organizing, and shipping 2D game art — aimed at solo developers and small teams who may be programmers first and artists second.
+A practical guide to creating, organizing, and shipping 2D game art — aimed at game developers and small teams who may be programmers first and artists second.
 
 ---
 
@@ -744,7 +744,7 @@ Texture Memory = Width × Height × 4 bytes (RGBA)
 
 **Budget guidelines:**
 - Aim for total texture memory under 256 MB for a desktop game, under 64 MB for mobile
-- A typical 2D indie game uses 20–80 MB of texture memory
+- A typical 2D game project uses 20–80 MB of texture memory
 - Monitor with `GraphicsDevice.Metrics` in MonoGame
 
 ### When to Split vs Combine Atlases

@@ -1,9 +1,9 @@
 # P3 — Daily Dev Workflow
-> **Category:** Project Management · **Related:** [E4 Solo Project Management](./E4_project_management.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [E5 AI-Assisted Dev Workflow](../ai-workflow/E5_ai_workflow.md) · [P4 Playtesting](./P4_playtesting.md) · [P8 Common Pitfalls](./P8_pitfalls.md)
+> **Category:** Project Management · **Related:** [E4 Game Dev Project Management](./E4_project_management.md) · [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) · [E5 AI-Assisted Dev Workflow](../ai-workflow/E5_ai_workflow.md) · [P4 Playtesting](./P4_playtesting.md) · [P8 Common Pitfalls](./P8_pitfalls.md)
 
 ---
 
-A practical daily routine for solo and small-team 2D game developers. Whether you have two evening hours or a full workday, a consistent workflow keeps you shipping instead of spinning.
+A practical daily routine for solo, team, and small-studio 2D game developers. Whether you have two evening hours or a full workday, a consistent workflow keeps you shipping instead of spinning.
 
 ---
 
@@ -228,7 +228,7 @@ Impact = "does this make the game more fun, complete, or stable?" If you can't a
 
 ## 3. Estimation & Time Tracking
 
-### Why Solo Devs Need Estimation
+### Why Game Devs Need Estimation
 
 You're not estimating for a manager — you're estimating for yourself. Good estimates prevent:
 - **Overcommitting** in a session (starting 3 tasks, finishing 0)
@@ -237,7 +237,7 @@ You're not estimating for a manager — you're estimating for yourself. Good est
 
 ### The Multiplier Method
 
-Solo devs consistently underestimate by 2–3×. Use this until your calibration improves:
+Game devs consistently underestimate by 2–3×. Use this until your calibration improves:
 
 ```
 Gut estimate × 2.5 = realistic estimate
@@ -294,7 +294,7 @@ Keep a simple accuracy log:
 | Combo chain | 3h | 4h | 1.3× |
 ```
 
-Your average ratio is your personal multiplier. Most solo devs land at 1.5–2.5×. Physics, networking, and save systems tend to be 3×+. UI and polish tend to be closer to 1×.
+Your average ratio is your personal multiplier. Most game devs land at 1.5–2.5×. Physics, networking, and save systems tend to be 3×+. UI and polish tend to be closer to 1×.
 
 ### Common Estimation Traps
 
@@ -400,7 +400,7 @@ Every few days, **don't play for 24 hours**, then sit down and play from the sta
 - Difficulty spikes you've adapted to
 - Missing feedback you mentally fill in
 
-This is the closest a solo dev gets to outside playtesting. Do it at least weekly.
+This is the closest a game dev gets to outside playtesting. Do it at least weekly.
 
 > 📘 For tools and techniques to measure and improve game feel, see [G30 — Game Feel & Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md).
 
@@ -552,7 +552,7 @@ This doesn't replace your instincts — it structures them. Particularly useful 
 
 ## 8. Session Handoff & Context Preservation
 
-The hardest part of solo dev isn't any individual session — it's the gap between sessions. You forget where you were, why you made a decision, and what's half-finished. Session handoff systems preserve context across the gap.
+The hardest part of game dev isn't any individual session — it's the gap between sessions. You forget where you were, why you made a decision, and what's half-finished. Session handoff systems preserve context across the gap.
 
 ### The Breadcrumb File
 
@@ -650,7 +650,7 @@ End of day:        Playtest, journal, planning
 
 ### The "Creative Tuesday" Pattern
 
-Some solo devs dedicate entire sessions to one discipline:
+Some game devs dedicate entire sessions to one discipline:
 
 ```
 Monday:     Code (new features)
@@ -664,7 +664,7 @@ This eliminates all within-session switching. The cost: you can't immediately se
 
 ### Balancing Content vs Systems
 
-A common solo dev trap: spending 80% of time on systems and 20% on content, when the game needs the reverse. Track your discipline balance monthly:
+A common game dev trap: spending 80% of time on systems and 20% on content, when the game needs the reverse. Track your discipline balance monthly:
 
 ```markdown
 # March Discipline Split
@@ -731,7 +731,7 @@ Use a timer. When it rings, *actually stop*. Stand up. Look at something far awa
 
 ### Avoiding Rabbit Holes
 
-Rabbit holes are the #1 killer of indie dev productivity. You sit down to add a jump and four hours later you're writing a custom particle system.
+Rabbit holes are the #1 killer of game dev productivity. You sit down to add a jump and four hours later you're writing a custom particle system.
 
 **The timer trick**: Before exploring anything tangential, set a 20-minute timer. When it rings, decide: is this worth more time, or should I get back to the task?
 
@@ -834,7 +834,7 @@ If you can't resist checking your phone, put it in another room. Willpower is fi
 
 ## 13. Progress Visualization & Motivation
 
-Solo dev projects often span 1–3 years. Without visible progress markers, motivation erodes because the endpoint feels permanently far away.
+Game dev projects often span 1–3 years. Without visible progress markers, motivation erodes because the endpoint feels permanently far away.
 
 ### The Progress Wall
 
@@ -970,7 +970,7 @@ Once a month. 30–45 minutes. Zoom out.
 
 ### Warning Signs
 
-Watch for these — they sneak up on solo devs:
+Watch for these — they sneak up on game devs:
 
 - **Dreading your dev sessions** — the thing you love feels like a chore
 - **Endless "refactoring"** — rewriting working code instead of making progress
@@ -1188,7 +1188,7 @@ Context-switching between "write code yourself" and "prompt AI and review output
 
 Polish is the last step, not every step. Spending 2 hours perfecting a particle effect before the underlying system works means you'll have a beautiful particle effect on a feature you might cut.
 
-**Fix**: Follow the classic sequence: (1) Make it work — functional, testable, ugly. (2) Make it right — clean code, good architecture. (3) Make it fast — optimize only what profiling shows is slow. Most solo dev projects never need step 3.
+**Fix**: Follow the classic sequence: (1) Make it work — functional, testable, ugly. (2) Make it right — clean code, good architecture. (3) Make it fast — optimize only what profiling shows is slow. Most game dev projects never need step 3.
 
 ### ❌ Ignoring Physical Health → ✅ Ergonomics are Part of the Workflow
 
@@ -1236,7 +1236,7 @@ Wrist pain, eye strain, and back problems are occupational hazards, not badges o
 | Complete tilemap + editor | 20–40h | 2.5× |
 | Full audio implementation | 10–20h | 2× |
 
-These are estimates for a competent solo dev. Your first game will take 2–3× longer on everything. That's normal.
+These are estimates for a competent game dev. Your first game will take 2–3× longer on everything. That's normal.
 
 ### Weekly Hours → Milestone Timeline
 
@@ -1253,13 +1253,13 @@ Assumes a small-scope 2D game (platformer, roguelike, or similar). Multiply by 2
 
 ## Related Docs
 
-- [E4 Solo Project Management](./E4_project_management.md) — broader PM framework with risk, burnout, metrics, and pivot decisions
-- [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) — AI tools, scope management, and patterns from successful indie games
+- [E4 Game Dev Project Management](./E4_project_management.md) — broader PM framework with risk, burnout, metrics, and pivot decisions
+- [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) — AI tools, scope management, and patterns from successful game projects
 - [E5 AI-Assisted Dev Workflow](../ai-workflow/E5_ai_workflow.md) — deep dive on CONTEXT.md, AI prompting, and MCP integration
 - [P0 Master Playbook](./P0_master_playbook.md) — complete project lifecycle from concept to post-launch
 - [P1 Pre-Production](./P1_pre_production.md) — vertical slice, design pillars, and prototype planning
 - [P4 Playtesting](./P4_playtesting.md) — structured playtesting with external testers
-- [P8 Common Pitfalls](./P8_pitfalls.md) — the 20 most common solo dev mistakes
+- [P8 Common Pitfalls](./P8_pitfalls.md) — the 20 most common game dev mistakes
 - [P11 Polish Checklist](./P11_polish_checklist.md) — comprehensive polish and pre-launch checklist
 - [G16 Debugging](../../monogame-arch/guides/G16_debugging.md) — ImGui integration, debug overlays, logging
 - [G17 Testing](../../monogame-arch/guides/G17_testing.md) — unit testing, integration testing, BenchmarkDotNet

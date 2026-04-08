@@ -4,7 +4,7 @@
 
 > Audio is half the experience. A game with great art and no audio feels like a silent film nobody asked for.
 
-Most solo devs treat audio as an afterthought — something to bolt on the week before release. That's a mistake. Audio is **game feel** (see [G30 — Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md)). The satisfying *thwack* of a hit, the little *ding* when you pick up a coin, the ambient hum of a dungeon — these are what make a game feel *alive*.
+Most game devs treat audio as an afterthought — something to bolt on the week before release. That's a mistake. Audio is **game feel** (see [G30 — Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling.md)). The satisfying *thwack* of a hit, the little *ding* when you pick up a coin, the ambient hum of a dungeon — these are what make a game feel *alive*.
 
 ---
 
@@ -50,7 +50,7 @@ See [G30 — Game Feel Tooling](../../monogame-arch/guides/G30_game_feel_tooling
 
 ### Budget Your Audio Time
 
-A realistic breakdown for a solo dev:
+A realistic breakdown for a game dev:
 
 | Phase | % of Audio Time |
 |---|---|

@@ -1,9 +1,9 @@
-# E9 — Solo Dev Playbook: AI Tools and Project Management
-> **Category:** Explanation · **Related:** [E4 Solo Project Management](./E4_project_management.md) · [E5 AI-Assisted Dev Workflow](../ai-workflow/E5_ai_workflow.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md) · [P8 Common Pitfalls](./P8_pitfalls.md) · [P0 Master Playbook](./P0_master_playbook.md) · [P14 Marketing Timeline](./P14_marketing_timeline.md) · [P7 Launch Checklist](./P7_launch_checklist.md) · [P15 Post-Mortem Template](./P15_postmortem_template.md)
+# E9 — Game Dev Playbook: AI Tools and Project Management
+> **Category:** Explanation · **Related:** [E4 Project Management](./E4_project_management.md) · [E5 AI-Assisted Dev Workflow](../ai-workflow/E5_ai_workflow.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md) · [P8 Common Pitfalls](./P8_pitfalls.md) · [P0 Master Playbook](./P0_master_playbook.md) · [P14 Marketing Timeline](./P14_marketing_timeline.md) · [P7 Launch Checklist](./P7_launch_checklist.md) · [P15 Post-Mortem Template](./P15_postmortem_template.md)
 
 ---
 
-**AI amplifies both productivity and chaos.** Without deliberate systems for tracking progress, maintaining creative vision, and knowing when to say no, AI becomes a scope creep accelerator rather than a shipping accelerator. This doc synthesizes community wisdom, case studies from developers like ConcernedApe, LocalThunk, and Mega Crit, and practical techniques for solo game development with AI tools.
+**AI amplifies both productivity and chaos.** Without deliberate systems for tracking progress, maintaining creative vision, and knowing when to say no, AI becomes a scope creep accelerator rather than a shipping accelerator. This doc synthesizes community wisdom, case studies from developers like ConcernedApe, LocalThunk, and Mega Crit, and practical techniques for game development with AI tools.
 
 ---
 
@@ -145,7 +145,7 @@ Productivity gains from AI are real but consistently overstated. One developer w
 
 ### Cognitive Atrophy Risk
 
-"You can get into a loop of asking AI for code, scanning it, testing it, and then asking it to fix the mistakes without engaging deeply in the problem." (Clemson University CHI PLAY 2024, studying 3,091 indie dev posts.)
+"You can get into a loop of asking AI for code, scanning it, testing it, and then asking it to fix the mistakes without engaging deeply in the problem." (Clemson University CHI PLAY 2024, studying 3,091 game dev posts.)
 
 **The antidote:** Periodically code without AI to maintain the skills you'll need when AI fails on niche problems. Schedule "no-AI days" — one per week or one per sprint. These sessions are slower but build the deep understanding that makes your AI-assisted days more productive (you'll write better specs and catch more errors).
 
@@ -249,11 +249,11 @@ Where AI art is genuinely useful without risk:
 
 ### WIP Limits
 
-The single most impactful Kanban rule for solo devs: **limit "In Progress" to 2-3 items maximum.** When you hit the limit, you must finish something before starting anything new. This prevents the common solo dev trap of having 15 half-finished features and nothing shippable.
+The single most impactful Kanban rule for game devs: **limit "In Progress" to 2-3 items maximum.** When you hit the limit, you must finish something before starting anything new. This prevents the common game dev trap of having 15 half-finished features and nothing shippable.
 
 ### Social Milestones
 
-The most important insight (338-upvote Hacker News thread): **"The biggest risk of solo development is not how I manage a todo list, but that I'll build the wrong thing because I waited to get feedback."**
+The most important insight (338-upvote Hacker News thread): **"The biggest risk of game development is not how I manage a todo list, but that I'll build the wrong thing because I waited to get feedback."**
 
 Schedule regular "social milestones" — times to show someone your work:
 
@@ -272,7 +272,7 @@ External feedback prevents tunnel vision. The act of preparing a build to show s
 
 ### The Two-Tool Pattern
 
-Most successful solo devs use exactly two complementary tools:
+Most successful game devs use exactly two complementary tools:
 
 | Role | Options |
 |------|---------|
@@ -289,7 +289,7 @@ Plus version control for code. Over-engineering the PM system is itself procrast
 
 ### Tools to Avoid Over-Investing In
 
-- **Jira / Linear / Monday** — enterprise tools that create more ceremony than value for solo devs
+- **Jira / Linear / Monday** — enterprise tools that create more ceremony than value for game devs
 - **Custom dashboards** — building your own PM tool is the ultimate procrastination trap
 - **Complex automation** — Zapier/n8n workflows connecting 5 tools is a project, not project management
 - **Multiple overlapping tools** — Notion + Obsidian + Trello + a spreadsheet means nothing is the source of truth
@@ -300,11 +300,11 @@ Plus version control for code. Over-engineering the PM system is itself procrast
 
 ## The Solo Dev Testing Strategy
 
-Solo devs can't afford a QA team, but shipping untested code guarantees painful post-launch weeks. The key is testing strategically — not everything, just the right things.
+Game devs can't afford a QA team, but shipping untested code guarantees painful post-launch weeks. The key is testing strategically — not everything, just the right things.
 
 ### What to Test (Priority Order)
 
-1. **Save/load round-trips** — the #1 source of catastrophic bugs in indie games. Corrupt saves = refund requests. Test that every saveable entity survives a save→load→save cycle with all fields intact.
+1. **Save/load round-trips** — the #1 source of catastrophic bugs in game projects. Corrupt saves = refund requests. Test that every saveable entity survives a save→load→save cycle with all fields intact.
 
 2. **Game-critical state transitions** — main menu → gameplay → pause → resume → death → respawn → victory. Every transition in your game's flow should work without softlocks.
 
@@ -316,7 +316,7 @@ Solo devs can't afford a QA team, but shipping untested code guarantees painful 
 
 ### What NOT to Test
 
-- **Visual polish** — screenshot tests are brittle and unhelpful for indie games
+- **Visual polish** — screenshot tests are brittle and unhelpful for game projects
 - **Tutorial flow** — needs human playtesters, not automated tests
 - **"Fun"** — no test can measure game feel; playtest instead
 - **100% code coverage** — diminishing returns past ~60% for game code
@@ -359,7 +359,7 @@ Version control isn't optional even for solo projects. It's your undo button, yo
 
 ### The Solo Dev Git Workflow
 
-Forget gitflow, trunk-based development, and other team patterns. Solo devs need exactly this:
+Forget gitflow, trunk-based development, and other team patterns. Game devs need exactly this:
 
 ```
 main branch ← your game lives here, always buildable
@@ -369,7 +369,7 @@ tags ← for releases and milestones
 
 ### Commit Discipline
 
-**Commit after every meaningful change.** Not every line — after every logical unit of work. A good solo dev commits 5-15 times per productive day.
+**Commit after every meaningful change.** Not every line — after every logical unit of work. A good game dev commits 5-15 times per productive day.
 
 Good commit messages for game dev:
 ```
@@ -444,7 +444,7 @@ Studying Stardew Valley, Hollow Knight, Celeste, Undertale, Vampire Survivors, B
 
 Stardew Valley was built on C#/XNA → MonoGame. Slay the Spire 2 — the biggest indie launch in history (4.6M copies, $92M revenue in its first weeks) — was built on Godot after the team migrated from a custom Java engine. Vampire Survivors runs on a web framework. Balatro uses LÖVE (Lua). Celeste uses a custom C# engine.
 
-**The pattern:** successful solo devs pick an engine they're comfortable with and ship, rather than spending months evaluating "the best" engine. The game's design and polish matter 100x more than the technology underneath.
+**The pattern:** successful game devs pick an engine they're comfortable with and ship, rather than spending months evaluating "the best" engine. The game's design and polish matter 100x more than the technology underneath.
 
 ### The Constraint Advantage
 
@@ -458,7 +458,7 @@ Every major solo hit was built under severe constraints:
 | Papers Please | Brown palette, simple animations | Mood through restriction |
 | Brotato | Auto-aim, wave-based, one arena | Tight loop, fast iteration |
 
-**The lesson:** Constraints aren't limitations — they're design decisions that make solo development possible. Pick your constraints early and make them part of the game's identity.
+**The lesson:** Constraints aren't limitations — they're design decisions that make game development possible. Pick your constraints early and make them part of the game's identity.
 
 ### The "Ship Ugly, Polish Later" Pattern
 
@@ -510,7 +510,7 @@ Solo game development commonly spans 2-5 years. Over these timescales, your bigg
 | Crunch-based (60+ hr/week) | ⭐ | Leads to burnout within months |
 | Part-time with day job (2-4hr/day) | ⭐⭐⭐⭐ | Slower but financially sustainable |
 
-**The crunch trap:** Solo devs crunch harder than studio employees because there's no one to stop them. The GDC 2026 State of the Industry report showed sustained crunch correlates with lower game quality, not higher — exhausted devs make worse decisions.
+**The crunch trap:** Game devs crunch harder than studio employees because there's no one to stop them. The GDC 2026 State of the Industry report showed sustained crunch correlates with lower game quality, not higher — exhausted devs make worse decisions.
 
 ### Energy Management
 
@@ -545,10 +545,10 @@ Months 18+:   FINISH LINE → Either renewed drive or burnout
 
 ### Isolation and Mental Health
 
-Solo development is genuinely isolating. Mitigation:
+Game development is genuinely isolating. Mitigation:
 
 - **Join a game dev community** — r/gamedev, engine-specific Discords, local game dev meetups
-- **Find an accountability partner** — another solo dev you check in with weekly
+- **Find an accountability partner** — another game dev you check in with weekly
 - **Separate work space from living space** — even if it's just a different desk orientation
 - **Maintain non-gamedev social connections** — the tendency to withdraw into the project is real and harmful
 
@@ -556,7 +556,7 @@ Solo development is genuinely isolating. Mitigation:
 
 ## Community Building & Player Management
 
-Building a community around your game before launch is the single highest-leverage marketing activity for solo devs. It provides playtesters, creates wishlists, generates word-of-mouth, and sustains motivation.
+Building a community around your game before launch is the single highest-leverage marketing activity for game devs. It provides playtesters, creates wishlists, generates word-of-mouth, and sustains motivation.
 
 ### When to Start
 
@@ -581,7 +581,7 @@ Don't over-engineer your Discord. Start with:
 #screenshots       (player-generated content)
 ```
 
-**Add channels only when the existing ones are too noisy.** Most solo dev Discords fail by creating 20 empty channels that make the community feel dead.
+**Add channels only when the existing ones are too noisy.** Most game dev Discords fail by creating 20 empty channels that make the community feel dead.
 
 ### Managing Feedback as a Solo Dev
 
@@ -591,11 +591,11 @@ You'll receive more feedback than you can act on. Triage it:
 2. **Separate "what" from "how"** — players are excellent at identifying problems, terrible at proposing solutions
 3. **Log everything, act on patterns** — use a simple spreadsheet: Feedback | Source | Count | Priority | Status
 4. **Never argue** — thank people for feedback, even when it's wrong. Arguing with players on your own Discord is always a loss
-5. **Set expectations** — "Solo dev, updates come when they're ready" is a perfectly acceptable stance
+5. **Set expectations** — "Game dev, updates come when they're ready" is a perfectly acceptable stance
 
 ### The Content Creator Relationship
 
-Streamers and YouTubers are force multipliers for indie games. But the relationship is asymmetric — you need them more than they need you.
+Streamers and YouTubers are force multipliers for game projects. But the relationship is asymmetric — you need them more than they need you.
 
 - **Send keys early** — 2-4 weeks before launch
 - **Make it easy to cover** — include a press kit (screenshots, logo, description, key art)
@@ -648,7 +648,7 @@ Before committing 2+ years to a project:
 
 ## Living Documentation
 
-Solo development commonly spans 2–5 years. Over these timescales, you will forget why you made critical decisions unless you document them.
+Game development commonly spans 2–5 years. Over these timescales, you will forget why you made critical decisions unless you document them.
 
 ### The Four-Element System
 
@@ -783,7 +783,7 @@ Do you have engine experience?
     │   └── Want huge community? → Unity
     └── 3D game?
         ├── Indie scope? → Godot (improving rapidly)
-        └── AAA scope? → Unity or Unreal (solo dev + AAA scope is a red flag)
+        └── AAA scope? → Unity or Unreal (game dev + AAA scope is a red flag)
 ```
 
 ### Build vs Buy
@@ -866,7 +866,7 @@ The developers who shipped the decade's biggest indie hits — without any AI to
 
 ### 6. Comparing Your Progress to Others
 
-**Wrong:** "That solo dev shipped in 6 months; I've been working for 2 years."
+**Wrong:** "That game dev shipped in 6 months; I've been working for 2 years."
 **Right:** Survivorship bias. You see the successes, not the thousands of failed/abandoned projects. Compare yourself to your own progress last month, not to strangers on Twitter.
 
 ### 7. Infinite Polishing
@@ -878,15 +878,15 @@ The developers who shipped the decade's biggest indie hits — without any AI to
 
 ## Related Docs
 
-- [E4 Solo Project Management](./E4_project_management.md) — scope management, vertical slicing, burnout prevention
+- [E4 Game Dev Project Management](./E4_project_management.md) — scope management, vertical slicing, burnout prevention
 - [E5 AI-Assisted Dev Workflow](../ai-workflow/E5_ai_workflow.md) — CONTEXT.md, prompt patterns, AI code review
 - [P0 Master Playbook](./P0_master_playbook.md) — complete production pipeline overview
 - [P1 Pre-Production](./P1_pre_production.md) — prototyping, scope definition, vertical slice
 - [P4 Playtesting Guide](./P4_playtesting.md) — playtesting methodology and templates
 - [P7 Launch Checklist](./P7_launch_checklist.md) — everything needed for launch day
-- [P8 Common Pitfalls](./P8_pitfalls.md) — mistakes that kill indie games
+- [P8 Common Pitfalls](./P8_pitfalls.md) — mistakes that kill game projects
 - [P9 GDD Template](./P9_gdd_template.md) — living game design document structure
 - [P11 Polish Checklist](./P11_polish_checklist.md) — what to polish before launch
-- [P14 Marketing Timeline](./P14_marketing_timeline.md) — marketing cadence for indie games
+- [P14 Marketing Timeline](./P14_marketing_timeline.md) — marketing cadence for game projects
 - [P15 Post-Mortem Template](./P15_postmortem_template.md) — structured reflection after shipping
 - [G_stitch UI Workflow](../game-design/G_stitch_ui_workflow.md) — AI-assisted UI prototyping

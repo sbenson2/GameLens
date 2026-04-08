@@ -1,5 +1,5 @@
 # E5 — AI-Assisted Development Workflow
-> **Category:** Explanation · **Related:** [E4 Project Management](./E4_project_management.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [G11 Programming Principles](../../monogame-arch/guides/G11_programming_principles.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
+> **Category:** Explanation · **Related:** [E4 Project Management](./E4_project_management.md) · [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [G11 Programming Principles](../../monogame-arch/guides/G11_programming_principles.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
 
 ---
 
@@ -93,7 +93,7 @@ Structure the file with clear markdown headers to prevent instruction bleeding b
 - **Papercut bug fixes:** Small backlog items that are tedious but straightforward
 - **Design brainstorming:** Describe a system's intended behavior in natural language, have AI propose a component+system decomposition, then critique and refine together before implementing
 
-> **Deep dive:** [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) — realistic productivity data (10–20% gains), ECS-specific AI synergies, cognitive atrophy risk, brainstorming as top non-code use
+> **Deep dive:** [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) — realistic productivity data (10–20% gains), ECS-specific AI synergies, cognitive atrophy risk, brainstorming as top non-code use
 
 ---
 
@@ -109,7 +109,7 @@ Structure the file with clear markdown headers to prevent instruction bleeding b
 - Shader hot paths without manual profiling
 - Preserving creative distinctiveness — AI flattens creative decisions toward the median
 
-> **Deep dive:** [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) — AI art pipeline (70/30 rule, img2img workflow, LoRA training, ComfyUI), "AI slop" reputational risk
+> **Deep dive:** [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) — AI art pipeline (70/30 rule, img2img workflow, LoRA training, ComfyUI), "AI slop" reputational risk
 
 ---
 
@@ -143,7 +143,7 @@ AI-generated code has systematic failure patterns. Check every piece for:
 
 ## Avoiding AI Slop: Art Pipeline
 
-The term "AI slop" describes content that looks polished on the surface but lacks depth, originality, or coherent artistic vision. Steam has a curator page flagging AI-generated games, itch.io enforces a "No Slop" policy, and games have been shut down within days of announcement due to AI art backlash. Raw AI art in a final product is a reputational risk for indie developers.
+The term "AI slop" describes content that looks polished on the surface but lacks depth, originality, or coherent artistic vision. Steam has a curator page flagging AI-generated games, itch.io enforces a "No Slop" policy, and games have been shut down within days of announcement due to AI art backlash. Raw AI art in a final product is a reputational risk for game developers.
 
 ### The 70/30 Rule
 
@@ -175,7 +175,7 @@ Target specs for 3/4 perspective: 16×16 pixel tiles, 480×270 native resolution
 
 You can fall into a loop of asking AI for code, scanning it superficially, testing it, and asking it to fix mistakes without engaging deeply. This behavior extrapolated to general AI use erodes the skills you need when AI fails on niche problems.
 
-A CHI PLAY 2024 study of 3,091 indie dev posts found that while AI can jumpstart game design, it risks homogenizing creative output, creating additional workload in prompt engineering, and distracting from core game development.
+A CHI PLAY 2024 study of 3,091 game dev posts found that while AI can jumpstart game design, it risks homogenizing creative output, creating additional workload in prompt engineering, and distracting from core game development.
 
 **Countermeasures:**
 - Periodically code without AI to maintain fundamentals

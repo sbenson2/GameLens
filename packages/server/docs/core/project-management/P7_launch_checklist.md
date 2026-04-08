@@ -3,9 +3,9 @@
 
 
 > **Your game is done (or close enough). Now what?**
-> This is the full launch checklist — from first store page to post-launch survival. It's written for solo devs and small teams shipping their first game on Steam, with notes for itch.io and other platforms.
+> This is the full launch checklist — from first store page to post-launch survival. Written for game developers shipping on Steam, with notes for itch.io and other platforms.
 
-> **Key insight:** Marketing isn't a phase — it runs parallel to development. The earlier you start, the better your launch goes. Most successful indie launches are built on 6+ months of wishlist accumulation.
+> **Key insight:** Marketing isn't a phase — it runs parallel to development. The earlier you start, the better your launch goes. Most successful launches are built on 6+ months of wishlist accumulation.
 
 ---
 
@@ -206,7 +206,7 @@ A press kit makes it effortless for journalists and content creators to cover yo
 
 ### Social Media — Set Up
 
-- [ ] **Twitter/X** — still the primary indie dev social platform
+- [ ] **Twitter/X** — still the primary game dev social platform
   - Post gameplay GIFs, devlog updates, behind-the-scenes content
   - Use relevant hashtags: `#indiedev`, `#gamedev`, `#indiegame`, `#screenshotsaturday`
   - Engage with other devs — the community is supportive
@@ -253,7 +253,7 @@ Subject: [Game Name] — [Genre] launching [Date] on Steam
 
 Hi [Name],
 
-I'm [Your Name], solo developer of [Game Name] — a [short genre description].
+I'm [Your Name], game developer of [Game Name] — a [short genre description].
 [One compelling sentence about what makes it unique.]
 
 Launch date: [Date]
@@ -611,7 +611,7 @@ Not the fun part, but ignoring it creates problems later. Handle this early.
 ### Business Entity
 
 - [ ] **Sole proprietor** — simplest, but no liability protection
-- [ ] **LLC** — recommended for most solo devs (liability protection, tax flexibility)
+- [ ] **LLC** — recommended for most game devs (liability protection, tax flexibility)
 - [ ] Consult a tax professional in your jurisdiction
 - [ ] Open a **separate bank account** for game revenue
 - [ ] Track all expenses from day one (software, assets, hardware, marketing)
@@ -677,10 +677,10 @@ Not the fun part, but ignoring it creates problems later. Handle this early.
 
 ## Recommended Reading
 
-- [Chris Zukowski's "How to Market a Game"](https://howtomarketagame.com/) — the single best resource for indie game marketing
+- [Chris Zukowski's "How to Market a Game"](https://howtomarketagame.com/) — the single best resource for game project marketing
 - [Steam's own documentation](https://partner.steamworks.com/doc/home) — the official source
-- [GDC talks on launching indie games](https://www.youtube.com/results?search_query=gdc+indie+game+launch) — learn from others' experiences
+- [GDC talks on launching game projects](https://www.youtube.com/results?search_query=gdc+indie+game+launch) — learn from others' experiences
 
 ---
 
-*Part of the [Universal 2D Engine Toolkit — Playbook](./00_index.md). Written for the solo dev shipping their first game. You've got this.* 🚀
+*Part of the [Universal 2D Engine Toolkit — Playbook](./00_index.md). Written for game developers shipping their game. You've got this.* 🚀

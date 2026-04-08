@@ -703,7 +703,7 @@ chars_per_second = full_text.length / voice_clip_duration
 // Auto-advance when voice clip finishes + padding
 ```
 
-**2. Independent (most indie games):**
+**2. Independent (most game projects):**
 ```
 // Typewriter runs at fixed speed
 // Voice clip plays simultaneously

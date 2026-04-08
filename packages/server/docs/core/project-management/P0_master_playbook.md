@@ -6,7 +6,7 @@
 
 **Stack:** MonoGame.Framework.DesktopGL · Arch ECS v2.1.0 · Composed Libraries · C#
 **Timeline:** ~24 weeks (6 months) from idea to launch
-**Audience:** Solo developers and small teams building 2D games
+**Audience:** Game developers and small teams building 2D games
 
 ---
 
@@ -26,7 +26,7 @@
 Each phase has:
 
 - **🎯 Goal** — What you're trying to achieve
-- **⏱️ Time Estimate** — Realistic for a solo dev working ~20-30 hrs/week
+- **⏱️ Time Estimate** — Realistic for a game dev working ~20-30 hrs/week
 - **📋 Steps** — Ordered tasks with doc references
 - **🚦 Decision Gate** — What must be true before you move on
 - **📚 Required Reading** — Docs to study for that phase
@@ -148,7 +148,7 @@ For your chosen idea, answer these questions:
 
 This is where dreams meet reality. Be honest.
 
-📚 **Read:** [E9 — Solo Dev Playbook](E9_solo_dev_playbook.md) — Realistic productivity data, scope management, what solo devs can actually ship.
+📚 **Read:** [E9 — Game Dev Playbook](E9_solo_dev_playbook.md) — Realistic productivity data, scope management, what game devs can actually ship.
 
 **Ask yourself:**
 
@@ -156,8 +156,8 @@ This is where dreams meet reality. Be honest.
 |----------|----------|
 | Can I build the core mechanic in 2 weeks? | If no → mechanic is too complex or you need more skill-building first |
 | Do I need online multiplayer? | If yes → add 3-6 months and significant complexity. Consider cutting it. |
-| How much content does the game need? | 50+ levels as a solo dev = danger zone |
-| Do I need custom art, or can I use a consistent simple style? | "AAA pixel art" as a solo dev = burnout |
+| How much content does the game need? | 50+ levels as a game dev = danger zone |
+| Do I need custom art, or can I use a consistent simple style? | "AAA pixel art" as a game dev = burnout |
 | Have I shipped *anything* before? | If no → cut scope by 50%. Seriously. Ship something small first. |
 
 **The Scope Gut Check:**
@@ -309,7 +309,7 @@ Each perspective has fundamentally different rendering, collision, and level des
 
 ### Step 3: Scope Into Milestones
 
-📚 **Read:** [E4 — Solo Project Management](E4_project_management.md) — Vertical slices, scope, tech debt management
+📚 **Read:** [E4 — Game Dev Project Management](E4_project_management.md) — Vertical slices, scope, tech debt management
 
 Break your GDD into concrete milestones:
 
@@ -707,7 +707,7 @@ Build systems in this order. Each group can be parallelized, but the groups them
 - Sound effect manager with variations (3 footstep sounds, randomly picked)
 - Ambient sound layers
 - Decision: MonoGame built-in audio vs FMOD?
-  - **Built-in:** Fine for most indie games, simpler, no licensing
+  - **Built-in:** Fine for most game projects, simpler, no licensing
   - **FMOD:** Better for dynamic music, complex layering, AAA audio design
 
 #### Weeks 13-14: Game-Specific Systems
@@ -857,7 +857,7 @@ Beta is about **depth**, not breadth. You're not building new systems. You're ma
 
 ### Weeks 19-20: The Polish Pass
 
-This is where your game comes alive. Polish is not optional — it's what separates "indie game" from "game jam prototype."
+This is where your game comes alive. Polish is not optional — it's what separates "game project" from "game jam prototype."
 
 **Game Feel & Juice**
 
@@ -1312,12 +1312,12 @@ Every document in the toolkit, organized by category:
 | [E1](../../monogame-arch/architecture/E1_architecture_overview.md) | Architecture Overview |
 | [E2](../../monogame-arch/architecture/E2_nez_dropped.md) | Why Nez Was Dropped |
 | [E3](../../monogame-arch/architecture/E3_engine_alternatives.md) | Engine Alternatives Evaluated |
-| [E4](E4_project_management.md) | Solo Project Management |
+| [E4](E4_project_management.md) | Game Dev Project Management |
 | [E5](../ai-workflow/E5_ai_workflow.md) | AI-Assisted Dev Workflow |
 | [E6](../game-design/E6_game_design_fundamentals.md) | Game Design Fundamentals |
 | [E7](../game-design/E7_emergent_puzzle_design.md) | Emergent Puzzle Design |
 | [E8](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md) | MonoGameStudio Post-Mortem |
-| [E9](E9_solo_dev_playbook.md) | Solo Dev Playbook |
+| [E9](E9_solo_dev_playbook.md) | Game Dev Playbook |
 
 ### Guide Docs
 | Doc | Title |
@@ -1430,7 +1430,7 @@ If you're new to MonoGame, ECS, or game dev in general, read these docs first:
 6. [G18 — Game Programming Patterns](../../monogame-arch/guides/G18_game_programming_patterns.md) — Game-specific patterns
 7. [G15 — Game Loop](../../monogame-arch/guides/G15_game_loop.md) — How the frame cycle works
 8. [G1 — Custom Code Recipes](../../monogame-arch/guides/G1_custom_code_recipes.md) — The glue code that ties it all together
-9. [E9 — Solo Dev Playbook](E9_solo_dev_playbook.md) — Realistic expectations and productivity
+9. [E9 — Game Dev Playbook](E9_solo_dev_playbook.md) — Realistic expectations and productivity
 10. [R4 — Game Design Resources](../game-design/R4_game_design_resources.md) — Books, talks, and communities
 
 ---

@@ -203,7 +203,7 @@ Without signing, Windows shows "Windows protected your PC" (SmartScreen warning)
 signtool sign /f YourCert.pfx /p "password" /t http://timestamp.digicert.com /fd sha256 build\windows\YourGame.exe
 ```
 
-**Practical advice for indie devs:** Skip code signing for your first release. Most players know how to click through SmartScreen. If you're on Steam, Steam's launcher bypasses this entirely.
+**Practical advice for game devs:** Skip code signing for your first release. Most players know how to click through SmartScreen. If you're on Steam, Steam's launcher bypasses this entirely.
 
 ### Creating an Installer (Inno Setup)
 

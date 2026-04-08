@@ -18,7 +18,7 @@ Every alternative was measured against these priorities, in order:
 3. **Active maintenance** — Is it being updated for modern .NET and MonoGame versions?
 4. **Swappability** — If a piece dies, can you replace just that piece?
 5. **Community & docs** — Can you get help when stuck?
-6. **Learning curve** — How fast can a solo dev become productive?
+6. **Learning curve** — How fast can a game dev become productive?
 
 ---
 
@@ -42,7 +42,7 @@ Every alternative was measured against these priorities, in order:
 |---|---|
 | **Brings its own ECS (Bang)** | Can't use Arch ECS without running two entity systems. The whole point of the toolkit is Arch everywhere — one entity model, one query language, one serialization path. |
 | **Opinionated architecture** | Murder has strong opinions about game structure — its asset pipeline, scene format, and system lifecycle are all interconnected. Adopting Murder means adopting Murder's way. |
-| **Heavy investment** | Learning Murder is like learning a new engine. For a solo dev, the time spent learning Murder's systems could be spent building game-specific systems on a simpler foundation. |
+| **Heavy investment** | Learning Murder is like learning a new engine. For a game dev, the time spent learning Murder's systems could be spent building game-specific systems on a simpler foundation. |
 | **Not a library** | You don't `dotnet add package Murder` and compose it with other tools. You clone the repo and build inside its structure. Same monolith problem as Nez, just a more capable monolith. |
 | **Pixel-art assumptions** | The rendering pipeline is optimized for pixel art. Games with non-pixel aesthetics would fight the pipeline. |
 
@@ -128,7 +128,7 @@ A smaller MonoGame framework focused on 2D pixel art games.
 The purist approach: use MonoGame.Framework.DesktopGL directly and write everything from scratch.
 
 - **Strengths:** Total control, zero dependencies, educational
-- **Why not adopted:** The amount of boilerplate is staggering. A solo developer writing their own ECS, physics engine, UI framework, input system, font rendering, and sprite loading from scratch would spend months before writing any game logic. The composed library approach gets 90% of the benefit of raw MonoGame (you understand and control everything) with 10% of the effort.
+- **Why not adopted:** The amount of boilerplate is staggering. A game developer writing their own ECS, physics engine, UI framework, input system, font rendering, and sprite loading from scratch would spend months before writing any game logic. The composed library approach gets 90% of the benefit of raw MonoGame (you understand and control everything) with 10% of the effort.
 
 The toolkit does use "raw MonoGame" for the ~1,000 lines of custom glue code. The key insight is knowing **which** things to write yourself (scene manager, render layers, tweens) and which to get from a library (ECS, physics, UI, fonts).
 
@@ -147,7 +147,7 @@ The toolkit does use "raw MonoGame" for the ~1,000 lines of custom glue code. Th
 | **Long-term flexibility** | Low | Low | Medium | High | Highest | **High** |
 | **Bus factor risk** | Medium | Medium | High | Medium | None | **Low** (distributed) |
 | **Learning investment** | High | High | Medium | Low | High | **Low–Medium** |
-| **Suitable for solo dev** | ⚠️ | ⚠️ | ✅ | ✅ | ❌ | ✅ |
+| **Suitable for game dev** | ⚠️ | ⚠️ | ✅ | ✅ | ❌ | ✅ |
 
 ---
 
@@ -170,6 +170,6 @@ The biggest thing you give up is a visual editor. Murder and FlatRedBall both ha
 
 ### The meta-lesson
 
-The MonoGame ecosystem is full of talented developers building frameworks and engines. Every one of them made reasonable decisions for their use case. The issue isn't that these tools are bad — it's that adopting any one of them means adopting **all** of its decisions. For a solo developer who wants to control their architecture and use Arch ECS as the foundation, the composed library approach is the only path that doesn't compromise.
+The MonoGame ecosystem is full of talented developers building frameworks and engines. Every one of them made reasonable decisions for their use case. The issue isn't that these tools are bad — it's that adopting any one of them means adopting **all** of its decisions. For a game developer who wants to control their architecture and use Arch ECS as the foundation, the composed library approach is the only path that doesn't compromise.
 
 The stack described in [E1](./E1_architecture_overview.md) and [R1](../reference/R1_library_stack.md) is the result of evaluating all of these alternatives and choosing the parts that work best — from multiple sources, independently swappable, unified by Arch ECS.

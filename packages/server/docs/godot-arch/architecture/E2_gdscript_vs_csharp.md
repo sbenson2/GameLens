@@ -41,7 +41,7 @@ Godot offers two first-class scripting languages: **GDScript** (a Python-like la
 | Building for web (HTML5) | GDScript (C# web export unavailable) |
 | Need peak computational performance | C# (or GDExtension for extreme cases) |
 | Working on a team with mixed experience | GDScript (lower barrier) |
-| Solo developer, any background | GDScript (faster iteration) |
+| Game developer, any background | GDScript (faster iteration) |
 
 ### Community Adoption (2025–2026)
 
@@ -1004,7 +1004,7 @@ At this scale, the benefits of C# tooling compound:
 ### When to Choose GDScript
 
 ✅ Web export needed  
-✅ Solo developer or small team  
+✅ Game developer or small team  
 ✅ Prototyping / game jam  
 ✅ First Godot project (learning the engine)  
 ✅ 2D game without extreme entity counts  

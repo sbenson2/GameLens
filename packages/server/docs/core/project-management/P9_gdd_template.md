@@ -123,8 +123,8 @@ List 3-5 games and what you're taking from each:
 *These aren't clones — they're touchstones. You're building a constellation of influences, not copying a star.*
 
 > **🪞 Ask yourself:**
-> - Can I describe my target player as a real person? ("Alex, 28, plays indie games on Steam Deck during commute, loves Hades, bounced off Elden Ring")
-> - Is my estimated playtime realistic for my scope? (Solo dev rule of thumb: every hour of content takes 40-100 hours to build.)
+> - Can I describe my target player as a real person? ("Alex, 28, plays game projects on Steam Deck during commute, loves Hades, bounced off Elden Ring")
+> - Is my estimated playtime realistic for my scope? (Game dev rule of thumb: every hour of content takes 40-100 hours to build.)
 
 ---
 

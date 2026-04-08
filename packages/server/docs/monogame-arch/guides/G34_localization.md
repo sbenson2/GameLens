@@ -85,7 +85,7 @@ achievement.first_kill.name — Achievement title
 
 C# has built-in `ResourceManager` with `.resx` files. Pros: compile-time validation, IDE tooling. Cons: less modding-friendly, harder to hot-reload.
 
-For most indie games, **JSON is preferred** — simpler, easier for translators, and trivial to mod.
+For most game projects, **JSON is preferred** — simpler, easier for translators, and trivial to mod.
 
 ---
 

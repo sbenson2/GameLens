@@ -124,7 +124,7 @@ export const gamedevTools = {
           scope === "tiny"
             ? "Game jam scope — cut ruthlessly, ship fast"
             : scope === "small"
-              ? "Good solo project scope — focus on core loop first"
+              ? "Good project scope — focus on core loop first"
               : "Ambitious — prototype the core loop before building systems",
           `Using ${eng} conventions for file organization`,
           "Implement in order — each system builds on the previous",

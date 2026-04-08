@@ -64,7 +64,7 @@ The `EditorPlugin` class (requiring the `@tool` annotation) provides an extensiv
 
 ### ImGui.NET with docking is the clear winner for editor UI
 
-After evaluating five UI framework options, **ImGui.NET with the docking branch** emerges as the only practical choice for a solo developer. The docking branch provides drag-and-dock windows, tab groups, split nodes, floating windows, `DockSpace`/`DockBuilder` APIs for programmatic layout, multi-viewport support (dragging windows to separate OS windows), and automatic layout persistence via `imgui.ini`. ImGui.NET wraps all of this fully.
+After evaluating five UI framework options, **ImGui.NET with the docking branch** emerges as the only practical choice for a game developer. The docking branch provides drag-and-dock windows, tab groups, split nodes, floating windows, `DockSpace`/`DockBuilder` APIs for programmatic layout, multi-viewport support (dragging windows to separate OS windows), and automatic layout persistence via `imgui.ini`. ImGui.NET wraps all of this fully.
 
 The alternatives each have deal-breaking limitations. **Avalonia UI** offers professional native-desktop feel and the excellent Dock library by wieslawsoltes, but MonoGame integration is community-driven and immature — frame capture via `WriteableBitmap` adds latency, input forwarding between frameworks is complex, and the learning curve (XAML + MVVM + Avalonia internals) is steep. Templates exist (vilten/Avalonia-Monogame-Dock-Template) but are described as "first draft." **Myra** provides useful widgets (PropertyGrid, TreeView, FileDialog) but lacks IDE-style docking entirely — only SplitPane and TabControl. **Gum** excels at game UI layout but "docking" means child-element positioning (like WPF DockPanel), not panel management. WinForms/WPF options are Windows-only.
 
@@ -182,9 +182,9 @@ Several Godot features that require complex implementation in a standalone edito
 
 ---
 
-## Realistic scope for a solo developer
+## Realistic scope for a game developer
 
-The single most important insight from experienced solo developers: **put as much in code as possible**. Karl Zylinski (CAT & ONION) advises that "a procedure with some parameters for creating certain types of game objects is often better than an editor." Build editor features only when they provide clear productivity gains over code-only workflows.
+The single most important insight from experienced game developers: **put as much in code as possible**. Karl Zylinski (CAT & ONION) advises that "a procedure with some parameters for creating certain types of game objects is often better than an editor." Build editor features only when they provide clear productivity gains over code-only workflows.
 
 **Phase 1 — Minimum Viable Editor (~10–12 weeks)**: ImGui docking setup, scene hierarchy panel, reflection-based property inspector, 2D viewport with camera pan/zoom, entity selection (click and box select), move gizmo, JSON scene save/load, basic asset loading, edit/play mode toggle. This gets you a functional editor where you can visually place and configure entities.
 
@@ -192,13 +192,13 @@ The single most important insight from experienced solo developers: **put as muc
 
 **Phase 3 — Advanced Features (3–6 months each, defer aggressively)**: Animation timeline, 8-bit auto-tiling, curve editor, prefab/scene instancing, collision polygon editor, particle editor, visual shader editor, navigation mesh editing, plugin system. Most of these can be substituted with external tools (Aseprite for animation, Tiled for complex tilemaps, text files for shaders) or code-only approaches indefinitely.
 
-The **tilemap editor** and **property inspector** deliver the highest value-per-effort for 2D game development. The animation timeline delivers high value but at very high cost — external tools are the pragmatic choice until the editor is mature. Scene inheritance and the plugin system are organizational luxuries that a solo developer can simulate with C# inheritance and simple composition patterns.
+The **tilemap editor** and **property inspector** deliver the highest value-per-effort for 2D game development. The animation timeline delivers high value but at very high cost — external tools are the pragmatic choice until the editor is mature. Scene inheritance and the plugin system are organizational luxuries that a game developer can simulate with C# inheritance and simple composition patterns.
 
 ---
 
 ## Conclusion: the 80/20 path forward
 
-Godot's editor encompasses roughly **200 person-years of development** across 15+ major subsystems. Replicating it fully is neither possible nor necessary for a solo developer. The critical insight is that **80% of the productivity value comes from 5 features**: dockable panel layout (ImGui docking, 1 week), property inspector (reflection + ImGui, 2–3 weeks), scene hierarchy (ImGui tree, 1 week), 2D viewport with gizmos (MonoGame.Extended camera + custom gizmos, 3–4 weeks), and scene serialization (JSON + Arch.Persistence, 2–3 weeks). These five features total roughly 10–12 weeks and transform a code-only workflow into a visual one.
+Godot's editor encompasses roughly **200 person-years of development** across 15+ major subsystems. Replicating it fully is neither possible nor necessary for a game developer. The critical insight is that **80% of the productivity value comes from 5 features**: dockable panel layout (ImGui docking, 1 week), property inspector (reflection + ImGui, 2–3 weeks), scene hierarchy (ImGui tree, 1 week), 2D viewport with gizmos (MonoGame.Extended camera + custom gizmos, 3–4 weeks), and scene serialization (JSON + Arch.Persistence, 2–3 weeks). These five features total roughly 10–12 weeks and transform a code-only workflow into a visual one.
 
 The technology stack — **MonoGame + Arch ECS + ImGui.NET (docking branch) + MonoGame.Extended + Arch.Persistence + System.Text.Json** — is proven by Murder Engine and provides every building block needed. Arch.Relationships handles entity hierarchy, Arch.Persistence handles world serialization, MonoGame.Extended provides the 2D camera, and ImGui.NET provides the entire editor UI layer with production-ready docking. The remaining user libraries (Gum for game UI, BrainAI for AI/pathfinding, Apos.Input for input, FontStashSharp for text) stay in the game layer and need no editor-specific integration beyond inspector support.
 

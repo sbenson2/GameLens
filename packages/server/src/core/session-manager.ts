@@ -46,6 +46,8 @@ export interface SessionMetadata {
   currentFocus: string;
   /** Tags for categorization */
   tags: string[];
+  /** Serialized workflow state from core/session.ts */
+  workflowState?: string;
 }
 
 export interface SessionContextInfo {
@@ -224,6 +226,16 @@ export class SessionManager {
     if (!meta) return;
 
     meta.contextTokens = tokens;
+    meta.updated = new Date().toISOString();
+    this.saveSession(meta);
+  }
+
+  /** Store serialized workflow state (from core/session.ts SessionState) */
+  updateWorkflowState(project: string, workflowState: string): void {
+    const meta = this.getActiveSession(project);
+    if (!meta) return;
+
+    meta.workflowState = workflowState;
     meta.updated = new Date().toISOString();
     this.saveSession(meta);
   }

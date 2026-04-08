@@ -43,6 +43,7 @@ const TOOL_HELP: Record<string, ToolHelpDef> = {
       { name: "scope", description: "Evaluate whether a feature fits your scope", required: ["feature"], optional: ["project"], example: 'project(action: "scope", feature: "multiplayer")' },
       { name: "add_feature", description: "Log a new feature (increments count)", required: ["feature"], optional: ["project"], example: 'project(action: "add_feature", feature: "inventory system")' },
       { name: "list", description: "Show all projects", required: [], optional: [], example: 'project(action: "list")' },
+      { name: "session", description: "Start, continue, or advance a structured work session (Plan/Decide/Feature/Debug/Scope paths)", required: [], optional: ["project", "content", "advance", "focus"], example: 'project(action: "session", content: "I need to debug a collision issue")' },
     ],
   },
   design: {

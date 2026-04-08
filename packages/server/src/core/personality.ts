@@ -1,11 +1,11 @@
 /**
- * Personality engine — template-based tone system for the GameCodex guide.
+ * Personality engine — guidance-first tone system for GameCodex.
  *
- * Maps genre, phase, and skill level to personality fragments that shape
- * how the AI model presents tool responses. Pure TypeScript, no external deps.
+ * Maps genre, phase, and skill level to actionable guidance with
+ * genre-flavored personality on top. Guidance leads, flavor follows.
  *
  * The MCP server can't control the AI's system prompt, but it CAN return
- * personality-flavored text that the AI weaves into its responses.
+ * guidance-rich text that the AI weaves into its responses.
  */
 
 // ---- Types ----
@@ -179,19 +179,29 @@ export class PersonalityEngine {
     };
   }
 
-  /** Get a greeting for returning users */
+  /** Get a greeting for returning users — leads with guidance */
   getGreeting(snapshot: ProjectSnapshot): string {
     const tone = this.getTone(snapshot);
     const phase = snapshot.phase.charAt(0).toUpperCase() + snapshot.phase.slice(1);
 
     let greeting = `Welcome back to **${snapshot.name}**.\n\n`;
-    greeting += `> _${tone.flavor}_\n\n`;
     greeting += `**Phase:** ${phase} | **Engine:** ${snapshot.engine} | **Genre:** ${snapshot.genre}\n\n`;
 
+    // Lead with actionable guidance
+    greeting += `**${tone.emphasis}**\n\n`;
+
     if (snapshot.goalCount > 0) {
-      greeting += `You have **${snapshot.goalCount} active goal${snapshot.goalCount === 1 ? "" : "s"}**. `;
+      greeting += `You have **${snapshot.goalCount} active goal${snapshot.goalCount === 1 ? "" : "s"}**. Use \`project suggest\` to pick one, or \`project session\` to start a structured workflow.\n\n`;
+    } else {
+      greeting += `No active goals yet. Use \`project goal\` to set one, or \`project session\` to start a structured workflow.\n\n`;
     }
-    greeting += `${tone.emphasis}\n`;
+
+    if (snapshot.decisionCount === 0 && snapshot.phase !== "planning") {
+      greeting += `_Tip: Log design decisions with \`project decide\` — future-you will thank you._\n\n`;
+    }
+
+    // Flavor as a closer, not the opener
+    greeting += `> _${tone.flavor}_\n`;
 
     return greeting;
   }
@@ -227,7 +237,7 @@ export class PersonalityEngine {
     if (snapshot.phase === "planning" || snapshot.phase === "release") return null;
 
     if (snapshot.featureCount > 15) {
-      return `**Scope warning:** ${snapshot.featureCount} features tracked. That's a lot for a solo dev. Consider cutting the lowest-priority items.`;
+      return `**Scope warning:** ${snapshot.featureCount} features tracked. That's a heavy scope. Consider cutting the lowest-priority items before adding more.`;
     }
     if (snapshot.featureCount > 10 && snapshot.phase === "prototype") {
       return `**Scope check:** ${snapshot.featureCount} features in prototype phase. The prototype should prove ONE core mechanic. Are all of these essential?`;
@@ -235,7 +245,7 @@ export class PersonalityEngine {
     return null;
   }
 
-  /** Get a milestone celebration message */
+  /** Get a milestone celebration message with forward-looking guidance */
   getMilestoneMessage(milestone: string, snapshot: ProjectSnapshot): string {
     const tone = this.getTone(snapshot);
     const celebrations: Record<ToneProfile["style"], string[]> = {
@@ -247,46 +257,82 @@ export class PersonalityEngine {
 
     const msgs = celebrations[tone.style];
     const msg = msgs[Math.floor(Math.random() * msgs.length)];
-    return `## Milestone: ${milestone}\n\n${msg}`;
+
+    let output = `## Milestone: ${milestone}\n\n${msg}\n\n`;
+
+    // Forward-looking guidance based on phase
+    if (snapshot.goalCount > 1) {
+      output += `**${snapshot.goalCount - 1} goals remaining.** Use \`project suggest\` to pick the next one.\n`;
+    } else if (snapshot.goalCount <= 1) {
+      output += `**Consider:** Is this a good time to check \`project health\` or set new goals for the next push?\n`;
+    }
+
+    return output;
   }
 
-  /** Suggest what to work on next based on phase */
+  /** Suggest what to work on next based on phase and project state */
   getSuggestion(snapshot: ProjectSnapshot): string {
+    // Context-aware suggestions based on actual project state
+    const contextual: string[] = [];
+
+    if (snapshot.goalCount === 0 && snapshot.phase !== "release") {
+      contextual.push("Set goals for this phase — even 2-3 small ones give you direction. Use `project goal`.");
+    }
+    if (snapshot.decisionCount === 0 && snapshot.phase !== "planning") {
+      contextual.push("Start logging design decisions with `project decide`. It makes future trade-offs easier.");
+    }
+    if (snapshot.featureCount > 10 && snapshot.phase === "prototype") {
+      contextual.push("Your feature count is high for prototype. Run `project health` to check scope.");
+    }
+
     const suggestions: Record<string, string[]> = {
       planning: [
         "Write your elevator pitch — one sentence that sells the game.",
         "Identify your core mechanic. What's the ONE thing that must be fun?",
         "Set your scope: jam, demo, small, or full release?",
-        "Use `design` tool to create your GDD.",
+        "Use `design gdd` to create your Game Design Document.",
+        "Define 3-5 design pillars — every feature decision filters through these.",
+        "Use `project session` with 'plan' to run a structured planning workflow.",
       ],
       prototype: [
         "Get the core loop playable with placeholder art.",
         "Test with someone else — even 30 seconds of feedback helps.",
         "Don't build features that aren't the core mechanic yet.",
-        "Use `debug` if you're stuck on a technical problem.",
+        "Use `build debug` if you're stuck on a technical problem.",
+        "Set a time limit: if the core loop isn't fun in 2 weeks, rethink the mechanic.",
+        "Use `docs search` to find patterns for what you're building.",
       ],
       production: [
         "Replace placeholder art with real assets.",
         "Connect your systems: UI, save/load, menus.",
         "Playtest weekly — don't save it for the end.",
-        "Use `review` to check your architecture for anti-patterns.",
+        "Use `build review` to check your architecture for anti-patterns.",
+        "Log every design decision — production is where trade-offs compound.",
+        "Use `design phase` to check your production checklist progress.",
       ],
       polish: [
         "Add juice: screen shake, particles, sound effects.",
         "Profile performance on your lowest-spec target.",
         "Get 3+ external testers to play through the whole game.",
-        "Fix bugs, but triage — not every bug needs fixing.",
+        "Fix bugs, but triage — not every bug needs fixing before launch.",
+        "Check accessibility: colorblind modes, rebindable controls, subtitle options.",
+        "Run `project health` — adding features now is scope creep, not polish.",
       ],
       release: [
         "Create your store page / landing page.",
         "Capture screenshots and record a trailer.",
-        "Use `launch` for marketing and store page guidance.",
+        "Use `design launch` for marketing and store page guidance.",
         "Ship it. Perfect is the enemy of done.",
+        "Draft your launch announcement and post-launch devlog.",
+        "Plan your first-week response strategy — reply to every comment.",
       ],
     };
 
     const phaseSuggestions = suggestions[snapshot.phase] ?? suggestions.planning;
-    const suggestion = phaseSuggestions[Math.floor(Math.random() * phaseSuggestions.length)];
+
+    // Pick from contextual first (most relevant), then phase suggestions
+    const pool = contextual.length > 0 ? contextual : phaseSuggestions;
+    const suggestion = pool[Math.floor(Math.random() * pool.length)];
     return `**Next up:** ${suggestion}`;
   }
 }

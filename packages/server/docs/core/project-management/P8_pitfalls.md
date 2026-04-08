@@ -314,7 +314,7 @@ Good placeholders communicate intent. They let you and your playtesters evaluate
 
 **Why it happens:** Sharing unfinished work feels vulnerable. You want to reveal the game when it's "ready." Online communities feel intimidating. Negative feedback might kill your motivation.
 
-**The fix:** Join a community. r/gamedev, indie dev Discords, local meetups, game jams — anywhere you can share work-in-progress and get feedback. Post screenshots. Post GIFs. Ask questions. You'll get encouragement, useful criticism, and proof that other people struggle with the same problems.
+**The fix:** Join a community. r/gamedev, game dev Discords, local meetups, game jams — anywhere you can share work-in-progress and get feedback. Post screenshots. Post GIFs. Ask questions. You'll get encouragement, useful criticism, and proof that other people struggle with the same problems.
 
 **The paradox:** The feedback you're avoiding is exactly what you need to make the game good.
 
@@ -326,7 +326,7 @@ Good placeholders communicate intent. They let you and your playtesters evaluate
 
 **Why it happens:** You consume finished, polished games made by teams of 10–300 people over 3–7 years. Then you compare that to your solo project at month 4. The comparison is absurd but your brain makes it anyway.
 
-**The fix:** Compare yourself to other solo devs. Look at first releases, not masterpieces. Look at game jam entries. Look at the *first version* of games that eventually became great — most were rough. Celeste started as a 4-day game jam entry. Your competition isn't AAA. Your competition is "did I finish a game?"
+**The fix:** Compare yourself to other game devs. Look at first releases, not masterpieces. Look at game jam entries. Look at the *first version* of games that eventually became great — most were rough. Celeste started as a 4-day game jam entry. Your competition isn't AAA. Your competition is "did I finish a game?"
 
 ---
 

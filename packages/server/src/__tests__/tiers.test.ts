@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { isToolAllowed, isModuleAllowed, getTierFeatures, Tier, ToolAccess } from "../tiers.js";
 
 describe("Tier System", () => {
-  // v0.2.0 — 5 tools
+  // 5 tools
   it("should return 'limited' for docs on free tier", () => {
     const result = isToolAllowed("free" as Tier, "docs");
     assert.equal(result, "limited", "docs should be limited for free tier");

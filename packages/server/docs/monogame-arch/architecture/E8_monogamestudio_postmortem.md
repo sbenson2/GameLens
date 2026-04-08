@@ -116,7 +116,7 @@ Despite this post-mortem's cautionary tone, there are legitimate cases:
 
 1. **Your game's core mechanic IS the editor** (level-building games like Mario Maker)
 2. **You need runtime editing** that Tiled/Aseprite can't provide (live-tuning physics, AI behavior trees)
-3. **Your team has dedicated tools programmers** (not solo dev wearing all hats)
+3. **Your team has dedicated tools programmers** (not game dev wearing all hats)
 4. **ImGui overlays aren't enough** — you need persistent UI state, complex layouts, or non-developer users
 
 If none of these apply, use existing tools. The MonoGame ecosystem is small enough that time spent building editors is time not spent making games.
@@ -127,4 +127,4 @@ If none of these apply, use existing tools. The MonoGame ecosystem is small enou
 
 MonoGameStudio was a successful failure. It produced no game but generated deep architectural understanding that made everything after it better. The key takeaway: **build the minimum tooling that lets you ship a game, then stop.** Every hour spent on editor chrome is an hour not spent on gameplay.
 
-The tool-building trap is the solo developer's most seductive pitfall. Recognize it early.
+The tool-building trap is the game developer's most seductive pitfall. Recognize it early.

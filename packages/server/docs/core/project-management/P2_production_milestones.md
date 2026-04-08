@@ -38,10 +38,10 @@ Prototype → Vertical Slice → Alpha → Beta → Release Candidate → Gold
 | Gold / Launch | ~10% | 1-2 weeks | 2-4 weeks | 4-8 weeks |
 
 **Small scope:** A tight, focused game. Think single-mechanic arcade, jam-style with polish. 5-15 levels or equivalent.  
-**Medium scope:** A full indie game. Multiple mechanics, progression, narrative elements. 20-50 levels or equivalent.  
+**Medium scope:** A full game project. Multiple mechanics, progression, narrative elements. 20-50 levels or equivalent.  
 **Large scope:** An ambitious indie title. Complex systems, lots of content, maybe procedural generation. 50+ levels or equivalent.
 
-> **Reality check:** Solo devs consistently underestimate by 2-3x. If your gut says 6 months, plan for 12. Build your schedule around the *pessimistic* column, celebrate if you hit the optimistic one.
+> **Reality check:** Game devs consistently underestimate by 2-3x. If your gut says 6 months, plan for 12. Build your schedule around the *pessimistic* column, celebrate if you hit the optimistic one.
 
 ---
 
@@ -511,7 +511,7 @@ Use this template at the end of every milestone. Be honest — this is for you, 
 
 ## Scope Adjustment Framework
 
-Scope is the #1 killer of indie games. Not bugs. Not bad art. Scope. This framework gives you a structured way to cut without panicking.
+Scope is the #1 killer of game projects. Not bugs. Not bad art. Scope. This framework gives you a structured way to cut without panicking.
 
 ### When to Cut
 

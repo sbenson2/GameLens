@@ -189,7 +189,7 @@ NES limitations directly created iconic design: Mario's hat eliminated the need 
 
 Gunpei Yokoi's **"lateral thinking with withered technology"** — using mature, cheap technology in innovative ways — drove Nintendo's greatest hardware successes. The Game Boy won with a monochrome screen because it had superior battery life. The Wii used GameCube-era internals but added motion controls.
 
-For indie developers, constraints prevent scope creep and force focus on what matters.
+For game developers, constraints prevent scope creep and force focus on what matters.
 
 ---
 
@@ -217,13 +217,13 @@ Games begin with a fun interaction, not a story. Mario's jump, Link's sword swin
 
 ## Indie Scope Management
 
-The minimum viable game (MVP) is the most important scope tool for indie developers: **identify the core gameplay loop, build it to be fun, then layer complexity.** "A finished, imperfect game is infinitely more valuable than a perfect, unfinished one."
+The minimum viable game (MVP) is the most important scope tool for game developers: **identify the core gameplay loop, build it to be fun, then layer complexity.** "A finished, imperfect game is infinitely more valuable than a perfect, unfinished one."
 
 Feature creep prevention:
 - Maintain a "Not Now" list for future updates
 - Evaluate every addition against "Does this enhance the core experience or dilute it?"
 - Prioritize ruthlessly between must-haves and nice-to-haves
-- A solo developer cannot compete on content volume — focus on a unique twist or strong core mechanic rather than breadth
+- A game developer cannot compete on content volume — focus on a unique twist or strong core mechanic rather than breadth
 - Build a vertical slice (one complete level with all systems working) to prove the concept before scaling
 
 See also [E4 Project Management](../project-management/E4_project_management.md) for implementation-level scope and planning tools.

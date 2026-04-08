@@ -181,6 +181,21 @@ export class ToolRegistry {
         // 6. Record analytics
         analytics.recordToolCall(tool.name, durationMs);
 
+        // 6b. Record activity in session (non-critical)
+        try {
+          const projectName = (args.project as string) || "default";
+          this.deps.sessionManager.recordToolCall(projectName);
+
+          if (tool.name === "docs" && args.action === "get" && args.id) {
+            this.deps.sessionManager.recordDocConsulted(projectName, args.id as string);
+          }
+          if (tool.name === "project" && args.action === "decide" && args.content) {
+            this.deps.sessionManager.logDecision(projectName, args.content as string);
+          }
+        } catch {
+          // Session tracking is non-critical — never fail the response
+        }
+
         // 7. Enhance response with breadcrumb + next steps
         const enhanced = enhanceResponse(
           result,

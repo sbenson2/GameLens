@@ -252,7 +252,7 @@ Enable `GraphicsAdapter.UseDebugDevice = true` before creating the `GraphicsDevi
 
 ## In-Game Debug Tooling (ImGui.NET)
 
-ImGui.NET is referenced directly via NuGet (see [R1](../reference/R1_library_stack.md)). AAA studios (the teams behind FF7 Remake, Assassin's Creed, Fallout 76) use Dear ImGui extensively for debug tooling. For a solo developer, the ability to build an entity inspector, system timing display, and tweakable parameters in a single afternoon makes it the highest-leverage debug tool after basic debug drawing. Build debug tools as you build the game:
+ImGui.NET is referenced directly via NuGet (see [R1](../reference/R1_library_stack.md)). AAA studios (the teams behind FF7 Remake, Assassin's Creed, Fallout 76) use Dear ImGui extensively for debug tooling. For a game developer, the ability to build an entity inspector, system timing display, and tweakable parameters in a single afternoon makes it the highest-leverage debug tool after basic debug drawing. Build debug tools as you build the game:
 
 - Entity inspectors (view/edit component values at runtime)
 - Spatial partition visualization (draw grid cells, quadtree nodes)

@@ -10,7 +10,7 @@
 
 Modding transforms a finished game into a living platform. Stardew Valley sold millions of extra copies because its mod scene kept it relevant for years. Minecraft's entire identity was shaped by mods long before official updates caught up. Terraria's tModLoader turned a complete game into a framework that players still pour thousands of hours into.
 
-For a solo dev, the calculus is straightforward:
+For a game dev, the calculus is straightforward:
 
 | Factor | Without Mods | With Mods |
 |---|---|---|

@@ -322,7 +322,7 @@ Celeste is the gold standard for accessible difficulty. Its Assist Mode offers:
 
 ## Xbox Accessibility Guidelines (XAG) — Indie 2D Checklist
 
-Microsoft's XAG is the most comprehensive industry standard. Key guidelines relevant to 2D indie games:
+Microsoft's XAG is the most comprehensive industry standard. Key guidelines relevant to 2D game projects:
 
 | XAG # | Guideline | Priority |
 |--------|-----------|----------|

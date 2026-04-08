@@ -18,7 +18,7 @@
 | **Tweening** | Property tweening with easing functions |
 | **Misc** | Timers, coroutines, debug console, AI (FSM, BT, GOAP, utility), pathfinding |
 
-For a solo developer, this looked like a dream — one NuGet package (well, one git submodule) and you had everything. The early prototyping experience was genuinely fast. The problems only became clear at scale.
+For a game developer, this looked like a dream — one NuGet package (well, one git submodule) and you had everything. The early prototyping experience was genuinely fast. The problems only became clear at scale.
 
 ---
 
@@ -180,4 +180,4 @@ A composed library stack has a higher initial cost (you write ~1,000 lines of gl
 
 This isn't just about Nez — it applies to any monolith framework for any domain. The question is always: **do you want to rent someone else's architecture, or own yours?**
 
-For a solo developer building a game they expect to work on for months or years, ownership wins every time. The composed stack described in [E1](./E1_architecture_overview.md) is the result of learning this lesson the hard way.
+For a game developer building a game they expect to work on for months or years, ownership wins every time. The composed stack described in [E1](./E1_architecture_overview.md) is the result of learning this lesson the hard way.

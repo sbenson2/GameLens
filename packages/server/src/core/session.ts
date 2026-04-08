@@ -14,7 +14,50 @@ export interface SessionState {
   lastUpdated: string;
 }
 
-const PATH_STEPS: Record<string, { name: string; steps: string[] }> = {
+// ---- Workflow orchestration types ----
+
+export type ToolName = "project" | "design" | "docs" | "build" | "meta";
+
+export interface ToolRecommendation {
+  tool: ToolName;
+  action: string;
+  params?: Record<string, string>;
+  description: string;
+}
+
+export interface StepDefinition {
+  name: string;
+  goal: string;
+  tools: ToolRecommendation[];
+}
+
+export interface WorkflowResponse {
+  session: {
+    phase: SessionState["phase"];
+    path: SessionState["path"];
+    step: number;
+    totalSteps: number;
+    stepName: string;
+    pathName: string;
+    currentFocus: string;
+    milestone: string;
+  };
+  workflow: {
+    steps: Array<{ index: number; name: string; completed: boolean }>;
+    currentStep: StepDefinition | null;
+  };
+  toolCalls: ToolRecommendation[];
+  relevantDocs: string[];
+  stats: {
+    decisions: string[];
+    openItems: string[];
+    tasks: Array<{ text: string; done: boolean }>;
+  };
+}
+
+// ---- Path definitions ----
+
+export const PATH_STEPS: Record<string, { name: string; steps: string[] }> = {
   plan: {
     name: "Plan",
     steps: ["Pillars", "Milestone", "Progress", "Priorities", "Scope Check", "Open Decisions"],
@@ -35,6 +78,194 @@ const PATH_STEPS: Record<string, { name: string; steps: string[] }> = {
     name: "Scope",
     steps: ["Inventory", "Polaris Triage", "Pillar Alignment", "MoSCoW", "AI Check"],
   },
+};
+
+// ---- Step → Tool mapping ----
+// Each path step maps to specific GameCodex tool calls the AI client should make.
+
+export const STEP_TOOL_MAP: Record<string, StepDefinition[]> = {
+  plan: [
+    {
+      name: "Pillars", goal: "Define or review the game's design pillars",
+      tools: [
+        { tool: "project", action: "get", description: "View current project state" },
+        { tool: "project", action: "recall", params: { section: "pillars" }, description: "Check existing design pillars" },
+      ],
+    },
+    {
+      name: "Milestone", goal: "Review current milestone and phase progress",
+      tools: [
+        { tool: "project", action: "suggest", description: "Get suggestion for what to work on" },
+        { tool: "design", action: "phase", description: "Check phase checklist progress" },
+      ],
+    },
+    {
+      name: "Progress", goal: "Assess progress against goals",
+      tools: [
+        { tool: "project", action: "get", description: "View goals and state" },
+        { tool: "project", action: "health", description: "Check scope health" },
+      ],
+    },
+    {
+      name: "Priorities", goal: "Rank and prioritize remaining work",
+      tools: [
+        { tool: "project", action: "suggest", description: "Get priority suggestion" },
+        { tool: "design", action: "scope_check", params: { feature: "{focus}" }, description: "Evaluate feature priority" },
+      ],
+    },
+    {
+      name: "Scope Check", goal: "Verify scope is manageable",
+      tools: [
+        { tool: "project", action: "health", description: "Full scope health report" },
+      ],
+    },
+    {
+      name: "Open Decisions", goal: "Surface and resolve open decisions",
+      tools: [
+        { tool: "project", action: "recall", description: "Review notes for open items" },
+        { tool: "project", action: "decide", params: { content: "{decision}" }, description: "Log any decisions made" },
+      ],
+    },
+  ],
+  decide: [
+    {
+      name: "Frame", goal: "State the decision clearly with constraints",
+      tools: [
+        { tool: "project", action: "get", description: "View project context" },
+        { tool: "docs", action: "search", params: { query: "{focus}" }, description: "Find relevant precedents" },
+      ],
+    },
+    {
+      name: "Options", goal: "List 2-4 realistic options with pros/cons",
+      tools: [
+        { tool: "docs", action: "search", params: { query: "{focus}" }, description: "Research options" },
+        { tool: "design", action: "patterns", params: { topic: "{focus}" }, description: "Get architecture pattern advice" },
+      ],
+    },
+    {
+      name: "Pillar Check", goal: "Evaluate options against design pillars",
+      tools: [
+        { tool: "project", action: "recall", params: { section: "pillars" }, description: "Review design pillars" },
+      ],
+    },
+    {
+      name: "Recommend", goal: "Pick an option with clear reasoning",
+      tools: [
+        { tool: "project", action: "decide", params: { content: "{decision}" }, description: "Log the decision" },
+      ],
+    },
+    {
+      name: "Document", goal: "Record the decision for future reference",
+      tools: [
+        { tool: "project", action: "note", params: { section: "decisions", content: "{decision}" }, description: "Save decision record" },
+      ],
+    },
+  ],
+  feature: [
+    {
+      name: "Read Docs", goal: "Research relevant docs for the feature domain",
+      tools: [
+        { tool: "docs", action: "search", params: { query: "{focus}" }, description: "Find docs for this feature" },
+      ],
+    },
+    {
+      name: "Minimum Playable", goal: "Define and build the simplest working version",
+      tools: [
+        { tool: "build", action: "code", params: { feature: "{focus}" }, description: "Generate starter code" },
+        { tool: "project", action: "goal", params: { content: "{focus}" }, description: "Set a goal for this feature" },
+      ],
+    },
+    {
+      name: "Vertical Slice", goal: "Expand to a full vertical slice",
+      tools: [
+        { tool: "build", action: "code", params: { feature: "{focus}" }, description: "Generate next code piece" },
+        { tool: "project", action: "add_feature", params: { feature: "{focus}" }, description: "Log the feature" },
+      ],
+    },
+    {
+      name: "Decisions", goal: "Log design/architecture decisions made during build",
+      tools: [
+        { tool: "project", action: "decide", params: { content: "{decision}" }, description: "Log decisions" },
+        { tool: "design", action: "patterns", params: { topic: "{focus}" }, description: "Check architecture patterns" },
+      ],
+    },
+    {
+      name: "Risk", goal: "Assess scope impact and risk of the new feature",
+      tools: [
+        { tool: "project", action: "health", description: "Check scope health" },
+        { tool: "project", action: "scope", params: { feature: "{focus}" }, description: "Evaluate scope impact" },
+      ],
+    },
+  ],
+  debug: [
+    {
+      name: "Reproduce", goal: "Confirm the bug and note exact steps",
+      tools: [
+        { tool: "build", action: "debug", params: { error: "{focus}" }, description: "Diagnose the error" },
+      ],
+    },
+    {
+      name: "Isolate", goal: "Narrow down where the bug lives",
+      tools: [
+        { tool: "docs", action: "search", params: { query: "{focus}" }, description: "Search for related patterns" },
+      ],
+    },
+    {
+      name: "Hypothesize", goal: "List likely causes and search for clues",
+      tools: [
+        { tool: "docs", action: "search", params: { query: "{focus}" }, description: "Search docs for solutions" },
+        { tool: "build", action: "review", params: { concerns: "{focus}" }, description: "Review architecture for clues" },
+      ],
+    },
+    {
+      name: "Fix", goal: "Implement the fix",
+      tools: [
+        { tool: "build", action: "code", params: { feature: "{focus}" }, description: "Generate fix code" },
+      ],
+    },
+    {
+      name: "Verify", goal: "Confirm fix works and log resolution",
+      tools: [
+        { tool: "project", action: "complete_goal", params: { content: "{focus}" }, description: "Mark debug goal done" },
+        { tool: "project", action: "decide", params: { content: "{decision}" }, description: "Log what fixed it" },
+      ],
+    },
+  ],
+  scope: [
+    {
+      name: "Inventory", goal: "List all remaining work items",
+      tools: [
+        { tool: "project", action: "get", description: "View full project state" },
+        { tool: "project", action: "recall", description: "Review all notes" },
+      ],
+    },
+    {
+      name: "Polaris Triage", goal: "Rank by impact vs effort",
+      tools: [
+        { tool: "project", action: "health", description: "Check scope health" },
+        { tool: "design", action: "scope_check", params: { feature: "{focus}" }, description: "Evaluate features" },
+      ],
+    },
+    {
+      name: "Pillar Alignment", goal: "Check features against design pillars",
+      tools: [
+        { tool: "project", action: "recall", params: { section: "pillars" }, description: "Review design pillars" },
+        { tool: "design", action: "scope_check", params: { feature: "{focus}" }, description: "Check pillar alignment" },
+      ],
+    },
+    {
+      name: "MoSCoW", goal: "Categorize: Must/Should/Could/Won't",
+      tools: [
+        { tool: "project", action: "decide", params: { content: "{decision}" }, description: "Log prioritization decisions" },
+      ],
+    },
+    {
+      name: "AI Check", goal: "Final scope health assessment",
+      tools: [
+        { tool: "project", action: "health", description: "Final scope health check" },
+      ],
+    },
+  ],
 };
 
 const TOPIC_DOC_MAP: Record<string, string[]> = {
@@ -520,7 +751,7 @@ Type a number, or describe what you're thinking about.`;
   return { output, state };
 }
 
-function startPath(
+export function startPath(
   state: SessionState,
   pathName: "plan" | "decide" | "feature" | "debug" | "scope"
 ): { output: string; state: SessionState } {
@@ -643,4 +874,120 @@ export function serializeState(state: SessionState): string {
   md += `- Docs consulted: ${state.docsConsulted.join(", ") || "(none)"}\n`;
 
   return md;
+}
+
+// ---- Workflow orchestration functions ----
+
+const PATH_KEYWORDS: Record<string, string[]> = {
+  plan: ["plan", "planning", "roadmap", "breakdown", "priorities", "sprint", "schedule"],
+  decide: ["decide", "decision", "choose", "tradeoff", "trade-off", "which", "compare", "evaluate"],
+  feature: ["feature", "implement", "add", "create", "build", "new", "continue", "working on"],
+  debug: ["debug", "bug", "error", "crash", "fix", "broken", "issue", "wrong", "fail"],
+  scope: ["scope", "timeline", "cut", "priority", "triage", "feasible", "too much", "overwhelm"],
+};
+
+/**
+ * Classify freeform content into a workflow path.
+ * Returns "none" if no clear match — the AI client decides in that case.
+ */
+export function resolvePathFromContent(content: string): SessionState["path"] {
+  const lower = content.toLowerCase().trim();
+  if (!lower) return "none";
+
+  let bestPath: SessionState["path"] = "none";
+  let bestScore = 0;
+
+  for (const [path, keywords] of Object.entries(PATH_KEYWORDS)) {
+    let score = 0;
+    for (const kw of keywords) {
+      if (lower.includes(kw)) score++;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestPath = path as SessionState["path"];
+    }
+  }
+
+  return bestPath;
+}
+
+/**
+ * Advance to the next step in the current path.
+ * Resets to briefing when the path is complete.
+ */
+export function advanceStep(state: SessionState): SessionState {
+  if (state.path === "none" || state.phase !== "working") return state;
+  const pathDef = PATH_STEPS[state.path];
+  if (!pathDef) return state;
+
+  if (state.step < state.totalSteps) {
+    state.step++;
+  } else {
+    // Path complete
+    state.phase = "briefing";
+    state.path = "none";
+    state.step = 0;
+    state.totalSteps = 0;
+  }
+  state.lastUpdated = new Date().toISOString().split("T")[0];
+  return state;
+}
+
+/**
+ * Get the tool recommendations for a specific path and step (1-based).
+ */
+export function getStepToolRecommendations(path: string, step: number): ToolRecommendation[] {
+  const steps = STEP_TOOL_MAP[path];
+  if (!steps || step < 1 || step > steps.length) return [];
+  return steps[step - 1].tools;
+}
+
+/**
+ * Assemble the full structured workflow response for the AI client.
+ */
+export function getWorkflowState(state: SessionState): WorkflowResponse {
+  const pathDef = state.path !== "none" ? PATH_STEPS[state.path] : null;
+  const stepMap = state.path !== "none" ? STEP_TOOL_MAP[state.path] : null;
+  const currentStepDef = stepMap && state.step >= 1 && state.step <= stepMap.length
+    ? stepMap[state.step - 1]
+    : null;
+
+  // Build step overview
+  const steps: WorkflowResponse["workflow"]["steps"] = [];
+  if (pathDef) {
+    for (let i = 0; i < pathDef.steps.length; i++) {
+      steps.push({
+        index: i + 1,
+        name: pathDef.steps[i],
+        completed: i + 1 < state.step,
+      });
+    }
+  }
+
+  // Get relevant docs for focus
+  const relevantDocs = state.currentFocus ? getRelevantDocs(state.currentFocus) : [];
+
+  return {
+    session: {
+      phase: state.phase,
+      path: state.path,
+      step: state.step,
+      totalSteps: state.totalSteps,
+      stepName: currentStepDef?.name ?? "",
+      pathName: pathDef?.name ?? "",
+      currentFocus: state.currentFocus,
+      milestone: state.milestone,
+    },
+    workflow: {
+      steps,
+      currentStep: currentStepDef,
+    },
+    toolCalls: currentStepDef?.tools ?? [],
+    relevantDocs,
+    stats: {
+      decisions: state.decisions,
+      openItems: state.openItems,
+      tasks: state.tasks,
+    },
+  };
 }

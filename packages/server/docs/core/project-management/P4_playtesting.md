@@ -206,7 +206,7 @@ Even self-test sessions. You'll catch things on playback that you missed live �
 **Other**
 - Local game dev meetups (check Meetup.com, local universities)
 - Game testing forums (IndieDB, TIGSource)
-- Other solo devs — offer to swap: "I'll test yours if you test mine"
+- Other game devs — offer to swap: "I'll test yours if you test mine"
 
 ### How to Ask
 

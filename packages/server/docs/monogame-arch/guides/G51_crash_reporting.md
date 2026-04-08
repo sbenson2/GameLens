@@ -640,7 +640,7 @@ if (RecoveryManager.DidLastSessionCrash())
 
 Each platform has its own crash reporting ecosystem. Layer yours on top.
 
-**Windows** — Windows Error Reporting (WER) collects minidumps automatically. Players can find them in `%LOCALAPPDATA%\CrashDumps`. For your own minidumps, P/Invoke `MiniDumpWriteDump` — but for most indie games, text crash logs with stack traces are sufficient.
+**Windows** — Windows Error Reporting (WER) collects minidumps automatically. Players can find them in `%LOCALAPPDATA%\CrashDumps`. For your own minidumps, P/Invoke `MiniDumpWriteDump` — but for most game projects, text crash logs with stack traces are sufficient.
 
 **macOS** — Crashes generate `.crash` files in `~/Library/Logs/DiagnosticReports/`. The system crash reporter dialog appears automatically. Your crash log directory at `~/Library/Logs/MyGame/CrashLogs/` keeps your custom reports alongside the system ones.
 

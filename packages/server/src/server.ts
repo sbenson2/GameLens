@@ -1,5 +1,5 @@
 /**
- * GameCodex MCP Server v0.2.0 — 5 power tools for indie game dev.
+ * GameCodex MCP Server v0.3.5 — 5 power tools for game developers.
  *
  * Tools: project (brain), design (plan+ship), docs (knowledge), build (make), meta (internals)
  */
@@ -41,7 +41,7 @@ import { ToolDependencies } from "./tool-definition.js";
 // Prompts
 import { registerPrompts } from "./prompts.js";
 
-const SERVER_VERSION = "0.2.0";
+const SERVER_VERSION = "0.3.5";
 
 // ---- Helpers ----
 
@@ -109,7 +109,7 @@ export async function createServer() {
   const sessionManager = getSessionManager();
   const memory = getMemoryStore();
 
-  // v0.2.0 core modules
+  // Core modules
   const projectStore = getProjectStore();
   const personality = getPersonalityEngine();
   const healthTracker = getHealthTracker();

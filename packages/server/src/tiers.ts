@@ -8,7 +8,7 @@ export type ToolAccess = "full" | "limited" | "denied";
 export const UPGRADE_URL = "https://gamecodex.dev/pro";
 export const PRO_GATE_MESSAGE = `This feature requires a Pro license. Get one at ${UPGRADE_URL}`;
 
-/** Which tools are available per tier — v0.2.0 (5 tools) */
+/** Which tools are available per tier (5 tools) */
 const TOOL_ACCESS: Record<Tier, Record<string, ToolAccess>> = {
   free: {
     project: "full",       // co-pilot drives adoption + retention

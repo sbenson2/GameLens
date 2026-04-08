@@ -1,6 +1,6 @@
 # P1 — Pre-Production Checklist
 > **Phase:** Pre-Production (Weeks 2–3) · **Goal:** Answer every major question before writing game code
-> **Related:** [00 Master Playbook](./00_master_playbook.md) · [E4 Solo Project Management](E4_project_management.md) · [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) · [E9 Solo Dev Playbook](E9_solo_dev_playbook.md)
+> **Related:** [00 Master Playbook](./00_master_playbook.md) · [E4 Game Dev Project Management](E4_project_management.md) · [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) · [E9 Game Dev Playbook](E9_solo_dev_playbook.md)
 
 ---
 
@@ -109,9 +109,9 @@ Use this alongside [C1 Genre Reference](../game-design/C1_genre_reference.md) (w
 
 ⏱️ *Time: 30 minutes to review, but take days to decide*
 
-### Solo Dev Suitability Matrix
+### Small Team Suitability Matrix
 
-| Genre | Solo Feasibility | Dev Time (MVP) | Content Volume | Technical Complexity | Art Burden | Notes |
+| Genre | Small Team Feasibility | Dev Time (MVP) | Content Volume | Technical Complexity | Art Burden | Notes |
 |-------|:---:|:---:|:---:|:---:|:---:|-------|
 | **Action Platformer** | ⭐⭐⭐⭐⭐ | 3–5 mo | Medium | Medium | Low–Med | Best solo genre. Level design IS content. Small art sets stretch far |
 | **Puzzle Platformer** | ⭐⭐⭐⭐⭐ | 2–4 mo | Low | Low–Med | Low | Fewest art assets. Mechanics create replayability |
@@ -127,7 +127,7 @@ Use this alongside [C1 Genre Reference](../game-design/C1_genre_reference.md) (w
 
 ### Reading the Table
 
-- **Solo Feasibility** — How realistic is shipping this alone? 5 stars = very doable
+- **Small Team Feasibility** — How realistic is shipping this alone? 5 stars = very doable
 - **Dev Time** — MVP with ~20–30 hrs/week of focused work. Assume MonoGame + Arch ECS
 - **Content Volume** — How much *stuff* (levels, dialogue, items, maps) you need to create
 - **Art Burden** — How many unique sprites, animations, tilesets you need
@@ -269,7 +269,7 @@ P0 = Core (must ship) · P1 = Important (should ship) · P2 = Nice-to-have (cut 
 
 ## 4. Scope Assessment
 
-The number one killer of solo projects. Be brutally honest here.
+The number one killer of game projects. Be brutally honest here.
 
 ⏱️ *Time: 1–2 hours*
 
@@ -319,7 +319,7 @@ Check any that apply to your project. Each one is a warning sign:
 - [ ] No clear "done" criteria — when is this game finished?
 - [ ] The pitch requires the word "and" more than twice
 
-> **3+ checked?** Your scope is too big. Cut or restructure before proceeding. See [E4 Solo Project Management](E4_project_management.md) and [E9 Solo Dev Playbook](E9_solo_dev_playbook.md).
+> **3+ checked?** Your scope is too big. Cut or restructure before proceeding. See [E4 Game Dev Project Management](E4_project_management.md) and [E9 Game Dev Playbook](E9_solo_dev_playbook.md).
 
 ### 4.3 The Cut List
 
@@ -385,7 +385,7 @@ Lock this in early. Changing art style mid-project is a full restart on assets.
 | **Scaling** | Tricky (integer only) | Scales freely | Scales freely |
 | **Tools** | Aseprite ($20, industry standard) | Krita, Photoshop, Procreate | Inkscape, Illustrator, Affinity |
 | **Asset store fallback** | Tons of pixel art packs | Limited | Limited |
-| **Solo dev recommendation** | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ |
+| **Game dev recommendation** | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ |
 | **Tile map friendly** | Excellent | Possible but harder | Possible |
 | **Nostalgia factor** | High | Depends on style | Modern/clean |
 
@@ -686,7 +686,7 @@ Pick one and set it up. Don't track tasks in your head.
   - [ ] Milestone 4: Beta — content complete (Week 18–22)
   - [ ] Milestone 5: Release candidate (Week 23–24)
 
-> Reference: [E4 Solo Project Management](E4_project_management.md) for vertical slice methodology, Kanban tips, and avoiding the "tool-building trap."
+> Reference: [E4 Game Dev Project Management](E4_project_management.md) for vertical slice methodology, Kanban tips, and avoiding the "tool-building trap."
 
 ---
 
@@ -786,7 +786,7 @@ These are **hard deadlines** where you must have evidence that the game works. I
 | Project Structure | [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) | [G44 Version Control](../../monogame-arch/guides/G44_version_control.md) |
 | Game Design | [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) | [R4 Game Design Resources](../game-design/R4_game_design_resources.md) |
 | Genre Planning | [C1 Genre Reference](../game-design/C1_genre_reference.md) | [C2 Game Feel & Genre Craft](../game-design/C2_game_feel_and_genre_craft.md) |
-| Scope & Management | [E4 Solo Project Management](E4_project_management.md) | [E9 Solo Dev Playbook](E9_solo_dev_playbook.md) |
+| Scope & Management | [E4 Game Dev Project Management](E4_project_management.md) | [E9 Game Dev Playbook](E9_solo_dev_playbook.md) |
 | Display & Resolution | [G19 Display & Viewports](../../monogame-arch/guides/G19_display_resolution_viewports.md) | [G25 Safe Areas](../../monogame-arch/guides/G25_safe_areas_adaptive_layout.md) |
 | Input | [G7 Input Handling](../../monogame-arch/guides/G7_input_handling.md) | [C2 Game Feel](../game-design/C2_game_feel_and_genre_craft.md) |
 | Audio | [G6 Audio](../../monogame-arch/guides/G6_audio.md) | |

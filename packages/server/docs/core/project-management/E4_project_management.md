@@ -1,5 +1,5 @@
-# E4 — Solo Project Management
-> **Category:** Explanation · **Related:** [E5 AI Workflow](../ai-workflow/E5_ai_workflow.md) · [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
+# E4 — Game Dev Project Management
+> **Category:** Explanation · **Related:** [E5 AI Workflow](../ai-workflow/E5_ai_workflow.md) · [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) · [R3 Project Structure](../../monogame-arch/reference/R3_project_structure.md) · [E6 Game Design Fundamentals](../game-design/E6_game_design_fundamentals.md) · [E8 MonoGameStudio Post-Mortem](../../monogame-arch/architecture/E8_monogamestudio_postmortem.md)
 
 ---
 
@@ -7,12 +7,12 @@
 1. [Vertical Slice Development](#vertical-slice-development)
 2. [Task Structure: Five Levels](#task-structure-five-levels)
 3. [Scope Management](#scope-management)
-4. [Kanban for Solo Devs](#kanban-for-solo-devs)
+4. [Kanban for Game Devs](#kanban-for-solo-devs)
 5. [Risk Management & Pre-Mortem](#risk-management--pre-mortem)
 6. [Energy Management & Burnout Prevention](#energy-management--burnout-prevention)
 7. [Project Health Metrics](#project-health-metrics)
 8. [The Pivot Decision](#the-pivot-decision)
-9. [Financial Planning for Solo Dev](#financial-planning-for-solo-dev)
+9. [Financial Planning for Game Dev](#financial-planning-for-solo-dev)
 10. [Tool Recommendations](#tool-recommendations)
 11. [Version Control Workflow](#version-control-workflow)
 12. [Technical Debt Management](#technical-debt-management)
@@ -55,7 +55,7 @@ Some features resist vertical slicing — multiplayer netcode, procedural genera
 
 Example: Your game has 5 biomes. Don't build the full procedural generation pipeline for all 5. Build enough to generate one biome, then create a vertical slice of gameplay *in that biome*. Extend the generator only when the next slice requires a new biome.
 
-> **Deep dive:** [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) — 5-level goal hierarchy, Kanban vs sprints for solo dev, case studies from Stardew Valley/Balatro/Vampire Survivors
+> **Deep dive:** [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) — 5-level goal hierarchy, Kanban vs sprints for game dev, case studies from Stardew Valley/Balatro/Vampire Survivors
 
 ---
 
@@ -135,7 +135,7 @@ Write a design doc (DESIGN.md) with game pillars, target audience, core loop, an
 
 ### Scope Creep Defenses
 
-Scope creep is the universal project killer. Every successful indie game documented scope growing beyond initial plans. The developers who ship are the ones who manage growth deliberately:
+Scope creep is the universal project killer. Every successful game project documented scope growing beyond initial plans. The developers who ship are the ones who manage growth deliberately:
 
 - **Design pillars as filter** — every new idea must support a pillar or it's deferred
 - **Hard deadlines with cuts, not delays** — make cuts to meet the deadline instead of pushing back for more content
@@ -148,13 +148,13 @@ Scope creep is the universal project killer. Every successful indie game documen
 
 Players spend 80% of their time engaging with 20% of your features. Identify which features are in that 20% through early playtesting and double down on them. The other 80% of features should be functional but don't need the same level of polish. Most games that feel "polished" aren't polished everywhere — they're deeply polished in the places players spend the most time.
 
-> **Deep dive:** [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) — scope creep as the universal killer, AI amplification risk, Polaris Framework for fix/polish phase, design pillars as filter
+> **Deep dive:** [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) — scope creep as the universal killer, AI amplification risk, Polaris Framework for fix/polish phase, design pillars as filter
 
 ---
 
-## Kanban for Solo Devs
+## Kanban for Game Devs
 
-Across developer communities, **Kanban combined with vertical slicing** is the dominant project management approach for solo developers. Its advantages over formal Agile/Scrum:
+Across developer communities, **Kanban combined with vertical slicing** is the dominant project management approach for game developers. Its advantages over formal Agile/Scrum:
 
 - Continuous flow — no sprint ceremonies to hold with yourself
 - Visual progress tracking at a glance
@@ -165,7 +165,7 @@ Across developer communities, **Kanban combined with vertical slicing** is the d
 
 **Backlog → To Do (max 3) → In Progress (max 2) → Done**
 
-The WIP limits are the key — they force you to finish things before starting new ones. Context-switching between tasks is the single biggest productivity killer for solo devs. Every task switch costs 15–30 minutes of "ramp-up" time to reload the mental model.
+The WIP limits are the key — they force you to finish things before starting new ones. Context-switching between tasks is the single biggest productivity killer for game devs. Every task switch costs 15–30 minutes of "ramp-up" time to reload the mental model.
 
 ### Column Rules
 
@@ -195,7 +195,7 @@ Most solo game projects fail not from bad code but from foreseeable risks that w
 At the start of each major milestone:
 
 1. **Assume failure.** Write: "It's [milestone date]. The project failed. Why?"
-2. **List every reason you can think of.** Be honest. Common solo dev failure modes:
+2. **List every reason you can think of.** Be honest. Common game dev failure modes:
    - Burned out and lost motivation
    - Scope grew until shipping felt impossible
    - A critical technical assumption was wrong (e.g., "multiplayer will be easy")
@@ -256,11 +256,11 @@ Catch these early — by the time you dread opening the project, recovery takes 
 
 **Protect non-game time.** If game dev consumes all your free time, resentment builds. Schedule explicit non-game-dev time that you defend as aggressively as your dev sessions.
 
-**Celebrate completions, not just launches.** Solo devs go months or years without external validation. Create internal milestones that feel like wins: "Finished the combat system. That's a big deal." Mark Done items on the board. Review what you've accomplished monthly.
+**Celebrate completions, not just launches.** Game devs go months or years without external validation. Create internal milestones that feel like wins: "Finished the combat system. That's a big deal." Mark Done items on the board. Review what you've accomplished monthly.
 
 **Vary the work.** Alternating between code, art, sound, and design within a week prevents the "I've been staring at pathfinding for 3 weeks" feeling. Not all switching is bad — variety within a single project restores creative energy.
 
-**Take real breaks.** Not "breaks where you watch game dev YouTube" — real breaks from game dev entirely. Weekly: one full day off. Monthly: one weekend off. Quarterly: one full week off. Every successful solo dev in documented post-mortems describes at least one extended break during development.
+**Take real breaks.** Not "breaks where you watch game dev YouTube" — real breaks from game dev entirely. Weekly: one full day off. Monthly: one weekend off. Quarterly: one full week off. Every successful game dev in documented post-mortems describes at least one extended break during development.
 
 **Ship small things in between.** Game jams, tiny tools, blog posts. Completing something in 48 hours reminds you that you *can* finish things — which counters the "this will never be done" feeling that comes with multi-year projects.
 
@@ -346,7 +346,7 @@ If any of these are unhealthy, stop adding features and fix them. A project that
 
 ## The Pivot Decision
 
-Every solo developer will face the question: "Should I keep going or kill this project?" Making this decision well is arguably the most important project management skill.
+Every game developer will face the question: "Should I keep going or kill this project?" Making this decision well is arguably the most important project management skill.
 
 ### Signals It's Time to Consider Pivoting
 
@@ -400,7 +400,7 @@ If you decide to stop:
 
 ---
 
-## Financial Planning for Solo Dev
+## Financial Planning for Game Dev
 
 Money is a risk factor, not a taboo. Running out of funding is the second most common reason solo games don't ship (after burnout). Plan for it explicitly.
 
@@ -431,11 +431,11 @@ Making this decision at 3 months remaining is strategic. Making it at 0 months r
 
 ### Revenue Planning
 
-Revenue planning for indie games is inherently uncertain, but frameworks help:
+Revenue planning for game projects is inherently uncertain, but frameworks help:
 
 **Wishlists as a Signal:** On Steam, the median conversion rate from wishlist to first-week sale is ~10–15%. If you need 5,000 first-week sales to be sustainable, you need ~35,000–50,000 wishlists at launch. Track wishlists monthly after your Steam page goes live.
 
-**The Long Tail:** Most successful indie games earn more revenue in months 2–12 than in month 1. Plan finances around the long tail, not launch-day revenue. Steam sales, content updates, and word-of-mouth compound over time.
+**The Long Tail:** Most successful game projects earn more revenue in months 2–12 than in month 1. Plan finances around the long tail, not launch-day revenue. Steam sales, content updates, and word-of-mouth compound over time.
 
 **Platform Revenue Shares:**
 | Platform | Revenue Share | Notes |
@@ -462,19 +462,19 @@ Revenue planning for indie games is inherently uncertain, but frameworks help:
 
 ## Tool Recommendations
 
-The tool landscape spans zero-friction to feature-rich. The pattern most successful solo devs follow: **two complementary tools** — one for design documentation, one for task execution, plus version control.
+The tool landscape spans zero-friction to feature-rich. The pattern most successful game devs follow: **two complementary tools** — one for design documentation, one for task execution, plus version control.
 
 | Tool | Strengths | Best For |
 |------|-----------|----------|
 | **Codecks** | Purpose-built for game dev, card-based (trading card aesthetic), doc cards, milestone tracking, Discord/Steam bug collection | Full project management if you want a dedicated tool |
 | **Obsidian** | Local markdown files (version-controllable), Kanban plugin, Dataview dashboards, graph view for design connections | Knowledge base + design documentation |
 | **GitHub Projects** | Built into your repo, Kanban boards, issue tracking, milestone grouping | Code-adjacent task tracking |
-| **Plain text file** | Zero friction, lives in version control, no context switching | Solo devs who find tools add overhead |
+| **Plain text file** | Zero friction, lives in version control, no context switching | Game devs who find tools add overhead |
 | **Trello** | Quick visual boards, free tier | Simple Kanban if you want a GUI |
-| **Notion** | Rich documents + databases + Kanban in one tool | Solo devs who want design docs and task management unified |
+| **Notion** | Rich documents + databases + Kanban in one tool | Game devs who want design docs and task management unified |
 | **HackerPlan** | Game dev-specific PM tool with GDD integration | Teams that want a dedicated game dev PM platform |
 
-The "clever variant" from the Hacker News solo dev community: name your todo file `todo.diff` so the text editor color-codes lines starting with `+` (to add) and `-` (to remove).
+The "clever variant" from the Hacker News game dev community: name your todo file `todo.diff` so the text editor color-codes lines starting with `+` (to add) and `-` (to remove).
 
 ### Tool Selection Principles
 
@@ -703,7 +703,7 @@ Studying Stardew Valley, Hollow Knight, Celeste, Undertale, Vampire Survivors, B
 
 ### Pattern 3: Strategic Breaks
 
-**Strategic creative breaks prevent burnout.** LocalThunk deliberately stopped working in March 2022 when his drive faded, returning refreshed two months later. Barone took a month off in 2014 to make a small mobile game. The breaks prevented negative associations with the project. No successful solo developer describes shipping without at least one major break.
+**Strategic creative breaks prevent burnout.** LocalThunk deliberately stopped working in March 2022 when his drive faded, returning refreshed two months later. Barone took a month off in 2014 to make a small mobile game. The breaks prevented negative associations with the project. No successful game developer describes shipping without at least one major break.
 
 ### Pattern 4: Failure Is Prerequisite
 
@@ -715,7 +715,7 @@ Studying Stardew Valley, Hollow Knight, Celeste, Undertale, Vampire Survivors, B
 
 ### The Critical Social Milestone
 
-The biggest risk of solo development is not how you manage a todo list, but that you'll build the wrong thing because you waited to get feedback. Schedule regular "social milestones" — times to show someone your work. External feedback prevents tunnel vision.
+The biggest risk of game development is not how you manage a todo list, but that you'll build the wrong thing because you waited to get feedback. Schedule regular "social milestones" — times to show someone your work. External feedback prevents tunnel vision.
 
 Social milestone schedule:
 - **Week 2:** Show the core mechanic to one person
@@ -727,7 +727,7 @@ Social milestone schedule:
 
 ## The Fix/Polish Phase
 
-The transition from "building features" to "fixing and polishing" is one of the hardest for solo developers. Two principles:
+The transition from "building features" to "fixing and polishing" is one of the hardest for game developers. Two principles:
 
 1. **Set a hard feature-freeze date** — after this date, only bug fixes, performance, and polish. No exceptions, no "just one small thing."
 2. **Triage everything** — P0 bugs are the only mandatory work. P1 bugs are strongly recommended. P2/P3 bugs are polish and can be cut if time runs short.
@@ -801,4 +801,4 @@ Continuing a project because you've "invested too much to stop" — not because 
 - [P14 Marketing Timeline](./P14_marketing_timeline.md) — marketing schedule aligned with milestones
 - [P15 Post-Mortem Template](./P15_postmortem_template.md) — structured post-mortem analysis
 - [E5 AI Workflow](../ai-workflow/E5_ai_workflow.md) — AI-assisted development workflow
-- [E9 Solo Dev Playbook](./E9_solo_dev_playbook.md) — deep dive on solo development patterns
+- [E9 Game Dev Playbook](./E9_solo_dev_playbook.md) — deep dive on game development patterns

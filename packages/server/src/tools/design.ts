@@ -210,15 +210,15 @@ function buildStorePageGuide(platform: string, genre?: string, description?: str
 
 function buildPricingGuide(platform: string): string {
   let o = `# Pricing Strategy\n\n`;
-  o += `- **Free:** Jams, portfolio\n- **$1-5:** Short games, itch.io\n- **$5-15:** Polished indie (1-5 hrs)\n- **$15-25:** Full-featured (5-20 hrs)\n\n`;
-  if (platform === "steam") o += `Steam takes 30%. Launch discount 10-20%. $9.99 indie sweet spot.\n\n`;
+  o += `- **Free:** Jams, portfolio, demos\n- **$1-5:** Short games, itch.io\n- **$5-15:** Polished games (1-5 hrs)\n- **$15-25:** Full-featured (5-20 hrs)\n\n`;
+  if (platform === "steam") o += `Steam takes 30%. Launch discount 10-20%. $9.99 is a common sweet spot.\n\n`;
   else if (platform === "itch") o += `itch takes 0% default. "Pay what you want" works well.\n\n`;
-  o += `**Reality:** Most indie games make <$5k. Your first game is a learning experience.\n`;
+  o += `**Reality:** Price for the value you deliver. A polished 5-hour game earns more trust than a rushed 20-hour one.\n`;
   return o;
 }
 
 function buildMarketingTimeline(platform: string): string {
-  let o = `# Marketing Timeline\n\nMost solo devs start **way too late**.\n\n`;
+  let o = `# Marketing Timeline\n\nMost devs start marketing **way too late**.\n\n`;
   o += `## 6+ Months Before\n- [ ] Social media accounts\n- [ ] Weekly devlogs\n- [ ] Share GIFs\n\n`;
   o += `## 3-6 Months\n`;
   if (platform === "steam") o += `- [ ] **Create Steam store page** (wishlists start NOW)\n- [ ] Target 2,000+ wishlists\n`;

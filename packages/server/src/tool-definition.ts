@@ -105,7 +105,7 @@ export interface ToolDependencies {
   serverVersion: string;
   activeModules: string[];
   allDocs: any[];
-  // v0.2.0 additions
+  // Core modules
   projectStore: any;     // ProjectStore (unified persistence)
   personality: any;      // PersonalityEngine (tone/personality)
   healthTracker: any;    // HealthTracker (scope/pace/burnout)

@@ -344,7 +344,7 @@ Basic host migration for P2P games:
 3. The new owner detects this via `LobbyChatUpdate_t` callback and takes over game state authority.
 4. Other clients re-route packets to the new host's SteamID.
 
-For 2D indie games, full host migration is often overkill — just end the session and let players re-lobby. Only invest in migration for longer session games.
+For 2D game projects, full host migration is often overkill — just end the session and let players re-lobby. Only invest in migration for longer session games.
 
 ### When You Need Matchmaking
 
@@ -1079,6 +1079,6 @@ Online services are the glue between your game and the platforms it runs on. The
 2. **Offline first.** Every online feature needs a local fallback. Queue actions for later sync.
 3. **Validate everything.** Never trust client-submitted scores, saves, or state.
 4. **Respect privacy.** Collect what helps you improve the game, nothing more.
-5. **Keep it simple.** Steam lobbies + rich presence + leaderboards cover 90% of what indie games need. Don't build infrastructure you won't use.
+5. **Keep it simple.** Steam lobbies + rich presence + leaderboards cover 90% of what game projects need. Don't build infrastructure you won't use.
 
 Start with the abstraction layer and `NullPlatformServices`. Add Steam when you're ready to ship there. The game code doesn't change — only the implementation behind the interface.
