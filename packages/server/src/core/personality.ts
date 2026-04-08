@@ -191,13 +191,13 @@ export class PersonalityEngine {
     greeting += `**${tone.emphasis}**\n\n`;
 
     if (snapshot.goalCount > 0) {
-      greeting += `You have **${snapshot.goalCount} active goal${snapshot.goalCount === 1 ? "" : "s"}**. Use \`project suggest\` to pick one, or \`project session\` to start a structured workflow.\n\n`;
+      greeting += `You have **${snapshot.goalCount} active goal${snapshot.goalCount === 1 ? "" : "s"}**. Tell me what you want to work on, or ask me what to tackle next.\n\n`;
     } else {
-      greeting += `No active goals yet. Use \`project goal\` to set one, or \`project session\` to start a structured workflow.\n\n`;
+      greeting += `No active goals yet. Tell me what you're working on and I'll help you get started.\n\n`;
     }
 
     if (snapshot.decisionCount === 0 && snapshot.phase !== "planning") {
-      greeting += `_Tip: Log design decisions with \`project decide\` — future-you will thank you._\n\n`;
+      greeting += `_Tip: As you make design decisions, tell me and I'll log them for future reference._\n\n`;
     }
 
     // Flavor as a closer, not the opener
@@ -210,14 +210,15 @@ export class PersonalityEngine {
   getOnboarding(): string {
     return [
       "# Welcome to GameCodex\n",
-      "I'm your game dev co-pilot. Let's get to know your project.\n",
-      "**Tell me about your game:**",
-      "- What engine are you using? (MonoGame, Godot, Phaser)",
-      "- What genre? (platformer, roguelike, RPG, etc.)",
-      "- What's your experience level? (beginner, intermediate, advanced)",
-      "- What phase are you in? (planning, prototype, production, polish, release)",
-      "",
-      "Use `project` tool with action `set` to configure, or just describe your game and I'll help set it up.",
+      "I'm your game dev co-pilot. Just tell me about your game and what you need help with — I'll take it from there.\n",
+      "Some things I can help with:",
+      "- **Plan** — scope, GDD, design pillars, what to build next",
+      "- **Build** — code generation, architecture patterns, asset pipelines",
+      "- **Debug** — error diagnosis with knowledge-base-backed solutions",
+      "- **Ship** — launch checklists, store pages, marketing, pricing",
+      "- **Learn** — 150+ game dev guides across engines and topics\n",
+      "To get started, just describe your game — engine, genre, and what phase you're in. Or jump straight to what you need.\n",
+      "_Optional shortcuts: your AI tool may offer `/start-project`, `/debug-error`, `/ship-game`, or `/session` as workflow starters._",
     ].join("\n");
   }
 

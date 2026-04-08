@@ -39,16 +39,22 @@ export const metaToolDef: GameCodexToolDef = {
     if (action === "about") {
       let output = `# GameCodex v${deps.serverVersion}\n\n`;
       output += `**AI game dev co-pilot** for game developers.\n\n`;
-      output += `## 5 Tools\n\n`;
-      output += `| Tool | What it does |\n`;
-      output += `|------|--------------|\n`;
-      output += `| \`project\` | Interactive co-pilot — onboarding, goals, decisions, health |\n`;
-      output += `| \`design\` | GDD, phase checklists, scope analysis, marketing, launch |\n`;
-      output += `| \`docs\` | Search/browse 150+ game dev knowledge docs |\n`;
-      output += `| \`build\` | Scaffold, starter code, asset pipeline, debug, review |\n`;
-      output += `| \`meta\` | Server health, analytics, license (you're here) |\n\n`;
-      output += `**Engines:** MonoGame, Godot, Phaser\n`;
-      output += `**Knowledge base:** ${deps.allDocs.length} docs\n`;
+      output += `Just describe what you need — GameCodex gives your AI game dev expertise it doesn't have on its own.\n\n`;
+      output += `## What I can help with\n\n`;
+      output += `| Area | Examples |\n`;
+      output += `|------|---------|\n`;
+      output += `| **Plan** | GDD, design pillars, scope management, phase checklists |\n`;
+      output += `| **Build** | Code generation, project scaffolding, architecture patterns |\n`;
+      output += `| **Debug** | Error diagnosis, knowledge-base-backed solutions |\n`;
+      output += `| **Learn** | 150+ guides on game systems, engines, and best practices |\n`;
+      output += `| **Ship** | Launch checklists, store pages, marketing, pricing |\n\n`;
+      output += `## Quick starts\n\n`;
+      output += `Your AI tool may offer these as slash commands:\n`;
+      output += `- \`/start-project\` — set up a new game project\n`;
+      output += `- \`/debug-error\` — diagnose an error\n`;
+      output += `- \`/ship-game\` — launch preparation\n`;
+      output += `- \`/session\` — structured workflow (plan, decide, build, debug, scope)\n\n`;
+      output += `**Engines:** MonoGame, Godot, Phaser · **Knowledge base:** ${deps.allDocs.length} docs\n`;
       return { content: [{ type: "text", text: output }] };
     }
 

@@ -92,7 +92,7 @@ export const projectToolDef: GameCodexToolDef = {
         if (scopeWarning) greeting += `\n\n${scopeWarning}`;
 
         greeting += `\n\n${personality.getSuggestion(snapshot)}`;
-        greeting += `\n\n---\n**Tools:** \`project\` \`design\` \`docs\` \`build\` \`meta\``;
+        greeting += `\n\n---\n_Just tell me what you need — or use optional shortcuts: /start-project, /debug-error, /ship-game, /session_`;
 
         return { content: [{ type: "text", text: greeting }] };
       }

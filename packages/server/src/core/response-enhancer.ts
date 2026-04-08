@@ -84,8 +84,8 @@ export function getBreadcrumb(snapshot: ProjectSnapshot | null): string {
 const NEXT_STEPS: Record<string, Record<string, NextStep[]>> = {
   project: {
     hello: [
-      { tool: "project", action: "set", description: "Configure engine, genre, and phase" },
-      { tool: "docs", action: "browse", description: "Browse the knowledge base" },
+      { tool: "project", action: "set", description: "Describe your game to set up the project" },
+      { tool: "project", action: "session", description: "Start a structured workflow" },
     ],
     set: [
       { tool: "design", action: "gdd", description: "Create a Game Design Document" },
