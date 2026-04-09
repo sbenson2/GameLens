@@ -8,7 +8,7 @@
 
 **Your AI forgets everything mid-project. Give it permanent game development knowledge.**
 
-GameCodex is a knowledge layer for AI coding assistants. It provides 147+ curated game development docs — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
+GameCodex is a knowledge layer for AI coding assistants. It provides 950+ curated game development docs across 29 engines — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
 
 > Works with **Claude Code**, **Claude Desktop**, **Cursor**, **Windsurf**, **Cline**, and any MCP-compatible tool.
 
@@ -22,14 +22,10 @@ Every game dev using AI hits the same wall: your assistant starts strong, then f
 
 | Category | Examples | Docs |
 |----------|----------|------|
-| 🎮 **Game Design** | Genre systems, game feel, balancing, progression | 12 |
-| 🏗️ **Architecture** | ECS, state machines, scene management, signals | 18 |
-| 💻 **Programming** | Design patterns, data structures, algorithms | 15 |
-| 🎯 **Engine Guides** | MonoGame (79 guides), Godot (16 docs), Unity (planned) | 95+ |
-| 🔧 **Core Concepts** | Camera, physics, pathfinding, networking, combat, particles, UI | 19 |
-| 📋 **Project Mgmt** | Scope control, sprint planning, art pipeline | 7 |
+| **Core Knowledge** | Design patterns, ECS, state machines, data structures, algorithms | 52 |
+| **Engine Guides** | MonoGame, Godot, Unity, Unreal, Bevy, Phaser, and 23 more | 905 |
 
-**147+ docs. 4.8MB+ of curated knowledge. Zero external dependencies.**
+**957 docs. 18MB of curated knowledge. 29 engine modules.**
 
 ## Quick Start
 
@@ -64,19 +60,31 @@ Config file locations:
 - **Claude Desktop:** `claude_desktop_config.json`
 - **Cursor:** `.cursor/mcp.json`
 - **Windsurf:** `~/.windsurf/mcp.json`
-- **Cline:** VS Code settings → Cline MCP Servers
+- **Cline:** VS Code settings > Cline MCP Servers
 
 ## Engine Modules
 
 GameCodex uses a modular architecture. Core knowledge (design, patterns, algorithms) is always available. Engine-specific modules add implementation guides for your stack.
 
-| Module | Status | Docs | Description |
-|--------|--------|------|-------------|
-| `core` | ✅ Stable | 52 | Engine-agnostic game dev knowledge |
-| `monogame-arch` | ✅ Stable | 79 | MonoGame + Arch ECS — guides G1–G69, architecture, library reference |
-| `godot-arch` | 🚧 Active (80%) | 16 | Godot 4.4+ — architecture, GDScript/C#, scene composition, state machines, signals, input, physics, camera, tilemaps, animation, UI/controls, audio, save/load, shaders, networking |
-| `unity-arch` | 📋 Planned | — | Unity 6 — URP, ECS, modern patterns |
-| `bevy-arch` | 📋 Planned | — | Bevy ECS — Rust game dev |
+| Module | Docs | Module | Docs |
+|--------|------|--------|------|
+| `monogame-arch` | 131 | `godot-arch` | 116 |
+| `unity-arch` | 81 | `unreal-arch` | 81 |
+| `bevy-arch` | 37 | `stride-arch` | 37 |
+| `fna-arch` | 37 | `defold-arch` | 30 |
+| `love2d-arch` | 28 | `pygame-arch` | 27 |
+| `renpy-arch` | 25 | `threejs-arch` | 22 |
+| `playcanvas-arch` | 22 | `babylonjs-arch` | 22 |
+| `phaser-arch` | 21 | `macroquad-arch` | 20 |
+| `gamemaker-arch` | 18 | `pixijs-arch` | 16 |
+| `kaplay-arch` | 16 | `rpgmaker-arch` | 15 |
+| `excalibur-arch` | 15 | `construct-arch` | 15 |
+| `sdl3-arch` | 13 | `raylib-arch` | 13 |
+| `gdevelop-arch` | 13 | `libgdx-arch` | 10 |
+| `sfml-arch` | 9 | `haxeflixel-arch` | 8 |
+| `heaps-arch` | 7 | | |
+
+Plus `core` with 52 engine-agnostic docs on game design, architecture, programming patterns, and project management.
 
 Modules are auto-discovered. To filter which modules load:
 
@@ -92,29 +100,35 @@ Without `GAMEDEV_MODULES`, all available modules load automatically.
 
 ## MCP Tools
 
-| Tool | Description |
-|------|-------------|
-| Tool | Description |
-|------|-------------|
-| **`search_docs`** | Full-text search across all docs with TF-IDF ranking, synonym expansion, category/module/engine filters, cross-engine grouping |
-| **`get_doc`** | Fetch a doc by ID with optional `section` extraction and `maxLength` for context efficiency |
-| **`list_docs`** | Browse docs by category and module, with compact `summary` mode |
-| **`list_modules`** | Discover available engine modules and their status |
-| **`compare_engines`** | Compare how different engines approach the same topic (e.g., camera, physics, input) |
-| **`migration_guide`** | Get migration guidance between engines (e.g., Unity → Godot) |
-| **`random_doc`** | Discover docs serendipitously — great for exploration and learning |
-| **`genre_lookup`** | Genre → required systems mapping (platformer, roguelike, tower defense, etc.) |
-| **`session`** | Dev session co-pilot — structured workflows for planning, debugging, scoping |
-| **`license_info`** | Show current tier and features |
+GameCodex consolidates everything into 5 tools — one per domain, with an `action` parameter for routing. Minimal schema overhead, maximum utility.
+
+| Tool | Actions | What it does |
+|------|---------|-------------|
+| **`project`** | hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list, session | AI assistant — onboarding, project state, goals, decisions, scope health, session workflows |
+| **`design`** | gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
+| **`docs`** | search, get, browse, modules | Knowledge base — search/browse 950+ game dev docs across 29 engines |
+| **`build`** | scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
+| **`meta`** | status, analytics, license, modules, health, about | Server internals — diagnostics, license info, module discovery |
 
 ### Context-Efficient by Design
 
 Unlike tool-heavy MCP servers that dump 50K+ tokens of schemas into your context window, GameCodex is built for precision:
 
-- **Section extraction** — `get_doc("G64", section: "Knockback")` returns just the knockback section, not the full 52KB doc
+- **5 focused tools** — Minimal schema overhead, maximum utility. Compare to Godot MCP servers with 95+ tools burning half your context on schema alone
+- **Section extraction** — `docs { action: "get", id: "G64", section: "Knockback" }` returns just the knockback section, not the full 52KB doc
 - **`maxLength` param** — Cap any response to fit your context budget
-- **10 focused tools** — Minimal schema overhead, maximum utility. Compare to Godot MCP servers with 95+ tools burning half your context on schema alone
 - **stdio transport** — No network exposure, no attack surface ([MCP security is a real concern](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/))
+
+## MCP Prompts
+
+Workflow entry points that chain multiple tool calls:
+
+| Prompt | What it does |
+|--------|-------------|
+| `/start-project` | Guided new project setup — engine selection, GDD, goals, first steps |
+| `/debug-error` | Error diagnosis — analyze, search docs, suggest a fix |
+| `/ship-game` | Launch checklist — store page, marketing, pricing |
+| `/session` | Structured dev session — plan, build, debug, or manage scope |
 
 ## Free vs Pro
 
@@ -122,16 +136,15 @@ The server works fully out of the box with a generous free tier.
 
 | Feature | Free | Pro |
 |---------|------|-----|
-| Core docs (design, patterns, algorithms) | ✅ | ✅ |
-| Search | Core docs | All modules |
-| Engine modules (MonoGame, Godot, etc.) | — | ✅ |
-| Session co-pilot | — | ✅ |
-| Genre lookup | Summary | Full details |
-| `get_doc` section extraction | ✅ | ✅ |
+| `docs` — 950+ docs across 29 engines | Full | Full |
+| `meta` — diagnostics, license management | Full | Full |
+| `project` — goals, decisions, scope health | -- | Full |
+| `design` — GDD, phases, marketing, launch | -- | Full |
+| `build` — scaffold, code, debug, review | -- | Full |
 
-**Pro** unlocks engine-specific implementation guides — the stuff that turns "I know game design theory" into "here's exactly how to build it in Godot/MonoGame/Unity."
+**Free tier gives your AI the full knowledge base** — 950+ docs across all 29 engines, no restrictions. **Pro** unlocks the workflow tools that turn knowledge into action: project management, design planning, code scaffolding, and build assistance.
 
-Get a Pro license → [gamecodex.lemonsqueezy.com](https://gamecodex.lemonsqueezy.com)
+Get a Pro license at [gamecodex.lemonsqueezy.com](https://gamecodex.lemonsqueezy.com)
 
 ### License Setup
 
@@ -149,23 +162,23 @@ Interactive setup walks you through activation. Or add your key to the MCP confi
 }
 ```
 
-The server validates on startup, caches for 24h, and gracefully falls back to free tier if anything goes wrong. It never crashes.
+The server validates on startup, caches for 24h, and gracefully falls back to free tier if anything goes wrong.
 
 ## What Makes This Different
 
 There are [14,000+ MCP servers](https://mcp.so) out there. Here's why this one matters for game dev:
 
 - **Knowledge, not integration.** Godot-MCP, Unity-MCP, and Unreal-MCP give your AI buttons to press in the editor. This gives your AI *understanding* of how to architect and build games. They're complementary — use both.
-- **Cross-engine.** One server, multiple engines. Learn a pattern once in core theory, then get the engine-specific implementation. `compare_engines("camera")` shows you how Godot and MonoGame each handle it. No need to install separate MCPs per engine.
+- **Cross-engine.** One server, 29 engines. Learn a pattern once in core theory, then get the engine-specific implementation. No need to install separate MCPs per engine.
 - **Curated, not scraped.** Every doc is hand-written with AI code generation in mind — typed examples, anti-pattern warnings, decision trees, and "when to use" guidance. This isn't a docs mirror.
 - **Secure by design.** stdio-only transport — no network exposure, no open ports, no attack surface. While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/), this runs entirely local.
 - **Grows with you.** New docs and engines added continuously. Your AI gets smarter over time without you changing anything.
 
 ## Genre Coverage
 
-The `genre_lookup` tool maps any genre to its required systems with implementation priorities:
+The `design` tool's `patterns` action maps any genre to its required systems with implementation priorities:
 
-Platformer · Metroidvania · Roguelike · Tower Defense · Survival · RPG · Bullet Hell · Top-Down Shooter · Side-Scrolling · Fighting · Puzzle
+Platformer, Metroidvania, Roguelike, Tower Defense, Survival, RPG, Bullet Hell, Top-Down Shooter, Side-Scrolling, Fighting, Puzzle
 
 Each genre profile includes: required systems, optional enhancements, suggested doc reading order, and a starter checklist.
 
@@ -176,7 +189,7 @@ git clone https://github.com/sbenson2/GameCodex.git
 cd GameCodex
 npm install
 npm run build
-npm test          # 190 tests, Node.js built-in test runner
+npm test          # 300 tests, Node.js built-in test runner
 npm run dev       # Watch mode
 ```
 
@@ -196,21 +209,20 @@ Skip license validation for local development:
 
 ```
 docs/
-├── core/                    # Engine-agnostic (always loaded)
+├── core/                    # Engine-agnostic (always loaded, 52 docs)
 │   ├── game-design/         # Genre profiles, game feel, balancing
 │   ├── programming/         # Patterns, principles, data structures
 │   ├── concepts/            # Camera, physics, pathfinding, networking, particles
 │   ├── project-management/  # Scope, sprints, pipelines
 │   ├── ai-workflow/         # AI code generation best practices
-│   └── session/             # Co-pilot workflow prompts
-├── monogame-arch/           # MonoGame + Arch ECS
-│   ├── architecture/        # ECS overview, migration notes
-│   ├── guides/              # G1–G69 implementation guides
-│   └── reference/           # Library stack, project structure
-└── godot-arch/              # Godot 4.4+
-    ├── architecture/        # Node tree philosophy, GDScript vs C# decision guide
-    ├── guides/              # Scene composition, state machines, signals, input, physics, camera, tilemaps, animation, UI, audio, save/load, shaders, networking
-    └── reference/           # (coming soon)
+│   └── session/             # Session workflow prompts
+├── monogame-arch/           # MonoGame (131 docs)
+├── godot-arch/              # Godot 4.4+ (116 docs)
+├── unity-arch/              # Unity 6 (81 docs)
+├── unreal-arch/             # Unreal Engine 5 (81 docs)
+├── bevy-arch/               # Bevy ECS (37 docs)
+├── ...                      # 24 more engine modules
+└── [engine]-arch/           # Each module: architecture/, guides/, reference/
 ```
 
 ## MCP Resources
@@ -218,12 +230,12 @@ docs/
 Docs are also available as MCP resources for clients that support them:
 
 - `gamedev://docs/{module}/{id}` — Any doc by module and ID
-- `gamedev://prompts/session` — Session co-pilot prompt
+- `gamedev://prompts/session` — Session workflow prompt
 - `gamedev://prompts/code-rules` — AI code generation rules
 
 ## Security
 
-GameCodex uses **stdio-only transport** — no HTTP server, no open ports, no network exposure. While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/), this runs entirely local. Read-only by design: it serves knowledge, never modifies your project files. Zero runtime dependencies beyond Node.js.
+GameCodex uses **stdio-only transport** — no HTTP server, no open ports, no network exposure. While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/), this runs entirely local. Read-only by design: it serves knowledge, never modifies your project files.
 
 See [SECURITY.md](./SECURITY.md) for our full security policy and vulnerability reporting process.
 

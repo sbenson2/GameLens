@@ -4,9 +4,9 @@ import { isToolAllowed, isModuleAllowed, getTierFeatures, Tier, ToolAccess } fro
 
 describe("Tier System", () => {
   // 5 tools
-  it("should return 'limited' for docs on free tier", () => {
+  it("should return 'full' for docs on free tier", () => {
     const result = isToolAllowed("free" as Tier, "docs");
-    assert.equal(result, "limited", "docs should be limited for free tier");
+    assert.equal(result, "full", "docs should be full for free tier");
   });
 
   it("should return 'full' for all tools on pro tier", () => {
@@ -17,14 +17,19 @@ describe("Tier System", () => {
     }
   });
 
-  it("should return 'full' for project on free tier", () => {
+  it("should return 'denied' for project on free tier", () => {
     const result = isToolAllowed("free" as Tier, "project");
-    assert.equal(result, "full", "project should be full for free tier");
+    assert.equal(result, "denied", "project should be denied for free tier");
   });
 
-  it("should return 'limited' for build on free tier", () => {
+  it("should return 'denied' for build on free tier", () => {
     const result = isToolAllowed("free" as Tier, "build");
-    assert.equal(result, "limited", "build should be limited for free tier");
+    assert.equal(result, "denied", "build should be denied for free tier");
+  });
+
+  it("should return 'denied' for design on free tier", () => {
+    const result = isToolAllowed("free" as Tier, "design");
+    assert.equal(result, "denied", "design should be denied for free tier");
   });
 
   it("should return 'denied' for unknown tools on free tier", () => {
@@ -42,9 +47,9 @@ describe("Tier System", () => {
     assert.ok(result, "core module should be accessible at free tier");
   });
 
-  it("should restrict monogame-arch for free tier", () => {
+  it("should allow monogame-arch for free tier", () => {
     const result = isModuleAllowed("free" as Tier, "monogame-arch");
-    assert.equal(result, false, "monogame-arch should NOT be accessible at free tier");
+    assert.ok(result, "monogame-arch should be accessible at free tier (docs is fully free)");
   });
 
   it("should allow monogame-arch for pro tier", () => {

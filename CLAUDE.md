@@ -40,7 +40,7 @@ npm run lint:site      # eslint on site
 - **Knowledge base:** `docs/` — core (52) + 29 engine modules (957 total docs)
 - **Config dir:** `~/.gamecodex/` (projects, embeddings, learning progress)
 
-### Tool Inventory (v0.3.8 — 5 tools)
+### Tool Inventory (v0.3.9 — 5 tools)
 
 | Tool | Actions | What it does |
 |------|---------|-------------|
@@ -50,7 +50,7 @@ npm run lint:site      # eslint on site
 | `build` | help, scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
 | `meta` | help, status, analytics, license, modules, health, about | Server internals — diagnostics, license info, help |
 
-### Core Modules (v0.3.8)
+### Core Modules (v0.3.9)
 
 - `core/personality.ts` — Template-based tone engine (13 genre tones, phase emphasis)
 - `core/project-store.ts` — Unified persistence (JSON files at ~/.gamecodex/projects/)
@@ -98,4 +98,4 @@ npm run lint:site      # eslint on site
 ## Blockers
 
 - Migrated from GitHub (`sbenson2`, suspended) to GitLab (`sbenson2/GameCodex`)
-- npm publish ready (CI configured with OIDC) — needs `git tag v0.3.8` + manual trigger in GitLab CI
+- Migrated from GitHub (`sbenson2`, suspended) to GitLab (`sbenson2/GameCodex`). npm publish is manual.

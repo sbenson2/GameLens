@@ -598,6 +598,149 @@ body {
 }
 
 /* ═══════════════════════════════════════════
+   PRICING
+   ═══════════════════════════════════════════ */
+
+.pricing-card {
+  background: var(--anvil);
+  border: 1px solid var(--steel);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+.pricing-card:hover {
+  border-color: var(--silver);
+}
+.pricing-card-pro {
+  border-color: var(--forge);
+  background: linear-gradient(180deg, rgba(0, 255, 136, 0.04) 0%, var(--anvil) 40%);
+}
+.pricing-card-pro:hover {
+  border-color: var(--forge);
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.08);
+}
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--forge);
+  color: var(--void);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3em 1.2em;
+  border-radius: 100px;
+}
+.pricing-tier {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin-bottom: 0.75rem;
+}
+.pricing-price {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+.pricing-period {
+  font-size: 0.4em;
+  font-weight: 500;
+  color: var(--ash);
+  letter-spacing: 0;
+}
+.pricing-desc {
+  font-size: 0.9rem;
+  color: var(--smoke);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex-grow: 1;
+}
+.pricing-feature {
+  font-size: 0.88rem;
+  line-height: 1.4;
+  padding-left: 1.6em;
+  position: relative;
+}
+.pricing-feature::before {
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-size: 0.9em;
+}
+.pricing-included {
+  color: var(--bone);
+}
+.pricing-included::before {
+  content: '✓';
+  color: var(--forge);
+}
+.pricing-excluded {
+  color: var(--silver);
+  opacity: 0.45;
+}
+.pricing-excluded::before {
+  content: '—';
+  color: var(--silver);
+}
+.pricing-cta-free {
+  display: block;
+  text-align: center;
+  padding: 0.85em 1.5em;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--iron);
+  border: 1px solid var(--steel);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.pricing-cta-free:hover {
+  background: var(--steel);
+  border-color: var(--silver);
+}
+.pricing-cta-pro {
+  display: block;
+  text-align: center;
+  padding: 0.85em 1.5em;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--void);
+  background: var(--forge);
+  border: 1px solid var(--forge);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.pricing-cta-pro:hover {
+  background: #00e67a;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* ═══════════════════════════════════════════
    FINAL CTA
    ═══════════════════════════════════════════ */
 

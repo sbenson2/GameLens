@@ -347,6 +347,75 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ PRICING ═══ */}
+      <section className="py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <div className="text-center mb-16">
+              <h2 className="section-title">Full knowledge base. Free forever.</h2>
+              <p className="section-sub">
+                950+ docs across all 29 engines, no restrictions. Pro unlocks workflow tools that turn knowledge into shipped games.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* Free tier */}
+            <Reveal>
+              <div className="pricing-card">
+                <div className="pricing-tier">Free</div>
+                <div className="pricing-price">$0<span className="pricing-period">/forever</span></div>
+                <p className="pricing-desc">Full access to the entire knowledge base. No account, no credit card, no limits.</p>
+                <ul className="pricing-features">
+                  <li className="pricing-feature pricing-included">950+ curated game dev docs</li>
+                  <li className="pricing-feature pricing-included">All 29 engine modules</li>
+                  <li className="pricing-feature pricing-included">Search, browse, and read any doc</li>
+                  <li className="pricing-feature pricing-included">Server diagnostics and status</li>
+                  <li className="pricing-feature pricing-excluded">Project management and goals</li>
+                  <li className="pricing-feature pricing-excluded">GDD, phases, and marketing</li>
+                  <li className="pricing-feature pricing-excluded">Code scaffolding and debug</li>
+                </ul>
+                <a
+                  href="https://www.npmjs.com/package/gamecodex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pricing-cta-free"
+                >
+                  Install Free
+                </a>
+              </div>
+            </Reveal>
+
+            {/* Pro tier */}
+            <Reveal delay={120}>
+              <div className="pricing-card pricing-card-pro">
+                <div className="pricing-badge">Most Popular</div>
+                <div className="pricing-tier">Pro</div>
+                <div className="pricing-price">$5<span className="pricing-period">/month</span></div>
+                <p className="pricing-desc">Everything in Free, plus the tools that turn knowledge into running games.</p>
+                <ul className="pricing-features">
+                  <li className="pricing-feature pricing-included">Everything in Free</li>
+                  <li className="pricing-feature pricing-included">Project goals, decisions, scope health</li>
+                  <li className="pricing-feature pricing-included">GDD generation, phase checklists</li>
+                  <li className="pricing-feature pricing-included">Marketing, store pages, launch prep</li>
+                  <li className="pricing-feature pricing-included">Code scaffolding and starter code</li>
+                  <li className="pricing-feature pricing-included">Debug diagnosis and architecture review</li>
+                  <li className="pricing-feature pricing-included">Session workflow orchestration</li>
+                </ul>
+                <a
+                  href="https://gamecodex.lemonsqueezy.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pricing-cta-pro"
+                >
+                  Get Pro
+                </a>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ FINAL CTA ═══ */}
       <section className="py-32 px-6 relative overflow-hidden">
         <div className="cta-glow" />
@@ -359,7 +428,7 @@ export default function Home() {
           </Reveal>
           <Reveal delay={100}>
             <p className="section-sub mb-10">
-              Free to try. No credit card. No account required.
+              Full knowledge base, free forever. No credit card. No account.
             </p>
           </Reveal>
           <Reveal delay={200}>

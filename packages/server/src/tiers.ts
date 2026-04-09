@@ -11,11 +11,11 @@ export const PRO_GATE_MESSAGE = `This feature requires a Pro license. Get one at
 /** Which tools are available per tier (5 tools) */
 const TOOL_ACCESS: Record<Tier, Record<string, ToolAccess>> = {
   free: {
-    project: "full",       // AI assistant drives adoption + retention
-    design: "full",        // planning + shipping drives adoption
-    docs: "limited",       // core module only (Pro for engine-specific)
-    build: "limited",      // scaffold+code+assets+debug free, review pro-only
-    meta: "full",          // always available
+    project: "denied",     // Pro — AI assistant, goals, decisions, scope
+    design: "denied",      // Pro — GDD, phases, marketing, launch
+    docs: "full",          // Free — full knowledge base drives adoption
+    build: "denied",       // Pro — scaffold, code, assets, debug, review
+    meta: "full",          // always available (license management, diagnostics)
   },
   pro: {
     project: "full",
@@ -28,7 +28,7 @@ const TOOL_ACCESS: Record<Tier, Record<string, ToolAccess>> = {
 
 /** Modules accessible per tier */
 const MODULE_ACCESS: Record<Tier, string[]> = {
-  free: ["core"],
+  free: [], // empty = all modules (docs is fully free)
   pro: [], // empty = all modules
 };
 
@@ -39,8 +39,9 @@ export function isToolAllowed(tier: Tier, tool: string): ToolAccess {
 }
 
 export function isModuleAllowed(tier: Tier, module: string): boolean {
-  if (tier === "pro") return true;
-  return MODULE_ACCESS[tier].includes(module);
+  const allowed = MODULE_ACCESS[tier];
+  if (allowed.length === 0) return true; // empty = all modules
+  return allowed.includes(module);
 }
 
 export function getTierFeatures(tier: Tier): {
@@ -64,13 +65,13 @@ export function getTierFeatures(tier: Tier): {
 
   return {
     tools: {
-      project: "Full access",
-      design: "Full access",
-      docs: "Core module only (Pro for engine-specific)",
-      build: "Scaffold + code + assets + debug free; review requires Pro",
+      project: "Pro only",
+      design: "Pro only",
+      docs: "Full access — all 950+ docs across 29 engines",
+      build: "Pro only",
       meta: "Full access",
     },
-    modules: ["core"],
-    description: "Free tier — core docs only",
+    modules: ["core", "all engine modules"],
+    description: "Free tier — full docs access, Pro unlocks project/design/build tools",
   };
 }

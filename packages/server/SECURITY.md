@@ -4,8 +4,8 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.x.x   | ✅ Active support  |
-| < 1.0.0 | ❌ Not supported   |
+| 0.3.x   | ✅ Active support  |
+| < 0.3.0 | ❌ Not supported   |
 
 ## Architecture Security
 
@@ -30,7 +30,7 @@ GameDev MCP Server avoids this entire attack class by design:
 
 If you discover a security vulnerability, please report it responsibly:
 
-1. **Email**: security@gamecodex.dev *(or open a private security advisory on GitHub)*
+1. **Email**: security@gamecodex.dev *(or open a confidential issue on [GitLab](https://github.com/sbenson2/GameCodex/-/issues))*
 2. **Do NOT** open a public issue for security vulnerabilities
 3. Include steps to reproduce and potential impact
 
@@ -38,11 +38,9 @@ We will acknowledge reports within 48 hours and aim to release fixes within 7 da
 
 ## Supply Chain Security
 
-- **Dependabot** monitors dependencies weekly (npm packages + GitHub Actions)
-- **CodeQL** runs static analysis on every push and weekly
 - **npm audit** runs in CI on every build
-- **npm publish with provenance** — Published packages include [SLSA provenance](https://slsa.dev/) attestations via GitHub Actions OIDC, so you can verify the package was built from this repository
-- **Dependency review** — PR-time checks flag known vulnerabilities in new/updated dependencies
+- **npm publish with provenance** — Published packages include attestations so you can verify the package was built from this repository
+- **Dependency review** — MR-time checks flag known vulnerabilities in new/updated dependencies
 
 ## Verification
 

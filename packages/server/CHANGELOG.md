@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.9] - 2026-04-09
+
+### Changed
+- **Tier gating overhaul** — docs tool is now fully free (all 950+ docs, all 29 engines, no restrictions). Project, design, and build tools are now Pro-only. Free tier is the knowledge base hook, Pro unlocks workflow tools.
+- All modules accessible on free tier (was core-only)
+- 301 tests, all passing
+
 ## [0.3.8] - 2026-04-09
 
 ### Added

@@ -149,7 +149,7 @@ export const docsToolDef: GameCodexToolDef = {
 
         let output = `# Available Modules (${modules.length})\n\n`;
         for (const mod of modules) {
-          const accessNote = deps.tier === "free" && mod.id !== "core" ? " _(Pro)_" : "";
+          const accessNote = "";
           output += `- **${mod.label}**${accessNote} — \`${mod.id}\` (${mod.docCount} docs)\n`;
         }
 
@@ -166,7 +166,7 @@ export const docsToolDef: GameCodexToolDef = {
   },
   isReadOnly: true,
   isConcurrencySafe: true,
-  freeTierRestriction: "core-only",
+  freeTierRestriction: "none",
   category: "docs",
   activityDescription: "Querying knowledge base",
 };
