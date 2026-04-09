@@ -1,163 +1,107 @@
 # GameCodex
 
-Game dev AI assistant. An MCP server with 150+ curated docs and 22 tools for MonoGame, Godot, and Phaser.
+**Your AI forgets game dev mid-project. This fixes that.**
 
-GameCodex connects to any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io) — Claude Desktop, Claude Code, Cursor, Windsurf, Continue.dev, and more.
+GameCodex is a game dev AI assistant — an MCP server with 950+ curated docs across 29 engines, 5 power tools, structured workflows, and scope tracking. It connects to any AI that supports the [Model Context Protocol](https://modelcontextprotocol.io): Claude, Cursor, Windsurf, Continue.dev, and more.
+
+Every doc is hand-written for AI consumption — typed examples, anti-pattern warnings, decision trees. Not scraped docs. Not training data guesses. Structured knowledge that actually helps you build.
 
 ## Install
 
-### Option A: npm (when published)
-
 ```bash
-npx gamecodex
+npx gamecodex setup
 ```
 
-### Option B: From source
+That's it. Zero-install, auto-detects your AI tool, writes the MCP config for you.
 
-```bash
-git clone <repo-url> GameCodex
-cd GameCodex
-npm install
-npm run build
-```
+### Manual setup
 
-Then run the server directly:
-
-```bash
-node packages/server/dist/index.js
-```
-
-Or link it globally:
-
-```bash
-cd packages/server
-npm link
-gamecodex  # now available as a command
-```
-
-### Option C: Tarball
-
-```bash
-cd packages/server
-npm run build
-npm pack
-# Creates gamecodex-server-2.1.0.tgz
-
-# Install anywhere:
-npm install -g ./gamecodex-server-2.1.0.tgz
-```
-
-## Connect to Your AI Assistant
-
-### Claude Desktop
-
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+Add to your MCP config (`claude_desktop_config.json`, `.cursor/mcp.json`, etc.):
 
 ```json
 {
   "mcpServers": {
     "gamecodex": {
-      "command": "node",
-      "args": ["/absolute/path/to/GameCodex/packages/server/dist/index.js"]
+      "command": "npx",
+      "args": ["-y", "gamecodex"]
     }
   }
 }
 ```
 
-### Claude Code
+Or with Claude Code:
 
 ```bash
-claude mcp add gamecodex -- node /absolute/path/to/GameCodex/packages/server/dist/index.js
+claude mcp add gamecodex -- npx -y gamecodex
 ```
 
-### Cursor / Windsurf / Continue.dev
+## What Can It Do?
 
-Add to your MCP configuration:
+**Search 950+ curated docs** — Ask about ECS, pathfinding, state machines, shaders, or any game system. Get structured answers grounded in real documentation, not hallucinations.
 
-```json
-{
-  "mcpServers": {
-    "gamecodex": {
-      "command": "node",
-      "args": ["/absolute/path/to/GameCodex/packages/server/dist/index.js"]
-    }
-  }
-}
-```
+**Scaffold projects** — Describe your game, get architecture and starter code that compiles. Every snippet includes comments explaining *why*.
 
-## Tools (22)
+**Debug like a mentor** — Paste an error, get a diagnosis. Not a Stack Overflow link — a real explanation of what went wrong and how to fix it.
 
-### Search and Documentation
-| Tool | Description |
+**Track scope creep** — Built-in project health tracking warns when your feature list is getting heavy. Knows when to say "cut this" before your game becomes vaporware.
+
+**Structure your workflow** — Session workflows for planning, debugging, deciding, and scoping. Not chat history — orchestrated development process management.
+
+## 5 Power Tools
+
+| Tool | What it does |
 |------|-------------|
-| `search_docs` | Search 150+ docs by keyword with cross-engine grouping |
-| `get_doc` | Fetch a doc by ID with section extraction |
-| `list_docs` | Browse docs by category and module |
-| `list_modules` | List available engine modules |
-| `random_doc` | Discover a random doc |
-| `compare_engines` | Compare how engines handle the same topic |
-| `migration_guide` | Engine migration guidance with concept mappings |
+| `project` | Project state, goals, decisions, scope health, session workflows |
+| `design` | GDD generation, phase checklists, launch prep, marketing guidance |
+| `docs` | Search and browse 950+ game dev docs across 29 engines |
+| `build` | Scaffold projects, generate code, debug errors, review architecture |
+| `meta` | Server diagnostics, license info, module discovery |
 
-### Learning
-| Tool | Description |
-|------|-------------|
-| `explain_concept` | Teach any concept at your skill level |
-| `teach` | Interactive learning paths with exercises |
-| `debug_guide` | Error/symptom diagnosis with engine-specific tips |
+## 29 Supported Engines
 
-### Code Generation
-| Tool | Description |
-|------|-------------|
-| `scaffold_project` | Generate project structure and starter files |
-| `generate_gdd` | Create a game design document from a description |
-| `generate_starter` | Feature-specific starter code (movement, combat, inventory, etc.) |
+Godot | Unity | Unreal | MonoGame | Bevy | Phaser | GameMaker | Pygame | Love2D | Raylib | Defold | Construct | Ren'Py | RPG Maker | PixiJS | Three.js | Babylon.js | SFML | SDL3 | LibGDX | Stride | HaxeFlixel | Heaps | PlayCanvas | Excalibur | Macroquad | FNA | GDevelop | Kaplay
 
-### Project Management
-| Tool | Description |
-|------|-------------|
-| `session` | Dev session AI assistant for planning and decisions |
-| `project_context` | Per-project context tracking |
-| `memory` | Persistent project memory across sessions |
-| `review_architecture` | Analyze project structure with engine-specific checks |
-| `phase_checklist` | Project phase tracker with engine/genre-aware checklists |
-| `asset_guide` | Asset pipeline guide (naming, export, import, gotchas) |
-
-### System
-| Tool | Description |
-|------|-------------|
-| `diagnostics` | Server health and stats |
-| `license_info` | License tier and usage info |
-
-## Supported Engines
-
-- **MonoGame + Arch ECS** — 80 docs covering architecture, guides, and reference
-- **Godot 4.4** — 18 docs covering scene composition, signals, physics, UI, and more
-- **Phaser 3** — Supported via core concepts and starter code generation
+Plus a **core module** with 52 engine-agnostic docs on design patterns, architecture, and programming fundamentals.
 
 ## Knowledge Base
 
-150+ curated markdown docs organized into modules:
+957 curated markdown docs organized into 30 modules:
 
-- **Core** (52 docs) — Engine-agnostic concepts, design patterns, project management
-- **MonoGame-Arch** (80 docs) — MonoGame + Arch ECS implementation guides
-- **Godot-Arch** (18 docs) — Godot 4.x architecture and implementation guides
+- **Game Design** — GDD templates, scope management, playtesting
+- **Architecture** — ECS, state machines, event systems, scene composition
+- **Programming** — Input handling, physics, pathfinding, save/load, networking
+- **Engine Guides** — Per-engine implementation guides, reference sheets, best practices
+- **Project Management** — Phase checklists, scope tracking, launch preparation
+
+Every doc includes: typed code examples, "when to use" guidance, common pitfalls, and cross-engine comparisons where relevant.
+
+## Why GameCodex?
+
+| | GameCodex | Single-engine MCPs | Raw AI (no MCP) |
+|---|---|---|---|
+| Engines | 29 | 1 | 0 (training data only) |
+| Docs | 950+ curated | Varies | None |
+| Tools | 5 (lean schema) | 10-95+ (schema bloat) | N/A |
+| Scope tracking | Yes | No | No |
+| Privacy | stdio-only, no network | Varies | Cloud-dependent |
+| Price | Free (MIT) | Varies | Varies |
 
 ## Configuration
 
-| Environment Variable | Description |
-|---------------------|-------------|
+| Variable | Description |
+|----------|-------------|
+| `GAMECODEX_LICENSE` | Pro license key (enables all engine modules) |
 | `GAMEDEV_MODULES` | Comma-separated module IDs to load (default: all) |
-| `GAMECODEX_LICENSE` | Pro license key (enables all modules and tools) |
-| `GAMECODEX_ANALYTICS` | Set to `false` to disable local analytics |
 
 ## Development
 
 ```bash
-npm install          # install all workspace deps
-npm run build        # build server
-npm run typecheck    # type-check without emitting
-npm run dev          # watch mode
-npm test             # run tests (in packages/server)
+git clone https://github.com/sbenson2/GameCodex.git
+cd GameCodex
+npm install
+npm run build
+npm test          # 300 tests
+npm run typecheck
 ```
 
 ## Monorepo Structure
@@ -165,11 +109,17 @@ npm test             # run tests (in packages/server)
 ```
 GameCodex/
 ├── packages/
-│   ├── server/    # MCP server (22 tools, 150+ docs)
+│   ├── server/    # MCP server (5 tools, 950+ docs, 29 engines)
 │   └── site/      # Marketing site (Next.js)
 ├── package.json   # npm workspaces root
 └── README.md
 ```
+
+## Links
+
+- [npm](https://www.npmjs.com/package/gamecodex)
+- [GitLab](https://github.com/sbenson2/GameCodex)
+- [Issues](https://github.com/sbenson2/GameCodex/-/issues)
 
 ## License
 

@@ -1,0 +1,46 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06060b"/>
+      <stop offset="100%" style="stop-color:#0a0a12"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:0"/>
+      <stop offset="50%" style="stop-color:#00ff88;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#00ff88;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle glow line -->
+  <rect x="0" y="310" width="1200" height="2" fill="url(#glow)"/>
+
+  <!-- Logo mark -->
+  <rect x="80" y="160" width="56" height="56" rx="10" fill="#00ff88"/>
+  <text x="96" y="203" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="700" fill="#06060b">G</text>
+
+  <!-- Title -->
+  <text x="152" y="203" font-family="system-ui, -apple-system, sans-serif" font-size="44" font-weight="700" fill="#eaeaf2">GameCodex</text>
+
+  <!-- Tagline -->
+  <text x="80" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="400" fill="#c8c8d8">Your AI forgets game dev mid-project.</text>
+  <text x="80" y="320" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="400" fill="#c8c8d8">This fixes that.</text>
+
+  <!-- Stats -->
+  <text x="80" y="420" font-family="monospace" font-size="22" font-weight="700" fill="#00ff88">950+</text>
+  <text x="185" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#9494aa">Curated Docs</text>
+
+  <text x="400" y="420" font-family="monospace" font-size="22" font-weight="700" fill="#00ff88">29</text>
+  <text x="445" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#9494aa">Engines</text>
+
+  <text x="580" y="420" font-family="monospace" font-size="22" font-weight="700" fill="#00ff88">5</text>
+  <text x="605" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#9494aa">Power Tools</text>
+
+  <!-- Subtitle -->
+  <text x="80" y="490" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#62627a">MCP Server  |  CLI Tool  |  MIT License</text>
+
+  <!-- Border accent -->
+  <rect x="0" y="0" width="1200" height="4" fill="#00ff88" opacity="0.6"/>
+</svg>
