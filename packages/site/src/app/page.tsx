@@ -6,19 +6,23 @@ import { useEffect, useRef } from 'react';
 /* ─── Data ─── */
 const ENGINES = [
   { name: 'Godot', icon: '◈' },
-  { name: 'MonoGame', icon: '◆' },
   { name: 'Unity', icon: '▣' },
+  { name: 'Unreal', icon: '◎' },
+  { name: 'MonoGame', icon: '◆' },
+  { name: 'Bevy', icon: '⬡' },
   { name: 'Phaser', icon: '◇' },
+  { name: 'GameMaker', icon: '✦' },
   { name: 'Pygame', icon: '◉' },
   { name: 'Love2D', icon: '♥' },
-  { name: 'Bevy', icon: '⬡' },
-  { name: 'GameMaker', icon: '✦' },
+  { name: 'Raylib', icon: '▲' },
+  { name: 'Defold', icon: '◇' },
+  { name: 'Construct', icon: '▧' },
 ];
 
 const STATS = [
-  { value: '150+', label: 'Curated Guides' },
+  { value: '950+', label: 'Curated Guides' },
   { value: '5', label: 'Power Tools' },
-  { value: '8+', label: 'Engines' },
+  { value: '29', label: 'Engines' },
   { value: '0', label: 'Data Collected' },
 ];
 
@@ -45,8 +49,8 @@ const BENTO_FEATURES = [
     span: 'col-span-2',
   },
   {
-    title: '150+ Deep Guides',
-    desc: 'Not blog posts — structured knowledge on ECS, physics, pathfinding, shaders, state machines, and 100+ more game systems.',
+    title: '950+ Deep Guides',
+    desc: 'Not blog posts — structured knowledge on ECS, physics, pathfinding, shaders, state machines, and hundreds more game systems across 29 engines.',
     span: 'col-span-1',
   },
   {
@@ -72,7 +76,7 @@ const STEPS = [
   {
     num: '03',
     title: 'Build',
-    desc: 'Ask anything about game dev. Get grounded answers from 150+ curated docs — not hallucinations.',
+    desc: 'Ask anything about game dev. Get grounded answers from 950+ curated docs — not hallucinations.',
     code: '> scaffold a roguelike in Godot',
   },
 ];
@@ -177,7 +181,7 @@ export default function Home() {
 
           <Reveal delay={200}>
             <p className="hero-sub">
-              GameCodex gives any AI instant access to 150+ curated game development guides.
+              GameCodex gives any AI instant access to 950+ curated game development guides.
               <br className="hidden sm:block" />
               Any engine. Any language. Zero hallucinations.
             </p>
@@ -390,7 +394,7 @@ export default function Home() {
           <div className="flex items-center gap-2.5">
             <div className="logo-mark" style={{ width: 22, height: 22, fontSize: '0.7rem' }}>G</div>
             <span className="text-sm" style={{ color: 'var(--ash)', fontFamily: 'var(--font-display)' }}>
-              GameCodex — AI Game Dev Co-Pilot
+              GameCodex — AI Game Dev Assistant
             </span>
           </div>
           <div className="flex items-center gap-6 text-sm" style={{ color: 'var(--silver)' }}>
