@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og.svg",
+        url: "/og.png",
         width: 1200,
         height: 630,
         alt: "GameCodex — 950+ curated game dev docs, 29 engines, 5 power tools",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "GameCodex — AI Game Dev Assistant",
     description: "Your AI forgets game dev mid-project. This one doesn't. 950+ curated guides, 29 engines, any language.",
-    images: ["/og.svg"],
+    images: ["/og.png"],
   },
 };
 
