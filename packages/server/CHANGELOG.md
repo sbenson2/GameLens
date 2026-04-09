@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.8] - 2026-04-09
+
 ### Added
+- **Session workflow orchestrator** — `project` tool gains `session` action for structured dev sessions (plan, build, debug, scope)
+- **`session` MCP prompt** — Guided entry point for structured dev sessions
+- **`clear_notes` action** on `project` tool — Clear saved notes
+- **29 new engine architecture modules** — babylonjs, bevy, construct, defold, excalibur, fna, gamemaker, gdevelop, godot, haxeflixel, heaps, kaplay, libgdx, love2d, macroquad, monogame, phaser, pixijs, playcanvas, pygame, raylib, renpy, rpgmaker, sdl3, sfml, stride, threejs, unity, unreal
+- **957 total knowledge base docs** (up from 147+), 52 core + 905 engine-specific
 - **Godot docs:**
   - `G12` Shaders & Visual Effects (~68KB) — Shader language fundamentals, 2D shaders (dissolve, outline, water, CRT), VisualShaders, particles (GPU/CPU), screen-space effects, shader parameters, performance optimization
   - `G13` Networking & Multiplayer (~47KB) — High-level multiplayer API, RPCs, spawner/synchronizer nodes, lobby system, client-side prediction, state sync, dedicated servers, WebSocket fallback
@@ -17,12 +24,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `E9` Solo Dev Playbook expanded (15KB → 49KB) — 20 sections, AI-assisted workflows, testing strategies, version control, health/burnout, community building, launch timing
 
 ### Changed
-- 190 tests, all passing (up from 187)
-- README updated: 147+ docs, 16 Godot docs (80% milestone), 190 tests, security section added
+- Guidance-first personality, all-game-devs positioning
+- 300 tests, all passing (up from 190)
 - Godot module at 80% completion (16/20 planned docs) — up from 60%
 - Average Godot genre coverage now ~71% (up from ~47%)
+- Consolidated from 22 tools to 5 power tools with action routing
+- Migrated from GitHub to GitLab (`sbenson2/GameCodex`)
 
 ### Fixed
+- Documentation drift: `project` tool actions, MCP prompts, and test counts now match codebase
 - Doc audit #6: 7 issues across 5 docs — broken E3 links in Godot E1, P13/P1 title numbering, 8 outdated GitHub Actions versions, godot-rules.md missing cross-references, E2 Nez Dropped missing theory links
 
 ## [1.3.0] - 2026-03-24

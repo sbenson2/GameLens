@@ -1,13 +1,13 @@
 # GameCodex Monorepo
 
-Game dev AI assistant — MCP server with 150+ docs, structured workflows, and guidance for game developers.
+Game dev AI assistant — MCP server with 950+ docs across 29 engines, structured workflows, and guidance for game developers.
 
 ## Monorepo Structure
 
 ```
 GameCodex/
 ├── packages/
-│   ├── server/    <- MCP server (5 tools, 150+ docs)
+│   ├── server/    <- MCP server (5 tools, 950+ docs, 29 engines)
 │   └── site/      <- Marketing site (Next.js)
 ├── package.json   <- npm workspaces root
 └── CLAUDE.md      <- This file
@@ -24,7 +24,7 @@ npm run dev            # server watch mode
 npm run dev:site       # site dev server
 npm start              # start MCP server
 npm run typecheck      # tsc --noEmit on server
-npm test               # run all tests (270 passing)
+npm test               # run all tests (300 passing)
 npm run lint:site      # eslint on site
 ```
 
@@ -37,20 +37,20 @@ npm run lint:site      # eslint on site
 - **Handler utilities:** `src/tools/` — existing handler functions delegated to by the 5 tools
 - **Core systems:** `src/core/` — personality, project-store, health-tracker, search, docs, modules, vector search, error-helpers, response-enhancer, help-generator
 - **Tiers/licensing:** `src/tiers.ts`, `src/license.ts`
-- **Knowledge base:** `docs/` — core (52), monogame-arch (80), godot-arch (18)
+- **Knowledge base:** `docs/` — core (52) + 29 engine modules (957 total docs)
 - **Config dir:** `~/.gamecodex/` (projects, embeddings, learning progress)
 
-### Tool Inventory (v0.3.7 — 5 tools)
+### Tool Inventory (v0.3.8 — 5 tools)
 
 | Tool | Actions | What it does |
 |------|---------|-------------|
-| `project` | help, hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list | Interactive AI assistant — onboarding, project state, goals, decisions, scope health. Personality adapts to genre/phase. |
+| `project` | help, hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, clear_notes, health, scope, add_feature, list, session | Interactive AI assistant — onboarding, project state, goals, decisions, scope health. Personality adapts to genre/phase. |
 | `design` | help, gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
-| `docs` | help, search, get, browse, modules | Knowledge base — search/browse 150+ game dev docs |
+| `docs` | help, search, get, browse, modules | Knowledge base — search/browse 950+ game dev docs across 29 engines |
 | `build` | help, scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
 | `meta` | help, status, analytics, license, modules, health, about | Server internals — diagnostics, license info, help |
 
-### Core Modules (v0.3.7)
+### Core Modules (v0.3.8)
 
 - `core/personality.ts` — Template-based tone engine (13 genre tones, phase emphasis)
 - `core/project-store.ts` — Unified persistence (JSON files at ~/.gamecodex/projects/)
@@ -70,6 +70,7 @@ npm run lint:site      # eslint on site
 - `start-project` — Guided new project setup (engine → GDD → goals → suggest)
 - `debug-error` — Error diagnosis workflow (debug → docs search → fix)
 - `ship-game` — Launch checklist (launch → store page → marketing → pricing)
+- `session` — Start structured dev session (plan, build, debug, or manage scope)
 
 ### Adding a New Tool
 
@@ -90,11 +91,11 @@ npm run lint:site      # eslint on site
 - Tool results return structured JSON, not prose
 - Generated code includes educational comments explaining WHY
 - Never hallucinate engine APIs — reference knowledge base docs
-- Support MonoGame, Godot, and Phaser consistently
+- Support all 29 engines consistently (MonoGame, Godot, Unity, Unreal, Bevy, and more)
 - Keep tool count at 5 — add actions, not tools
 - Each tool = one domain, `action` param for routing
 
 ## Blockers
 
 - Migrated from GitHub (`sbenson2`, suspended) to GitLab (`sbenson2/GameCodex`)
-- npm publish ready (CI configured with OIDC) — needs `git tag v0.3.7` + manual trigger in GitLab CI
+- npm publish ready (CI configured with OIDC) — needs `git tag v0.3.8` + manual trigger in GitLab CI

@@ -71,7 +71,7 @@ const TOOL_HELP: Record<string, ToolHelpDef> = {
     ],
   },
   docs: {
-    description: "150+ curated game dev docs — search, read, browse",
+    description: "950+ curated game dev docs — search, read, browse",
     actions: [
       { name: "search", description: "Search the knowledge base", required: ["query"], optional: ["category", "module", "engine", "crossEngine"], example: 'docs(action: "search", query: "collision detection")' },
       { name: "get", description: "Fetch a full doc by ID", required: ["id"], optional: ["section", "maxLength"], example: 'docs(action: "get", id: "G52")' },

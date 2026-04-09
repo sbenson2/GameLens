@@ -46,7 +46,7 @@ export const metaToolDef: GameCodexToolDef = {
       output += `| **Plan** | GDD, design pillars, scope management, phase checklists |\n`;
       output += `| **Build** | Code generation, project scaffolding, architecture patterns |\n`;
       output += `| **Debug** | Error diagnosis, knowledge-base-backed solutions |\n`;
-      output += `| **Learn** | 150+ guides on game systems, engines, and best practices |\n`;
+      output += `| **Learn** | ${deps.allDocs.length}+ guides on game systems, engines, and best practices |\n`;
       output += `| **Ship** | Launch checklists, store pages, marketing, pricing |\n\n`;
       output += `## Quick starts\n\n`;
       output += `Your AI tool may offer these as slash commands:\n`;
@@ -54,7 +54,12 @@ export const metaToolDef: GameCodexToolDef = {
       output += `- \`/debug-error\` — diagnose an error\n`;
       output += `- \`/ship-game\` — launch preparation\n`;
       output += `- \`/session\` — structured workflow (plan, decide, build, debug, scope)\n\n`;
-      output += `**Engines:** MonoGame, Godot, Phaser · **Knowledge base:** ${deps.allDocs.length} docs\n`;
+      const topEngines = deps.discoveredModules.slice(0, 5).map((m: any) => m.engine);
+      const moreCount = deps.discoveredModules.length - 5;
+      const engineStr = moreCount > 0
+        ? `${topEngines.join(", ")} + ${moreCount} more`
+        : topEngines.join(", ");
+      output += `**Engines:** ${engineStr} · **Knowledge base:** ${deps.allDocs.length} docs\n`;
       return { content: [{ type: "text", text: output }] };
     }
 

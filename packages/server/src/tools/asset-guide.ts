@@ -1,6 +1,6 @@
-type ToolResult = { content: Array<{ type: "text"; text: string }> };
+import { resolveEngineKey, getEngineLabel } from "../core/modules.js";
 
-type Engine = "monogame" | "godot" | "phaser";
+type ToolResult = { content: Array<{ type: "text"; text: string }> };
 
 interface AssetGuideEntry {
   naming: string;
@@ -15,7 +15,7 @@ interface SourceToolTips {
 }
 
 // Asset guides per engine
-const ASSET_GUIDES: Record<string, Record<Engine, AssetGuideEntry>> = {
+const ASSET_GUIDES: Record<string, Record<string, AssetGuideEntry>> = {
   sprite: {
     monogame: {
       naming: "PascalCase: `Player.png`, `EnemySlime.png`. Store in `Content/sprites/`.",
@@ -371,16 +371,7 @@ const SOURCE_TOOLS: Record<string, SourceToolTips> = {
 };
 
 const ASSET_TYPES = Object.keys(ASSET_GUIDES);
-const ENGINE_ALIASES: Record<string, Engine> = {
-  monogame: "monogame",
-  "monogame+arch": "monogame",
-  arch: "monogame",
-  godot: "godot",
-  godot4: "godot",
-  phaser: "phaser",
-  phaser3: "phaser",
-  html5: "phaser",
-};
+const CURATED_ENGINES = ["monogame", "godot", "phaser"];
 
 /**
  * asset_guide — Asset pipeline helper for game developers.
@@ -392,17 +383,7 @@ export function handleAssetGuide(args: {
   sourceTool?: string;
 }): ToolResult {
   const assetType = args.assetType.toLowerCase().trim().replace(/s$/, ""); // strip trailing 's'
-  const engineKey = args.engine.toLowerCase().replace(/\s+/g, "");
-  const resolvedEngine = ENGINE_ALIASES[engineKey];
-
-  if (!resolvedEngine) {
-    return {
-      content: [{
-        type: "text",
-        text: `Unknown engine "${args.engine}".\n\nSupported: monogame, godot, phaser (and aliases)`,
-      }],
-    };
-  }
+  const resolvedEngine = resolveEngineKey(args.engine);
 
   // Normalize asset type aliases
   const typeAliases: Record<string, string> = {
@@ -430,9 +411,9 @@ export function handleAssetGuide(args: {
   };
 
   const resolvedType = typeAliases[assetType] || assetType;
-  const guide = ASSET_GUIDES[resolvedType]?.[resolvedEngine];
 
-  if (!guide) {
+  // Check if asset type is valid
+  if (!ASSET_GUIDES[resolvedType]) {
     return {
       content: [{
         type: "text",
@@ -441,7 +422,30 @@ export function handleAssetGuide(args: {
     };
   }
 
-  const engineLabel = resolvedEngine === "monogame" ? "MonoGame" : resolvedEngine === "godot" ? "Godot" : "Phaser";
+  // Resolve engine — graceful fallback for non-curated engines
+  const engineForGuide = resolvedEngine && CURATED_ENGINES.includes(resolvedEngine) ? resolvedEngine : null;
+  const guide = engineForGuide ? ASSET_GUIDES[resolvedType]?.[engineForGuide] : null;
+  const engineLabel = resolvedEngine ? getEngineLabel(resolvedEngine) : args.engine;
+
+  if (!guide) {
+    return {
+      content: [{
+        type: "text",
+        text: `# Asset Guide: ${resolvedType} → ${engineLabel}\n\n` +
+          `No engine-specific asset guide for ${engineLabel} yet.\n\n` +
+          `**Detailed guides available for:** MonoGame, Godot, Phaser\n\n` +
+          `## General ${resolvedType} Tips\n\n` +
+          `- **Sprites/textures:** PNG, 32-bit RGBA, transparent background\n` +
+          `- **Audio SFX:** WAV 44.1kHz 16-bit for low latency\n` +
+          `- **Audio music:** OGG Vorbis for streaming/compression\n` +
+          `- **Tilemaps:** Use Tiled editor, export as JSON\n` +
+          `- **Fonts:** TTF/OTF for runtime rendering, bitmap fonts for performance\n` +
+          `- Name assets consistently using your engine's convention\n` +
+          `- Keep textures power-of-2 for GPU efficiency\n\n` +
+          `_Use \`docs(action: "search", query: "${resolvedType} asset pipeline", engine: "${args.engine}")\` to find engine-specific docs._`,
+      }],
+    };
+  }
 
   let output = `# Asset Guide: ${resolvedType} → ${engineLabel}\n\n`;
 

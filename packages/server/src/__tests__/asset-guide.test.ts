@@ -44,10 +44,10 @@ describe("asset_guide", () => {
     assert.ok(text.includes("Godot"), "Should resolve godot4 alias");
   });
 
-  it("should reject unknown engine", () => {
+  it("should return fallback for non-curated engine", () => {
     const result = handleAssetGuide({ assetType: "sprite", engine: "unity" });
     const text = result.content[0].text;
-    assert.ok(text.includes("Unknown engine"), "Should reject unknown engine");
+    assert.ok(text.includes("No engine-specific asset guide"), "Should show fallback for non-curated engine");
   });
 
   it("should reject unknown asset type", () => {
@@ -57,7 +57,7 @@ describe("asset_guide", () => {
     assert.ok(text.includes("Supported types"), "Should list supported types");
   });
 
-  it("should cover all asset types for all engines", () => {
+  it("should cover all asset types for all curated engines", () => {
     const types = ["sprite", "spritesheet", "audio", "tilemap", "font", "particle"];
     const engines = ["monogame", "godot", "phaser"];
     for (const engine of engines) {
@@ -66,6 +66,29 @@ describe("asset_guide", () => {
         const text = result.content[0].text;
         assert.ok(text.includes("Import Steps"), `${engine}/${assetType} should have import steps`);
       }
+    }
+  });
+
+  it("should return graceful fallback for non-curated engine", () => {
+    const result = handleAssetGuide({ assetType: "sprite", engine: "unity" });
+    const text = result.content[0].text;
+    assert.ok(text.includes("No engine-specific asset guide"), "Should show fallback, not error");
+    assert.ok(!text.includes("Unknown engine"), "Should NOT say unknown engine");
+    assert.ok(text.includes("General"), "Should include general tips");
+  });
+
+  it("should accept all 29 engines without crashing", () => {
+    const engines = [
+      "babylonjs", "bevy", "construct", "defold", "excalibur",
+      "fna", "gamemaker", "gdevelop", "godot", "haxeflixel",
+      "heaps", "kaplay", "libgdx", "love2d", "macroquad",
+      "monogame", "phaser", "pixijs", "playcanvas", "pygame",
+      "raylib", "renpy", "rpgmaker", "sdl3", "sfml",
+      "stride", "threejs", "unity", "unreal",
+    ];
+    for (const engine of engines) {
+      const result = handleAssetGuide({ assetType: "sprite", engine });
+      assert.ok(result.content[0].text.length > 0, `${engine} should return non-empty response`);
     }
   });
 });

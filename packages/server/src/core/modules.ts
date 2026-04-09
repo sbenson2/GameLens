@@ -21,19 +21,41 @@ export interface ModuleMetadata {
 }
 
 /** Known engine name mappings — maps directory name patterns to engine info */
-const ENGINE_MAP: Record<string, { engine: string; labelFallback: string }> = {
-  "godot": { engine: "Godot", labelFallback: "Godot" },
-  "monogame": { engine: "MonoGame", labelFallback: "MonoGame" },
-  "unity": { engine: "Unity", labelFallback: "Unity" },
+export const ENGINE_MAP: Record<string, { engine: string; labelFallback: string }> = {
+  "babylonjs": { engine: "Babylon.js", labelFallback: "Babylon.js" },
   "bevy": { engine: "Bevy", labelFallback: "Bevy" },
-  "unreal": { engine: "Unreal Engine", labelFallback: "Unreal Engine" },
+  "construct": { engine: "Construct", labelFallback: "Construct" },
   "defold": { engine: "Defold", labelFallback: "Defold" },
-  "stride": { engine: "Stride", labelFallback: "Stride" },
+  "excalibur": { engine: "Excalibur.js", labelFallback: "Excalibur.js" },
   "flax": { engine: "Flax Engine", labelFallback: "Flax Engine" },
+  "fna": { engine: "FNA", labelFallback: "FNA" },
+  "gamemaker": { engine: "GameMaker", labelFallback: "GameMaker" },
+  "gdevelop": { engine: "GDevelop", labelFallback: "GDevelop" },
+  "godot": { engine: "Godot", labelFallback: "Godot" },
+  "haxeflixel": { engine: "HaxeFlixel", labelFallback: "HaxeFlixel" },
+  "heaps": { engine: "Heaps", labelFallback: "Heaps" },
+  "kaplay": { engine: "Kaplay", labelFallback: "Kaplay" },
+  "libgdx": { engine: "libGDX", labelFallback: "libGDX" },
+  "love2d": { engine: "Love2D", labelFallback: "Love2D" },
+  "macroquad": { engine: "Macroquad", labelFallback: "Macroquad" },
+  "monogame": { engine: "MonoGame", labelFallback: "MonoGame" },
+  "phaser": { engine: "Phaser", labelFallback: "Phaser" },
+  "pixijs": { engine: "PixiJS", labelFallback: "PixiJS" },
+  "playcanvas": { engine: "PlayCanvas", labelFallback: "PlayCanvas" },
+  "pygame": { engine: "Pygame", labelFallback: "Pygame" },
+  "raylib": { engine: "raylib", labelFallback: "raylib" },
+  "renpy": { engine: "Ren'Py", labelFallback: "Ren'Py" },
+  "rpgmaker": { engine: "RPG Maker", labelFallback: "RPG Maker" },
+  "sdl3": { engine: "SDL3", labelFallback: "SDL3" },
+  "sfml": { engine: "SFML", labelFallback: "SFML" },
+  "stride": { engine: "Stride", labelFallback: "Stride" },
+  "threejs": { engine: "Three.js", labelFallback: "Three.js" },
+  "unity": { engine: "Unity", labelFallback: "Unity" },
+  "unreal": { engine: "Unreal Engine", labelFallback: "Unreal Engine" },
 };
 
 /** Extract the engine name from a module directory name */
-function detectEngine(moduleId: string): { engine: string; labelFallback: string } {
+export function detectEngine(moduleId: string): { engine: string; labelFallback: string } {
   const lower = moduleId.toLowerCase();
   for (const [pattern, info] of Object.entries(ENGINE_MAP)) {
     if (lower.includes(pattern)) return info;
@@ -213,4 +235,50 @@ export function resolveActiveModules(
     requested.includes(m.id.toLowerCase()) ||
     requested.includes(m.engine.toLowerCase())
   );
+}
+
+/** Get human-readable engine label from an engine key or module ID */
+export function getEngineLabel(engineKeyOrModuleId: string): string {
+  return detectEngine(engineKeyOrModuleId).engine;
+}
+
+/** Common engine aliases — maps user input to canonical engine keys */
+const ENGINE_ALIASES: Record<string, string> = {
+  // Curated engines with aliases
+  monogame: "monogame", "monogame+arch": "monogame", arch: "monogame",
+  godot: "godot", godot4: "godot",
+  phaser: "phaser", phaser3: "phaser", html5: "phaser",
+  // All engines (canonical key = self)
+  babylonjs: "babylonjs", babylon: "babylonjs",
+  bevy: "bevy",
+  construct: "construct", construct3: "construct",
+  defold: "defold",
+  excalibur: "excalibur",
+  fna: "fna",
+  gamemaker: "gamemaker",
+  gdevelop: "gdevelop",
+  haxeflixel: "haxeflixel",
+  heaps: "heaps",
+  kaplay: "kaplay",
+  libgdx: "libgdx",
+  love2d: "love2d", love: "love2d",
+  macroquad: "macroquad",
+  pixijs: "pixijs", pixi: "pixijs",
+  playcanvas: "playcanvas",
+  pygame: "pygame",
+  raylib: "raylib",
+  renpy: "renpy",
+  rpgmaker: "rpgmaker",
+  sdl3: "sdl3", sdl: "sdl3",
+  sfml: "sfml",
+  stride: "stride",
+  threejs: "threejs", three: "threejs",
+  unity: "unity",
+  unreal: "unreal", ue5: "unreal", ue4: "unreal",
+};
+
+/** Resolve user-provided engine string to canonical engine key */
+export function resolveEngineKey(input: string): string | null {
+  const key = input.toLowerCase().replace(/\s+/g, "");
+  return ENGINE_ALIASES[key] ?? null;
 }

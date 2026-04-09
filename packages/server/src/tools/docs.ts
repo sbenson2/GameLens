@@ -21,7 +21,7 @@ const CATEGORIES = [
 
 export const docsToolDef: GameCodexToolDef = {
   name: "docs",
-  description: "Use when: looking up how to do something, finding engine-specific patterns, searching best practices, browsing available knowledge. 150+ curated game dev docs on design, architecture, debugging, and engine patterns. Actions: search, get, browse, modules.",
+  description: "Use when: looking up how to do something, finding engine-specific patterns, searching best practices, browsing available knowledge. 950+ curated game dev docs on design, architecture, debugging, and engine patterns. Actions: search, get, browse, modules.",
   inputSchema: {
     action: z.enum(["help", "search", "get", "browse", "modules"]).describe(
       "search: keyword query (use when user asks 'how do I...' or needs to find a pattern) | get: fetch full doc by ID (use after search to read a specific doc) | browse: list/filter all docs | modules: list available engines and doc counts"
@@ -31,8 +31,8 @@ export const docsToolDef: GameCodexToolDef = {
     section: z.string().optional().describe("Extract specific section by heading (for 'get' action)"),
     maxLength: z.number().optional().describe("Max chars to return (for 'get' action)"),
     category: z.enum(CATEGORIES).optional().describe("Filter by category"),
-    module: z.string().optional().describe("Filter by module ID (e.g. 'core', 'monogame-arch', 'godot-arch')"),
-    engine: z.string().optional().describe("Filter by engine name (e.g. 'Godot', 'MonoGame')"),
+    module: z.string().optional().describe("Filter by module ID (e.g. 'core', 'godot-arch', 'unity-arch', 'bevy-arch')"),
+    engine: z.string().optional().describe("Filter by engine name (e.g. 'Godot', 'Unity', 'Bevy', 'Phaser')"),
     crossEngine: z.boolean().optional().describe("Group search results by engine"),
     summary: z.boolean().optional().describe("Compact output for browse"),
   },

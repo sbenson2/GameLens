@@ -103,7 +103,7 @@ export async function runSetup(): Promise<void> {
     // No key — fresh setup
     print("  You're currently on the free tier.");
     print("  Free gets you 18 tools + core docs (52 docs).");
-    print("  Pro ($5/mo) unlocks all 22 tools + all engine modules (150+ docs).");
+    print("  Pro ($5/mo) unlocks all engine modules (950+ docs across 29 engines).");
     print("");
     print("  Get a license key at: https://gamecodex.dev/pro");
     print("");
@@ -149,7 +149,7 @@ async function activateFlow(rl: readline.Interface): Promise<void> {
   if (result.valid) {
     saveLicenseKey(key);
     print("");
-    print("  Pro activated! All 22 tools and 150+ docs are now unlocked.");
+    print("  Pro activated! All 29 engine modules and 950+ docs are now unlocked.");
     print("  Key saved to ~/.gamecodex/license.json");
     print("");
   } else {

@@ -216,7 +216,7 @@ export class PersonalityEngine {
       "- **Build** — code generation, architecture patterns, asset pipelines",
       "- **Debug** — error diagnosis with knowledge-base-backed solutions",
       "- **Ship** — launch checklists, store pages, marketing, pricing",
-      "- **Learn** — 150+ game dev guides across engines and topics\n",
+      "- **Learn** — 950+ game dev guides across engines and topics\n",
       "To get started, just describe your game — engine, genre, and what phase you're in. Or jump straight to what you need.\n",
       "_Optional shortcuts: your AI tool may offer `/start-project`, `/debug-error`, `/ship-game`, or `/session` as workflow starters._",
     ].join("\n");

@@ -23,7 +23,7 @@ interface ParamInfo {
 const PARAM_REGISTRY: Record<string, Record<string, ParamInfo>> = {
   build: {
     engine: {
-      validValues: ["monogame", "godot", "phaser"],
+      validValues: ["monogame", "godot", "unity", "bevy", "unreal", "phaser", "and more — use docs(action: 'modules') for full list"],
       example: 'build(action: "scaffold", engine: "godot", name: "my-game")',
     },
     name: {

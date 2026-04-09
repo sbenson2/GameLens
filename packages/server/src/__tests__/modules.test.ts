@@ -24,6 +24,11 @@ describe("Module Auto-Discovery", () => {
     assert.ok(ids.includes("godot-arch"), "Should discover godot-arch");
   });
 
+  it("discovers all 29+ engine modules", () => {
+    const modules = discoverModules(docsRoot);
+    assert.ok(modules.length >= 29, `Expected at least 29 modules, got ${modules.length}`);
+  });
+
   it("does NOT include 'core' as a module", () => {
     const modules = discoverModules(docsRoot);
     const ids = modules.map((m) => m.id);
@@ -40,6 +45,22 @@ describe("Module Auto-Discovery", () => {
 
     assert.ok(godot, "godot-arch module should exist");
     assert.equal(godot.engine, "Godot");
+  });
+
+  it("resolves branded engine names correctly", () => {
+    const modules = discoverModules(docsRoot);
+    const byId = (id: string) => modules.find((m) => m.id === id);
+
+    assert.equal(byId("babylonjs-arch")?.engine, "Babylon.js");
+    assert.equal(byId("threejs-arch")?.engine, "Three.js");
+    assert.equal(byId("rpgmaker-arch")?.engine, "RPG Maker");
+    assert.equal(byId("renpy-arch")?.engine, "Ren'Py");
+    assert.equal(byId("pixijs-arch")?.engine, "PixiJS");
+    assert.equal(byId("sdl3-arch")?.engine, "SDL3");
+    assert.equal(byId("sfml-arch")?.engine, "SFML");
+    assert.equal(byId("libgdx-arch")?.engine, "libGDX");
+    assert.equal(byId("unity-arch")?.engine, "Unity");
+    assert.equal(byId("unreal-arch")?.engine, "Unreal Engine");
   });
 
   it("extracts labels from rules files", () => {

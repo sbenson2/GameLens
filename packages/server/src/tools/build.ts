@@ -22,7 +22,7 @@ export const buildToolDef: GameCodexToolDef = {
     action: z.enum(["help", "scaffold", "code", "assets", "debug", "review"]).describe(
       "scaffold: create project structure (use when user says 'new project' or 'start a game') | code: generate feature starter code (use when user wants to implement a feature) | assets: art/audio pipeline guide | debug: diagnose errors (use when user shares an error message) | review: architecture check (use when user shares project structure)"
     ),
-    engine: z.string().optional().describe("Engine: 'monogame', 'godot', or 'phaser'"),
+    engine: z.string().optional().describe("Engine: 'monogame', 'godot', 'unity', 'bevy', or any supported engine"),
     // scaffold
     name: z.string().optional().describe("Project name (for scaffold)"),
     // code

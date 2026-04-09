@@ -53,11 +53,11 @@ export function getTierFeatures(tier: Tier): {
       tools: {
         project: "AI assistant — onboarding, goals, decisions, scope health, personality",
         design: "GDD, phase checklists, scope analysis, marketing, launch, patterns",
-        docs: "All modules — search, get, browse 150+ docs",
+        docs: "All modules — search, get, browse 950+ docs",
         build: "Scaffold, starter code, asset pipeline, debug, architecture review",
         meta: "Server health, analytics, license info",
       },
-      modules: ["core", "monogame-arch", "godot-arch", "future premium modules"],
+      modules: ["core", "all engine modules (MonoGame, Godot, Unity, Unreal, Bevy, and 24 more)"],
       description: "Pro ($5/mo) — all tools and modules fully unlocked",
     };
   }

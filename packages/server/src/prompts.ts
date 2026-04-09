@@ -15,12 +15,12 @@ export function registerPrompts(server: McpServer): void {
     "start-project",
     "Start a new game project — engine selection, GDD, goals, and first steps",
     {
-      engine: z.string().optional().describe("Engine: godot, monogame, or phaser"),
+      engine: z.string().optional().describe("Engine: any supported engine (godot, unity, bevy, monogame, etc.)"),
       genre: z.string().optional().describe("Game genre (e.g., roguelike, platformer, RPG)"),
       name: z.string().optional().describe("Project name"),
     },
     async (args) => {
-      const engine = args.engine || "[ask the user which engine: godot, monogame, or phaser]";
+      const engine = args.engine || "[ask the user which engine they want to use]";
       const genre = args.genre || "[ask the user what genre]";
       const name = args.name || "[ask the user for a project name]";
 
@@ -56,7 +56,7 @@ export function registerPrompts(server: McpServer): void {
     "Diagnose a game dev error — analyze, search docs, suggest a fix",
     {
       error: z.string().describe("The error message or symptom"),
-      engine: z.string().optional().describe("Engine: godot, monogame, or phaser"),
+      engine: z.string().optional().describe("Engine: any supported engine (godot, unity, bevy, monogame, etc.)"),
       context: z.string().optional().describe("What you were doing when the error occurred"),
     },
     async (args) => {

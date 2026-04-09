@@ -78,7 +78,7 @@ describe("migration_guide", () => {
 
   it("handles unknown source engine", () => {
     const result = handleMigrationGuide(
-      { from: "GameMaker", to: "Godot" },
+      { from: "FakeEngine9000", to: "Godot" },
       docStore, searchEngine, modulesMeta
     );
 

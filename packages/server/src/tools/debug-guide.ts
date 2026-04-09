@@ -1,10 +1,9 @@
 import { DocStore } from "../core/docs.js";
 import { SearchEngine } from "../core/search.js";
 import { HybridSearchEngine } from "../core/hybrid-search.js";
+import { resolveEngineKey, getEngineLabel } from "../core/modules.js";
 
 type ToolResult = { content: Array<{ type: "text"; text: string }> };
-
-type Engine = "monogame" | "godot" | "phaser";
 
 interface DebugEntry {
   pattern: RegExp;
@@ -15,8 +14,9 @@ interface DebugEntry {
   relatedDocs: string[];
 }
 
-// Common issues indexed by engine, matched by error/symptom pattern
-const COMMON_ISSUES: Record<Engine, DebugEntry[]> = {
+// Curated common issues for engines with detailed debug entries
+const CURATED_ENGINES = ["monogame", "godot", "phaser"] as const;
+const COMMON_ISSUES: Record<string, DebugEntry[]> = {
   monogame: [
     {
       pattern: /null\s*ref|nullreference|object reference/i,
@@ -378,16 +378,7 @@ const COMMON_ISSUES: Record<Engine, DebugEntry[]> = {
   ],
 };
 
-const ENGINE_ALIASES: Record<string, Engine> = {
-  monogame: "monogame",
-  "monogame+arch": "monogame",
-  arch: "monogame",
-  godot: "godot",
-  godot4: "godot",
-  phaser: "phaser",
-  phaser3: "phaser",
-  html5: "phaser",
-};
+// Engine alias resolution now uses shared resolveEngineKey() from modules.ts
 
 const GENERAL_DEBUG_TIPS = [
   "**Isolate the problem:** Comment out systems until the bug disappears, then narrow down",
@@ -412,18 +403,20 @@ export async function handleDebugGuide(
     return { content: [{ type: "text", text: "Please describe the error or symptom you're seeing." }] };
   }
 
-  const engineKey = args.engine?.toLowerCase().replace(/\s+/g, "") || "";
-  const resolvedEngine = ENGINE_ALIASES[engineKey];
+  const resolvedEngine = args.engine ? resolveEngineKey(args.engine) : null;
 
   let output = `# Debug Guide\n\n`;
   output += `**Error/Symptom:** ${errorText}\n`;
-  if (resolvedEngine) output += `**Engine:** ${resolvedEngine}\n`;
+  if (resolvedEngine) output += `**Engine:** ${getEngineLabel(resolvedEngine)}\n`;
   if (args.context) output += `**Context:** ${args.context}\n`;
   output += `\n`;
 
-  // Try to match against known issues
-  const engines: Engine[] = resolvedEngine ? [resolvedEngine] : ["monogame", "godot", "phaser"];
-  const matches: Array<{ engine: Engine; entry: DebugEntry; priority: number }> = [];
+  // Try to match against curated known issues
+  const hasCurated = resolvedEngine && (CURATED_ENGINES as readonly string[]).includes(resolvedEngine);
+  const engines: string[] = resolvedEngine
+    ? (hasCurated ? [resolvedEngine] : [])
+    : [...CURATED_ENGINES];
+  const matches: Array<{ engine: string; entry: DebugEntry; priority: number }> = [];
 
   for (const eng of engines) {
     const issues = COMMON_ISSUES[eng] || [];
@@ -445,7 +438,7 @@ export async function handleDebugGuide(
 
     for (const match of shown) {
       const { engine: eng, entry } = match;
-      const engineLabel = eng === "monogame" ? "MonoGame" : eng === "godot" ? "Godot" : "Phaser";
+      const engineLabel = getEngineLabel(eng);
 
       output += `## ${entry.title} (${engineLabel})\n\n`;
 

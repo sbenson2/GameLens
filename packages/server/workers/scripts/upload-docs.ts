@@ -21,14 +21,44 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DOCS_ROOT = path.resolve(__dirname, "../../docs");
 const FREE_MODULES = ["core"];
-const ACTIVE_MODULES = ["core", "monogame-arch", "godot-arch"];
 
-/** Map module IDs to engine labels */
+// Auto-discover all engine modules from docs directory
+const engineDirs = fs.readdirSync(DOCS_ROOT, { withFileTypes: true })
+  .filter(e => e.isDirectory() && e.name !== "core" && !e.name.startsWith("."))
+  .map(e => e.name);
+const ACTIVE_MODULES = ["core", ...engineDirs];
+
+/** Map module IDs to engine labels — must match ENGINE_MAP in src/core/modules.ts */
 const ENGINE_MAP: Record<string, string> = {
-  "monogame-arch": "MonoGame",
-  "godot-arch": "Godot",
+  "babylonjs-arch": "Babylon.js",
   "bevy-arch": "Bevy",
+  "construct-arch": "Construct",
+  "defold-arch": "Defold",
+  "excalibur-arch": "Excalibur.js",
+  "fna-arch": "FNA",
+  "gamemaker-arch": "GameMaker",
+  "gdevelop-arch": "GDevelop",
+  "godot-arch": "Godot",
+  "haxeflixel-arch": "HaxeFlixel",
+  "heaps-arch": "Heaps",
+  "kaplay-arch": "Kaplay",
+  "libgdx-arch": "libGDX",
+  "love2d-arch": "Love2D",
+  "macroquad-arch": "Macroquad",
+  "monogame-arch": "MonoGame",
+  "phaser-arch": "Phaser",
+  "pixijs-arch": "PixiJS",
+  "playcanvas-arch": "PlayCanvas",
+  "pygame-arch": "Pygame",
+  "raylib-arch": "raylib",
+  "renpy-arch": "Ren'Py",
+  "rpgmaker-arch": "RPG Maker",
+  "sdl3-arch": "SDL3",
+  "sfml-arch": "SFML",
+  "stride-arch": "Stride",
+  "threejs-arch": "Three.js",
   "unity-arch": "Unity",
+  "unreal-arch": "Unreal Engine",
 };
 
 interface DocEntry {

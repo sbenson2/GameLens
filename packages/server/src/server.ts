@@ -1,5 +1,5 @@
 /**
- * GameCodex MCP Server v0.3.7 — 5 power tools for game developers.
+ * GameCodex MCP Server v0.3.8 — 5 power tools for game developers.
  *
  * Tools: project (brain), design (plan+ship), docs (knowledge), build (make), meta (internals)
  */
@@ -41,7 +41,7 @@ import { ToolDependencies } from "./tool-definition.js";
 // Prompts
 import { registerPrompts } from "./prompts.js";
 
-const SERVER_VERSION = "0.3.7";
+const SERVER_VERSION = "0.3.8";
 
 // ---- Helpers ----
 
