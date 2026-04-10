@@ -109,6 +109,11 @@ export interface ToolDependencies {
   projectStore: any;     // ProjectStore (unified persistence)
   personality: any;      // PersonalityEngine (tone/personality)
   healthTracker: any;    // HealthTracker (scope/pace/burnout)
+  licenseInfo?: {
+    expiresAt?: string;
+    activationLimit?: number;
+    activationsUsed?: number;
+  };
 }
 
 // ---- Built tool (with defaults applied) ----

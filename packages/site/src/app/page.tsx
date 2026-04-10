@@ -391,7 +391,7 @@ export default function Home() {
               <div className="pricing-card pricing-card-pro">
                 <div className="pricing-badge">Most Popular</div>
                 <div className="pricing-tier">Pro</div>
-                <div className="pricing-price">$5<span className="pricing-period">/month</span></div>
+                <div className="pricing-price">$7<span className="pricing-period">/month</span></div>
                 <p className="pricing-desc">Everything in Free, plus the tools that turn knowledge into running games.</p>
                 <ul className="pricing-features">
                   <li className="pricing-feature pricing-included">Everything in Free</li>

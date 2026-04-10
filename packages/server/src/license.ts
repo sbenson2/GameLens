@@ -15,7 +15,9 @@ import * as path from "path";
 import * as os from "os";
 import * as https from "https";
 import * as crypto from "crypto";
-import { Tier } from "./tiers.js";
+import { Tier, UPGRADE_URL } from "./tiers.js";
+
+const SUPPORT_EMAIL = "support@gamecodex.dev";
 
 const CONFIG_DIR = path.join(
   process.env.HOME ?? process.env.USERPROFILE ?? "~",
@@ -33,8 +35,8 @@ const OFFLINE_GRACE_MS = 7 * 24 * 60 * 60 * 1000;  // 7 days
 
 // LemonSqueezy store verification — set once store is created
 // These prevent someone from using a key from a different LS store
-const EXPECTED_STORE_ID: number | null = null;      // Set after store creation
-const EXPECTED_PRODUCT_ID: number | null = null;     // Set after product creation
+const EXPECTED_STORE_ID: number | null = 341414;
+const EXPECTED_PRODUCT_ID: number | null = 962154;
 
 // Brute-force throttling constants
 const MAX_CONSECUTIVE_FAILURES = 5;
@@ -50,6 +52,7 @@ interface CacheEntry {
   keyHash: string;        // SHA-256 hash of the license key (never store plaintext)
   validatedAt: number;    // epoch ms
   instanceId: string;     // machine instance for activation binding
+  signature: string;      // HMAC-SHA256 to prevent manual cache tampering
   activationLimit?: number;
   activationsUsed?: number;
   expiresAt?: string;     // ISO date if subscription has end date
@@ -81,7 +84,7 @@ function hashKey(key: string): string {
 }
 
 /** Get a stable machine instance name for license activation */
-function getMachineId(): string {
+export function getMachineId(): string {
   const hostname = os.hostname() || "unknown";
   const username = os.userInfo().username || "user";
   const platform = os.platform();
@@ -180,6 +183,36 @@ function isThrottled(): { throttled: boolean; retryAfterMs: number } {
 
 // --- Cache management ---
 
+/** Derive a machine-specific secret for HMAC cache signing */
+function getCacheSecret(): string {
+  return crypto.createHash("sha256").update(getMachineId() + "gamecodex-cache-v1").digest("hex");
+}
+
+/** Compute HMAC-SHA256 signature for a cache entry (excludes the signature field itself) */
+function signCacheEntry(entry: Omit<CacheEntry, "signature">): string {
+  const payload = JSON.stringify({
+    valid: entry.valid,
+    keyHash: entry.keyHash,
+    validatedAt: entry.validatedAt,
+    instanceId: entry.instanceId,
+    activationLimit: entry.activationLimit,
+    activationsUsed: entry.activationsUsed,
+    expiresAt: entry.expiresAt,
+  });
+  return crypto.createHmac("sha256", getCacheSecret()).update(payload).digest("hex");
+}
+
+/** Verify HMAC signature on a cache entry */
+function verifyCacheSignature(entry: CacheEntry): boolean {
+  const expected = signCacheEntry(entry);
+  // Timing-safe comparison to prevent timing attacks
+  try {
+    return crypto.timingSafeEqual(Buffer.from(entry.signature, "hex"), Buffer.from(expected, "hex"));
+  } catch {
+    return false;
+  }
+}
+
 /** Validate that a parsed JSON object has the required CacheEntry shape */
 export function isValidCacheShape(data: unknown): data is CacheEntry {
   if (data === null || typeof data !== "object") return false;
@@ -189,6 +222,7 @@ export function isValidCacheShape(data: unknown): data is CacheEntry {
     typeof obj.keyHash === "string" &&
     typeof obj.validatedAt === "number" &&
     typeof obj.instanceId === "string" &&
+    typeof obj.signature === "string" &&
     // Optional fields: must be correct type if present
     (obj.activationLimit === undefined || typeof obj.activationLimit === "number") &&
     (obj.activationsUsed === undefined || typeof obj.activationsUsed === "number") &&
@@ -207,6 +241,11 @@ function readCache(key: string): CacheEntry | null {
       return null;
     }
     if (data.keyHash !== hashKey(key)) return null;
+    // Verify HMAC — rejects manually crafted cache files
+    if (!verifyCacheSignature(data)) {
+      try { fs.unlinkSync(CACHE_PATH); } catch { /* non-fatal */ }
+      return null;
+    }
     return data;
   } catch {
     return null;
@@ -214,10 +253,11 @@ function readCache(key: string): CacheEntry | null {
 }
 
 /** Write validation result to cache */
-function writeCache(entry: CacheEntry): void {
+function writeCache(entry: Omit<CacheEntry, "signature">): void {
   try {
     ensureConfigDir();
-    fs.writeFileSync(CACHE_PATH, JSON.stringify(entry, null, 2), { mode: 0o600 });
+    const signed: CacheEntry = { ...entry, signature: signCacheEntry(entry) };
+    fs.writeFileSync(CACHE_PATH, JSON.stringify(signed, null, 2), { mode: 0o600 });
   } catch {
     // Cache write failure is non-fatal
   }
@@ -417,19 +457,27 @@ export function deactivateLicense(key: string, instanceId: string): Promise<Vali
   });
 }
 
-/** Full license validation flow with caching, throttling, and offline grace period */
-export async function validateLicense(): Promise<{
+/** Format an expiry date as a human-readable renewal message */
+function formatExpiryMessage(expiresAt: string): string {
+  const daysUntilExpiry = (new Date(expiresAt).getTime() - Date.now()) / (86400 * 1000);
+  if (daysUntilExpiry <= 0) {
+    return ` — subscription expired, renew at ${UPGRADE_URL}`;
+  } else if (daysUntilExpiry <= 3) {
+    return ` — renews in ${Math.ceil(daysUntilExpiry)} day(s)`;
+  }
+  return ` — renews ${new Date(expiresAt).toLocaleDateString()}`;
+}
+
+export interface LicenseResult {
   tier: Tier;
   message: string;
-}> {
-  // Dev mode: skip remote validation (no key required)
-  if (process.env.GAMECODEX_DEV === "true") {
-    return {
-      tier: "pro",
-      message: "[gamecodex] License: Pro (dev mode)",
-    };
-  }
+  expiresAt?: string;
+  activationLimit?: number;
+  activationsUsed?: number;
+}
 
+/** Full license validation flow with caching, throttling, and offline grace period */
+export async function validateLicense(): Promise<LicenseResult> {
   const key = getLicenseKey();
 
   if (!key) {
@@ -440,7 +488,7 @@ export async function validateLicense(): Promise<{
   if (!isValidKeyFormat(key)) {
     return {
       tier: "free",
-      message: "[gamecodex] License: invalid key format (expected UUID) — running in free tier",
+      message: `[gamecodex] License: invalid key format (expected UUID) — running in free tier. Need help? ${SUPPORT_EMAIL}`,
     };
   }
 
@@ -454,6 +502,9 @@ export async function validateLicense(): Promise<{
       return {
         tier: "pro",
         message: "[gamecodex] License: Pro (cached, validation throttled)",
+        expiresAt: cached.expiresAt,
+        activationLimit: cached.activationLimit,
+        activationsUsed: cached.activationsUsed,
       };
     }
     const retrySeconds = Math.ceil(throttle.retryAfterMs / 1000);
@@ -479,12 +530,17 @@ export async function validateLicense(): Promise<{
         return {
           tier: "pro",
           message: "[gamecodex] License: Pro (valid, cached)",
+          expiresAt: cached.expiresAt,
+          activationLimit: cached.activationLimit,
+          activationsUsed: cached.activationsUsed,
         };
       }
     } else {
       return {
         tier: "pro",
         message: "[gamecodex] License: Pro (valid, cached)",
+        activationLimit: cached.activationLimit,
+        activationsUsed: cached.activationsUsed,
       };
     }
   }
@@ -496,7 +552,7 @@ export async function validateLicense(): Promise<{
     // Got a definitive answer from the API
     if (result.valid) {
       recordSuccess();
-      const entry: CacheEntry = {
+      writeCache({
         valid: true,
         keyHash: hashKey(key),
         validatedAt: now,
@@ -504,48 +560,53 @@ export async function validateLicense(): Promise<{
         activationLimit: result.activationLimit,
         activationsUsed: result.activationsUsed,
         expiresAt: result.expiresAt,
-      };
-      writeCache(entry);
+      });
 
       let msg = "[gamecodex] License: Pro (valid)";
       if (result.expiresAt) {
-        msg += ` — renews ${new Date(result.expiresAt).toLocaleDateString()}`;
+        msg += formatExpiryMessage(result.expiresAt);
       }
-      return { tier: "pro", message: msg };
+      return {
+        tier: "pro",
+        message: msg,
+        expiresAt: result.expiresAt,
+        activationLimit: result.activationLimit,
+        activationsUsed: result.activationsUsed,
+      };
     } else {
       recordFailure();
       // Clear cache on definitive invalid response
-      const entry: CacheEntry = {
+      writeCache({
         valid: false,
         keyHash: hashKey(key),
         validatedAt: now,
         instanceId,
-      };
-      writeCache(entry);
+      });
 
       return {
         tier: "free",
-        message: `[gamecodex] License: ${result.error ?? "invalid key"} — running in free tier`,
+        message: `[gamecodex] License: ${result.error ?? "invalid key"} — running in free tier. Need help? ${SUPPORT_EMAIL}`,
       };
     }
   }
 
-  // Network error — log the specific error for debugging
-  if (result.error) {
-    console.error(`[gamecodex] License validation failed: ${result.error}`);
-  }
+  // Network error — log without exposing key details
+  console.error("[gamecodex] License validation failed (network or API error)");
 
   // Network error — check if cached result is within offline grace period
   if (cached && cached.valid && now - cached.validatedAt < OFFLINE_GRACE_MS) {
     return {
       tier: "pro",
       message: "[gamecodex] License: Pro (offline, cached)",
+      expiresAt: cached.expiresAt,
+      activationLimit: cached.activationLimit,
+      activationsUsed: cached.activationsUsed,
     };
   }
 
   // No valid cache or cache too old
   return {
     tier: "free",
-    message: "[gamecodex] License: could not validate — running in free tier",
+    message: `[gamecodex] License: could not validate — running in free tier. Need help? ${SUPPORT_EMAIL}`,
   };
 }

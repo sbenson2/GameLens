@@ -68,6 +68,24 @@ export const metaToolDef: GameCodexToolDef = {
       let output = `# License Info\n\n`;
       output += `**Tier:** ${deps.tier === "pro" ? "Pro" : "Free"}\n`;
       output += `**Description:** ${features.description}\n\n`;
+
+      // Show subscription details for Pro users
+      if (deps.tier === "pro" && deps.licenseInfo) {
+        output += `## Subscription\n\n`;
+        if (deps.licenseInfo.expiresAt) {
+          const expiryDate = new Date(deps.licenseInfo.expiresAt);
+          const daysLeft = Math.ceil((expiryDate.getTime() - Date.now()) / (86400 * 1000));
+          output += `- **Renews:** ${expiryDate.toLocaleDateString()}`;
+          if (daysLeft <= 3) output += ` (${daysLeft} day${daysLeft !== 1 ? "s" : ""} left)`;
+          output += `\n`;
+        }
+        if (deps.licenseInfo.activationLimit) {
+          output += `- **Activations:** ${deps.licenseInfo.activationsUsed ?? 0} of ${deps.licenseInfo.activationLimit} used\n`;
+        }
+        output += `- **Deactivate:** run \`gamecodex deactivate\` to free a slot\n`;
+        output += `\n`;
+      }
+
       output += `## Tool Access\n\n`;
       for (const [tool, status] of Object.entries(features.tools)) {
         output += `- **${tool}**: ${status}\n`;
@@ -78,6 +96,7 @@ export const metaToolDef: GameCodexToolDef = {
       }
       if (deps.tier === "free") {
         output += `\n---\n**Upgrade:** ${UPGRADE_URL}\n`;
+        output += `Run \`gamecodex setup\` to activate a license key.\n`;
       }
       return { content: [{ type: "text", text: output }] };
     }

@@ -50,6 +50,7 @@ describe("Cache shape validation", () => {
     keyHash: "abc123def456",
     validatedAt: Date.now(),
     instanceId: "user@host (darwin/arm64)",
+    signature: "deadbeefcafe1234567890abcdef1234567890abcdef1234567890abcdef1234",
   };
 
   it("should accept a valid cache entry with required fields only", () => {
@@ -95,6 +96,15 @@ describe("Cache shape validation", () => {
 
   it("should reject when instanceId is not string", () => {
     assert.ok(!isValidCacheShape({ ...validEntry, instanceId: null }));
+  });
+
+  it("should reject when signature is missing (tamper protection)", () => {
+    const { signature, ...noSig } = validEntry;
+    assert.ok(!isValidCacheShape(noSig));
+  });
+
+  it("should reject when signature is not string", () => {
+    assert.ok(!isValidCacheShape({ ...validEntry, signature: 123 }));
   });
 
   it("should reject when optional fields have wrong types", () => {

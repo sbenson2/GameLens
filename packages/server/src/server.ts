@@ -41,7 +41,7 @@ import { ToolDependencies } from "./tool-definition.js";
 // Prompts
 import { registerPrompts } from "./prompts.js";
 
-const SERVER_VERSION = "0.3.9";
+const SERVER_VERSION = "0.4.0";
 
 // ---- Helpers ----
 
@@ -97,7 +97,13 @@ export async function createServer() {
   await hybridSearch.init(allDocs);
 
   // License
-  const { tier, message: licenseMessage } = await validateLicense();
+  const {
+    tier,
+    message: licenseMessage,
+    expiresAt: licenseExpiresAt,
+    activationLimit: licenseActivationLimit,
+    activationsUsed: licenseActivationsUsed,
+  } = await validateLicense();
 
   // Hybrid provider
   const apiUrl = process.env.GAMECODEX_API_URL || null;
@@ -131,7 +137,7 @@ export async function createServer() {
   // Record startup
   analytics.recordStartup({
     version: SERVER_VERSION,
-    tier: process.env.GAMECODEX_DEV === "true" ? "dev" : tier,
+    tier,
     startupTimeMs: Date.now() - startTime,
     discoveredModules: discoveredModules.length,
     activeModules: activeModuleMeta.length,
@@ -158,6 +164,11 @@ export async function createServer() {
     projectStore,
     personality,
     healthTracker,
+    licenseInfo: tier === "pro" ? {
+      expiresAt: licenseExpiresAt,
+      activationLimit: licenseActivationLimit,
+      activationsUsed: licenseActivationsUsed,
+    } : undefined,
   };
   registry.setDependencies(deps);
 

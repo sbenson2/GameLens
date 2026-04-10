@@ -11,6 +11,10 @@ SPEC.md
 # Godot docs (not ready yet)
 docs/godot-arch/
 
+# Source maps (never ship — exposes validation logic)
+*.js.map
+*.d.ts.map
+
 # Build artifacts & misc
 *.tsbuildinfo
 .DS_Store

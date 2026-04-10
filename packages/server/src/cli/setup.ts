@@ -102,8 +102,8 @@ export async function runSetup(): Promise<void> {
   } else {
     // No key — fresh setup
     print("  You're currently on the free tier.");
-    print("  Free gets you 18 tools + core docs (52 docs).");
-    print("  Pro ($5/mo) unlocks all engine modules (950+ docs across 29 engines).");
+    print("  Free gives you full access to docs (950+ guides across 29 engines) and diagnostics.");
+    print("  Pro ($7/mo) unlocks project management, GDD, code scaffolding, debug, and more.");
     print("");
     print("  Get a license key at: https://gamecodex.dev/pro");
     print("");
@@ -149,13 +149,13 @@ async function activateFlow(rl: readline.Interface): Promise<void> {
   if (result.valid) {
     saveLicenseKey(key);
     print("");
-    print("  Pro activated! All 29 engine modules and 950+ docs are now unlocked.");
+    print("  Pro activated! All 5 tools are now unlocked — project, design, docs, build, and meta.");
     print("  Key saved to ~/.gamecodex/license.json");
     print("");
   } else {
     print("");
     print(`  Activation failed: ${result.error ?? "unknown error"}`);
-    print("  Check your key and try again, or contact support.");
+    print("  Check your key and try again. Need help? support@gamecodex.dev");
     print("");
   }
 }

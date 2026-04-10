@@ -6,7 +6,9 @@ export type Tier = "free" | "pro";
 export type ToolAccess = "full" | "limited" | "denied";
 
 export const UPGRADE_URL = "https://gamecodex.dev/pro";
-export const PRO_GATE_MESSAGE = `This feature requires a Pro license. Get one at ${UPGRADE_URL}`;
+export const PRO_GATE_MESSAGE =
+  `This feature requires GameCodex Pro ($7/mo). ` +
+  `Get a license at ${UPGRADE_URL}, then run \`gamecodex setup\` to activate.`;
 
 /** Which tools are available per tier (5 tools) */
 const TOOL_ACCESS: Record<Tier, Record<string, ToolAccess>> = {
@@ -31,6 +33,14 @@ const MODULE_ACCESS: Record<Tier, string[]> = {
   free: [], // empty = all modules (docs is fully free)
   pro: [], // empty = all modules
 };
+
+// Prevent runtime mutation of access tables
+Object.freeze(TOOL_ACCESS);
+Object.freeze(TOOL_ACCESS.free);
+Object.freeze(TOOL_ACCESS.pro);
+Object.freeze(MODULE_ACCESS);
+Object.freeze(MODULE_ACCESS.free);
+Object.freeze(MODULE_ACCESS.pro);
 
 export function isToolAllowed(tier: Tier, tool: string): ToolAccess {
   const access = TOOL_ACCESS[tier]?.[tool];
@@ -59,7 +69,7 @@ export function getTierFeatures(tier: Tier): {
         meta: "Server health, analytics, license info",
       },
       modules: ["core", "all engine modules (MonoGame, Godot, Unity, Unreal, Bevy, and 24 more)"],
-      description: "Pro ($5/mo) — all tools and modules fully unlocked",
+      description: "Pro ($7/mo) — all tools and modules fully unlocked",
     };
   }
 
