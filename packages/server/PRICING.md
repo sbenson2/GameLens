@@ -6,24 +6,24 @@
 
 ### Free — $0/forever
 
-Everything you need to evaluate and use core game dev knowledge:
+The full knowledge base, no restrictions:
 
-- **Unlimited** searches and doc fetches within the core module
-- Full access to `list_docs`, `search_docs`, `get_doc` (core module)
+- **950+ docs** across all 29 engines — search, browse, and read everything
+- `docs` tool — unlimited searches, full doc access, all modules
+- `meta` tool — server diagnostics, module discovery, license info
 - Genre lookup with starter checklists
-- 18+ concept theory docs (camera, physics, pathfinding, networking, etc.)
-- Debug guide, starter code generation, project scaffolding, and more
+- 52 core docs (design patterns, architecture, programming fundamentals)
+- 905 engine-specific docs (MonoGame, Godot, Unity, Unreal, Bevy, and 24 more)
 
-### Pro — $5/mo
+### Pro — $7/mo
 
-Unlock everything. New docs, engines, and improvements ship continuously:
+Unlock the workflow tools that turn knowledge into action:
 
-- **All modules** — MonoGame + Arch ECS, Godot (growing), Unity (coming), Bevy (planned)
-- **150+ docs** and growing weekly — implementation guides, architecture deep-dives, system references
-- **Session co-pilot** — structured workflows for planning, debugging, feature design, scope management
-- **Full genre lookup** — complete system mappings with recommended doc references
-- **Architecture review** — project structure analysis with engine-specific checks
-- **Engine comparison & migration** — cross-engine topic comparison and migration guidance
+- **`project` tool** — goals, decisions, scope health, session workflows, project state
+- **`design` tool** — GDD generation, phase checklists, launch prep, marketing, architecture patterns
+- **`build` tool** — scaffold projects, generate code, asset pipeline, debug errors, review architecture
+- All free tier features included
+- New docs, engines, and improvements ship continuously
 - Priority support via GitLab Issues
 
 **Get Pro →** [gamecodex.lemonsqueezy.com](https://gamecodex.lemonsqueezy.com)
@@ -34,20 +34,11 @@ Unlock everything. New docs, engines, and improvements ship continuously:
 
 | Feature | Free | Pro |
 |---------|------|-----|
-| `list_docs` | All modules | All modules |
-| `search_docs` | Core only | All modules |
-| `get_doc` | Core only | All modules |
-| `session` (co-pilot) | — | Full access |
-| `compare_engines` | — | Full access |
-| `migration_guide` | — | Full access |
-| `review_architecture` | — | Full access |
-| `genre_lookup` | Genre + checklist | Full system mappings + doc refs |
-| `explain_concept` | Core docs | All modules |
-| `teach` | Core paths | All paths |
-| Core docs (design, patterns, concepts) | 52 docs | 52 docs |
-| MonoGame + Arch ECS module | — | 79+ guides |
-| Godot module | — | 16+ guides (growing) |
-| Future engine modules | — | Included |
+| `docs` — 950+ docs across 29 engines | Full | Full |
+| `meta` — diagnostics, license management | Full | Full |
+| `project` — goals, decisions, scope health | — | Full |
+| `design` — GDD, phases, marketing, launch | — | Full |
+| `build` — scaffold, code, debug, review | — | Full |
 
 ## Setting Up Your License
 
@@ -85,10 +76,10 @@ This walks you through activation interactively.
 ## FAQ
 
 **Can I use the free tier forever?**
-Yes. The free tier has no expiration and no daily limits. Core docs (engine-agnostic game dev knowledge) are always free.
+Yes. The free tier has no expiration and no daily limits. All 950+ docs across all 29 engines are always free.
 
 **Do I need a license key to use the server?**
 No. Without a key, the server runs in free tier automatically.
 
 **What MCP clients are supported?**
-Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible tool.
+Claude Code, Claude Desktop, Cursor, Windsurf, Cline, and any MCP-compatible tool.

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-04-09
+
+### Added
+- **Monetization launch** — $7/mo Pro tier via LemonSqueezy, license activation via `gamecodex setup`
+- **Security hardening** — SECURITY.md, stdio-only architecture documentation
+
+### Changed
+- Pro price set to $7/mo (up from $5, due to payment processor fee analysis)
+- License UX improvements — clearer activation flow, cached validation
+- 303 tests, all passing
+
 ## [0.3.9] - 2026-04-09
 
 ### Changed

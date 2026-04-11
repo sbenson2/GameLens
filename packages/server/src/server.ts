@@ -1,5 +1,5 @@
 /**
- * GameCodex MCP Server v0.3.9 — 5 power tools for game developers.
+ * GameCodex MCP Server v0.4.0 — 5 power tools for game developers.
  *
  * Tools: project (brain), design (plan+ship), docs (knowledge), build (make), meta (internals)
  */

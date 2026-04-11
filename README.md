@@ -100,7 +100,7 @@ git clone https://github.com/sbenson2/GameCodex.git
 cd GameCodex
 npm install
 npm run build
-npm test          # 300 tests
+npm test          # 303 tests
 npm run typecheck
 ```
 

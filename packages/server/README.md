@@ -104,11 +104,11 @@ GameCodex consolidates everything into 5 tools — one per domain, with an `acti
 
 | Tool | Actions | What it does |
 |------|---------|-------------|
-| **`project`** | hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, health, scope, add_feature, list, session | AI assistant — onboarding, project state, goals, decisions, scope health, session workflows |
-| **`design`** | gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
-| **`docs`** | search, get, browse, modules | Knowledge base — search/browse 950+ game dev docs across 29 engines |
-| **`build`** | scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
-| **`meta`** | status, analytics, license, modules, health, about | Server internals — diagnostics, license info, module discovery |
+| **`project`** | help, hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, clear_notes, health, scope, add_feature, list, session | AI assistant — onboarding, project state, goals, decisions, scope health, session workflows |
+| **`design`** | help, gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
+| **`docs`** | help, search, get, browse, modules | Knowledge base — search/browse 950+ game dev docs across 29 engines |
+| **`build`** | help, scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
+| **`meta`** | help, status, analytics, license, modules, health, about | Server internals — diagnostics, license info, module discovery |
 
 ### Context-Efficient by Design
 
@@ -189,7 +189,7 @@ git clone https://github.com/sbenson2/GameCodex.git
 cd GameCodex
 npm install
 npm run build
-npm test          # 300 tests, Node.js built-in test runner
+npm test          # 303 tests, Node.js built-in test runner
 npm run dev       # Watch mode
 ```
 
