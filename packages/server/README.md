@@ -237,6 +237,8 @@ Docs are also available as MCP resources for clients that support them:
 
 GameCodex uses **stdio-only transport** — no HTTP server, no open ports, no network exposure. While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/), this runs entirely local. Read-only by design: it serves knowledge, never modifies your project files.
 
+**Vector search is opt-in.** The `@huggingface/transformers` package (for ML-based semantic search) is an optional dependency. Without it, the server uses TF-IDF keyword search — fast and effective for most use cases. To enable vector search: `npm install @huggingface/transformers`.
+
 See [SECURITY.md](./SECURITY.md) for our full security policy and vulnerability reporting process.
 
 ## Contributing

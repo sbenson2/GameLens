@@ -2,29 +2,48 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 0.3.x   | ✅ Active support  |
-| < 0.3.0 | ❌ Not supported   |
+| Version | Supported               |
+| ------- | ----------------------- |
+| 0.4.x   | ✅ Active support       |
+| 0.3.x   | 🔧 Maintenance only     |
+| < 0.3.0 | ❌ Not supported        |
 
 ## Architecture Security
 
-GameDev MCP Server is designed with security as a core principle:
+GameCodex MCP Server is designed with security as a core principle:
 
 - **stdio-only transport** — No HTTP server, no open ports, no network attack surface. Communication happens exclusively through stdin/stdout with the MCP client process.
 - **Read-only knowledge delivery** — The server serves documentation. It cannot modify files, execute commands, or access system resources beyond reading its bundled docs.
-- **Zero external runtime dependencies** — No third-party packages are loaded at runtime that could introduce supply chain vulnerabilities.
+- **Minimal runtime dependencies** — Two required dependencies (`@modelcontextprotocol/sdk` for MCP protocol, `fastest-levenshtein` for fuzzy matching). One optional dependency (`@huggingface/transformers` for vector search). No eval, no shell execution, no arbitrary file writes.
 - **No data collection** — The server does not phone home, collect telemetry, or transmit any user data. License validation (Pro tier only) is the sole outbound network call, and it's optional.
 
 ### Why This Matters
 
 The MCP ecosystem has faced scrutiny over security ([RSAC 2026 MCPwned](https://dark-reading.com), [Qualys TotalAI fingerprinting](https://qualys.com)). Most vulnerabilities target **remote HTTP MCP servers** with open ports, no authentication, and broad tool permissions.
 
-GameDev MCP Server avoids this entire attack class by design:
+GameCodex MCP Server avoids this entire attack class by design:
 - No HTTP listener → no remote exploitation
 - No write tools → no prompt injection can cause damage
 - No secrets in context → no exfiltration risk
 - stdio transport → process-level isolation by the MCP client
+
+## Optional Dependencies
+
+`@huggingface/transformers` is listed as an **optional dependency** for semantic vector search. It is not required — without it, the server uses TF-IDF keyword search, which works well for most use cases.
+
+If installed, it pulls in transitive dependencies (onnxruntime-node, sharp) that may trigger supply chain alerts on tools like Socket.dev. These alerts reflect the legitimate architecture of ML libraries (binary downloads, model caching, native compilation) and are expected. Hugging Face is a reputable, widely-used ML infrastructure provider.
+
+**What the alerts mean:**
+- **Network access** — Downloads ONNX model files on first use, cached locally thereafter
+- **Filesystem access** — Caches models at `~/.gamecodex/models/` for performance
+- **Install scripts** — onnxruntime-node and sharp use postinstall scripts to compile platform-specific binaries
+- **Environment variable access** — Reads `HF_HOME` and `HF_TOKEN` for cache/auth configuration
+
+**What GameCodex itself does NOT do:**
+- No `eval()` or dynamic code execution
+- No shell/child_process access
+- No arbitrary file writes (only reads bundled docs, writes to `~/.gamecodex/`)
+- No outbound network calls except optional license validation
 
 ## Reporting a Vulnerability
 
