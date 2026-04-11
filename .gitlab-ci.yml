@@ -1,21 +1,35 @@
-# GitLab CI/CD — equivalent of .github/workflows/ci.yml
-# GitHub Actions workflows in .github/ are kept for reference but inactive on GitLab.
+# GitLab CI/CD — optimized for compute minutes
+# Primary test on Node 22 every push, Node 18 compat weekly via scheduled pipeline.
+# Lint/audit removed (were no-ops). Pages deploy on main for site changes only.
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - packages/**/*
+        - package.json
+        - package-lock.json
+        - .gitlab-ci.yml
 
 stages:
   - test
   - deploy
 
-variables:
-  NODE_VERSION: "22"
+default:
+  interruptible: true
 
-# ── Build & Test (matrix: Node 18, 20, 22, 24) ──
-.test-template:
+# ── Primary test (Node 22, every relevant push) ──
+test:
   stage: test
-  image: node:${TEST_NODE_VERSION}
+  image: node:22
   cache:
-    key: npm-${TEST_NODE_VERSION}
+    key: npm-v1
     paths:
       - node_modules/
+      - packages/server/node_modules/
+      - packages/site/node_modules/
   script:
     - npm ci
     - npm run build
@@ -23,63 +37,38 @@ variables:
     - npm run typecheck
     - npm test
     - npm pack --dry-run --workspace=gamecodex
+  rules:
+    - changes:
+        - packages/server/**/*
+        - package.json
+        - package-lock.json
 
+# ── Min-supported Node compat (scheduled only) ──
 test:node-18:
-  extends: .test-template
-  variables:
-    TEST_NODE_VERSION: "18"
-
-test:node-20:
-  extends: .test-template
-  variables:
-    TEST_NODE_VERSION: "20"
-
-test:node-22:
-  extends: .test-template
-  variables:
-    TEST_NODE_VERSION: "22"
-
-test:node-24:
-  extends: .test-template
-  variables:
-    TEST_NODE_VERSION: "24"
-  allow_failure: true
-
-# ── Lint ──
-lint:
   stage: test
-  image: node:${NODE_VERSION}
+  image: node:18
   cache:
-    key: npm-lint
+    key: npm-node18
     paths:
       - node_modules/
   script:
     - npm ci
-    - npx prettier --check "packages/server/src/**/*.ts" || true
-    - npx eslint "packages/server/src/**/*.ts" 2>/dev/null || true
+    - npm run build
+    - npm run typecheck
+    - npm test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
 
-# ── Security Audit ──
-audit:
-  stage: test
-  image: node:${NODE_VERSION}
-  cache:
-    key: npm-audit
-    paths:
-      - node_modules/
-  script:
-    - npm ci
-    - npm audit --omit=dev || true
-
-# npm publish is done locally (see /publish skill or memory/reference_npm_publish.md)
-
-# ── Deploy site to GitLab Pages ──
+# ── Deploy site to GitLab Pages (main, site changes only) ──
 pages:
   stage: deploy
-  image: node:${NODE_VERSION}
+  image: node:22
   cache:
-    key: npm-pages
+    key: npm-v1
     paths:
       - node_modules/
+      - packages/site/node_modules/
+    policy: pull
   script:
     - npm ci
     - npm run build:site
@@ -89,3 +78,5 @@ pages:
       - public
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - packages/site/**/*
