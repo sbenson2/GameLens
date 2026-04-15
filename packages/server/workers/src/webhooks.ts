@@ -18,7 +18,7 @@
  */
 
 import type { Env, RouteHandler } from "./types.js";
-import { jsonResponse, errorResponse } from "./helpers.js";
+import { restrictedJsonResponse, restrictedErrorResponse } from "./helpers.js";
 
 const SIGNATURE_HEADER = "X-Signature";
 const MAX_EVENT_AGE_MS = 5 * 60 * 1000; // 5 minutes — reject stale webhooks
@@ -205,17 +205,17 @@ export async function handleLemonSqueezyWebhook(
   // 2. Verify HMAC signature
   const signature = request.headers.get(SIGNATURE_HEADER);
   if (!signature) {
-    return errorResponse("Missing webhook signature", 401);
+    return restrictedErrorResponse("Missing webhook signature", 401);
   }
 
   if (!env.LEMONSQUEEZY_WEBHOOK_SECRET) {
     console.error("LEMONSQUEEZY_WEBHOOK_SECRET not configured");
-    return errorResponse("Webhook verification not configured", 500);
+    return restrictedErrorResponse("Webhook verification not configured", 500);
   }
 
   const valid = await verifySignature(body, signature, env.LEMONSQUEEZY_WEBHOOK_SECRET);
   if (!valid) {
-    return errorResponse("Invalid webhook signature", 401);
+    return restrictedErrorResponse("Invalid webhook signature", 401);
   }
 
   // 3. Parse payload
@@ -223,12 +223,12 @@ export async function handleLemonSqueezyWebhook(
   try {
     payload = JSON.parse(body) as WebhookPayload;
   } catch {
-    return errorResponse("Invalid JSON payload", 400);
+    return restrictedErrorResponse("Invalid JSON payload", 400);
   }
 
   const eventName = payload.meta?.event_name;
   if (!eventName) {
-    return errorResponse("Missing event_name in meta", 400);
+    return restrictedErrorResponse("Missing event_name in meta", 400);
   }
 
   // 4. Route to handler
@@ -265,7 +265,7 @@ export async function handleLemonSqueezyWebhook(
     }
   } catch (err) {
     console.error(`Webhook handler error for ${eventName}:`, err);
-    return errorResponse("Webhook processing failed", 500);
+    return restrictedErrorResponse("Webhook processing failed", 500);
   }
 
   // 5. Log event for analytics
@@ -286,5 +286,5 @@ export async function handleLemonSqueezyWebhook(
     // Log failure is non-fatal
   }
 
-  return jsonResponse({ ok: true, data: { message } });
+  return restrictedJsonResponse({ ok: true, data: { message } });
 }

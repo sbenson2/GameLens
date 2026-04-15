@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 import { Doc } from "./docs.js";
+import { CONFIG } from "../config.js";
 
 /**
  * Vector search engine using local embeddings via @huggingface/transformers.
@@ -126,10 +127,10 @@ export class VectorSearch {
 
     if (needsEmbed.length > 0) {
       const startTime = Date.now();
-      const BATCH_SIZE = 8;
+      const batchSize = CONFIG.EMBEDDING_BATCH_SIZE;
 
-      for (let i = 0; i < needsEmbed.length; i += BATCH_SIZE) {
-        const batch = needsEmbed.slice(i, i + BATCH_SIZE);
+      for (let i = 0; i < needsEmbed.length; i += batchSize) {
+        const batch = needsEmbed.slice(i, i + batchSize);
         const texts = batch.map((doc) => this.prepareDocText(doc));
         const results = await this.embedBatch(texts);
 
@@ -144,9 +145,9 @@ export class VectorSearch {
         }
 
         // Progress log every 50 docs
-        if ((i + BATCH_SIZE) % 50 < BATCH_SIZE && i + BATCH_SIZE < needsEmbed.length) {
+        if ((i + batchSize) % 50 < batchSize && i + batchSize < needsEmbed.length) {
           console.error(
-            `[gamecodex] Embedded ${Math.min(i + BATCH_SIZE, needsEmbed.length)}/${needsEmbed.length} docs...`
+            `[gamecodex] Embedded ${Math.min(i + batchSize, needsEmbed.length)}/${needsEmbed.length} docs...`
           );
         }
       }

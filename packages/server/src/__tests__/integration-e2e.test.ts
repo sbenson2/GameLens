@@ -219,12 +219,12 @@ describe("Offline Fallback Chain", () => {
   let docStore: DocStore;
   let tempDir: string;
 
-  before(() => {
+  before(async () => {
     docStore = new DocStore(docsDir);
     const modules: string[] = [];
     if (fs.existsSync(path.join(docsDir, "monogame-arch"))) modules.push("monogame-arch");
     if (fs.existsSync(path.join(docsDir, "godot-arch"))) modules.push("godot-arch");
-    docStore.load(modules);
+    await docStore.load(modules);
   });
 
   beforeEach(() => {
@@ -336,12 +336,12 @@ describe("Performance Benchmarks", () => {
   let docStore: DocStore;
   let tempDir: string;
 
-  before(() => {
+  before(async () => {
     docStore = new DocStore(docsDir);
     const modules: string[] = [];
     if (fs.existsSync(path.join(docsDir, "monogame-arch"))) modules.push("monogame-arch");
     if (fs.existsSync(path.join(docsDir, "godot-arch"))) modules.push("godot-arch");
-    docStore.load(modules);
+    await docStore.load(modules);
 
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "gamedev-perf-test-"));
   });

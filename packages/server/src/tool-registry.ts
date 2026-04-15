@@ -10,7 +10,7 @@
  *
  * SOURCE: MooBot archive (moobot/)
  * - Stats footer on every response (timing, context %)
- * - Concurrency counter (MAX_CONCURRENT) with rejection
+ * - Concurrency counter (CONFIG.MAX_CONCURRENT_TOOLS) with rejection
  * - Session-aware tool execution
  * - Tier/access checks before every call
  */
@@ -26,10 +26,9 @@ import {
 } from "./tool-definition.js";
 import { isToolAllowed, PRO_GATE_MESSAGE, UPGRADE_URL } from "./tiers.js";
 import { enhanceResponse } from "./core/response-enhancer.js";
+import { CONFIG } from "./config.js";
 
-// ---- Concurrency control (from MooBot's MAX_CONCURRENT pattern) ----
-
-const MAX_CONCURRENT = 8; // MooBot used 4, but MCP tools are lighter
+// ---- Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS pattern) ----
 let activeToolCalls = 0;
 
 // ---- Pro gate response ----
@@ -81,7 +80,7 @@ export class ToolRegistry {
    * loop that handles:
    * 1. Tier/access checks (from tiers.ts)
    * 2. Free-tier module restrictions
-   * 3. Concurrency control (from MooBot's MAX_CONCURRENT)
+   * 3. Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS)
    * 4. Analytics instrumentation
    * 5. Error handling (never throws, always returns user-friendly text)
    */
@@ -160,12 +159,12 @@ export class ToolRegistry {
         };
       }
 
-      // 3. Concurrency control (from MooBot's MAX_CONCURRENT pattern)
-      if (activeToolCalls >= MAX_CONCURRENT) {
+      // 3. Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS pattern)
+      if (activeToolCalls >= CONFIG.MAX_CONCURRENT_TOOLS) {
         return {
           content: [{
             type: "text",
-            text: `Server busy (${MAX_CONCURRENT} concurrent tool calls). Try again in a moment.`,
+            text: `Server busy (${CONFIG.MAX_CONCURRENT_TOOLS} concurrent tool calls). Try again in a moment.`,
           }],
         };
       }

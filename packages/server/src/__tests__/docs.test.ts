@@ -12,13 +12,13 @@ const docsDir = path.resolve(__dirname, "..", "..", "docs");
 describe("DocStore", () => {
   let store: DocStore;
 
-  before(() => {
+  before(async () => {
     store = new DocStore(docsDir);
     const modules: string[] = [];
     if (fs.existsSync(path.join(docsDir, "monogame-arch"))) modules.push("monogame-arch");
     if (fs.existsSync(path.join(docsDir, "godot-arch"))) modules.push("godot-arch");
     if (fs.existsSync(path.join(docsDir, "core"))) modules.push("core");
-    store.load(modules);
+    await store.load(modules);
   });
 
   it("should load docs", () => {

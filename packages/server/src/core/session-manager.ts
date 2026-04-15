@@ -56,8 +56,7 @@ export interface SessionContextInfo {
   warning: string | null;
 }
 
-// MooBot's context limit was 1M — we use same as default
-const DEFAULT_CONTEXT_LIMIT = 1_000_000;
+import { CONFIG } from "../config.js";
 
 // ---- Session Manager ----
 
@@ -65,7 +64,7 @@ export class SessionManager {
   private contextLimit: number;
 
   constructor(contextLimit?: number) {
-    this.contextLimit = contextLimit ?? DEFAULT_CONTEXT_LIMIT;
+    this.contextLimit = contextLimit ?? CONFIG.DEFAULT_CONTEXT_LIMIT;
     this.ensureDir();
   }
 

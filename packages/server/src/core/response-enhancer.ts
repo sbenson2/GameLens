@@ -8,11 +8,11 @@
 import { ToolResult, ToolDependencies } from "../tool-definition.js";
 import { PATH_STEPS, getStepToolRecommendations } from "./session.js";
 import { UPGRADE_URL } from "../tiers.js";
+import { CONFIG } from "../config.js";
 
 // Track docs responses per session for upgrade nudge cadence
 let docsResponseCount = 0;
 let nudgeShownThisSession = false;
-const NUDGE_AFTER_N_RESPONSES = 10;
 
 // ---- Types ----
 
@@ -272,7 +272,7 @@ export function enhanceResponse(
   let nudgeText = "";
   if (deps.tier === "free" && toolName === "docs" && !nudgeShownThisSession) {
     docsResponseCount++;
-    if (docsResponseCount >= NUDGE_AFTER_N_RESPONSES) {
+    if (docsResponseCount >= CONFIG.NUDGE_AFTER_N_RESPONSES) {
       nudgeText = `\n\n*Tip: GameCodex Pro ($7/mo) adds project management, code scaffolding, and debug tools. [Learn more](${UPGRADE_URL})*`;
       nudgeShownThisSession = true;
       try { deps.analytics.recordProGate("nudge"); } catch { /* non-critical */ }

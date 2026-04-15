@@ -80,7 +80,7 @@ export async function createServer() {
   const docsRoot = findDocsRoot();
 
   // Auto-discover modules
-  const discoveredModules = discoverModules(docsRoot);
+  const discoveredModules = await discoverModules(docsRoot);
   const activeModuleMeta = resolveActiveModules(
     discoveredModules,
     process.env.GAMEDEV_MODULES
@@ -88,7 +88,7 @@ export async function createServer() {
   const activeModules = activeModuleMeta.map((m) => m.id);
 
   const docStore = new DocStore(docsRoot);
-  docStore.load(activeModules);
+  await docStore.load(activeModules);
 
   const searchEngine = new SearchEngine();
   const vectorSearch = new VectorSearch();

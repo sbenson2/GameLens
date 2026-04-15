@@ -59,8 +59,8 @@ export const docsToolDef: GameCodexToolDef = {
           deps.hybridSearch,
         );
         deps.analytics.recordSearch({
-          module: args.module,
-          category: args.category,
+          module: args.module as string | undefined,
+          category: args.category as string | undefined,
           resultCount: result.content[0].text.includes("No results") ? 0 : 10,
         });
         return result;

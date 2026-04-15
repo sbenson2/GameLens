@@ -1,4 +1,4 @@
-import { describe, it } from "node:test";
+import { describe, it, before } from "node:test";
 import assert from "node:assert/strict";
 import { handleGenerateStarter } from "../tools/generate-starter.js";
 import { DocStore } from "../core/docs.js";
@@ -11,11 +11,13 @@ const __dirname = path.dirname(__filename);
 const docsRoot = path.resolve(__dirname, "../../docs");
 
 const docStore = new DocStore(docsRoot);
-docStore.load(["core"]);
 const searchEngine = new SearchEngine();
-searchEngine.index(docStore.getAllDocs());
 
 describe("generate_starter", () => {
+  before(async () => {
+    await docStore.load(["core"]);
+    searchEngine.index(docStore.getAllDocs());
+  });
   it("should generate MonoGame movement starter", async () => {
     const result = await handleGenerateStarter(
       { engine: "monogame", feature: "player movement" },

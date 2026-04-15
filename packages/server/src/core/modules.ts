@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as fsp from "fs/promises";
 import * as path from "path";
 
 export interface ModuleMetadata {
@@ -104,19 +105,17 @@ function extractDescriptionFromRules(rulesContent: string): string {
 }
 
 /** Count .md files recursively in a directory */
-function countMarkdownFiles(dirPath: string): number {
-  let count = 0;
+async function countMarkdownFiles(dirPath: string): Promise<number> {
   if (!fs.existsSync(dirPath)) return 0;
-  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-  for (const entry of entries) {
-    const full = path.join(dirPath, entry.name);
-    if (entry.isDirectory()) {
-      count += countMarkdownFiles(full);
-    } else if (entry.name.endsWith(".md")) {
-      count++;
-    }
-  }
-  return count;
+  const entries = await fsp.readdir(dirPath, { withFileTypes: true });
+  const counts = await Promise.all(
+    entries.map(async (entry) => {
+      const full = path.join(dirPath, entry.name);
+      if (entry.isDirectory()) return countMarkdownFiles(full);
+      return entry.name.endsWith(".md") ? 1 : 0;
+    })
+  );
+  return counts.reduce((a, b) => a + b, 0);
 }
 
 /** List subdirectories that look like content sections */
@@ -144,27 +143,23 @@ function listSections(modulePath: string): string[] {
  * If GAMEDEV_MODULES env var is set, only those modules are activated.
  * If unset, ALL discovered modules are activated.
  */
-export function discoverModules(docsRoot: string): ModuleMetadata[] {
-  const modules: ModuleMetadata[] = [];
+export async function discoverModules(docsRoot: string): Promise<ModuleMetadata[]> {
+  if (!fs.existsSync(docsRoot)) return [];
 
-  if (!fs.existsSync(docsRoot)) return modules;
+  const entries = await fsp.readdir(docsRoot, { withFileTypes: true });
+  const dirEntries = entries.filter(
+    (e) => e.isDirectory() && e.name !== "core" && !e.name.startsWith(".")
+  );
 
-  const entries = fs.readdirSync(docsRoot, { withFileTypes: true });
-  for (const entry of entries) {
-    if (!entry.isDirectory()) continue;
-    if (entry.name === "core") continue; // core is always loaded, not a "module"
-    if (entry.name.startsWith(".")) continue; // hidden dirs
-
+  const moduleTasks = dirEntries.map(async (entry) => {
     const modulePath = path.join(docsRoot, entry.name);
-    const docCount = countMarkdownFiles(modulePath);
+    const docCount = await countMarkdownFiles(modulePath);
 
-    // Skip empty directories
-    if (docCount === 0) continue;
+    if (docCount === 0) return null;
 
     const moduleId = entry.name;
     const { engine, labelFallback } = detectEngine(moduleId);
 
-    // Find rules file: try <id>-rules.md, then *-rules.md, then any *rules*.md
     let rulesPath: string | undefined;
     let rulesContent: string | undefined;
 
@@ -172,8 +167,7 @@ export function discoverModules(docsRoot: string): ModuleMetadata[] {
     if (fs.existsSync(exactRules)) {
       rulesPath = exactRules;
     } else {
-      // Look for any *-rules.md or *rules*.md in the module root
-      const rootFiles = fs.readdirSync(modulePath);
+      const rootFiles = await fsp.readdir(modulePath);
       const rulesFile = rootFiles.find(
         (f) => f.endsWith("-rules.md") || f.match(/rules/i)?.length
       );
@@ -183,7 +177,7 @@ export function discoverModules(docsRoot: string): ModuleMetadata[] {
     }
 
     if (rulesPath && fs.existsSync(rulesPath)) {
-      rulesContent = fs.readFileSync(rulesPath, "utf-8");
+      rulesContent = await fsp.readFile(rulesPath, "utf-8");
     }
 
     const label = rulesContent
@@ -194,7 +188,7 @@ export function discoverModules(docsRoot: string): ModuleMetadata[] {
       ? extractDescriptionFromRules(rulesContent)
       : `${engine} engine module`;
 
-    modules.push({
+    const meta: ModuleMetadata = {
       id: moduleId,
       label,
       engine,
@@ -203,12 +197,14 @@ export function discoverModules(docsRoot: string): ModuleMetadata[] {
       rulesPath,
       sections: listSections(modulePath),
       docCount,
-    });
-  }
+    };
+    return meta;
+  });
 
-  // Sort: most docs first (more complete modules first)
+  const results = await Promise.all(moduleTasks);
+  const modules = results.filter((m): m is ModuleMetadata => m !== null);
+
   modules.sort((a, b) => b.docCount - a.docCount);
-
   return modules;
 }
 

@@ -6,6 +6,8 @@ import { checkRateLimit, addRateLimitHeaders } from "./rate-limit.js";
 import {
   jsonResponse,
   errorResponse,
+  restrictedJsonResponse,
+  restrictedErrorResponse,
   extractSection,
   truncateAtParagraph,
 } from "./helpers.js";
@@ -659,17 +661,17 @@ export async function handleLicenseValidate(
   try {
     body = (await request.json()) as { license_key?: string };
   } catch {
-    return errorResponse("Invalid JSON body", 400);
+    return restrictedErrorResponse("Invalid JSON body", 400);
   }
 
   const key = body.license_key;
   if (!key || typeof key !== "string") {
-    return errorResponse("Missing license_key in body", 400);
+    return restrictedErrorResponse("Missing license_key in body", 400);
   }
 
   const result = await validateLicense(key, env);
 
-  return jsonResponse({
+  return restrictedJsonResponse({
     ok: true,
     data: {
       valid: result.valid,

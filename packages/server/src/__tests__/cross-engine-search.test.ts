@@ -16,11 +16,11 @@ describe("Cross-Engine Search", () => {
   let searchEngine: SearchEngine;
   let modulesMeta: ModuleMetadata[];
 
-  before(() => {
+  before(async () => {
     docStore = new DocStore(docsRoot);
-    modulesMeta = discoverModules(docsRoot);
+    modulesMeta = await discoverModules(docsRoot);
     const activeModules = modulesMeta.map((m) => m.id);
-    docStore.load(activeModules);
+    await docStore.load(activeModules);
     searchEngine = new SearchEngine();
     searchEngine.index(docStore.getAllDocs());
   });

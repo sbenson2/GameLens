@@ -14,8 +14,8 @@ const projectRoot = path.resolve(__dirname, "../..");
 const docsRoot = path.join(projectRoot, "docs");
 
 describe("Module Auto-Discovery", () => {
-  it("discovers modules from real docs directory", () => {
-    const modules = discoverModules(docsRoot);
+  it("discovers modules from real docs directory", async () => {
+    const modules = await discoverModules(docsRoot);
 
     assert.ok(modules.length >= 2, `Expected at least 2 modules, got ${modules.length}`);
 
@@ -24,19 +24,19 @@ describe("Module Auto-Discovery", () => {
     assert.ok(ids.includes("godot-arch"), "Should discover godot-arch");
   });
 
-  it("discovers all 29+ engine modules", () => {
-    const modules = discoverModules(docsRoot);
+  it("discovers all 29+ engine modules", async () => {
+    const modules = await discoverModules(docsRoot);
     assert.ok(modules.length >= 29, `Expected at least 29 modules, got ${modules.length}`);
   });
 
-  it("does NOT include 'core' as a module", () => {
-    const modules = discoverModules(docsRoot);
+  it("does NOT include 'core' as a module", async () => {
+    const modules = await discoverModules(docsRoot);
     const ids = modules.map((m) => m.id);
     assert.ok(!ids.includes("core"), "core should not be listed as a module");
   });
 
-  it("extracts correct engine names", () => {
-    const modules = discoverModules(docsRoot);
+  it("extracts correct engine names", async () => {
+    const modules = await discoverModules(docsRoot);
     const mono = modules.find((m) => m.id === "monogame-arch");
     const godot = modules.find((m) => m.id === "godot-arch");
 
@@ -47,8 +47,8 @@ describe("Module Auto-Discovery", () => {
     assert.equal(godot.engine, "Godot");
   });
 
-  it("resolves branded engine names correctly", () => {
-    const modules = discoverModules(docsRoot);
+  it("resolves branded engine names correctly", async () => {
+    const modules = await discoverModules(docsRoot);
     const byId = (id: string) => modules.find((m) => m.id === id);
 
     assert.equal(byId("babylonjs-arch")?.engine, "Babylon.js");
@@ -63,8 +63,8 @@ describe("Module Auto-Discovery", () => {
     assert.equal(byId("unreal-arch")?.engine, "Unreal Engine");
   });
 
-  it("extracts labels from rules files", () => {
-    const modules = discoverModules(docsRoot);
+  it("extracts labels from rules files", async () => {
+    const modules = await discoverModules(docsRoot);
     const mono = modules.find((m) => m.id === "monogame-arch");
     const godot = modules.find((m) => m.id === "godot-arch");
 
@@ -75,8 +75,8 @@ describe("Module Auto-Discovery", () => {
     assert.ok(godot.label.includes("Godot"), `Label should include Godot, got: ${godot.label}`);
   });
 
-  it("finds rules files", () => {
-    const modules = discoverModules(docsRoot);
+  it("finds rules files", async () => {
+    const modules = await discoverModules(docsRoot);
     for (const mod of modules) {
       assert.ok(mod.hasRules, `${mod.id} should have a rules file`);
       assert.ok(mod.rulesPath, `${mod.id} should have rulesPath set`);
@@ -84,8 +84,8 @@ describe("Module Auto-Discovery", () => {
     }
   });
 
-  it("counts docs correctly (non-zero)", () => {
-    const modules = discoverModules(docsRoot);
+  it("counts docs correctly (non-zero)", async () => {
+    const modules = await discoverModules(docsRoot);
     for (const mod of modules) {
       assert.ok(mod.docCount > 0, `${mod.id} should have docs, got ${mod.docCount}`);
     }
@@ -97,8 +97,8 @@ describe("Module Auto-Discovery", () => {
     assert.ok(godot!.docCount >= 4, `godot-arch should have 4+ docs, got ${godot!.docCount}`);
   });
 
-  it("detects sections (architecture, guides, reference)", () => {
-    const modules = discoverModules(docsRoot);
+  it("detects sections (architecture, guides, reference)", async () => {
+    const modules = await discoverModules(docsRoot);
     const mono = modules.find((m) => m.id === "monogame-arch");
     assert.ok(mono);
     assert.ok(mono.sections.includes("architecture"), "monogame-arch should have architecture section");
@@ -106,8 +106,8 @@ describe("Module Auto-Discovery", () => {
     assert.ok(mono.sections.includes("reference"), "monogame-arch should have reference section");
   });
 
-  it("sorts by doc count (most complete first)", () => {
-    const modules = discoverModules(docsRoot);
+  it("sorts by doc count (most complete first)", async () => {
+    const modules = await discoverModules(docsRoot);
     for (let i = 1; i < modules.length; i++) {
       assert.ok(
         modules[i - 1].docCount >= modules[i].docCount,
@@ -116,48 +116,48 @@ describe("Module Auto-Discovery", () => {
     }
   });
 
-  it("returns empty for non-existent directory", () => {
-    const modules = discoverModules("/tmp/nonexistent-docs-path-12345");
+  it("returns empty for non-existent directory", async () => {
+    const modules = await discoverModules("/tmp/nonexistent-docs-path-12345");
     assert.equal(modules.length, 0);
   });
 });
 
 describe("Module Resolution (GAMEDEV_MODULES)", () => {
-  it("activates all modules when env is undefined", () => {
-    const discovered = discoverModules(docsRoot);
+  it("activates all modules when env is undefined", async () => {
+    const discovered = await discoverModules(docsRoot);
     const active = resolveActiveModules(discovered, undefined);
     assert.equal(active.length, discovered.length);
   });
 
-  it("filters to specific modules when env is set", () => {
-    const discovered = discoverModules(docsRoot);
+  it("filters to specific modules when env is set", async () => {
+    const discovered = await discoverModules(docsRoot);
     const active = resolveActiveModules(discovered, "monogame-arch");
     assert.equal(active.length, 1);
     assert.equal(active[0].id, "monogame-arch");
   });
 
-  it("supports comma-separated module list", () => {
-    const discovered = discoverModules(docsRoot);
+  it("supports comma-separated module list", async () => {
+    const discovered = await discoverModules(docsRoot);
     const active = resolveActiveModules(discovered, "monogame-arch,godot-arch");
     assert.equal(active.length, 2);
   });
 
-  it("matches by engine name (case-insensitive)", () => {
-    const discovered = discoverModules(docsRoot);
+  it("matches by engine name (case-insensitive)", async () => {
+    const discovered = await discoverModules(docsRoot);
     const active = resolveActiveModules(discovered, "godot");
     assert.equal(active.length, 1);
     assert.equal(active[0].engine, "Godot");
   });
 
-  it("returns empty for unknown module", () => {
-    const discovered = discoverModules(docsRoot);
+  it("returns empty for unknown module", async () => {
+    const discovered = await discoverModules(docsRoot);
     const active = resolveActiveModules(discovered, "fake-engine-xyz");
     assert.equal(active.length, 0);
   });
 });
 
 describe("Synthetic Module Discovery", () => {
-  it("discovers a dynamically created module", () => {
+  it("discovers a dynamically created module", async () => {
     const tmpDocs = fs.mkdtempSync(path.join(os.tmpdir(), "gamedev-test-"));
     try {
       // Create a fake module
@@ -172,7 +172,7 @@ describe("Synthetic Module Discovery", () => {
         "# ECS Basics\n\nEntity-Component-System fundamentals in Bevy.\n"
       );
 
-      const modules = discoverModules(tmpDocs);
+      const modules = await discoverModules(tmpDocs);
       assert.equal(modules.length, 1);
       assert.equal(modules[0].id, "bevy-arch");
       assert.equal(modules[0].engine, "Bevy");
@@ -185,23 +185,23 @@ describe("Synthetic Module Discovery", () => {
     }
   });
 
-  it("skips empty directories", () => {
+  it("skips empty directories", async () => {
     const tmpDocs = fs.mkdtempSync(path.join(os.tmpdir(), "gamedev-test-"));
     try {
       fs.mkdirSync(path.join(tmpDocs, "empty-engine"));
-      const modules = discoverModules(tmpDocs);
+      const modules = await discoverModules(tmpDocs);
       assert.equal(modules.length, 0);
     } finally {
       fs.rmSync(tmpDocs, { recursive: true });
     }
   });
 
-  it("skips core directory", () => {
+  it("skips core directory", async () => {
     const tmpDocs = fs.mkdtempSync(path.join(os.tmpdir(), "gamedev-test-"));
     try {
       fs.mkdirSync(path.join(tmpDocs, "core", "concepts"), { recursive: true });
       fs.writeFileSync(path.join(tmpDocs, "core", "concepts", "test.md"), "# Test\n");
-      const modules = discoverModules(tmpDocs);
+      const modules = await discoverModules(tmpDocs);
       assert.equal(modules.length, 0);
     } finally {
       fs.rmSync(tmpDocs, { recursive: true });

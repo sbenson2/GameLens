@@ -15,6 +15,18 @@
 
 import { z } from "zod";
 
+import type { DocStore, Doc } from "./core/docs.js";
+import type { SearchEngine } from "./core/search.js";
+import type { HybridSearchEngine } from "./core/hybrid-search.js";
+import type { HybridProvider } from "./core/hybrid-provider.js";
+import type { ModuleMetadata } from "./core/modules.js";
+import type { SessionManager } from "./core/session-manager.js";
+import type { MemoryStore } from "./core/memory.js";
+import type { Analytics } from "./analytics.js";
+import type { ProjectStore } from "./core/project-store.js";
+import type { PersonalityEngine } from "./core/personality.js";
+import type { HealthTracker } from "./core/health-tracker.js";
+
 // ---- Lazy schema helper (from CC patterns) ----
 
 /**
@@ -93,22 +105,21 @@ export interface GameCodexToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> 
 // ---- Dependencies injected into tool handlers ----
 
 export interface ToolDependencies {
-  docStore: any;         // DocStore
-  searchEngine: any;     // SearchEngine
-  hybridSearch: any;     // HybridSearchEngine
-  hybridProvider: any;   // HybridProvider
-  discoveredModules: any[];
-  sessionManager: any;   // SessionManager
-  memory: any;           // MemoryStore (deprecated — use projectStore)
-  analytics: any;        // Analytics
+  docStore: DocStore;
+  searchEngine: SearchEngine;
+  hybridSearch: HybridSearchEngine;
+  hybridProvider: HybridProvider;
+  discoveredModules: ModuleMetadata[];
+  sessionManager: SessionManager;
+  memory: MemoryStore;         // Freeform project notes (~/.gamecodex/memory/)
+  analytics: Analytics;
   tier: "free" | "pro";
   serverVersion: string;
   activeModules: string[];
-  allDocs: any[];
-  // Core modules
-  projectStore: any;     // ProjectStore (unified persistence)
-  personality: any;      // PersonalityEngine (tone/personality)
-  healthTracker: any;    // HealthTracker (scope/pace/burnout)
+  allDocs: Doc[];
+  projectStore: ProjectStore;  // Structured project data (~/.gamecodex/projects/)
+  personality: PersonalityEngine;
+  healthTracker: HealthTracker;
   licenseInfo?: {
     expiresAt?: string;
     activationLimit?: number;

@@ -41,6 +41,7 @@ export class HybridSearchEngine {
   private tfidf: SearchEngine;
   private vector: VectorSearch;
   private initialized: boolean = false;
+  private vectorInitError: string | null = null;
 
   constructor(tfidf: SearchEngine, vector: VectorSearch) {
     this.tfidf = tfidf;
@@ -55,10 +56,16 @@ export class HybridSearchEngine {
     // Vector search is async (model loading + embedding)
     // Don't block startup — start in background
     this.vector.init(docs).catch((err) => {
-      console.error(`[gamecodex] Vector search background init failed: ${err}`);
+      this.vectorInitError = err instanceof Error ? err.message : String(err);
+      console.error(`[gamecodex] Vector search background init failed: ${this.vectorInitError}`);
     });
 
     this.initialized = true;
+  }
+
+  /** Returns the vector search init error, if any */
+  getVectorInitError(): string | null {
+    return this.vectorInitError;
   }
 
   /** Search with hybrid scoring */

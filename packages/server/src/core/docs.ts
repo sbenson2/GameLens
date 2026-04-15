@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as fsp from "fs/promises";
 import * as path from "path";
 
 export interface Doc {
@@ -73,20 +74,19 @@ function dirToCategory(dirPath: string): string {
 }
 
 /** Recursively load all .md files from a directory */
-function loadDocsFromDir(dirPath: string, module: string): Doc[] {
-  const docs: Doc[] = [];
-  if (!fs.existsSync(dirPath)) return docs;
+async function loadDocsFromDir(dirPath: string, module: string): Promise<Doc[]> {
+  if (!fs.existsSync(dirPath)) return [];
 
-  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-  for (const entry of entries) {
+  const entries = await fsp.readdir(dirPath, { withFileTypes: true });
+  const tasks = entries.map(async (entry) => {
     const fullPath = path.join(dirPath, entry.name);
     if (entry.isDirectory()) {
-      docs.push(...loadDocsFromDir(fullPath, module));
+      return loadDocsFromDir(fullPath, module);
     } else if (entry.name.endsWith(".md")) {
-      const content = fs.readFileSync(fullPath, "utf-8");
+      const content = await fsp.readFile(fullPath, "utf-8");
       const id = deriveId(entry.name);
       const category = dirToCategory(fullPath);
-      docs.push({
+      const doc: Doc = {
         id,
         title: extractTitle(content, entry.name),
         description: extractDescription(content),
@@ -94,10 +94,14 @@ function loadDocsFromDir(dirPath: string, module: string): Doc[] {
         module,
         content,
         filePath: fullPath,
-      });
+      };
+      return [doc];
     }
-  }
-  return docs;
+    return [];
+  });
+
+  const results = await Promise.all(tasks);
+  return results.flat();
 }
 
 export class DocStore {
@@ -107,24 +111,30 @@ export class DocStore {
   constructor(private docsRoot: string) {}
 
   /** Load all docs from filesystem */
-  load(activeModules: string[]): void {
+  async load(activeModules: string[]): Promise<void> {
     this.docs.clear();
     this.allDocs = [];
 
-    // Load core docs
-    const corePath = path.join(this.docsRoot, "core");
-    const coreDocs = loadDocsFromDir(corePath, "core");
+    // Load core + all module docs in parallel
+    const loadTasks = [
+      loadDocsFromDir(path.join(this.docsRoot, "core"), "core"),
+      ...activeModules.map((mod) =>
+        loadDocsFromDir(path.join(this.docsRoot, mod), mod)
+      ),
+    ];
+    const results = await Promise.all(loadTasks);
+
+    // First result is core docs
+    const coreDocs = results[0];
     for (const doc of coreDocs) {
       this.docs.set(doc.id, doc);
       this.allDocs.push(doc);
     }
 
-    // Load module docs
-    for (const mod of activeModules) {
-      const modPath = path.join(this.docsRoot, mod);
-      const modDocs = loadDocsFromDir(modPath, mod);
-      for (const doc of modDocs) {
-        // If ID already exists (e.g. G11 in both core and module), prefix with module
+    // Remaining results are module docs
+    for (let i = 1; i < results.length; i++) {
+      const mod = activeModules[i - 1];
+      for (const doc of results[i]) {
         const key = this.docs.has(doc.id) ? `${mod}/${doc.id}` : doc.id;
         doc.id = key;
         this.docs.set(key, doc);

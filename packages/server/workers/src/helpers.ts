@@ -1,13 +1,32 @@
 /** Shared response helpers */
 
+const ALLOWED_ORIGIN = "https://gamecodex.dev";
+
+function corsHeaders(origin: string): Record<string, string> {
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Authorization, Content-Type",
+  };
+}
+
 export function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Authorization, Content-Type",
+      ...corsHeaders("*"),
+    },
+  });
+}
+
+/** JSON response with CORS restricted to gamecodex.dev — for license/webhook endpoints */
+export function restrictedJsonResponse(data: unknown, status = 200): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      ...corsHeaders(ALLOWED_ORIGIN),
     },
   });
 }
@@ -16,13 +35,15 @@ export function errorResponse(message: string, status: number): Response {
   return jsonResponse({ ok: false, error: message }, status);
 }
 
+export function restrictedErrorResponse(message: string, status: number): Response {
+  return restrictedJsonResponse({ ok: false, error: message }, status);
+}
+
 export function corsPreflightResponse(): Response {
   return new Response(null, {
     status: 204,
     headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Authorization, Content-Type",
+      ...corsHeaders("*"),
       "Access-Control-Max-Age": "86400",
     },
   });

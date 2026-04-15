@@ -13,12 +13,12 @@ const docsDir = path.resolve(__dirname, "..", "..", "docs");
 describe("HybridProvider", () => {
   let docStore: DocStore;
 
-  before(() => {
+  before(async () => {
     docStore = new DocStore(docsDir);
     const modules: string[] = [];
     if (fs.existsSync(path.join(docsDir, "monogame-arch"))) modules.push("monogame-arch");
     if (fs.existsSync(path.join(docsDir, "godot-arch"))) modules.push("godot-arch");
-    store_load(docStore, modules);
+    await store_load(docStore, modules);
   });
 
   it("should serve local docs when hybrid mode is disabled", async () => {
@@ -92,6 +92,6 @@ describe("HybridProvider", () => {
   });
 });
 
-function store_load(store: DocStore, modules: string[]) {
-  store.load(modules);
+async function store_load(store: DocStore, modules: string[]) {
+  await store.load(modules);
 }
