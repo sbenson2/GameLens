@@ -2,6 +2,12 @@
 
 const ALLOWED_ORIGIN = "https://gamecodex.dev";
 
+const SECURITY_HEADERS: Record<string, string> = {
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+};
+
 function corsHeaders(origin: string): Record<string, string> {
   return {
     "Access-Control-Allow-Origin": origin,
@@ -16,6 +22,7 @@ export function jsonResponse(data: unknown, status = 200): Response {
     headers: {
       "Content-Type": "application/json",
       ...corsHeaders("*"),
+      ...SECURITY_HEADERS,
     },
   });
 }
@@ -27,6 +34,7 @@ export function restrictedJsonResponse(data: unknown, status = 200): Response {
     headers: {
       "Content-Type": "application/json",
       ...corsHeaders(ALLOWED_ORIGIN),
+      ...SECURITY_HEADERS,
     },
   });
 }
@@ -44,6 +52,19 @@ export function corsPreflightResponse(): Response {
     status: 204,
     headers: {
       ...corsHeaders("*"),
+      ...SECURITY_HEADERS,
+      "Access-Control-Max-Age": "86400",
+    },
+  });
+}
+
+/** CORS preflight restricted to gamecodex.dev — for license/webhook endpoints */
+export function restrictedCorsPreflightResponse(): Response {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      ...corsHeaders(ALLOWED_ORIGIN),
+      ...SECURITY_HEADERS,
       "Access-Control-Max-Age": "86400",
     },
   });

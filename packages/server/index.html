@@ -1374,6 +1374,8 @@ function setActiveSetup(target) {
   document.querySelector(`.setup-tab[data-target="${target}"]`).classList.add('active');
   const config = setupConfigs[target];
   document.getElementById('setupFileName').textContent = config.file;
+  // SECURITY: config.code contains hardcoded HTML for syntax highlighting.
+  // This is safe because setupConfigs is fully developer-controlled (no user input).
   document.getElementById('setupCode').innerHTML = config.code;
 }
 

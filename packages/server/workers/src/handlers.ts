@@ -143,7 +143,7 @@ export async function handleListDocs(
     const { modules } = resolveEngine(engineFilter, manifest);
     if (modules.length === 0) {
       return addRateLimitHeaders(
-        errorResponse(`Unknown engine: "${engineFilter}"`, 400),
+        errorResponse("Unknown engine filter", 400),
         rateResult
       );
     }
@@ -281,7 +281,7 @@ export async function handleRandomDoc(
     const { modules } = resolveEngine(engineFilter, manifest);
     if (modules.length === 0) {
       return addRateLimitHeaders(
-        errorResponse(`Unknown engine: "${engineFilter}"`, 400),
+        errorResponse("Unknown engine filter", 400),
         rateResult
       );
     }
@@ -396,7 +396,7 @@ export async function handleGetDoc(
 
   if (!meta) {
     return addRateLimitHeaders(
-      errorResponse(`Doc "${docId}" not found`, 404),
+      errorResponse("Document not found", 404),
       rateResult
     );
   }
@@ -429,7 +429,7 @@ export async function handleGetDoc(
   const content = await env.DOCS_KV.get(`doc:${meta.id}`);
   if (!content) {
     return addRateLimitHeaders(
-      errorResponse(`Doc content not found for "${docId}"`, 500),
+      errorResponse("Document content unavailable", 500),
       rateResult
     );
   }
@@ -566,7 +566,7 @@ export async function handleSearch(
     }
     if (matchedModules.length === 0) {
       return addRateLimitHeaders(
-        errorResponse(`Unknown engine: "${engineFilter}"`, 400),
+        errorResponse("Unknown engine filter", 400),
         rateResult
       );
     }
@@ -657,25 +657,45 @@ export async function handleLicenseValidate(
   _params: Record<string, string>,
   env: Env
 ): Promise<Response> {
+  // Rate limit by IP (always "free" tier — key not yet validated)
+  const clientIp = getClientIp(request);
+  const rateResult = await checkRateLimit(clientIp, "free", env);
+
+  if (!rateResult.allowed) {
+    return addRateLimitHeaders(
+      restrictedErrorResponse("Rate limit exceeded", 429),
+      rateResult
+    );
+  }
+
   let body: { license_key?: string };
   try {
     body = (await request.json()) as { license_key?: string };
   } catch {
-    return restrictedErrorResponse("Invalid JSON body", 400);
+    return addRateLimitHeaders(
+      restrictedErrorResponse("Invalid JSON body", 400),
+      rateResult
+    );
   }
 
   const key = body.license_key;
   if (!key || typeof key !== "string") {
-    return restrictedErrorResponse("Missing license_key in body", 400);
+    return addRateLimitHeaders(
+      restrictedErrorResponse("Missing license_key in body", 400),
+      rateResult
+    );
   }
 
-  const result = await validateLicense(key, env);
+  const result = await validateLicense(key, env, clientIp);
 
-  return restrictedJsonResponse({
-    ok: true,
-    data: {
-      valid: result.valid,
-      tier: result.tier,
-    },
-  });
+  return addRateLimitHeaders(
+    restrictedJsonResponse({
+      ok: true,
+      data: {
+        valid: result.valid,
+        tier: result.tier,
+      },
+    }),
+    rateResult
+  );
 }

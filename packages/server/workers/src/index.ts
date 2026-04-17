@@ -7,7 +7,11 @@
 
 import type { Env } from "./types.js";
 import { Router } from "./router.js";
-import { corsPreflightResponse, errorResponse } from "./helpers.js";
+import {
+  corsPreflightResponse,
+  restrictedCorsPreflightResponse,
+  errorResponse,
+} from "./helpers.js";
 import {
   handleHealth,
   handleListDocs,
@@ -35,8 +39,15 @@ export default {
     env: Env,
     _ctx: ExecutionContext
   ): Promise<Response> {
-    // Handle CORS preflight
+    // Handle CORS preflight (restricted origin for sensitive endpoints)
     if (request.method === "OPTIONS") {
+      const url = new URL(request.url);
+      if (
+        url.pathname.startsWith("/v1/license") ||
+        url.pathname.startsWith("/v1/webhooks")
+      ) {
+        return restrictedCorsPreflightResponse();
+      }
       return corsPreflightResponse();
     }
 
@@ -50,10 +61,7 @@ export default {
         return await match.handler(request, match.params, env);
       } catch (err) {
         console.error("Handler error:", err);
-        return errorResponse(
-          `Internal server error: ${err instanceof Error ? err.message : String(err)}`,
-          500
-        );
+        return errorResponse("Internal server error", 500);
       }
     }
 
