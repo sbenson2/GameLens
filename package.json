@@ -15,10 +15,7 @@
     "start": "npm run start --workspace=gamecodex",
     "typecheck": "npm run typecheck --workspace=gamecodex",
     "test": "npm run test --workspace=gamecodex",
-    "lint:site": "npm run lint --workspace=@gamecodex/site",
-    "dev:tui": "npm run dev --workspace=@gamecodex/tui",
-    "build:tui": "npm run build --workspace=@gamecodex/tui",
-    "start:tui": "npm run start --workspace=@gamecodex/tui"
+    "lint:site": "npm run lint --workspace=@gamecodex/site"
   },
   "author": "sbenson2",
   "license": "MIT",
