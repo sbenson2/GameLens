@@ -13,11 +13,8 @@ import {
   getMachineId,
   deactivateLicense,
 } from "../license.js";
+import { CONFIG_DIR } from "../config.js";
 
-const CONFIG_DIR = path.join(
-  process.env.HOME ?? process.env.USERPROFILE ?? "~",
-  ".gamecodex"
-);
 const LICENSE_CONFIG_PATH = path.join(CONFIG_DIR, "license.json");
 const CACHE_PATH = path.join(CONFIG_DIR, "cache.json");
 

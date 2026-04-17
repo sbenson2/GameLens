@@ -14,11 +14,8 @@ import {
   getLicenseKey,
   validateLicense,
 } from "../license.js";
+import { CONFIG_DIR } from "../config.js";
 
-const CONFIG_DIR = path.join(
-  process.env.HOME ?? process.env.USERPROFILE ?? "~",
-  ".gamecodex"
-);
 const LICENSE_CONFIG_PATH = path.join(CONFIG_DIR, "license.json");
 
 function ensureConfigDir(): void {

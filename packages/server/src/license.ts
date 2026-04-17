@@ -16,13 +16,10 @@ import * as os from "os";
 import * as https from "https";
 import * as crypto from "crypto";
 import { Tier, UPGRADE_URL } from "./tiers.js";
+import { CONFIG_DIR } from "./config.js";
 
 const SUPPORT_EMAIL = "support@gamecodex.dev";
 
-const CONFIG_DIR = path.join(
-  process.env.HOME ?? process.env.USERPROFILE ?? "~",
-  ".gamecodex"
-);
 const CACHE_PATH = path.join(CONFIG_DIR, "cache.json");
 const LICENSE_CONFIG_PATH = path.join(CONFIG_DIR, "license.json");
 const THROTTLE_PATH = path.join(CONFIG_DIR, "throttle.json");

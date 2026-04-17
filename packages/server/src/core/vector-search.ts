@@ -1,8 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as os from "os";
 import { Doc } from "./docs.js";
-import { CONFIG } from "../config.js";
+import { CONFIG, CONFIG_DIR } from "../config.js";
 
 /**
  * Vector search engine using local embeddings via @huggingface/transformers.
@@ -25,7 +24,6 @@ interface VectorResult {
 
 const CACHE_VERSION = 1;
 const MODEL_ID = "Xenova/all-MiniLM-L6-v2";
-const CONFIG_DIR = path.join(os.homedir(), ".gamecodex");
 const CACHE_PATH = path.join(CONFIG_DIR, "embeddings", "vectors.json");
 
 /** Simple content hash — fast, deterministic, no crypto dependency */

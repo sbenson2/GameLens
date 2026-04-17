@@ -2,11 +2,8 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { CONFIG_DIR } from "./config.js";
 
-const CONFIG_DIR = path.join(
-  process.env.HOME ?? process.env.USERPROFILE ?? "~",
-  ".gamecodex"
-);
 const USAGE_PATH = path.join(CONFIG_DIR, "usage.json");
 
 const FREE_DAILY_SEARCH_LIMIT = 50;

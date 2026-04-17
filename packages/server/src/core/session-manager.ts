@@ -20,11 +20,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as crypto from "crypto";
+import { CONFIG_DIR } from "../config.js";
 
-const CONFIG_DIR = path.join(
-  process.env.HOME ?? process.env.USERPROFILE ?? "~",
-  ".gamecodex"
-);
 const SESSIONS_DIR = path.join(CONFIG_DIR, "sessions");
 
 // ---- Types ----

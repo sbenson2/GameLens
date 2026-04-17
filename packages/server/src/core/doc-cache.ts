@@ -12,6 +12,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { CONFIG_DIR } from "../config.js";
 
 export interface CachedDocMeta {
   id: string;
@@ -42,11 +43,6 @@ export interface DocCacheOptions {
 
 const DEFAULT_DOC_TTL_MS = 6 * 60 * 60 * 1000;       // 6 hours
 const DEFAULT_MANIFEST_TTL_MS = 60 * 60 * 1000;      // 1 hour
-
-const CONFIG_DIR = path.join(
-  process.env.HOME ?? process.env.USERPROFILE ?? "~",
-  ".gamecodex"
-);
 
 export class DocCache {
   private cacheDir: string;
