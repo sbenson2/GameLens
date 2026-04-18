@@ -4,12 +4,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sbenson2.github.io/GameCodex"),
-  title: "GameCodex — AI Game Dev Assistant",
-  description: "The AI game dev assistant that never forgets. 950+ curated guides, 5 power tools, 29 engines. Describe your game, get code that runs.",
+  title: "GameCodex — Free & Open Source AI Game Dev Assistant",
+  description: "Free and open source. 950+ curated guides, 5 power tools, 29 engines. Give your AI permanent game dev knowledge through MCP.",
   keywords: ["game development", "AI assistant", "MCP server", "Godot", "MonoGame", "Unity", "Unreal", "Bevy", "Phaser", "Raylib", "Love2D", "GameMaker", "Pygame", "game dev tools"],
   openGraph: {
     title: "GameCodex — AI Game Dev Assistant",
-    description: "Your AI forgets game dev mid-project. This one doesn't. 950+ curated guides, 29 engines, any language.",
+    description: "Free and open source. Your AI forgets game dev mid-project — this one doesn't. 950+ curated guides, 29 engines, any language.",
     type: "website",
     images: [
       {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "GameCodex — AI Game Dev Assistant",
-    description: "Your AI forgets game dev mid-project. This one doesn't. 950+ curated guides, 29 engines, any language.",
+    description: "Free and open source. Your AI forgets game dev mid-project — this one doesn't. 950+ curated guides, 29 engines, any language.",
     images: ["/og.png"],
   },
 };

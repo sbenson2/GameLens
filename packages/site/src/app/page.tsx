@@ -181,7 +181,7 @@ export default function Home() {
 
           <Reveal delay={200}>
             <p className="hero-sub">
-              GameCodex gives any AI instant access to 950+ curated game development guides.
+              Free and open source. GameCodex gives any AI instant access to 950+ curated game development guides.
               <br className="hidden sm:block" />
               Any engine. Any language. Zero hallucinations.
             </p>
@@ -347,72 +347,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ PRICING ═══ */}
+      {/* ═══ OPEN SOURCE ═══ */}
       <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           <Reveal>
-            <div className="text-center mb-16">
-              <h2 className="section-title">Full knowledge base. Free forever.</h2>
-              <p className="section-sub">
-                950+ docs across all 29 engines, no restrictions. Pro unlocks workflow tools that turn knowledge into shipped games.
-              </p>
+            <h2 className="section-title">Free. Open source. All of it.</h2>
+            <p className="section-sub">
+              The full knowledge base and every tool — 950+ docs across 29 engines, 5 power tools, no tiers, no accounts, no limits. MIT licensed.
+            </p>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+              <a
+                href="https://www.npmjs.com/package/gamecodex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-cta-primary"
+              >
+                Install from npm
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <a
+                href="https://github.com/sbenson2/GameCodex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-cta-secondary"
+              >
+                View Source on GitLab
+              </a>
             </div>
           </Reveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Free tier */}
-            <Reveal>
-              <div className="pricing-card">
-                <div className="pricing-tier">Free</div>
-                <div className="pricing-price">$0<span className="pricing-period">/forever</span></div>
-                <p className="pricing-desc">Full access to the entire knowledge base. No account, no credit card, no limits.</p>
-                <ul className="pricing-features">
-                  <li className="pricing-feature pricing-included">950+ curated game dev docs</li>
-                  <li className="pricing-feature pricing-included">All 29 engine modules</li>
-                  <li className="pricing-feature pricing-included">Search, browse, and read any doc</li>
-                  <li className="pricing-feature pricing-included">Server diagnostics and status</li>
-                  <li className="pricing-feature pricing-excluded">Project management and goals</li>
-                  <li className="pricing-feature pricing-excluded">GDD, phases, and marketing</li>
-                  <li className="pricing-feature pricing-excluded">Code scaffolding and debug</li>
-                </ul>
-                <a
-                  href="https://www.npmjs.com/package/gamecodex"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="pricing-cta-free"
-                >
-                  Install Free
-                </a>
-              </div>
-            </Reveal>
-
-            {/* Pro tier */}
-            <Reveal delay={120}>
-              <div className="pricing-card pricing-card-pro">
-                <div className="pricing-badge">Most Popular</div>
-                <div className="pricing-tier">Pro</div>
-                <div className="pricing-price">$7<span className="pricing-period">/month</span></div>
-                <p className="pricing-desc">Everything in Free, plus the tools that turn knowledge into running games.</p>
-                <ul className="pricing-features">
-                  <li className="pricing-feature pricing-included">Everything in Free</li>
-                  <li className="pricing-feature pricing-included">Project goals, decisions, scope health</li>
-                  <li className="pricing-feature pricing-included">GDD generation, phase checklists</li>
-                  <li className="pricing-feature pricing-included">Marketing, store pages, launch prep</li>
-                  <li className="pricing-feature pricing-included">Code scaffolding and starter code</li>
-                  <li className="pricing-feature pricing-included">Debug diagnosis and architecture review</li>
-                  <li className="pricing-feature pricing-included">Session workflow orchestration</li>
-                </ul>
-                <a
-                  href="https://gamecodex.lemonsqueezy.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="pricing-cta-pro"
-                >
-                  Get Pro
-                </a>
-              </div>
-            </Reveal>
-          </div>
         </div>
       </section>
 
