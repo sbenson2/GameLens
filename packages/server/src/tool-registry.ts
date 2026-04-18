@@ -24,18 +24,11 @@ import {
   ToolResult,
   buildTool,
 } from "./tool-definition.js";
-import { isToolAllowed, PRO_GATE_MESSAGE, UPGRADE_URL } from "./tiers.js";
 import { enhanceResponse } from "./core/response-enhancer.js";
 import { CONFIG } from "./config.js";
 
 // ---- Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS pattern) ----
 let activeToolCalls = 0;
-
-// ---- Pro gate response ----
-
-function proGateResponse(): ToolResult {
-  return { content: [{ type: "text", text: PRO_GATE_MESSAGE }] };
-}
 
 // ---- Registry ----
 
@@ -64,25 +57,14 @@ export class ToolRegistry {
     return [...this.tools.values()];
   }
 
-  /** Get tools filtered by tier (CC's getTools pattern) */
-  getToolsForTier(tier: "free" | "pro"): GameCodexTool[] {
-    return this.getAllTools().filter((tool) => {
-      if (!tool.isEnabled) return false;
-      const access = isToolAllowed(tier, tool.name);
-      return access !== "denied";
-    });
-  }
-
   /**
    * Wire all registered tools into an MCP server instance.
    *
    * This replaces the repetitive inline server.tool() calls with a single
    * loop that handles:
-   * 1. Tier/access checks (from tiers.ts)
-   * 2. Free-tier module restrictions
-   * 3. Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS)
-   * 4. Analytics instrumentation
-   * 5. Error handling (never throws, always returns user-friendly text)
+   * 1. Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS)
+   * 2. Analytics instrumentation
+   * 3. Error handling (never throws, always returns user-friendly text)
    */
   wireToServer(server: McpServer): void {
     if (!this.deps) {
@@ -115,51 +97,10 @@ export class ToolRegistry {
     tool: GameCodexTool,
     args: Record<string, unknown>
   ): Promise<ToolResult> {
-    const { analytics, tier } = this.deps;
+    const { analytics } = this.deps;
 
     try {
-      // 1. Tier/access check
-      const access = isToolAllowed(tier, tool.name);
-      if (access === "denied") {
-        analytics.recordProGate(tool.name);
-        return proGateResponse();
-      }
-
-      // 2. Free-tier module restrictions
-      if (access === "limited" && tool.freeTierRestriction === "core-only") {
-        const moduleArg = args.module as string | undefined;
-        const engineArg = args.engine as string | undefined;
-
-        if (moduleArg && moduleArg !== "core") {
-          return {
-            content: [{
-              type: "text",
-              text: `Searching non-core modules requires a Pro license. ${PRO_GATE_MESSAGE}`,
-            }],
-          };
-        }
-        if (engineArg) {
-          return {
-            content: [{
-              type: "text",
-              text: `Engine-specific access requires a Pro license. Free tier accesses core docs only. ${PRO_GATE_MESSAGE}`,
-            }],
-          };
-        }
-        // Force module to core for free tier
-        (args as Record<string, unknown>).module = "core";
-      }
-
-      if (access === "limited" && tool.freeTierRestriction === "engine-gate") {
-        return {
-          content: [{
-            type: "text",
-            text: `This feature requires a Pro license (it accesses engine-specific modules). ${PRO_GATE_MESSAGE}`,
-          }],
-        };
-      }
-
-      // 3. Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS pattern)
+      // Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS pattern)
       if (activeToolCalls >= CONFIG.MAX_CONCURRENT_TOOLS) {
         return {
           content: [{
@@ -172,15 +113,15 @@ export class ToolRegistry {
       activeToolCalls++;
 
       try {
-        // 5. Execute handler with timing (MooBot's stats pattern)
+        // Execute handler with timing (MooBot's stats pattern)
         const start = Date.now();
         const result = await tool.handler(args, this.deps);
         const durationMs = Date.now() - start;
 
-        // 6. Record analytics
+        // Record analytics
         analytics.recordToolCall(tool.name, durationMs);
 
-        // 6b. Record activity in session (non-critical)
+        // Record activity in session (non-critical)
         try {
           const projectName = (args.project as string) || "default";
           this.deps.sessionManager.recordToolCall(projectName);
@@ -195,7 +136,7 @@ export class ToolRegistry {
           // Session tracking is non-critical — never fail the response
         }
 
-        // 7. Enhance response with breadcrumb + next steps
+        // Enhance response with breadcrumb + next steps
         const enhanced = enhanceResponse(
           result,
           tool.name,

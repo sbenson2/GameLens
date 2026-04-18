@@ -9,7 +9,6 @@ import { GameCodexToolDef, ToolResult, ToolDependencies } from "../tool-definiti
 import { unknownAction } from "../core/error-helpers.js";
 import { getToolHelp } from "../core/help-generator.js";
 import { handleDiagnostics, DiagnosticsContext } from "./diagnostics.js";
-import { getTierFeatures, UPGRADE_URL } from "../tiers.js";
 
 // DiagnosticsContext is injected via closure in server.ts
 let _diagnosticsCtx: DiagnosticsContext | null = null;
@@ -20,16 +19,16 @@ export function setDiagnosticsContext(ctx: DiagnosticsContext): void {
 
 export const metaToolDef: GameCodexToolDef = {
   name: "meta",
-  description: "Use when: checking server health, viewing usage stats, managing license, listing engines/modules, or explaining what GameCodex is. Actions: status, analytics, license, modules, health, about.",
+  description: "Use when: checking server health, viewing usage stats, listing engines/modules, or explaining what GameCodex is. Actions: status, analytics, modules, health, about.",
   inputSchema: {
-    action: z.enum(["help", "status", "analytics", "license", "modules", "health", "about"]).describe(
-      "status: server overview and uptime | analytics: usage statistics | license: tier info and access details | modules: list available engines | health: quick server health check | about: what is GameCodex (use when user asks 'what is this' or 'help')"
+    action: z.enum(["help", "status", "analytics", "modules", "health", "about"]).describe(
+      "status: server overview and uptime | analytics: usage statistics | modules: list available engines | health: quick server health check | about: what is GameCodex (use when user asks 'what is this' or 'help')"
     ),
     project: z.string().optional().describe("Project name for session queries"),
   },
   handler: async (args: Record<string, unknown>, deps: ToolDependencies): Promise<ToolResult> => {
     const action = args.action as string;
-    const validActions = ["help", "status", "analytics", "license", "modules", "health", "about"];
+    const validActions = ["help", "status", "analytics", "modules", "health", "about"];
     if (!validActions.includes(action)) {
       return unknownAction(action, validActions, "meta");
     }
@@ -60,44 +59,6 @@ export const metaToolDef: GameCodexToolDef = {
         ? `${topEngines.join(", ")} + ${moreCount} more`
         : topEngines.join(", ");
       output += `**Engines:** ${engineStr} · **Knowledge base:** ${deps.allDocs.length} docs\n`;
-      return { content: [{ type: "text", text: output }] };
-    }
-
-    if (action === "license") {
-      const features = getTierFeatures(deps.tier);
-      let output = `# License Info\n\n`;
-      output += `**Tier:** ${deps.tier === "pro" ? "Pro" : "Free"}\n`;
-      output += `**Description:** ${features.description}\n\n`;
-
-      // Show subscription details for Pro users
-      if (deps.tier === "pro" && deps.licenseInfo) {
-        output += `## Subscription\n\n`;
-        if (deps.licenseInfo.expiresAt) {
-          const expiryDate = new Date(deps.licenseInfo.expiresAt);
-          const daysLeft = Math.ceil((expiryDate.getTime() - Date.now()) / (86400 * 1000));
-          output += `- **Renews:** ${expiryDate.toLocaleDateString()}`;
-          if (daysLeft <= 3) output += ` (${daysLeft} day${daysLeft !== 1 ? "s" : ""} left)`;
-          output += `\n`;
-        }
-        if (deps.licenseInfo.activationLimit) {
-          output += `- **Activations:** ${deps.licenseInfo.activationsUsed ?? 0} of ${deps.licenseInfo.activationLimit} used\n`;
-        }
-        output += `- **Deactivate:** run \`gamecodex deactivate\` to free a slot\n`;
-        output += `\n`;
-      }
-
-      output += `## Tool Access\n\n`;
-      for (const [tool, status] of Object.entries(features.tools)) {
-        output += `- **${tool}**: ${status}\n`;
-      }
-      output += `\n## Modules\n\n`;
-      for (const mod of features.modules) {
-        output += `- ${mod}\n`;
-      }
-      if (deps.tier === "free") {
-        output += `\n---\n**Upgrade:** ${UPGRADE_URL}\n`;
-        output += `Run \`gamecodex setup\` to activate a license key.\n`;
-      }
       return { content: [{ type: "text", text: output }] };
     }
 

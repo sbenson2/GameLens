@@ -25,7 +25,6 @@ import { Analytics } from "../analytics.js";
 
 export interface DiagnosticsContext {
   serverVersion: string;
-  tier: "free" | "pro";
   activeModules: string[];
   totalDocs: number;
   discoveredModules: Array<{ id: string; label: string; docCount: number }>;
@@ -77,7 +76,7 @@ export function handleDiagnostics(
  *   tokens, context %, created, updated, message count, agents, crons
  *
  * GameCodex format:
- *   version, tier, uptime, modules, docs, search mode, session stats
+ *   version, uptime, modules, docs, search mode, session stats
  */
 function handleStatus(
   project: string | undefined,
@@ -97,7 +96,6 @@ function handleStatus(
 ====================================================================
 
   Version    ${ctx.serverVersion}
-  Tier       ${ctx.tier === "pro" ? "Pro" : "Free"}
   Uptime     ${uptimeMin} min
   Modules    ${ctx.activeModules.length + 1} active (core + ${ctx.activeModules.join(", ") || "none"})
   Docs       ${ctx.totalDocs} loaded
@@ -254,7 +252,6 @@ function handleHealth(
   let output = `# Server Health\n\n`;
   output += `- **Status:** Running\n`;
   output += `- **Version:** ${ctx.serverVersion}\n`;
-  output += `- **Tier:** ${ctx.tier}\n`;
   output += `- **Uptime:** ${Math.round(uptimeMs / 60_000)} min\n`;
   output += `- **Docs loaded:** ${ctx.totalDocs}\n`;
   output += `- **Active modules:** ${ctx.activeModules.length + 1}\n`;

@@ -31,7 +31,6 @@ describe("Analytics", () => {
     const summary = analytics.getSummary();
     const today = new Date().toISOString().slice(0, 10);
     assert.equal(summary.date, today);
-    assert.equal(summary.tier, "free");
     assert.equal(summary.search.totalQueries, 0);
     assert.equal(summary.docs.totalFetches, 0);
     analytics.shutdown();
@@ -101,7 +100,6 @@ describe("Analytics", () => {
     const analytics = new Analytics();
     analytics.recordStartup({
       version: "1.2.0",
-      tier: "pro",
       startupTimeMs: 342,
       discoveredModules: 3,
       activeModules: 2,
@@ -110,7 +108,6 @@ describe("Analytics", () => {
 
     const summary = analytics.getSummary();
     assert.equal(summary.version, "1.2.0");
-    assert.equal(summary.tier, "pro");
     assert.equal(summary.startupTimeMs, 342);
     assert.equal(summary.modules.discovered, 3);
     assert.equal(summary.modules.totalDocs, 134);

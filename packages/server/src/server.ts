@@ -31,7 +31,6 @@ import { metaToolDef, setDiagnosticsContext } from "./tools/meta.js";
 
 // Infrastructure
 import { DiagnosticsContext } from "./tools/diagnostics.js";
-import { validateLicense, getLicenseKey } from "./license.js";
 import { getAnalytics } from "./analytics.js";
 
 // Registry
@@ -41,7 +40,7 @@ import { ToolDependencies } from "./tool-definition.js";
 // Prompts
 import { registerPrompts } from "./prompts.js";
 
-const SERVER_VERSION = "0.4.0";
+const SERVER_VERSION = "1.0.0";
 
 // ---- Helpers ----
 
@@ -96,19 +95,8 @@ export async function createServer() {
   const allDocs = [...docStore.getAllDocs()];
   await hybridSearch.init(allDocs);
 
-  // License
-  const {
-    tier,
-    message: licenseMessage,
-    expiresAt: licenseExpiresAt,
-    activationLimit: licenseActivationLimit,
-    activationsUsed: licenseActivationsUsed,
-  } = await validateLicense();
-
-  // Hybrid provider
-  const apiUrl = process.env.GAMECODEX_API_URL || null;
-  const licenseKey = getLicenseKey();
-  const hybridProvider = new HybridProvider(docStore, { apiUrl, licenseKey });
+  // Hybrid provider (local only — remote API removed with monetization)
+  const hybridProvider = new HybridProvider(docStore, { apiUrl: null, licenseKey: null });
 
   // Infrastructure
   const analytics = getAnalytics();
@@ -129,15 +117,10 @@ export async function createServer() {
   console.error(
     `[gamecodex] Active modules: ${activeNames.join(", ")} (${allDocs.length} docs from ${docsRoot})`
   );
-  console.error(licenseMessage);
-  if (hybridProvider.isHybridEnabled) {
-    console.error(`[gamecodex] Hybrid mode: enabled (API: ${apiUrl})`);
-  }
 
   // Record startup
   analytics.recordStartup({
     version: SERVER_VERSION,
-    tier,
     startupTimeMs: Date.now() - startTime,
     discoveredModules: discoveredModules.length,
     activeModules: activeModuleMeta.length,
@@ -157,24 +140,17 @@ export async function createServer() {
     sessionManager,
     memory,
     analytics,
-    tier,
     serverVersion: SERVER_VERSION,
     activeModules,
     allDocs,
     projectStore,
     personality,
     healthTracker,
-    licenseInfo: tier === "pro" ? {
-      expiresAt: licenseExpiresAt,
-      activationLimit: licenseActivationLimit,
-      activationsUsed: licenseActivationsUsed,
-    } : undefined,
   };
   registry.setDependencies(deps);
 
   const diagnosticsCtx: DiagnosticsContext = {
     serverVersion: SERVER_VERSION,
-    tier,
     activeModules,
     totalDocs: allDocs.length,
     discoveredModules: discoveredModules.map((m) => ({

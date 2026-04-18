@@ -12,7 +12,6 @@ import { getToolHelp } from "../core/help-generator.js";
 import { handleSearchDocs } from "./search-docs.js";
 import { handleGetDoc, handleGetDocHybrid } from "./get-doc.js";
 import { handleListDocs } from "./list-docs.js";
-import { isToolAllowed, isModuleAllowed, PRO_GATE_MESSAGE, UPGRADE_URL } from "../tiers.js";
 
 const CATEGORIES = [
   "reference", "explanation", "guide", "catalog",
@@ -68,22 +67,6 @@ export const docsToolDef: GameCodexToolDef = {
 
       case "get": {
         if (!args.id) return miss("id", "docs", "get");
-        // Module check for free tier
-        if (isToolAllowed(deps.tier, "docs") === "limited") {
-          const doc =
-            deps.docStore.getDoc(args.id as string) ??
-            deps.docStore.getAllDocs().find(
-              (d: any) => d.id.toLowerCase() === (args.id as string).toLowerCase()
-            );
-          if (doc && !isModuleAllowed(deps.tier, doc.module)) {
-            return {
-              content: [{
-                type: "text",
-                text: `The doc "${args.id}" is part of the ${doc.module} module, which requires a Pro license. ${PRO_GATE_MESSAGE}`,
-              }],
-            };
-          }
-        }
 
         const getArgs = {
           id: args.id as string,
@@ -166,7 +149,6 @@ export const docsToolDef: GameCodexToolDef = {
   },
   isReadOnly: true,
   isConcurrencySafe: true,
-  freeTierRestriction: "none",
   category: "docs",
   activityDescription: "Querying knowledge base",
 };

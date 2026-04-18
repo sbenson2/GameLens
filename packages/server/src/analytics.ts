@@ -83,18 +83,12 @@ interface CacheStats {
 export interface DailySummary {
   date: string;
   version: string;                     // server version
-  tier: "free" | "pro" | "dev";
   sessionStartedAt: number;            // epoch ms
   startupTimeMs: number;               // cold start duration
   tools: Record<string, ToolUsage>;
   search: SearchStats;
   docs: DocAccessStats;
   cache: CacheStats;
-  conversion: {
-    proGateImpressions: number;        // times a Pro gate message was shown
-    proGateByTool: Record<string, number>; // which tools triggered Pro gates
-    upgradeUrlShown: number;           // times upgrade URL was displayed
-  };
   modules: {
     discovered: number;
     active: number;
@@ -106,7 +100,6 @@ function emptyDailySummary(date: string): DailySummary {
   return {
     date,
     version: "",
-    tier: "free",
     sessionStartedAt: Date.now(),
     startupTimeMs: 0,
     tools: {},
@@ -135,11 +128,6 @@ function emptyDailySummary(date: string): DailySummary {
       active: 0,
       totalDocs: 0,
     },
-    conversion: {
-      proGateImpressions: 0,
-      proGateByTool: {},
-      upgradeUrlShown: 0,
-    },
   };
 }
 
@@ -166,7 +154,6 @@ export class Analytics {
   /** Record server startup */
   recordStartup(options: {
     version: string;
-    tier: "free" | "pro" | "dev";
     startupTimeMs: number;
     discoveredModules: number;
     activeModules: number;
@@ -174,7 +161,6 @@ export class Analytics {
   }): void {
     if (!this.enabled) return;
     this.summary.version = options.version;
-    this.summary.tier = options.tier;
     this.summary.startupTimeMs = options.startupTimeMs;
     this.summary.modules = {
       discovered: options.discoveredModules,
@@ -274,18 +260,6 @@ export class Analytics {
         this.summary.cache.remoteFetches += 1;
         break;
     }
-    this.dirty = true;
-  }
-
-  /** Record a Pro gate impression (conversion funnel tracking) */
-  recordProGate(tool: string): void {
-    if (!this.enabled) return;
-    this.ensureToday();
-
-    this.summary.conversion.proGateImpressions += 1;
-    this.summary.conversion.proGateByTool[tool] =
-      (this.summary.conversion.proGateByTool[tool] ?? 0) + 1;
-    this.summary.conversion.upgradeUrlShown += 1;
     this.dirty = true;
   }
 

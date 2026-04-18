@@ -80,11 +80,10 @@ const TOOL_HELP: Record<string, ToolHelpDef> = {
     ],
   },
   meta: {
-    description: "Server diagnostics — health, stats, license, info",
+    description: "Server diagnostics — health, stats, info",
     actions: [
       { name: "status", description: "Server overview and uptime", required: [], optional: [], example: 'meta(action: "status")' },
       { name: "analytics", description: "Usage statistics", required: [], optional: [], example: 'meta(action: "analytics")' },
-      { name: "license", description: "License tier and access details", required: [], optional: [], example: 'meta(action: "license")' },
       { name: "modules", description: "List available engine modules", required: [], optional: [], example: 'meta(action: "modules")' },
       { name: "health", description: "Quick server health check", required: [], optional: [], example: 'meta(action: "health")' },
       { name: "about", description: "What is GameCodex", required: [], optional: [], example: 'meta(action: "about")' },

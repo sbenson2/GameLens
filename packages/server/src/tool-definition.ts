@@ -88,11 +88,6 @@ export interface GameCodexToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> 
    */
   isEnabled?: boolean;
 
-  // ---- Tier gating ----
-
-  /** Module restriction mode for free tier: "core-only" forces module=core */
-  freeTierRestriction?: "core-only" | "engine-gate" | "none";
-
   // ---- Categorization ----
 
   /** Tool category for grouping in diagnostics */
@@ -113,18 +108,12 @@ export interface ToolDependencies {
   sessionManager: SessionManager;
   memory: MemoryStore;         // Freeform project notes (~/.gamecodex/memory/)
   analytics: Analytics;
-  tier: "free" | "pro";
   serverVersion: string;
   activeModules: string[];
   allDocs: Doc[];
   projectStore: ProjectStore;  // Structured project data (~/.gamecodex/projects/)
   personality: PersonalityEngine;
   healthTracker: HealthTracker;
-  licenseInfo?: {
-    expiresAt?: string;
-    activationLimit?: number;
-    activationsUsed?: number;
-  };
 }
 
 // ---- Built tool (with defaults applied) ----
@@ -137,7 +126,6 @@ export interface GameCodexTool<TInput extends z.ZodRawShape = z.ZodRawShape>
   description: string;
   inputSchema: TInput;
   handler: GameCodexToolDef<TInput>["handler"];
-  freeTierRestriction: "core-only" | "engine-gate" | "none";
   category: string;
   activityDescription: string;
 }
@@ -155,7 +143,6 @@ export function buildTool<TInput extends z.ZodRawShape>(
     isConcurrencySafe: false,
     isDestructive: false,
     isEnabled: true,
-    freeTierRestriction: "none",
     category: "system",
     activityDescription: def.name,
     // User overrides

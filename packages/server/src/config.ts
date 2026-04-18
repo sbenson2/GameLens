@@ -20,9 +20,6 @@ export const CONFIG = {
   /** Max cached search result entries (search.ts) */
   SEARCH_RESULT_CACHE_SIZE: 100,
 
-  /** Show Pro license nudge after N responses (response-enhancer.ts) */
-  NUDGE_AFTER_N_RESPONSES: 10,
-
   /** Embedding batch size for vector search (vector-search.ts) */
   EMBEDDING_BATCH_SIZE: 8,
 

@@ -7,12 +7,6 @@
 
 import { ToolResult, ToolDependencies } from "../tool-definition.js";
 import { PATH_STEPS, getStepToolRecommendations } from "./session.js";
-import { UPGRADE_URL } from "../tiers.js";
-import { CONFIG } from "../config.js";
-
-// Track docs responses per session for upgrade nudge cadence
-let docsResponseCount = 0;
-let nudgeShownThisSession = false;
 
 // ---- Types ----
 
@@ -209,7 +203,6 @@ const NEXT_STEPS: Record<string, Record<string, NextStep[]>> = {
     ],
     status: [],
     analytics: [],
-    license: [],
     modules: [
       { tool: "docs", action: "browse", description: "Browse docs" },
     ],
@@ -268,19 +261,8 @@ export function enhanceResponse(
 
   const nextStepsText = formatNextSteps(nextSteps);
 
-  // Subtle upgrade nudge for free-tier docs users (once per session, after N uses)
-  let nudgeText = "";
-  if (deps.tier === "free" && toolName === "docs" && !nudgeShownThisSession) {
-    docsResponseCount++;
-    if (docsResponseCount >= CONFIG.NUDGE_AFTER_N_RESPONSES) {
-      nudgeText = `\n\n*Tip: GameCodex Pro ($7/mo) adds project management, code scaffolding, and debug tools. [Learn more](${UPGRADE_URL})*`;
-      nudgeShownThisSession = true;
-      try { deps.analytics.recordProGate("nudge"); } catch { /* non-critical */ }
-    }
-  }
-
   // Nothing to add
-  if (!breadcrumb && !nextStepsText && !nudgeText) return result;
+  if (!breadcrumb && !nextStepsText) return result;
 
   // Clone result to avoid mutating the original
   const content = result.content.map((c) => ({ ...c }));
@@ -291,8 +273,8 @@ export function enhanceResponse(
     if (breadcrumb) {
       content[0] = { ...content[0], text: `${breadcrumb}\n\n${content[0].text}` };
     }
-    if (nextStepsText || nudgeText) {
-      content[lastIdx] = { ...content[lastIdx], text: content[lastIdx].text + nextStepsText + nudgeText };
+    if (nextStepsText) {
+      content[lastIdx] = { ...content[lastIdx], text: content[lastIdx].text + nextStepsText };
     }
   }
 
