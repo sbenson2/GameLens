@@ -1,4 +1,0 @@
-node_modules/
-.wrangler/
-kv-bulk.json
-dist/

@@ -15,7 +15,6 @@ import { SearchEngine } from "./core/search.js";
 import { VectorSearch } from "./core/vector-search.js";
 import { HybridSearchEngine } from "./core/hybrid-search.js";
 import { discoverModules, resolveActiveModules } from "./core/modules.js";
-import { HybridProvider } from "./core/hybrid-provider.js";
 import { getSessionManager } from "./core/session-manager.js";
 import { getMemoryStore } from "./core/memory.js";
 import { getProjectStore } from "./core/project-store.js";
@@ -95,9 +94,6 @@ export async function createServer() {
   const allDocs = [...docStore.getAllDocs()];
   await hybridSearch.init(allDocs);
 
-  // Hybrid provider (local only — remote API removed with monetization)
-  const hybridProvider = new HybridProvider(docStore, { apiUrl: null, licenseKey: null });
-
   // Infrastructure
   const analytics = getAnalytics();
   const sessionManager = getSessionManager();
@@ -135,7 +131,6 @@ export async function createServer() {
     docStore,
     searchEngine,
     hybridSearch,
-    hybridProvider,
     discoveredModules,
     sessionManager,
     memory,
@@ -159,7 +154,6 @@ export async function createServer() {
       docCount: m.docCount,
     })),
     hasVectorSearch: hybridSearch.hasVectorSearch(),
-    hasHybridProvider: hybridProvider.isHybridEnabled,
     startTime,
   };
   setDiagnosticsContext(diagnosticsCtx);

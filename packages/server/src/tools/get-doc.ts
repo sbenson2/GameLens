@@ -1,5 +1,4 @@
 import { DocStore } from "../core/docs.js";
-import { HybridProvider } from "../core/hybrid-provider.js";
 
 interface GetDocArgs {
   id: string;
@@ -188,41 +187,3 @@ function formatDocResult(doc: Doc, args: GetDocArgs): ToolResult {
   };
 }
 
-/**
- * Hybrid get_doc handler — uses HybridProvider for remote Pro doc fetching
- * with local caching and fallback chain.
- */
-export async function handleGetDocHybrid(
-  args: GetDocArgs,
-  docStore: DocStore,
-  hybridProvider: HybridProvider
-): Promise<ToolResult> {
-  // Try hybrid provider first
-  const result = await hybridProvider.getDoc(args.id, {
-    section: args.section,
-    maxLength: args.maxLength,
-  });
-
-  if (!result) {
-    // Fall back to pure local (handles disambiguation, error messages)
-    return handleGetDoc(args, docStore);
-  }
-
-  // Format using the standard formatter
-  const formatted = formatDocResult(result.doc, args);
-
-  // Add source annotation
-  const sourceLabels: Record<string, string> = {
-    local: "",
-    cache: "📦 _Served from local cache_",
-    remote: "🌐 _Fetched from remote API_",
-    "stale-cache": "⚠️ _Served from stale cache (API unreachable). Content may be outdated._",
-  };
-
-  const sourceNote = sourceLabels[result.source];
-  if (sourceNote) {
-    formatted.content[0].text += `\n\n${sourceNote}`;
-  }
-
-  return formatted;
-}

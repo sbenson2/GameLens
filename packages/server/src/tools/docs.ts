@@ -10,7 +10,7 @@ import { GameCodexToolDef, ToolResult, ToolDependencies } from "../tool-definiti
 import { miss, unknownAction } from "../core/error-helpers.js";
 import { getToolHelp } from "../core/help-generator.js";
 import { handleSearchDocs } from "./search-docs.js";
-import { handleGetDoc, handleGetDocHybrid } from "./get-doc.js";
+import { handleGetDoc } from "./get-doc.js";
 import { handleListDocs } from "./list-docs.js";
 
 const CATEGORIES = [
@@ -74,12 +74,7 @@ export const docsToolDef: GameCodexToolDef = {
           maxLength: args.maxLength as number | undefined,
         };
 
-        let docResult;
-        if (deps.hybridProvider.isHybridEnabled) {
-          docResult = await handleGetDocHybrid(getArgs, deps.docStore, deps.hybridProvider);
-        } else {
-          docResult = handleGetDoc(getArgs, deps.docStore);
-        }
+        const docResult = handleGetDoc(getArgs, deps.docStore);
 
         // Analytics
         const docForAnalytics = deps.docStore.getDoc(args.id as string) ??

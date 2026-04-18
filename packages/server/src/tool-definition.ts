@@ -18,7 +18,6 @@ import { z } from "zod";
 import type { DocStore, Doc } from "./core/docs.js";
 import type { SearchEngine } from "./core/search.js";
 import type { HybridSearchEngine } from "./core/hybrid-search.js";
-import type { HybridProvider } from "./core/hybrid-provider.js";
 import type { ModuleMetadata } from "./core/modules.js";
 import type { SessionManager } from "./core/session-manager.js";
 import type { MemoryStore } from "./core/memory.js";
@@ -103,7 +102,6 @@ export interface ToolDependencies {
   docStore: DocStore;
   searchEngine: SearchEngine;
   hybridSearch: HybridSearchEngine;
-  hybridProvider: HybridProvider;
   discoveredModules: ModuleMetadata[];
   sessionManager: SessionManager;
   memory: MemoryStore;         // Freeform project notes (~/.gamecodex/memory/)

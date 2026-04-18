@@ -29,7 +29,6 @@ export interface DiagnosticsContext {
   totalDocs: number;
   discoveredModules: Array<{ id: string; label: string; docCount: number }>;
   hasVectorSearch: boolean;
-  hasHybridProvider: boolean;
   startTime: number;
 }
 
@@ -256,7 +255,6 @@ function handleHealth(
   output += `- **Docs loaded:** ${ctx.totalDocs}\n`;
   output += `- **Active modules:** ${ctx.activeModules.length + 1}\n`;
   output += `- **Vector search:** ${ctx.hasVectorSearch ? "Ready" : "Not available"}\n`;
-  output += `- **Hybrid provider:** ${ctx.hasHybridProvider ? "Enabled" : "Local only"}\n`;
   output += `- **Memory projects:** ${projects.length}\n`;
   output += `- **Analytics:** ${analytics.getSummary().date === new Date().toISOString().slice(0, 10) ? "Active" : "Stale"}\n`;
 
