@@ -6,9 +6,9 @@
 [![Node.js](https://img.shields.io/node/v/gamecodex)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Your AI forgets everything mid-project. Give it permanent game development knowledge.**
+**Free and open source game dev AI assistant — MCP server.**
 
-GameCodex is a knowledge layer for AI coding assistants. It provides 950+ curated game development docs across 29 engines — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI assistant never loses context on how to build games.
+GameCodex gives any AI coding assistant permanent, structured game development knowledge: 950+ curated docs across 29 engines — design patterns, architecture guides, engine-specific implementation details — delivered through [MCP](https://modelcontextprotocol.io) so your AI never loses context on how to build games.
 
 > Works with **Claude Code**, **Claude Desktop**, **Cursor**, **Windsurf**, **Cline**, and any MCP-compatible tool.
 
@@ -17,6 +17,12 @@ GameCodex is a knowledge layer for AI coding assistants. It provides 950+ curate
 Every game dev using AI hits the same wall: your assistant starts strong, then forgets your architecture mid-session. It suggests deprecated APIs. It doesn't know the difference between a state machine and a behavior tree. It writes Unity 5 code when you're on Unity 6.
 
 **GameCodex solves this** by giving your AI a persistent, searchable knowledge base of curated game dev expertise — not raw docs, but structured implementation guidance that actually helps you build.
+
+## Status
+
+**v1.0.0 — free and open source, MIT licensed.** All tools, all docs, no tiers, no accounts, no license keys.
+
+Active feature development has stopped. The project is in maintenance mode — bug fixes and doc corrections welcome, but no new feature work is planned. Fork freely.
 
 ## What's Inside
 
@@ -108,7 +114,7 @@ GameCodex consolidates everything into 5 tools — one per domain, with an `acti
 | **`design`** | help, gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
 | **`docs`** | help, search, get, browse, modules | Knowledge base — search/browse 950+ game dev docs across 29 engines |
 | **`build`** | help, scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
-| **`meta`** | help, status, analytics, license, modules, health, about | Server internals — diagnostics, license info, module discovery |
+| **`meta`** | help, status, analytics, modules, health, about | Server internals — diagnostics, module discovery |
 
 ### Context-Efficient by Design
 
@@ -130,40 +136,6 @@ Workflow entry points that chain multiple tool calls:
 | `/ship-game` | Launch checklist — store page, marketing, pricing |
 | `/session` | Structured dev session — plan, build, debug, or manage scope |
 
-## Free vs Pro
-
-The server works fully out of the box with a generous free tier.
-
-| Feature | Free | Pro |
-|---------|------|-----|
-| `docs` — 950+ docs across 29 engines | Full | Full |
-| `meta` — diagnostics, license management | Full | Full |
-| `project` — goals, decisions, scope health | -- | Full |
-| `design` — GDD, phases, marketing, launch | -- | Full |
-| `build` — scaffold, code, debug, review | -- | Full |
-
-**Free tier gives your AI the full knowledge base** — 950+ docs across all 29 engines, no restrictions. **Pro** unlocks the workflow tools that turn knowledge into action: project management, design planning, code scaffolding, and build assistance.
-
-Get a Pro license at [gamecodex.lemonsqueezy.com](https://gamecodex.lemonsqueezy.com)
-
-### License Setup
-
-```bash
-gamecodex setup
-```
-
-Interactive setup walks you through activation. Or add your key to the MCP config:
-
-```json
-{
-  "env": {
-    "GAMECODEX_LICENSE": "your-license-key"
-  }
-}
-```
-
-The server validates on startup, caches for 24h, and gracefully falls back to free tier if anything goes wrong.
-
 ## What Makes This Different
 
 There are [14,000+ MCP servers](https://mcp.so) out there. Here's why this one matters for game dev:
@@ -172,7 +144,6 @@ There are [14,000+ MCP servers](https://mcp.so) out there. Here's why this one m
 - **Cross-engine.** One server, 29 engines. Learn a pattern once in core theory, then get the engine-specific implementation. No need to install separate MCPs per engine.
 - **Curated, not scraped.** Every doc is hand-written with AI code generation in mind — typed examples, anti-pattern warnings, decision trees, and "when to use" guidance. This isn't a docs mirror.
 - **Secure by design.** stdio-only transport — no network exposure, no open ports, no attack surface. While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/), this runs entirely local.
-- **Grows with you.** New docs and engines added continuously. Your AI gets smarter over time without you changing anything.
 
 ## Genre Coverage
 
@@ -189,20 +160,8 @@ git clone https://github.com/sbenson2/GameCodex.git
 cd GameCodex
 npm install
 npm run build
-npm test          # 303 tests, Node.js built-in test runner
+npm test          # Node.js built-in test runner
 npm run dev       # Watch mode
-```
-
-### Dev Mode
-
-Skip license validation for local development:
-
-```json
-{
-  "env": {
-    "GAMEDEV_MCP_DEV": "true"
-  }
-}
 ```
 
 ## Doc Structure
@@ -243,7 +202,7 @@ See [SECURITY.md](./SECURITY.md) for our full security policy and vulnerability 
 
 ## Contributing
 
-Found a bug? Have a doc suggestion? [Open an issue](https://github.com/sbenson2/GameCodex/-/issues).
+Found a bug? Have a doc correction? [Open an issue](https://github.com/sbenson2/GameCodex/-/issues). The project is in maintenance mode — bug fixes and small improvements are welcome; larger feature work is not being actively merged.
 
 ## License
 
@@ -251,4 +210,4 @@ MIT — see [LICENSE](./LICENSE).
 
 ---
 
-**Built for game devs who use AI.** Stop fighting context loss. Start building.
+**Built for game devs who use AI. Free, open source, and yours to fork.**

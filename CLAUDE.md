@@ -1,6 +1,8 @@
 # GameCodex Monorepo
 
-Game dev AI assistant — MCP server with 950+ docs across 29 engines, structured workflows, and guidance for game developers.
+Free and open source MCP server for game developers — 950+ docs across 29 engines, structured workflows, and guidance. MIT licensed.
+
+**v1.0.0 shipped 2026-04-17.** Active feature development has stopped. Project is in maintenance mode.
 
 ## Monorepo Structure
 
@@ -24,23 +26,22 @@ npm run dev            # server watch mode
 npm run dev:site       # site dev server
 npm start              # start MCP server
 npm run typecheck      # tsc --noEmit on server
-npm test               # run all tests (303 passing)
+npm test               # run all tests
 npm run lint:site      # eslint on site
 ```
 
 ## Server (`packages/server/`)
 
 - **Entry:** `src/server.ts` — MCP server setup, 5-tool registration
-- **Tool registry:** `src/tool-registry.ts` — centralized registration with tier checks, analytics, error handling
+- **Tool registry:** `src/tool-registry.ts` — centralized registration with analytics and error handling
 - **Tool interface:** `src/tool-definition.ts` — metadata: isReadOnly, isConcurrencySafe, isDestructive (fail-closed defaults)
 - **5 tools:** `src/tools/` — project.ts, design.ts, docs.ts, build.ts, meta.ts
 - **Handler utilities:** `src/tools/` — existing handler functions delegated to by the 5 tools
 - **Core systems:** `src/core/` — personality, project-store, health-tracker, search, docs, modules, vector search, error-helpers, response-enhancer, help-generator
-- **Tiers/licensing:** `src/tiers.ts`, `src/license.ts`
 - **Knowledge base:** `docs/` — core (52) + 29 engine modules (957 total docs)
 - **Config dir:** `~/.gamecodex/` (projects, embeddings, learning progress)
 
-### Tool Inventory (v0.4.0 — 5 tools)
+### Tool Inventory (v1.0.0 — 5 tools, all free)
 
 | Tool | Actions | What it does |
 |------|---------|-------------|
@@ -48,9 +49,9 @@ npm run lint:site      # eslint on site
 | `design` | help, gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
 | `docs` | help, search, get, browse, modules | Knowledge base — search/browse 950+ game dev docs across 29 engines |
 | `build` | help, scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
-| `meta` | help, status, analytics, license, modules, health, about | Server internals — diagnostics, license info, help |
+| `meta` | help, status, analytics, modules, health, about | Server internals — diagnostics, module discovery, help |
 
-### Core Modules (v0.4.0)
+### Core Modules
 
 - `core/personality.ts` — Template-based tone engine (13 genre tones, phase emphasis)
 - `core/project-store.ts` — Unified persistence (JSON files at ~/.gamecodex/projects/)
@@ -62,28 +63,27 @@ npm run lint:site      # eslint on site
 ### CLI Commands
 
 - `gamecodex` — Start the MCP server (default)
-- `gamecodex setup` — Interactive Pro license activation
 - `gamecodex init` — Auto-detect AI tools + engine, write MCP config
+- `gamecodex status` — Print version
 
 ### MCP Prompts (workflow entry points)
 
 - `start-project` — Guided new project setup (engine → GDD → goals → suggest)
 - `debug-error` — Error diagnosis workflow (debug → docs search → fix)
-- `ship-game` — Launch checklist (launch → store page → marketing → pricing)
+- `ship-game` — Launch checklist (launch → store page → marketing)
 - `session` — Start structured dev session (plan, build, debug, or manage scope)
 
-### Adding a New Tool
+### Adding a New Tool (maintenance only)
 
 1. Create tool def in `packages/server/src/tools/<name>.ts` exporting a `GameCodexToolDef`
 2. Use `action` enum param for routing multiple operations through one tool
 3. Register in `packages/server/src/server.ts` `registerAllTools()`
-4. Add tier access in `packages/server/src/tiers.ts`
-5. Add tests in `packages/server/src/__tests__/<name>.test.ts`
+4. Add tests in `packages/server/src/__tests__/<name>.test.ts`
 
 ## Site (`packages/site/`)
 
 - Next.js 16 + React 19 + Tailwind 4
-- AI SDK integration (Anthropic, OpenAI, Google)
+- AI SDK integration (Anthropic, OpenAI, Google) — used by the disabled `/chat` route, not the live site
 - Run `npm run dev:site` for local dev
 
 ## Conventions
@@ -95,7 +95,8 @@ npm run lint:site      # eslint on site
 - Keep tool count at 5 — add actions, not tools
 - Each tool = one domain, `action` param for routing
 
-## Blockers
+## Notes
 
-- Migrated from GitHub (`sbenson2`, suspended) to GitLab (`sbenson2/GameCodex`)
-- Migrated from GitHub (`sbenson2`, suspended) to GitLab (`sbenson2/GameCodex`). npm publish is manual.
+- Repo lives at GitLab (`sbenson2/GameCodex`) after GitHub (`sbenson2`) account suspension.
+- npm publish is manual — see scripts in `packages/server/scripts/` or use the `/publish` skill.
+- No monetization, no tier gating, no license keys. All features free.

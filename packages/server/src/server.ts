@@ -1,7 +1,8 @@
 /**
- * GameCodex MCP Server v0.4.0 — 5 power tools for game developers.
+ * GameCodex MCP Server v1.0.0 — 5 power tools for game developers.
  *
- * Tools: project (brain), design (plan+ship), docs (knowledge), build (make), meta (internals)
+ * Free and open source. Tools: project (brain), design (plan+ship),
+ * docs (knowledge), build (make), meta (internals).
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";

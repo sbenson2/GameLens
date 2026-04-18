@@ -97,8 +97,7 @@ export async function runInit(): Promise<void> {
       print(`  Detected engine: ${engine.engine}`);
     }
     print("");
-    print("  Run `gamecodex setup` to activate a Pro license (optional).");
-    print("  Your AI assistant now has GameCodex!");
+    print("  Your AI assistant now has GameCodex — free and open source.");
   } else if (alreadyConfigured.length > 0 && configurable.length === 0) {
     print("  Everything is already configured. You're good to go!");
   } else {
