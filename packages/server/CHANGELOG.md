@@ -20,12 +20,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 programmers — one MCP tool, applied design judgment, nothing else.
 
 ### Added
-- **The `lens` tool** — the entire tool surface. Describe a `situation`
-  ("my jump feels floaty", "should I add crafting?", "players quit at the
-  first boss") and get the matching industry-proven design lenses: the
-  questions a designer would ask, red flags phrased in code terms, and
-  concrete prescriptions. Pass `lens` for a specific one; pass nothing for
-  the catalog.
+- **The `lens` tool** — the entire tool surface, and the one door to
+  everything. Describe a `situation` ("my jump feels floaty", "should I add
+  crafting?", "players quit at the first boss") and get the matching
+  industry-proven design lenses — the questions a designer would ask, red
+  flags phrased in code terms, concrete prescriptions — plus the top
+  matching knowledge-base docs. Pass `lens` for a specific lens; pass
+  `doc` (+ optional `section`) to read a knowledge-base doc (docs over 25KB
+  return a table of contents so large guides never flood context); pass
+  nothing for the catalog.
 - **The lens library** (`src/core/lenses.ts`) — 15 lenses with real,
   checkable provenance: Mark Cerny's Method, MDA (Hunicke/LeBlanc/Zubek),
   Sid Meier's interesting decisions, Steve Swink's game feel, juice
@@ -51,8 +54,10 @@ programmers — one MCP tool, applied design judgment, nothing else.
   `@modelcontextprotocol/sdk` + `zod`.
 
 ### Unchanged
-- The 957-doc knowledge base still ships and is served as passive MCP
-  resources (`gamedev://docs/{module}/{id}`), scoped by `GAMEDEV_MODULES`.
+- The 957-doc knowledge base still ships — now reachable *through the lens*
+  (situation search + `doc`/`section` fetch, powered by the tuned v1 TF-IDF
+  engine) and additionally served as passive MCP resources
+  (`gamedev://docs/{module}/{id}`), scoped by `GAMEDEV_MODULES`.
 - stdio-only transport, local-only analytics, MIT license.
 
 ## [1.0.1] - 2026-08-03

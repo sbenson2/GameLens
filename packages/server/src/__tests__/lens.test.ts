@@ -1,10 +1,39 @@
-import { describe, it } from "node:test";
+import { describe, it, before } from "node:test";
 import assert from "node:assert/strict";
+import * as path from "path";
+import { fileURLToPath } from "url";
 import { LENSES, findLens, matchLenses } from "../core/lenses.js";
 import { lensToolDef } from "../tools/lens.js";
+import { DocStore } from "../core/docs.js";
+import { SearchEngine } from "../core/search.js";
+import { discoverModules } from "../core/modules.js";
 import { ToolDependencies } from "../tool-definition.js";
 
-const deps = {} as ToolDependencies; // lens tool uses no dependencies
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const docsRoot = path.resolve(__dirname, "../../docs");
+
+// Real dependencies — the lens is also the door to the knowledge base
+let deps: ToolDependencies;
+
+before(async () => {
+  const discoveredModules = await discoverModules(docsRoot);
+  const activeModules = discoveredModules.map((m) => m.id);
+  const docStore = new DocStore(docsRoot);
+  await docStore.load(activeModules);
+  const allDocs = [...docStore.getAllDocs()];
+  const searchEngine = new SearchEngine();
+  searchEngine.index(allDocs);
+  deps = {
+    docStore,
+    searchEngine,
+    discoveredModules,
+    analytics: { recordSearch() {}, recordDocAccess() {} } as unknown as ToolDependencies["analytics"],
+    serverVersion: "test",
+    activeModules,
+    allDocs,
+  };
+});
 
 describe("lens library", () => {
   it("has unique ids and names", () => {
@@ -151,5 +180,68 @@ describe("lens tool", () => {
     const result = await lensToolDef.handler({ situation: "xyzzy plugh" }, deps);
     assert.ok(result.content[0].text.includes("The Designer's Lenses"));
     assert.ok(!result.isError);
+  });
+});
+
+describe("docs within lens", () => {
+  it("situation replies include matching knowledge-base docs", async () => {
+    const result = await lensToolDef.handler(
+      { situation: "my jump feels floaty" }, deps
+    );
+    const text = result.content[0].text;
+    assert.ok(text.includes("From the knowledge base:"), "docs block missing");
+    assert.ok(/`[A-Za-z0-9_-]+` —/.test(text), "doc ids should be listed");
+    assert.ok(text.includes('doc: "<id>"'), "fetch hint missing");
+  });
+
+  it("implementation questions surface docs even without a strong lens match", async () => {
+    const result = await lensToolDef.handler(
+      { situation: "tilemap collision setup in godot" }, deps
+    );
+    const text = result.content[0].text;
+    assert.ok(text.includes("From the knowledge base:"), "docs block missing");
+    assert.ok(/godot|Godot/.test(text), "expected a Godot doc in results");
+  });
+
+  it("fetches a small doc in full", async () => {
+    const small = deps.allDocs.find((d) => d.content.length < 20_000)!;
+    const result = await lensToolDef.handler({ doc: small.id }, deps);
+    const text = result.content[0].text;
+    assert.ok(!result.isError);
+    assert.ok(text.includes(small.title), "doc title header missing");
+    assert.ok(!text.includes("table of contents"), "small docs should not be TOC-gated");
+  });
+
+  it("TOC-gates oversized docs and honors section extraction", async () => {
+    const big = deps.allDocs.find((d) => d.content.length > 30_000 && /^##\s+/m.test(d.content))!;
+    const gated = await lensToolDef.handler({ doc: big.id }, deps);
+    const gatedText = gated.content[0].text;
+    assert.ok(gatedText.includes("table of contents"), "big doc should be TOC-gated");
+    assert.ok(gatedText.includes("Sections:"));
+
+    const heading = big.content.match(/^##\s+(.+)$/m)![1].trim();
+    const sectioned = await lensToolDef.handler({ doc: big.id, section: heading }, deps);
+    const sectionedText = sectioned.content[0].text;
+    assert.ok(!sectioned.isError, `section fetch failed for "${heading}"`);
+    assert.ok(sectionedText.includes(heading), "requested section heading missing");
+    assert.ok(
+      sectionedText.length < big.content.length,
+      "section should be smaller than the whole doc"
+    );
+  });
+
+  it("errors helpfully on unknown doc ids", async () => {
+    const result = await lensToolDef.handler({ doc: "ZZZ999-nope" }, deps);
+    assert.equal(result.isError, true);
+    assert.ok(result.content[0].text.includes("situation"));
+  });
+
+  it("errors with the section list on unknown sections", async () => {
+    const big = deps.allDocs.find((d) => /^##\s+/m.test(d.content))!;
+    const result = await lensToolDef.handler(
+      { doc: big.id, section: "no such heading anywhere" }, deps
+    );
+    assert.equal(result.isError, true);
+    assert.ok(result.content[0].text.includes("Sections:"));
   });
 });

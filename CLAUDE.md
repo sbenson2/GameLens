@@ -32,9 +32,14 @@ npm test               # run all tests
 
 ## Server (`packages/server/`)
 
-- **The one tool:** `src/tools/lens.ts` — params `situation?` / `lens?`, no
-  action routing. Situation → matched lenses; lens id → that lens; neither →
-  catalog.
+- **The one tool:** `src/tools/lens.ts` — params `situation?` / `lens?` /
+  `doc?` / `section?`, no action routing. Situation → matched lenses + top
+  matching KB docs; lens id → that lens; doc id → the doc (TOC-gated over
+  25KB, `section` extracts one heading); nothing → catalog. Precedence:
+  doc > lens > situation.
+- **Doc search:** `src/core/search.ts` — the v1 TF-IDF engine (synonyms,
+  stemming, title boosts; zero deps, post cache-fix) indexed over loaded
+  docs at startup, powering the in-lens knowledge-base block.
 - **Lens library:** `src/core/lenses.ts` — 15 lenses (Cerny, MDA, Meier,
   Swink, juice, flow/Celeste, Fan, kishōtenketsu, core loops, Yu, Valve/RITE,
   SDT/Bartle, Sirlin/Schreiber, Koster, BotW emergence) + `matchLenses`/

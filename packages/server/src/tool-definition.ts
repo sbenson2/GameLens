@@ -10,6 +10,7 @@
 import { z } from "zod";
 
 import type { DocStore, Doc } from "./core/docs.js";
+import type { SearchEngine } from "./core/search.js";
 import type { ModuleMetadata } from "./core/modules.js";
 import type { Analytics } from "./analytics.js";
 
@@ -79,6 +80,7 @@ export interface GameCodexToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> 
 
 export interface ToolDependencies {
   docStore: DocStore;
+  searchEngine: SearchEngine;
   discoveredModules: ModuleMetadata[];
   analytics: Analytics;
   serverVersion: string;

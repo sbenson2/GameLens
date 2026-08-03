@@ -40,22 +40,25 @@ Or in any MCP config (`claude_desktop_config.json`, `.cursor/mcp.json`, …):
 }
 ```
 
-## One tool
+## One tool — the whole game
 
 | Call | Returns |
 |------|---------|
-| `lens { situation: "players quit at the first boss" }` | The matching lenses (here: flow & difficulty, playtesting) — designer questions, red flags, prescriptions |
+| `lens { situation: "players quit at the first boss" }` | The matching lenses (here: flow & difficulty, playtesting) — designer questions, red flags, prescriptions — **plus matching docs from the knowledge base** |
 | `lens { lens: "scope" }` | One named lens in full |
+| `lens { doc: "G106" }` | A knowledge-base doc (big ones return a table of contents; add `section: "…"` for one part) |
 | `lens { }` | The catalog of all 15 lenses |
 
 That's the entire tool surface. No schema bloat, no action routing.
 
-## The knowledge base rides along
+## The knowledge base works within the lens
 
 The 957-doc engine library (29 engines — deepest on MonoGame, Godot, Unity,
-Unreal) ships as passive **MCP resources** (`gamedev://docs/...`): zero tool
-cost, browsable from clients that support resources. Scope which modules load
-with `GAMEDEV_MODULES` (e.g. `core,godot-arch`).
+Unreal) is reachable through the same tool: every `situation` reply ends with
+the matching docs, and `doc`/`section` reads them — section-aware, so 100KB
+guides never flood your context. The docs also ship as passive **MCP
+resources** (`gamedev://docs/...`). Scope which modules load with
+`GAMEDEV_MODULES` (e.g. `core,godot-arch`).
 
 ## Monorepo
 

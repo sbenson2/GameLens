@@ -50,11 +50,13 @@ gravity; add coyote time and input buffering").
 
 | Call | Returns |
 |------|---------|
-| `lens { situation: "..." }` | Top matching lenses for what you're building, deciding, or struggling with — rendered in full |
+| `lens { situation: "..." }` | Top matching lenses for what you're building, deciding, or struggling with — plus the matching knowledge-base docs |
 | `lens { lens: "scope" }` | A specific lens by id |
+| `lens { doc: "G106" }` | A knowledge-base doc — oversized docs return a table of contents |
+| `lens { doc: "G106", section: "Jitter" }` | Just that section of the doc |
 | `lens { }` | The catalog |
 
-No action routing. Two optional strings. That's the entire API.
+No action routing. Four optional strings. That's the entire API.
 
 ## The 15 lenses
 
@@ -79,13 +81,20 @@ provenance, original distillations:
 | `theory-of-fun` | Raph Koster (2004) | "It gets old fast"; depth vs. complexity |
 | `emergence` | BotW (GDC 2017); immersive sims | Special-cased interactions; content treadmill |
 
-## The knowledge base rides along
+## The knowledge base works within the lens
 
 The 957-doc engine library (29 engines — deepest on MonoGame 131, Godot 116,
 Unity 81, Unreal 81; every doc purpose-written for AI consumption, drafted
-with AI assistance under human editorial direction) ships as passive **MCP
-resources** at `gamedev://docs/{module}/{id}` — zero tool-schema cost,
-browsable from clients that support resources.
+with AI assistance under human editorial direction) is reachable through the
+same one tool:
+
+- every `situation` reply ends with **From the knowledge base** — the top
+  matching docs with ids
+- `doc: "<id>"` reads one; docs over 25KB return their table of contents so
+  you fetch just the `section` you need instead of flooding context
+
+The docs also ship as passive **MCP resources** at
+`gamedev://docs/{module}/{id}` for clients that browse resources.
 
 Scope which modules load:
 

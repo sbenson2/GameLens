@@ -12,19 +12,28 @@ without ever asking whether it should exist, what it should feel like, or which
 proven design thinking applies. GameCodex fills exactly that gap, and only that
 gap.
 
-- **One tool: `lens`.** The whole tool surface. No action routing, two optional
-  string parameters.
-- **The knowledge base rides along as MCP resources** (`gamedev://docs/...`) —
-  zero tool-schema cost; clients that support resources can browse 957 curated
-  engine/architecture docs.
+- **One tool: `lens`.** The whole tool surface — and the one door to
+  everything, including the knowledge base. Four optional string parameters,
+  no action routing.
+- **The knowledge base works within the lens**: `situation` text is also
+  searched against the 957-doc engine library (matching docs are appended to
+  every reply), and `doc` (+ optional `section`) reads one. The same docs
+  additionally ship as passive MCP resources (`gamedev://docs/...`) for
+  clients that browse resources.
 
 ## The `lens` tool
 
 | Input | Behavior |
 |-------|----------|
-| `situation` | Free-text description of what the user is building/deciding/struggling with → top 3 matched lenses, rendered in full |
-| `lens` | A lens id or name → that lens rendered in full (plus up to 2 related if `situation` also given) |
-| *(neither)* | The catalog: every lens with one-liner and phase tags |
+| `situation` | Free-text description of what the user is building/deciding/struggling with → top 3 matched lenses rendered in full **plus** top 5 matching knowledge-base docs (id, title, engine, snippet) |
+| `lens` | A lens id or name → that lens rendered in full (plus up to 2 related lenses and matching docs if `situation` also given) |
+| `doc` | A knowledge-base doc id → the doc. Docs over 25KB return their table of contents + lead instead of full text |
+| `doc` + `section` | Just that section, matched by partial heading text |
+| *(none)* | The catalog: every lens with one-liner and phase tags |
+
+Precedence: `doc` > `lens` > `situation` > catalog. Doc search is the
+resurrected v1 TF-IDF engine (`src/core/search.ts` — synonym expansion,
+stemming, title boosts; the empirically tuned one, post cache-bug-fix).
 
 Matching is deterministic keyword/phrase scoring (`src/core/lenses.ts:matchLenses`)
 — the calling model supplies semantic understanding; the tool's job is to surface
@@ -72,8 +81,9 @@ server.ts         createServer(): discover modules → load docs → register le
 tool-registry.ts  concurrency cap (8) → handler → analytics → isError mapping
 tool-definition.ts GameCodexToolDef/ToolResult/ToolDependencies (slim)
 core/lenses.ts    the lens data + matchLenses/findLens (pure, tested)
-tools/lens.ts     the one tool: rendering + param handling
-core/docs.ts      DocStore for the resource-served knowledge base
+core/search.ts    TF-IDF doc search (zero deps) powering the in-lens KB block
+tools/lens.ts     the one tool: lens rendering + doc search/fetch/sections
+core/docs.ts      DocStore for the knowledge base (in-lens + resources)
 core/modules.ts   module auto-discovery + GAMEDEV_MODULES filtering
 analytics.ts      local-only daily aggregates (~/.gamecodex/analytics/)
 cli/              init/detect: auto-write MCP config for detected AI tools
@@ -84,7 +94,8 @@ Runtime deps: `@modelcontextprotocol/sdk`, `zod`. Nothing else.
 ## Non-goals (v2)
 
 - No editor integration (Godot-MCP/Unity-MCP own that; complementary)
-- No docs search tool (Context7 owns generic docs-on-demand; our KB is resources)
+- No second tool — doc access lives *inside* the lens, not beside it; no
+  general web-docs freshness either (that's Context7's job)
 - No project state, scope tracker, personality, sessions, GDD generation
   (removed in v2 — the 1.0.x line has them; git history preserves them)
 - No network, no accounts, no telemetry upload — stdio only, analytics local

@@ -12,6 +12,7 @@ import * as path from "path";
 import * as fs from "fs";
 
 import { DocStore } from "./core/docs.js";
+import { SearchEngine } from "./core/search.js";
 import { discoverModules, resolveActiveModules } from "./core/modules.js";
 import { lensToolDef } from "./tools/lens.js";
 import { getAnalytics } from "./analytics.js";
@@ -57,6 +58,11 @@ export async function createServer() {
   await docStore.load(activeModules);
   const allDocs = [...docStore.getAllDocs()];
 
+  // The knowledge base is reachable through the lens: situation text is
+  // also searched against the docs, and `doc` fetches one by id.
+  const searchEngine = new SearchEngine();
+  searchEngine.index(allDocs);
+
   const analytics = getAnalytics();
 
   console.error(
@@ -77,6 +83,7 @@ export async function createServer() {
   const registry = getToolRegistry();
   const deps: ToolDependencies = {
     docStore,
+    searchEngine,
     discoveredModules,
     analytics,
     serverVersion: SERVER_VERSION,
