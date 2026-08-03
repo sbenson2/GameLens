@@ -2,7 +2,7 @@
 
 Free and open source MCP server for game developers — 950+ docs across 29 engines, structured workflows, and guidance. MIT licensed.
 
-**v1.0.0 shipped 2026-04-17.** Active feature development has stopped. Project is in maintenance mode.
+**v1.0.0 shipped 2026-04-17** (free & OSS). **Development resumed 2026-08-03**: the project's direction is the *game designer lens for programmers* — the `lens` tool applies industry-proven design philosophies (MDA, Cerny Method, game feel, flow/difficulty, playtesting, scope discipline) to whatever the developer is building. Repo lives at `~/Developer/GameCodex`.
 
 ## Monorepo Structure
 
@@ -97,6 +97,7 @@ npm run lint:site      # eslint on site
 
 ## Notes
 
-- Repo lives at GitLab (`sbenson2/GameCodex`) after GitHub (`sbenson2`) account suspension.
-- npm publish is manual — see scripts in `packages/server/scripts/` or use the `/publish` skill.
+- **Canonical remote: GitHub (`sbenson2/GameCodex`).** GitLab (`sbenson2/GameCodex`) is a mirror — push to both. (History: the original GitHub account `sbenson2` was suspended in March 2026; the project then lived on GitLab until the move back.)
+- npm publish is manual — `npm publish` from `packages/server/` (prepublishOnly runs clean build + tests).
 - No monetization, no tier gating, no license keys. All features free.
+- The marketing site (`packages/site/`) is not deployed anywhere and predates the lens direction — treat as stale until reworked.

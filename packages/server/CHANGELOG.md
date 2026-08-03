@@ -5,7 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+> **Version history note.** GameCodex has two version eras. Entries dated
+> March 2026 (from [1.3.0] down) describe the *original* npm package, whose
+> distribution died with a GitHub account suspension on 2026-03-25. The npm
+> package that exists today was re-created on 2026-04-06 starting at 0.1.0 and
+> reached 1.0.0 on 2026-04-17 as the free & open source release. March-era
+> "1.x" numbers are **not** the same releases as the current 1.x series.
+
 ## [Unreleased]
+
+## [1.0.1] - 2026-08-03
+
+### Fixed
+- **Search results no longer leak across engine filters.** The TF-IDF engine
+  cached results keyed only by query+limit while callers passed filtered doc
+  subsets, so `engine: "Godot"` results could be served for a later Unity or
+  unfiltered search of the same query. The cache is removed outright (the full
+  scan is sub-millisecond). Regression tests added.
+- `meta status` / `meta health` now report the live vector-search state — it
+  was snapshotted before background embedding init finished, so hybrid mode
+  was reported as "Keyword (TF-IDF)" forever.
+- Vector search init failures are actually surfaced (`getVectorInitError()`
+  was dead code); `meta health` now includes the failure reason.
+- Search analytics record real result counts (was hardcoded to 10 with a
+  sentinel string that never matched the actual no-results message).
+- Tool failures and concurrency rejections now set the MCP `isError` flag so
+  clients can branch on failure programmatically.
+- The published artifact no longer contains stale compiled files from the
+  pre-1.0 monetization era (`license.js`, `tiers.js`, `rate-limit.js`, …) —
+  the build now cleans `dist/` first.
+
+### Changed
+- `@huggingface/transformers` is now a true opt-in peer dependency. A default
+  install no longer pulls ~210MB of onnxruntime; install it alongside
+  gamecodex to enable semantic (hybrid) search. TF-IDF fallback is unchanged.
+- `zod` is declared as a direct dependency (was silently inherited through
+  the MCP SDK's dependency tree).
+- Canonical repository is GitHub (`sbenson2/GameCodex`); GitLab is a
+  mirror. package.json repository/homepage/bugs updated to match.
+- Removed orphaned `test-teach.ts` and `scripts/generate-test-key.ts`.
+
+## [1.0.0] - 2026-04-17
+
+Free & open source release.
+
+### Changed
+- **All tools free for everyone** — removed Pro tier gating, license keys,
+  rate limiting, and the LemonSqueezy integration.
+- Removed `packages/tui` (not part of the MCP product direction).
+- Removed Cloudflare Workers remote-docs/hybrid infrastructure.
+- Relicensed under MIT.
+- 164 tests passing (tier/license/Workers suites removed with their features;
+  earlier "303 tests" counts included them).
 
 ## [0.4.0] - 2026-04-09
 

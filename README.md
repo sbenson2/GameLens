@@ -4,7 +4,7 @@
 
 GameCodex is a game dev AI assistant — an MCP server with 950+ curated docs across 29 engines, 5 power tools, structured workflows, and scope tracking. It connects to any AI that supports the [Model Context Protocol](https://modelcontextprotocol.io): Claude, Cursor, Windsurf, Continue.dev, and more.
 
-Every doc is hand-written for AI consumption — typed examples, anti-pattern warnings, decision trees. Not scraped docs. Not training data guesses. Structured knowledge that actually helps you build.
+Every doc is purpose-written for AI consumption — typed examples, anti-pattern warnings, decision trees — drafted with AI assistance under human editorial direction. Not scraped docs. Not training data guesses. Structured knowledge that actually helps you build.
 
 ## Install
 
@@ -61,7 +61,7 @@ claude mcp add gamecodex -- npx -y gamecodex
 
 Godot | Unity | Unreal | MonoGame | Bevy | Phaser | GameMaker | Pygame | Love2D | Raylib | Defold | Construct | Ren'Py | RPG Maker | PixiJS | Three.js | Babylon.js | SFML | SDL3 | LibGDX | Stride | HaxeFlixel | Heaps | PlayCanvas | Excalibur | Macroquad | FNA | GDevelop | Kaplay
 
-Plus a **core module** with 52 engine-agnostic docs on design patterns, architecture, and programming fundamentals.
+Depth varies by engine — MonoGame (131 docs), Godot (116), Unity (81), and Unreal (81) are the deepest modules; the smallest are compact starter references. Plus a **core module** with 52 engine-agnostic docs on design patterns, architecture, and programming fundamentals.
 
 ## Knowledge Base
 
@@ -90,7 +90,6 @@ Every doc includes: typed code examples, "when to use" guidance, common pitfalls
 
 | Variable | Description |
 |----------|-------------|
-| `GAMECODEX_LICENSE` | Pro license key (enables all engine modules) |
 | `GAMEDEV_MODULES` | Comma-separated module IDs to load (default: all) |
 
 ## Development
@@ -100,7 +99,7 @@ git clone https://github.com/sbenson2/GameCodex.git
 cd GameCodex
 npm install
 npm run build
-npm test          # 303 tests
+npm test          # 167 tests
 npm run typecheck
 ```
 
@@ -118,8 +117,9 @@ GameCodex/
 ## Links
 
 - [npm](https://www.npmjs.com/package/gamecodex)
-- [GitLab](https://github.com/sbenson2/GameCodex)
-- [Issues](https://github.com/sbenson2/GameCodex/-/issues)
+- [GitHub](https://github.com/sbenson2/GameCodex) (canonical)
+- [Issues](https://github.com/sbenson2/GameCodex/issues)
+- [GitLab mirror](https://github.com/sbenson2/GameCodex)
 
 ## License
 

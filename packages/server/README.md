@@ -1,6 +1,6 @@
 # GameCodex
 
-[![CI](https://github.com/sbenson2/GameCodex/badges/main/pipeline.svg)](https://github.com/sbenson2/GameCodex/-/pipelines)
+[![CI](https://github.com/sbenson2/GameCodex/actions/workflows/ci.yml/badge.svg)](https://github.com/sbenson2/GameCodex/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/gamecodex)](https://www.npmjs.com/package/gamecodex)
 [![npm downloads](https://img.shields.io/npm/dm/gamecodex)](https://www.npmjs.com/package/gamecodex)
 [![Node.js](https://img.shields.io/node/v/gamecodex)](https://nodejs.org)
@@ -20,9 +20,9 @@ Every game dev using AI hits the same wall: your assistant starts strong, then f
 
 ## Status
 
-**v1.0.0 — free and open source, MIT licensed.** All tools, all docs, no tiers, no accounts, no license keys.
+**Free and open source, MIT licensed.** All tools, all docs, no tiers, no accounts, no license keys.
 
-Active feature development has stopped. The project is in maintenance mode — bug fixes and doc corrections welcome, but no new feature work is planned. Fork freely.
+Development resumed in August 2026 with a focus on the designer-judgment layer. Bug fixes and doc corrections are always welcome. Fork freely.
 
 ## What's Inside
 
@@ -71,6 +71,8 @@ Config file locations:
 ## Engine Modules
 
 GameCodex uses a modular architecture. Core knowledge (design, patterns, algorithms) is always available. Engine-specific modules add implementation guides for your stack.
+
+Depth varies by engine — MonoGame, Godot, Unity, and Unreal are the deepest modules; the smallest are compact starter references. The table shows exact counts:
 
 | Module | Docs | Module | Docs |
 |--------|------|--------|------|
@@ -142,7 +144,7 @@ There are [14,000+ MCP servers](https://mcp.so) out there. Here's why this one m
 
 - **Knowledge, not integration.** Godot-MCP, Unity-MCP, and Unreal-MCP give your AI buttons to press in the editor. This gives your AI *understanding* of how to architect and build games. They're complementary — use both.
 - **Cross-engine.** One server, 29 engines. Learn a pattern once in core theory, then get the engine-specific implementation. No need to install separate MCPs per engine.
-- **Curated, not scraped.** Every doc is hand-written with AI code generation in mind — typed examples, anti-pattern warnings, decision trees, and "when to use" guidance. This isn't a docs mirror.
+- **Curated, not scraped.** Every doc is purpose-written for AI code generation — typed examples, anti-pattern warnings, decision trees, and "when to use" guidance — drafted with AI assistance under human editorial direction and review. This isn't a docs mirror or a paraphrased scrape.
 - **Secure by design.** stdio-only transport — no network exposure, no open ports, no attack surface. While [7,000+ MCP servers sit exposed on the internet](https://www.bleepingcomputer.com/news/security/over-7-000-exposed-mcp-servers-reveal-widespread-security-risks/), this runs entirely local.
 
 ## Genre Coverage
@@ -202,7 +204,7 @@ See [SECURITY.md](./SECURITY.md) for our full security policy and vulnerability 
 
 ## Contributing
 
-Found a bug? Have a doc correction? [Open an issue](https://github.com/sbenson2/GameCodex/-/issues). The project is in maintenance mode — bug fixes and small improvements are welcome; larger feature work is not being actively merged.
+Found a bug? Have a doc correction? [Open an issue](https://github.com/sbenson2/GameCodex/issues). Bug fixes, doc corrections, and small improvements are welcome.
 
 ## License
 
