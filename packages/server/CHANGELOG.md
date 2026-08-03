@@ -14,6 +14,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-08-03
+
+### Fixed
+- **Lens matching survives natural phrasing.** "My card battler feels
+  grindy, players just play the strongest card every turn" matched zero
+  lenses in 2.0.0 ("grindy" ≠ keyword "grind", "cards" ≠ "card"). The
+  matcher now normalizes word forms (plurals, -ing/-ed, adjective -y) on
+  both sides, and the interesting-decisions vocabulary gained the
+  card/deck/dominant-option words. Regression tests added for the exact
+  failing sentence.
+
 ## [2.0.0] - 2026-08-03
 
 **The lens rewrite.** GameCodex is now a game designer AI lens for

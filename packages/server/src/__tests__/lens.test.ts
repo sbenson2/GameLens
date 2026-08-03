@@ -102,6 +102,21 @@ describe("matchLenses", () => {
     expectMatch("everyone picks the same weapon, other options feel useless", "interesting-decisions");
   });
 
+  // Regression: natural phrasing must survive word-form differences —
+  // "grindy"/"grind", "cards"/"card". This exact sentence matched zero
+  // lenses in 2.0.0.
+  it("matches natural phrasing via word-form normalization", () => {
+    const sentence =
+      "my pet card battler feels grindy, players just play the strongest card every turn";
+    expectMatch(sentence, "interesting-decisions");
+    expectMatch(sentence, "balance");
+  });
+
+  it("normalizes plurals and adjective forms", () => {
+    expectMatch("jumps feel floaty", "game-feel");
+    expectMatch("the whole game is grindy", "balance");
+  });
+
   it("returns nothing for empty input", () => {
     assert.equal(matchLenses("").length, 0);
   });

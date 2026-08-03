@@ -19,7 +19,7 @@ import { getAnalytics } from "./analytics.js";
 import { getToolRegistry } from "./tool-registry.js";
 import { ToolDependencies } from "./tool-definition.js";
 
-const SERVER_VERSION = "2.0.0";
+const SERVER_VERSION = "2.0.1";
 
 // ---- Helpers ----
 

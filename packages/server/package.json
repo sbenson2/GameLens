@@ -1,6 +1,6 @@
 {
   "name": "gamecodex",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A game designer AI lens for programmers — one MCP tool that applies industry-proven design philosophies (Cerny's Method, MDA, game feel, juice, flow, scope discipline…) to whatever you're building. 957 engine docs ride along as MCP resources.",
   "main": "dist/index.js",
   "bin": {

@@ -3,7 +3,7 @@
 import { createServer } from "./server.js";
 import { runInit } from "./cli/init.js";
 
-const SERVER_VERSION = "2.0.0";
+const SERVER_VERSION = "2.0.1";
 const command = process.argv[2];
 
 async function main() {

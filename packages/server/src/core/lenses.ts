@@ -150,7 +150,8 @@ export const LENSES: Lens[] = [
     keywords: [
       "decision", "choice", "strategy", "balance", "dominant", "upgrade", "skill tree",
       "boring", "shallow", "depth", "meaningful", "tradeoff", "options", "loadout",
-      "build variety", "everyone picks", "no reason to",
+      "build variety", "everyone picks", "no reason to", "card", "deck", "strongest",
+      "best option", "spam", "same build", "always use", "optimal", "obvious choice",
     ],
     furtherReading: [
       "Sid Meier — \"Interesting Decisions\" (GDC 2012 talk, free on GDC Vault)",
@@ -664,6 +665,21 @@ function situationTokens(text: string): string[] {
     .filter((w) => w.length >= 3);
 }
 
+/** Light word-form normalization so natural phrasing meets the keyword
+ *  vocabulary: plurals, -ing/-ed, and adjective -y ("grindy" → "grind",
+ *  "jumps" → "jump"). Applied identically to both sides of the match, so
+ *  keywords written in any of these forms still align. */
+function normalizeWord(word: string): string {
+  let w = word;
+  if (w.length > 5 && w.endsWith("ing")) w = w.slice(0, -3);
+  else if (w.length > 4 && w.endsWith("ies")) w = w.slice(0, -3) + "y";
+  else if (w.length > 4 && w.endsWith("ed")) w = w.slice(0, -2);
+  else if (w.length > 3 && w.endsWith("es")) w = w.slice(0, -2);
+  else if (w.length > 3 && w.endsWith("s") && !w.endsWith("ss")) w = w.slice(0, -1);
+  if (w.length > 4 && w.endsWith("y")) w = w.slice(0, -1);
+  return w;
+}
+
 /**
  * Match lenses to a described situation.
  *
@@ -675,7 +691,9 @@ function situationTokens(text: string): string[] {
  */
 export function matchLenses(situation: string, limit: number = 3): LensMatch[] {
   const text = ` ${situation.toLowerCase().replace(/[^a-z0-9\s-]/g, " ")} `;
-  const tokens = new Set(situationTokens(situation));
+  const rawTokens = situationTokens(situation);
+  const tokens = new Set(rawTokens);
+  const normTokens = new Set(rawTokens.map(normalizeWord));
 
   const scored: LensMatch[] = [];
   for (const lens of LENSES) {
@@ -683,7 +701,7 @@ export function matchLenses(situation: string, limit: number = 3): LensMatch[] {
     for (const kw of lens.keywords) {
       if (kw.includes(" ")) {
         if (text.includes(` ${kw} `) || text.includes(kw)) score += 3;
-      } else if (tokens.has(kw)) {
+      } else if (tokens.has(kw) || normTokens.has(normalizeWord(kw))) {
         score += 1;
       }
     }
