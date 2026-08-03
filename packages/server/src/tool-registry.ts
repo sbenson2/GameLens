@@ -107,6 +107,7 @@ export class ToolRegistry {
             type: "text",
             text: `Server busy (${CONFIG.MAX_CONCURRENT_TOOLS} concurrent tool calls). Try again in a moment.`,
           }],
+          isError: true,
         };
       }
 
@@ -157,6 +158,7 @@ export class ToolRegistry {
           type: "text",
           text: `${tool.name} error: ${err instanceof Error ? err.message : String(err)}`,
         }],
+        isError: true,
       };
     }
   }

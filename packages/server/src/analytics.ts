@@ -13,7 +13,6 @@
  * - Search query patterns (categories, modules — NOT query text)
  * - Doc access patterns (which docs are most read)
  * - Session duration and startup time
- * - Tier distribution (free vs pro usage patterns)
  * - Error rates by tool
  * - Cache hit rates (hybrid mode)
  *

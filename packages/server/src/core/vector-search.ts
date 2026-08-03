@@ -55,6 +55,7 @@ export class VectorSearch {
   private pipeline: any = null;
   private ready: boolean = false;
   private loading: Promise<void> | null = null;
+  private initError: string | null = null;
 
   /** Initialize the embedding pipeline (lazy — only loads model on first use) */
   async init(docs: Doc[]): Promise<void> {
@@ -68,10 +69,11 @@ export class VectorSearch {
       console.error("[gamecodex] Loading embedding model...");
       const startTime = Date.now();
 
-      // Dynamic import to avoid issues if package isn't installed
+      // Dynamic import — @huggingface/transformers is an optional peer dep;
+      // when absent this throws and we fall back to TF-IDF below
       const { pipeline, env } = await import("@huggingface/transformers");
 
-      // Disable remote model fetching attempts if offline
+      // Allow downloading the model on first use; cached locally afterwards
       env.allowRemoteModels = true;
       // Cache models in our config dir
       env.cacheDir = path.join(CONFIG_DIR, "models");
@@ -88,8 +90,9 @@ export class VectorSearch {
       await this.syncEmbeddings(docs);
       this.ready = true;
     } catch (err) {
+      this.initError = err instanceof Error ? err.message : String(err);
       console.error(
-        `[gamecodex] Vector search init failed (falling back to TF-IDF only): ${err}`
+        `[gamecodex] Vector search init failed (falling back to TF-IDF only): ${this.initError}`
       );
       this.ready = false;
     }
@@ -98,6 +101,11 @@ export class VectorSearch {
   /** Check if vector search is available */
   isReady(): boolean {
     return this.ready;
+  }
+
+  /** The init failure reason, if init was attempted and failed */
+  getInitError(): string | null {
+    return this.initError;
   }
 
   /** Sync embeddings: load cache, compute missing, save updated cache */
@@ -162,14 +170,15 @@ export class VectorSearch {
 
   /** Prepare doc text for embedding — title-weighted, truncated for model limits */
   private prepareDocText(doc: Doc): string {
-    // Title gets extra weight by appearing twice
-    // Truncate to ~512 tokens (~2048 chars) — MiniLM has 256 token limit but
-    // title + description + beginning of content covers the semantic core
+    // Title gets extra weight by appearing twice. The tokenizer hard-caps at
+    // 256 tokens, so only roughly the first ~1KB contributes; 2048 chars is a
+    // safety margin for token-dense text, the tokenizer discards the rest.
     const text = `${doc.title}. ${doc.title}. ${doc.description}. ${doc.content}`;
     return text.slice(0, 2048);
   }
 
-  /** Embed a batch of texts */
+  /** Embed texts one at a time (the loop in syncEmbeddings only controls
+   *  progress-log granularity — the pipeline is not actually batched) */
   private async embedBatch(texts: string[]): Promise<number[][]> {
     const results: number[][] = [];
     for (const text of texts) {

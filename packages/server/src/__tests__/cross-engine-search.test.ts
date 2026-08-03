@@ -162,4 +162,67 @@ describe("Cross-Engine Search", () => {
     const text = result.content[0].text;
     assert.ok(text.includes("Found"), `Expected partial match for 'mono', got: ${text.slice(0, 200)}`);
   });
+
+  // Regression: a query-keyed result cache once ignored the filtered doc
+  // subset, so the same query with a different engine filter (or none)
+  // returned the previous filter's results verbatim.
+  it("must not leak results across engine filters for the same query", async () => {
+    const godot = await handleSearchDocs(
+      { query: "state machine", engine: "Godot" },
+      docStore,
+      searchEngine,
+      modulesMeta
+    );
+    const mono = await handleSearchDocs(
+      { query: "state machine", engine: "MonoGame" },
+      docStore,
+      searchEngine,
+      modulesMeta
+    );
+    assert.ok(godot.content[0].text.includes("Found"), "Godot search should have results");
+    assert.ok(mono.content[0].text.includes("Found"), "MonoGame search should have results");
+    assert.notEqual(
+      godot.content[0].text,
+      mono.content[0].text,
+      "Godot- and MonoGame-filtered results must differ for the same query"
+    );
+  });
+
+  it("must not leak filtered results into a later unfiltered search", async () => {
+    await handleSearchDocs(
+      { query: "state machine", engine: "Godot" },
+      docStore,
+      searchEngine,
+      modulesMeta
+    );
+    const unfiltered = await handleSearchDocs(
+      { query: "state machine" },
+      docStore,
+      searchEngine,
+      modulesMeta
+    );
+    const text = unfiltered.content[0].text;
+    assert.ok(
+      text.includes("MonoGame"),
+      `Unfiltered results after a Godot-filtered search must still span engines, got: ${text.slice(0, 300)}`
+    );
+  });
+
+  it("reports the real result count for analytics", async () => {
+    const hits = await handleSearchDocs(
+      { query: "state machine" },
+      docStore,
+      searchEngine,
+      modulesMeta
+    );
+    assert.ok(hits.resultCount > 0, "Expected a positive resultCount");
+    assert.equal(typeof hits.resultCount, "number");
+    const missed = await handleSearchDocs(
+      { query: "florbington qzzkx" },
+      docStore,
+      searchEngine,
+      modulesMeta
+    );
+    assert.equal(missed.resultCount, 0, "No-hit searches must report resultCount 0");
+  });
 });

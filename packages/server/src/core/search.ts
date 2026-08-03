@@ -1,5 +1,4 @@
 import { Doc } from "./docs.js";
-import { CONFIG } from "../config.js";
 
 interface SearchResult {
   doc: Doc;
@@ -12,7 +11,6 @@ export class SearchEngine {
   private idfCache: Map<string, number> = new Map();
   private docTermFreqs: Map<string, Map<string, number>> = new Map();
   private totalDocs: number = 0;
-  private resultCache: Map<string, SearchResult[]> = new Map();
 
   private static STOP_WORDS = new Set([
     "the", "is", "at", "which", "on", "an", "and", "or", "but",
@@ -160,7 +158,6 @@ export class SearchEngine {
   index(docs: Doc[]): void {
     this.idfCache.clear();
     this.docTermFreqs.clear();
-    this.resultCache.clear();
     this.totalDocs = docs.length;
 
     // Document frequency for each term
@@ -218,12 +215,10 @@ export class SearchEngine {
     return expanded;
   }
 
-  /** Search docs, return sorted by relevance */
+  /** Search docs, return sorted by relevance. Callers pass filtered doc
+   *  subsets, so results are computed fresh each call — a sub-millisecond
+   *  scan; a query-keyed cache here once leaked results across filters. */
   search(query: string, docs: Doc[], limit: number = 10): SearchResult[] {
-    const cacheKey = `${query}\0${limit}`;
-    const cached = this.resultCache.get(cacheKey);
-    if (cached) return cached;
-
     const queryTokens = this.tokenize(query);
     if (queryTokens.length === 0) return [];
 
@@ -289,16 +284,7 @@ export class SearchEngine {
     }
 
     results.sort((a, b) => b.score - a.score);
-    const sliced = results.slice(0, limit);
-
-    // Evict oldest entry if cache is full
-    if (this.resultCache.size >= CONFIG.SEARCH_RESULT_CACHE_SIZE) {
-      const oldest = this.resultCache.keys().next().value!;
-      this.resultCache.delete(oldest);
-    }
-    this.resultCache.set(cacheKey, sliced);
-
-    return sliced;
+    return results.slice(0, limit);
   }
 
   /** Extract a relevant snippet containing query terms */

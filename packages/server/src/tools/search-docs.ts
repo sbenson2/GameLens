@@ -21,13 +21,19 @@ export interface SearchDocsArgs {
  * Module metadata is used to resolve engine names → module IDs and to
  * label results with human-readable engine names.
  */
+export interface SearchDocsResult {
+  content: Array<{ type: "text"; text: string }>;
+  /** Actual number of results returned — consumed by analytics */
+  resultCount: number;
+}
+
 export async function handleSearchDocs(
   args: SearchDocsArgs,
   docStore: DocStore,
   searchEngine: SearchEngine,
   modulesMeta?: ModuleMetadata[],
   hybridSearch?: HybridSearchEngine
-): Promise<{ content: Array<{ type: "text"; text: string }> }> {
+): Promise<SearchDocsResult> {
   let docs = docStore.getAllDocs();
 
   // Build engine→module mapping from metadata
@@ -80,6 +86,7 @@ export async function handleSearchDocs(
             type: "text",
             text: `No modules found for engine "${args.engine}".\n\nAvailable engines: ${availableEngines || "none"}\n\nTip: Use \`list_modules\` to see all available engine modules.`,
           }],
+          resultCount: 0,
         };
       }
     }
@@ -108,6 +115,7 @@ export async function handleSearchDocs(
   if (results.length === 0) {
     return {
       content: [{ type: "text", text: `No docs found matching "${args.query}".` }],
+      resultCount: 0,
     };
   }
 
@@ -166,6 +174,7 @@ export async function handleSearchDocs(
         type: "text",
         text: header + groupedLines.join("\n"),
       }],
+      resultCount: results.length,
     };
   }
 
@@ -176,5 +185,6 @@ export async function handleSearchDocs(
         text: header + lines.join("\n"),
       },
     ],
+    resultCount: results.length,
   };
 }

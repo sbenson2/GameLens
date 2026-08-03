@@ -154,7 +154,8 @@ export async function createServer() {
       label: m.label,
       docCount: m.docCount,
     })),
-    hasVectorSearch: hybridSearch.hasVectorSearch(),
+    hasVectorSearch: () => hybridSearch.hasVectorSearch(),
+    vectorInitError: () => hybridSearch.getVectorInitError(),
     startTime,
   };
   setDiagnosticsContext(diagnosticsCtx);

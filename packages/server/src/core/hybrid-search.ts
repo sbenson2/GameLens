@@ -63,9 +63,12 @@ export class HybridSearchEngine {
     this.initialized = true;
   }
 
-  /** Returns the vector search init error, if any */
+  /** Returns the vector search init error, if any. VectorSearch.init catches
+   *  its own failures internally, so ask it directly rather than relying on
+   *  the promise rejection (which only covers errors thrown before the
+   *  internal try/catch engages). */
   getVectorInitError(): string | null {
-    return this.vectorInitError;
+    return this.vectorInitError ?? this.vector.getInitError();
   }
 
   /** Search with hybrid scoring */

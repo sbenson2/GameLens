@@ -60,9 +60,9 @@ export const docsToolDef: GameCodexToolDef = {
         deps.analytics.recordSearch({
           module: args.module as string | undefined,
           category: args.category as string | undefined,
-          resultCount: result.content[0].text.includes("No results") ? 0 : 10,
+          resultCount: result.resultCount,
         });
-        return result;
+        return { content: result.content };
       }
 
       case "get": {

@@ -1,5 +1,5 @@
 /**
- * meta — Server diagnostics, license info, and onboarding help.
+ * meta — Server diagnostics and onboarding help.
  *
  * Internal-facing tool for server health and setup.
  */

@@ -41,6 +41,9 @@ export function lazySchema<T>(factory: () => T): () => T {
 
 export type ToolResult = {
   content: Array<{ type: "text"; text: string }>;
+  /** MCP error flag — set on failures so callers can branch programmatically
+   *  instead of pattern-matching error prose */
+  isError?: boolean;
 };
 
 // ---- Tool definition ----
