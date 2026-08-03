@@ -13,10 +13,4 @@ export const CONFIG_DIR = path.join(
 export const CONFIG = {
   /** Max concurrent tool calls allowed (tool-registry.ts) */
   MAX_CONCURRENT_TOOLS: 8,
-
-  /** Embedding batch size for vector search (vector-search.ts) */
-  EMBEDDING_BATCH_SIZE: 8,
-
-  /** Default context window limit in tokens (session-manager.ts) */
-  DEFAULT_CONTEXT_LIMIT: 1_000_000,
 } as const;

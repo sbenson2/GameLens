@@ -1,7 +1,7 @@
 {
   "name": "gamecodex",
-  "version": "1.0.1",
-  "description": "Game dev AI assistant — MCP server with 950+ docs across 29 engines, structured workflows, and guidance for game developers.",
+  "version": "2.0.0",
+  "description": "A game designer AI lens for programmers — one MCP tool that applies industry-proven design philosophies (Cerny's Method, MDA, game feel, juice, flow, scope discipline…) to whatever you're building. 957 engine docs ride along as MCP resources.",
   "main": "dist/index.js",
   "bin": {
     "gamecodex": "dist/index.js"
@@ -22,6 +22,10 @@
     "mcp",
     "gamedev",
     "game-development",
+    "game-design",
+    "design-lens",
+    "game-feel",
+    "mda",
     "gamecodex",
     "model-context-protocol",
     "ai",
@@ -73,19 +77,9 @@
   "author": "sbenson2",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
-    "fastest-levenshtein": "^1.0.16",
     "zod": "^4.3.6"
   },
-  "peerDependencies": {
-    "@huggingface/transformers": "^4.0.1"
-  },
-  "peerDependenciesMeta": {
-    "@huggingface/transformers": {
-      "optional": true
-    }
-  },
   "devDependencies": {
-    "@huggingface/transformers": "^4.0.1",
     "@types/node": "^25.5.0",
     "tsx": "^4.21.0",
     "typescript": "^5.8.3"

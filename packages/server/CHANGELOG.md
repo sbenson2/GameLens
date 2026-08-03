@@ -14,6 +14,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-08-03
+
+**The lens rewrite.** GameCodex is now a game designer AI lens for
+programmers — one MCP tool, applied design judgment, nothing else.
+
+### Added
+- **The `lens` tool** — the entire tool surface. Describe a `situation`
+  ("my jump feels floaty", "should I add crafting?", "players quit at the
+  first boss") and get the matching industry-proven design lenses: the
+  questions a designer would ask, red flags phrased in code terms, and
+  concrete prescriptions. Pass `lens` for a specific one; pass nothing for
+  the catalog.
+- **The lens library** (`src/core/lenses.ts`) — 15 lenses with real,
+  checkable provenance: Mark Cerny's Method, MDA (Hunicke/LeBlanc/Zubek),
+  Sid Meier's interesting decisions, Steve Swink's game feel, juice
+  (Jonasson/Purho, Nijman), flow & difficulty (Csikszentmihalyi, Jenova
+  Chen, Celeste's Assist Mode), invisible onboarding (George Fan, Nintendo),
+  kishōtenketsu level design (Hayashida), core loops (Dormans), scope &
+  finishing (Derek Yu), playtest reality (Valve, RITE), player motivation
+  (Self-Determination Theory, Bartle, Quantic Foundry), balance & economy
+  (Sirlin, Schreiber), fun-is-learning (Koster), and emergence (BotW's GDC
+  2017 talk, immersive sims). Original distillations; sources cited in
+  every lens.
+- SPEC.md rewritten as the v2 specification (product, tool contract, lens
+  data model, content rules, non-goals).
+
+### Removed (BREAKING)
+- The five-tool surface: `project`, `design`, `docs`, `build`, `meta` — and
+  their subsystems (session manager, project store, scope tracker,
+  personality engine, GDD/scaffold/debug generators, TF-IDF/vector/hybrid
+  search, MCP prompts). The lens is the product; 1.0.1 is the final release
+  of the old surface, and the code remains in git history.
+- `@huggingface/transformers` optional peer dependency (vector search was
+  part of the removed docs tool). Runtime deps are now just
+  `@modelcontextprotocol/sdk` + `zod`.
+
+### Unchanged
+- The 957-doc knowledge base still ships and is served as passive MCP
+  resources (`gamedev://docs/{module}/{id}`), scoped by `GAMEDEV_MODULES`.
+- stdio-only transport, local-only analytics, MIT license.
+
 ## [1.0.1] - 2026-08-03
 
 ### Fixed

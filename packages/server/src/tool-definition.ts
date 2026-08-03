@@ -1,41 +1,17 @@
 /**
- * Tool definition interface — inspired by Claude Code's tool architecture.
+ * Tool definition interface — metadata-carrying tool defs with fail-closed
+ * defaults, validated via Zod at the MCP boundary.
  *
- * SOURCE: Claude Code source analysis (cc referance/)
- * - Tools have metadata: isReadOnly, isConcurrencySafe, isDestructive
- * - Fail-closed defaults: assume writes, assume not concurrent-safe
- * - Lazy schema construction via lazySchema()
- * - Centralized validation and permission checking
- *
- * SOURCE: MooBot archive (moobot/)
- * - Tool allowlists per agent context
- * - Security deny patterns for dangerous operations
- * - Stats/timing on every tool call
+ * v2: the server exposes a single tool (`lens`); the registry and this
+ * interface stay because they keep registration, analytics, concurrency,
+ * and error handling in one tested path.
  */
 
 import { z } from "zod";
 
 import type { DocStore, Doc } from "./core/docs.js";
-import type { SearchEngine } from "./core/search.js";
-import type { HybridSearchEngine } from "./core/hybrid-search.js";
 import type { ModuleMetadata } from "./core/modules.js";
-import type { SessionManager } from "./core/session-manager.js";
-import type { MemoryStore } from "./core/memory.js";
 import type { Analytics } from "./analytics.js";
-import type { ProjectStore } from "./core/project-store.js";
-import type { PersonalityEngine } from "./core/personality.js";
-import type { HealthTracker } from "./core/health-tracker.js";
-
-// ---- Lazy schema helper (from CC patterns) ----
-
-/**
- * Defer Zod schema construction to first access.
- * Breaks circular dependencies and improves module load time.
- */
-export function lazySchema<T>(factory: () => T): () => T {
-  let cached: T | undefined;
-  return () => (cached ??= factory());
-}
 
 // ---- Tool result type ----
 
@@ -49,7 +25,7 @@ export type ToolResult = {
 // ---- Tool definition ----
 
 export interface GameCodexToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> {
-  /** Unique tool name (used in MCP registration and tier checks) */
+  /** Unique tool name (used in MCP registration) */
   name: string;
 
   /** Human-readable description shown to the AI model */
@@ -64,7 +40,7 @@ export interface GameCodexToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> 
    */
   handler: (args: z.infer<z.ZodObject<TInput>>, deps: ToolDependencies) => Promise<ToolResult>;
 
-  // ---- CC-inspired metadata (fail-closed defaults) ----
+  // ---- Metadata (fail-closed defaults) ----
 
   /**
    * Does this tool only read data (no side effects)?
@@ -103,18 +79,11 @@ export interface GameCodexToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> 
 
 export interface ToolDependencies {
   docStore: DocStore;
-  searchEngine: SearchEngine;
-  hybridSearch: HybridSearchEngine;
   discoveredModules: ModuleMetadata[];
-  sessionManager: SessionManager;
-  memory: MemoryStore;         // Freeform project notes (~/.gamecodex/memory/)
   analytics: Analytics;
   serverVersion: string;
   activeModules: string[];
   allDocs: Doc[];
-  projectStore: ProjectStore;  // Structured project data (~/.gamecodex/projects/)
-  personality: PersonalityEngine;
-  healthTracker: HealthTracker;
 }
 
 // ---- Built tool (with defaults applied) ----
@@ -133,13 +102,12 @@ export interface GameCodexTool<TInput extends z.ZodRawShape = z.ZodRawShape>
 
 /**
  * Build a tool definition with fail-closed defaults applied.
- * Mirrors CC's buildTool() pattern.
  */
 export function buildTool<TInput extends z.ZodRawShape>(
   def: GameCodexToolDef<TInput>
 ): GameCodexTool<TInput> {
   return {
-    // Fail-closed defaults (from CC)
+    // Fail-closed defaults
     isReadOnly: false,
     isConcurrencySafe: false,
     isDestructive: false,

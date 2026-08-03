@@ -1,16 +1,20 @@
 # GameCodex Monorepo
 
-Free and open source MCP server for game developers — 950+ docs across 29 engines, structured workflows, and guidance. MIT licensed.
+**A game designer AI lens for programmers.** Free and open source MCP server,
+MIT licensed. One tool (`lens`) + the 957-doc knowledge base as MCP resources.
 
-**v1.0.0 shipped 2026-04-17** (free & OSS). **Development resumed 2026-08-03**: the project's direction is the *game designer lens for programmers* — the `lens` tool applies industry-proven design philosophies (MDA, Cerny Method, game feel, flow/difficulty, playtesting, scope discipline) to whatever the developer is building. Repo lives at `~/Developer/GameCodex`.
+**v2.0.0 (2026-08-03):** single-tool rewrite — the lens is the product.
+v1.0.1 was the final release of the old five-tool surface (project/design/
+docs/build/meta); that code lives in git history and the 1.0.x tags.
+Repo lives at `~/Developer/GameCodex`.
 
 ## Monorepo Structure
 
 ```
 GameCodex/
 ├── packages/
-│   ├── server/    <- MCP server (5 tools, 950+ docs, 29 engines)
-│   └── site/      <- Marketing site (Next.js)
+│   ├── server/    <- the MCP server (the product) — SPEC.md is the source of truth
+│   └── site/      <- marketing site (Next.js) — STALE: predates the lens direction
 ├── package.json   <- npm workspaces root
 └── CLAUDE.md      <- This file
 ```
@@ -19,85 +23,67 @@ GameCodex/
 
 ```bash
 npm install            # install all workspace deps
-npm run build          # build server (tsc → packages/server/dist/)
-npm run build:site     # build site (next build)
-npm run build:all      # build everything
+npm run build          # build server (clean dist + tsc)
 npm run dev            # server watch mode
-npm run dev:site       # site dev server
 npm start              # start MCP server
 npm run typecheck      # tsc --noEmit on server
 npm test               # run all tests
-npm run lint:site      # eslint on site
 ```
 
 ## Server (`packages/server/`)
 
-- **Entry:** `src/server.ts` — MCP server setup, 5-tool registration
-- **Tool registry:** `src/tool-registry.ts` — centralized registration with analytics and error handling
-- **Tool interface:** `src/tool-definition.ts` — metadata: isReadOnly, isConcurrencySafe, isDestructive (fail-closed defaults)
-- **5 tools:** `src/tools/` — project.ts, design.ts, docs.ts, build.ts, meta.ts
-- **Handler utilities:** `src/tools/` — existing handler functions delegated to by the 5 tools
-- **Core systems:** `src/core/` — personality, project-store, health-tracker, search, docs, modules, vector search, error-helpers, response-enhancer, help-generator
-- **Knowledge base:** `docs/` — core (52) + 29 engine modules (957 total docs)
-- **Config dir:** `~/.gamecodex/` (projects, embeddings, learning progress)
+- **The one tool:** `src/tools/lens.ts` — params `situation?` / `lens?`, no
+  action routing. Situation → matched lenses; lens id → that lens; neither →
+  catalog.
+- **Lens library:** `src/core/lenses.ts` — 15 lenses (Cerny, MDA, Meier,
+  Swink, juice, flow/Celeste, Fan, kishōtenketsu, core loops, Yu, Valve/RITE,
+  SDT/Bartle, Sirlin/Schreiber, Koster, BotW emergence) + `matchLenses`/
+  `findLens`. Pure data + pure functions, fully tested.
+- **Registry:** `src/tool-registry.ts` — concurrency cap, analytics,
+  never-throw with MCP `isError`.
+- **Knowledge base:** `docs/` (core + 29 engine modules, 957 docs) served as
+  MCP resources via `src/core/docs.ts` + `src/core/modules.ts`;
+  `GAMEDEV_MODULES` scopes what loads.
+- **Analytics:** `src/analytics.ts` — local-only daily JSON aggregates.
+- **CLI:** `gamecodex` (serve) / `gamecodex init` (write MCP config) /
+  `gamecodex status`.
+- Runtime deps: `@modelcontextprotocol/sdk`, `zod` — nothing else.
 
-### Tool Inventory (v1.0.0 — 5 tools, all free)
+### Lens content rules (from SPEC.md)
 
-| Tool | Actions | What it does |
-|------|---------|-------------|
-| `project` | help, hello, get, set, suggest, decide, goal, complete_goal, clear_goals, milestone, note, recall, clear_notes, health, scope, add_feature, list, session | Interactive AI assistant — onboarding, project state, goals, decisions, scope health. Personality adapts to genre/phase. |
-| `design` | help, gdd, phase, scope_check, launch, store_page, pricing, marketing, trailer, patterns | Plan + ship — GDD, phase checklists, scope analysis, marketing guidance, architecture patterns |
-| `docs` | help, search, get, browse, modules | Knowledge base — search/browse 950+ game dev docs across 29 engines |
-| `build` | help, scaffold, code, assets, debug, review | Make things — scaffold projects, generate code, asset pipeline, debug errors, review architecture |
-| `meta` | help, status, analytics, modules, health, about | Server internals — diagnostics, module discovery, help |
+- Real, checkable provenance only (talks/books/papers that exist)
+- Original distillations — never reproduce source text or Schell's lens list
+- Red flags phrased in programmer terms ("input handled in a fixed tick
+  without interpolation"), not designer terms ("bad feel")
+- Every lens: ≥5 questions, ≥4 red flags, ≥4 prescriptions, phases, keywords,
+  further reading — enforced by `src/__tests__/lens.test.ts`
 
-### Core Modules
+### Adding a lens
 
-- `core/personality.ts` — Template-based tone engine (13 genre tones, phase emphasis)
-- `core/project-store.ts` — Unified persistence (JSON files at ~/.gamecodex/projects/)
-- `core/health-tracker.ts` — Scope creep detection, feature evaluation
-- `core/error-helpers.ts` — Enriched errors with valid values, examples, fuzzy matching (fastest-levenshtein)
-- `core/response-enhancer.ts` — Breadcrumb status line + next-step suggestions on every response
-- `core/help-generator.ts` — Self-documenting help action for all 5 tools
-
-### CLI Commands
-
-- `gamecodex` — Start the MCP server (default)
-- `gamecodex init` — Auto-detect AI tools + engine, write MCP config
-- `gamecodex status` — Print version
-
-### MCP Prompts (workflow entry points)
-
-- `start-project` — Guided new project setup (engine → GDD → goals → suggest)
-- `debug-error` — Error diagnosis workflow (debug → docs search → fix)
-- `ship-game` — Launch checklist (launch → store page → marketing)
-- `session` — Start structured dev session (plan, build, debug, or manage scope)
-
-### Adding a New Tool (maintenance only)
-
-1. Create tool def in `packages/server/src/tools/<name>.ts` exporting a `GameCodexToolDef`
-2. Use `action` enum param for routing multiple operations through one tool
-3. Register in `packages/server/src/server.ts` `registerAllTools()`
-4. Add tests in `packages/server/src/__tests__/<name>.test.ts`
-
-## Site (`packages/site/`)
-
-- Next.js 16 + React 19 + Tailwind 4
-- AI SDK integration (Anthropic, OpenAI, Google) — used by the disabled `/chat` route, not the live site
-- Run `npm run dev:site` for local dev
+1. Add the entry to `LENSES` in `src/core/lenses.ts` (follow content rules)
+2. `npm test` — lens.test.ts validates shape; add a matching test for its
+   canonical situation phrasing
 
 ## Conventions
 
-- Tool results return structured JSON, not prose
-- Generated code includes educational comments explaining WHY
-- Never hallucinate engine APIs — reference knowledge base docs
-- Support all 29 engines consistently (MonoGame, Godot, Unity, Unreal, Bevy, and more)
-- Keep tool count at 5 — add actions, not tools
-- Each tool = one domain, `action` param for routing
+- One tool is the product decision, not a starting point — new capability
+  goes into lens content or resources, not new tools
+- Tool results return structured text, never throw; failures set `isError`
+- Version: keep `SERVER_VERSION` (src/server.ts, src/index.ts) in sync with
+  package.json on every bump
 
 ## Notes
 
-- **Canonical remote: GitHub (`sbenson2/GameCodex`).** GitLab (`sbenson2/GameCodex`) is a mirror — push to both. (History: the original GitHub account `sbenson2` was suspended in March 2026; the project then lived on GitLab until the move back.)
-- npm publish is manual — `npm publish` from `packages/server/` (prepublishOnly runs clean build + tests).
-- No monetization, no tier gating, no license keys. All features free.
-- The marketing site (`packages/site/`) is not deployed anywhere and predates the lens direction — treat as stale until reworked.
+- **Canonical remote: GitHub (`sbenson2/GameCodex`).** GitLab
+  (`sbenson2/GameCodex`) is a mirror — push to both. (History: the
+  original GitHub account `sbenson2` was suspended March 2026; the project
+  lived on GitLab until moving back.)
+- GitHub has a repo ruleset (id 15265607) that blocked all pushes to main
+  (created during mothballing); it must be disabled/tailored in repo settings
+  before pushes land.
+- npm publish is manual — `npm publish` from `packages/server/`
+  (prepublishOnly runs clean build + tests).
+- No monetization, no tiers, no license keys. All features free.
+- The user-level MCP entry in `~/.claude.json` runs this server from
+  `~/Developer/GameCodex/packages/server/dist/index.js` with
+  `GAMEDEV_MODULES=core,godot-arch` — rebuild after changes (`npm run build`).

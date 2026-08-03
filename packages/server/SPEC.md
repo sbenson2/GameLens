@@ -1,160 +1,95 @@
-# GameCodex — Specification
+# GameCodex v2 — Specification
 
-## Overview
+**One sentence:** GameCodex is a game designer AI lens for programmers — a single-tool
+MCP server that lets any AI coding assistant apply industry-proven game design
+judgment while its user builds.
 
-An MCP (Model Context Protocol) server that provides game development knowledge, structured dev session workflows, and engine-specific implementation guidance. Any AI coding tool (Claude Code, Cursor, Windsurf, etc.) can connect and get expert gamedev help.
+## The product
+
+Programmers using AI assistants get competent *code* help and almost no *design*
+help: the assistant will happily implement a jump, a shop, or a crafting system
+without ever asking whether it should exist, what it should feel like, or which
+proven design thinking applies. GameCodex fills exactly that gap, and only that
+gap.
+
+- **One tool: `lens`.** The whole tool surface. No action routing, two optional
+  string parameters.
+- **The knowledge base rides along as MCP resources** (`gamedev://docs/...`) —
+  zero tool-schema cost; clients that support resources can browse 957 curated
+  engine/architecture docs.
+
+## The `lens` tool
+
+| Input | Behavior |
+|-------|----------|
+| `situation` | Free-text description of what the user is building/deciding/struggling with → top 3 matched lenses, rendered in full |
+| `lens` | A lens id or name → that lens rendered in full (plus up to 2 related if `situation` also given) |
+| *(neither)* | The catalog: every lens with one-liner and phase tags |
+
+Matching is deterministic keyword/phrase scoring (`src/core/lenses.ts:matchLenses`)
+— the calling model supplies semantic understanding; the tool's job is to surface
+the right 2-4 candidates with their full content. Unknown lens names return
+`isError: true` plus the valid id list.
+
+## The lens library (`src/core/lenses.ts`)
+
+15 lenses, each distilling one checkable, industry-proven philosophy:
+
+| id | Source |
+|----|--------|
+| `find-the-fun` | Mark Cerny — Method (D.I.C.E. 2002) |
+| `mda` | Hunicke/LeBlanc/Zubek — MDA (2004) |
+| `interesting-decisions` | Sid Meier (GDC 2012) |
+| `game-feel` | Steve Swink — Game Feel (2008) |
+| `juice` | Jonasson & Purho (2012); Nijman (2013) |
+| `flow-difficulty` | Csikszentmihalyi (1990); Chen (2006); Celeste Assist Mode (2018) |
+| `onboarding` | George Fan (GDC 2012); Nintendo level grammar |
+| `kishotenketsu` | Koichi Hayashida (GDC 2012) |
+| `core-loop` | Dormans — Game Mechanics (2012); session-design craft |
+| `scope` | Derek Yu — Finishing a Game (2010) |
+| `playtesting` | Valve postmortem culture; RITE (Medlock/Wixon 2002) |
+| `player-motivation` | Ryan/Rigby/Przybylski SDT (2006); Bartle (1996); Quantic Foundry |
+| `balance` | Sirlin; Schreiber — Game Balance |
+| `theory-of-fun` | Raph Koster (2004) |
+| `emergence` | BotW GDC 2017; immersive-sim tradition |
+
+Each `Lens` carries: `oneLiner`, `provenance`, `philosophy` (the distilled idea,
+±150 words), `questions` (≥5, what a designer would ask now), `redFlags` (≥4,
+phrased in code/backlog terms), `prescriptions` (≥4 concrete moves), `phases`,
+`keywords` (matching vocabulary), `furtherReading`. Enforced by `lens.test.ts`.
+
+**Content rules:** real, checkable provenance only; original distillations
+(never reproduce source text or Schell's lens list); red flags must be written
+for programmers ("input handled in a fixed tick without interpolation"), not
+designers ("bad game feel").
 
 ## Architecture
 
-### Modular Design
-
 ```
-gamecodex/
-├── src/
-│   ├── index.ts                 # MCP server entry point
-│   ├── server.ts                # Server setup, tool/resource registration
-│   ├── core/                    # Engine-agnostic game dev knowledge
-│   │   ├── docs/                # Generalized docs (game design, patterns, PM, etc.)
-│   │   ├── session/             # Dev session co-pilot logic
-│   │   └── search.ts            # Doc search engine
-│   ├── modules/
-│   │   └── monogame-arch/       # MonoGame + Arch ECS specific docs & tools
-│   │       └── docs/            # Implementation-specific guides
-│   └── tools/                   # MCP tool definitions
-│       ├── search-docs.ts
-│       ├── get-doc.ts
-│       ├── list-docs.ts
-│       ├── session.ts
-│       └── genre-lookup.ts
-├── docs/                        # All docs organized by module
-│   ├── core/                    # Engine-agnostic docs
-│   │   ├── game-design/         # E6, E7, C1, C2
-│   │   ├── project-management/  # E4, E9, P0-P15
-│   │   ├── programming/         # G11, G12, G14, G18
-│   │   ├── ai-workflow/         # E5, CLAUDE_gamedev_rules (generalized)
-│   │   └── concepts/            # Universal concepts extracted from guides
-│   │       ├── camera-theory.md
-│   │       ├── particles-theory.md
-│   │       ├── pathfinding-theory.md
-│   │       ├── scene-management-theory.md
-│   │       ├── animation-theory.md
-│   │       └── ... (theory portions of G guides)
-│   └── monogame-arch/           # MonoGame + Arch ECS specific
-│       ├── reference/           # R1-R3 (R4 goes to core)
-│       ├── architecture/        # E1-E3
-│       └── guides/              # G1-G63 (implementation portions)
-├── package.json
-├── tsconfig.json
-└── README.md
+index.ts          CLI: default = serve; init = write MCP config; status
+server.ts         createServer(): discover modules → load docs → register lens
+                  → wire resources → stdio transport
+tool-registry.ts  concurrency cap (8) → handler → analytics → isError mapping
+tool-definition.ts GameCodexToolDef/ToolResult/ToolDependencies (slim)
+core/lenses.ts    the lens data + matchLenses/findLens (pure, tested)
+tools/lens.ts     the one tool: rendering + param handling
+core/docs.ts      DocStore for the resource-served knowledge base
+core/modules.ts   module auto-discovery + GAMEDEV_MODULES filtering
+analytics.ts      local-only daily aggregates (~/.gamecodex/analytics/)
+cli/              init/detect: auto-write MCP config for detected AI tools
 ```
 
-### Module System
+Runtime deps: `@modelcontextprotocol/sdk`, `zod`. Nothing else.
 
-Each module (e.g. `monogame-arch`) contains:
-- Engine-specific docs
-- Additional tools (optional)
-- Prompt fragments for system prompts
+## Non-goals (v2)
 
-Future modules follow the same pattern: `godot/`, `unity/`, `bevy/`, etc.
+- No editor integration (Godot-MCP/Unity-MCP own that; complementary)
+- No docs search tool (Context7 owns generic docs-on-demand; our KB is resources)
+- No project state, scope tracker, personality, sessions, GDD generation
+  (removed in v2 — the 1.0.x line has them; git history preserves them)
+- No network, no accounts, no telemetry upload — stdio only, analytics local
 
-## MCP Tools
+## Versioning note
 
-### `search_docs`
-Search across all docs (core + active modules).
-- **Input**: `query` (string), `category` (optional: reference|explanation|guide|catalog|playbook|concept), `module` (optional: core|monogame-arch)
-- **Output**: Matching doc snippets with IDs and relevance
-
-### `get_doc`
-Fetch a specific doc by ID.
-- **Input**: `id` (string, e.g. "G52", "E6", "P0", "camera-theory")
-- **Output**: Full doc content
-
-### `list_docs`
-Browse available docs.
-- **Input**: `category` (optional), `module` (optional)
-- **Output**: Doc list with IDs, titles, one-line descriptions
-
-### `session`
-Dev session co-pilot — structured workflows for game dev.
-- **Input**: `action` (start|menu|plan|decide|feature|debug|scope|status)
-- **Output**: Formatted session UI (dashboards, menus, step progress)
-- Maintains session state across calls
-- Engine-agnostic workflow, references docs from active modules
-
-### `genre_lookup`
-Quick genre → required systems mapping.
-- **Input**: `genre` (string, e.g. "platformer", "roguelike", "metroidvania")
-- **Output**: Required systems, recommended docs, starter checklist
-
-## MCP Resources
-
-### Doc Resources
-All docs exposed as `gamedev://docs/{module}/{id}` resources:
-- `gamedev://docs/core/E6` — Game Design Fundamentals
-- `gamedev://docs/monogame-arch/G52` — Character Controller
-- etc.
-
-### Prompt Resources
-- `gamedev://prompts/session` — Session co-pilot system prompt
-- `gamedev://prompts/code-rules` — AI code generation rules (generalized)
-- `gamedev://prompts/monogame-arch` — MonoGame + Arch ECS specific rules
-
-## Doc Processing
-
-When copying docs from the toolkit:
-
-### Goes to `core/` (engine-agnostic):
-- E4, E5, E6, E7, E9 — project management, design, AI workflow
-- G11, G12, G14, G18 — programming principles, patterns, data structures
-- C1, C2 — genre reference, game feel
-- R4 — game design resources
-- P0-P15 — all playbook docs
-- CLAUDE_gamedev_rules — generalized (strip MonoGame-specific rules)
-- **Theory portions** extracted from G guides (algorithm descriptions, design patterns, concepts that apply to any engine)
-
-### Goes to `monogame-arch/` (engine-specific):
-- E1, E2, E3 — architecture, Nez migration, alternatives
-- R1, R2, R3 — library stack, capability matrix, project structure
-- G1-G63 — implementation guides (the code-specific parts)
-
-### Session Co-Pilot:
-- Generalized from FireStarter's session skill
-- References docs dynamically based on active modules
-- Topic-to-doc table adapts per module
-- Formatting templates and path definitions stay the same
-
-## Tech Stack
-
-- **TypeScript** with `@modelcontextprotocol/sdk`
-- **Transport**: stdio (standard MCP transport)
-- **Search**: Simple keyword/TF-IDF search (no external deps)
-- **No database**: Docs loaded from filesystem at startup
-
-## Installation (for users)
-
-```bash
-# npm
-npx gamecodex
-
-# Or add to claude_desktop_config.json / .cursor/mcp.json:
-{
-  "mcpServers": {
-    "gamedev": {
-      "command": "npx",
-      "args": ["gamecodex"],
-      "env": {
-        "GAMEDEV_MODULES": "monogame-arch"  // comma-separated module list
-      }
-    }
-  }
-}
-```
-
-## Build & Dev
-
-```bash
-npm install
-npm run build
-npm run dev    # watch mode
-npm test
-```
+v2.0.0 is a breaking release: the 5-tool surface (project/design/docs/build/meta)
+is removed. 1.0.1 is the final release of that surface.

@@ -1,18 +1,9 @@
 /**
- * Tool registry — centralized tool registration with auto-wiring.
+ * Tool registry — centralized registration with concurrency control,
+ * analytics, and never-throw error handling.
  *
- * SOURCE: Claude Code source analysis (cc referance/)
- * - assembleToolPool(): getAllBaseTools() → getTools() → assembleToolPool()
- * - filterToolsByDenyRules(): removes blanket-denied tools
- * - Each tool call goes through: validate → checkPermissions → call → mapResult
- * - Consistent error handling wraps every tool execution
- * - Analytics instrumentation at every step
- *
- * SOURCE: MooBot archive (moobot/)
- * - Stats footer on every response (timing, context %)
- * - Concurrency counter (CONFIG.MAX_CONCURRENT_TOOLS) with rejection
- * - Session-aware tool execution
- * - Tier/access checks before every call
+ * v2 exposes a single tool; the registry stays because it is the one
+ * tested path between the MCP SDK and tool handlers.
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -24,10 +15,9 @@ import {
   ToolResult,
   buildTool,
 } from "./tool-definition.js";
-import { enhanceResponse } from "./core/response-enhancer.js";
 import { CONFIG } from "./config.js";
 
-// ---- Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS pattern) ----
+// ---- Concurrency control ----
 let activeToolCalls = 0;
 
 // ---- Registry ----
@@ -43,7 +33,7 @@ export class ToolRegistry {
       console.error(`[gamecodex] Warning: duplicate tool registration "${tool.name}", overwriting`);
     }
     // Cast is safe: the registry stores tools with erased input types
-    // and validates via Zod at runtime (CC pattern: inputSchema as passthrough)
+    // and validates via Zod at runtime
     this.tools.set(tool.name, tool as unknown as GameCodexTool);
   }
 
@@ -58,13 +48,8 @@ export class ToolRegistry {
   }
 
   /**
-   * Wire all registered tools into an MCP server instance.
-   *
-   * This replaces the repetitive inline server.tool() calls with a single
-   * loop that handles:
-   * 1. Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS)
-   * 2. Analytics instrumentation
-   * 3. Error handling (never throws, always returns user-friendly text)
+   * Wire all registered tools into an MCP server instance:
+   * concurrency control → handler → analytics → error mapping.
    */
   wireToServer(server: McpServer): void {
     if (!this.deps) {
@@ -89,10 +74,7 @@ export class ToolRegistry {
     }
   }
 
-  /**
-   * Execute a tool with all middleware applied.
-   * Mirrors CC's tool execution flow: validate → permissions → call → result
-   */
+  /** Execute a tool with concurrency, analytics, and error handling applied */
   private async executeTool(
     tool: GameCodexTool,
     args: Record<string, unknown>
@@ -100,7 +82,6 @@ export class ToolRegistry {
     const { analytics } = this.deps;
 
     try {
-      // Concurrency control (from MooBot's CONFIG.MAX_CONCURRENT_TOOLS pattern)
       if (activeToolCalls >= CONFIG.MAX_CONCURRENT_TOOLS) {
         return {
           content: [{
@@ -114,44 +95,15 @@ export class ToolRegistry {
       activeToolCalls++;
 
       try {
-        // Execute handler with timing (MooBot's stats pattern)
         const start = Date.now();
         const result = await tool.handler(args, this.deps);
-        const durationMs = Date.now() - start;
-
-        // Record analytics
-        analytics.recordToolCall(tool.name, durationMs);
-
-        // Record activity in session (non-critical)
-        try {
-          const projectName = (args.project as string) || "default";
-          this.deps.sessionManager.recordToolCall(projectName);
-
-          if (tool.name === "docs" && args.action === "get" && args.id) {
-            this.deps.sessionManager.recordDocConsulted(projectName, args.id as string);
-          }
-          if (tool.name === "project" && args.action === "decide" && args.content) {
-            this.deps.sessionManager.logDecision(projectName, args.content as string);
-          }
-        } catch {
-          // Session tracking is non-critical — never fail the response
-        }
-
-        // Enhance response with breadcrumb + next steps
-        const enhanced = enhanceResponse(
-          result,
-          tool.name,
-          args.action as string ?? "",
-          this.deps,
-          args.project as string | undefined,
-        );
-
-        return enhanced;
+        analytics.recordToolCall(tool.name, Date.now() - start);
+        return result;
       } finally {
         activeToolCalls--;
       }
     } catch (err) {
-      // Never throw — always return user-friendly error (CC pattern)
+      // Never throw — always return a user-friendly error
       analytics.recordToolCall(tool.name, 0, true);
       return {
         content: [{
