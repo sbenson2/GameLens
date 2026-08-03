@@ -109,7 +109,7 @@ Without `GAMEDEV_MODULES`, all modules load.
 - **Judgment, not integration.** Godot-MCP and Unity-MCP give your AI buttons
   to press in the editor; Context7 gives it API docs. GameCodex gives it
   *design thinking* — the layer none of them touch. They compose well.
-- **One tool.** No 50K-token schema dump. The entire tool surface is two
+- **One tool.** No 50K-token schema dump. The entire tool surface is four
   optional strings.
 - **Real provenance.** Every lens cites its source — the talks, books, and
   papers the industry actually runs on. No invented frameworks.

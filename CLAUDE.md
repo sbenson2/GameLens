@@ -79,13 +79,13 @@ npm test               # run all tests
 
 ## Notes
 
-- **Canonical remote: GitHub (`sbenson2/GameCodex`).** GitLab
-  (`sbenson2/GameCodex`) is a mirror — push to both. (History: the
-  original GitHub account `sbenson2` was suspended March 2026; the project
-  lived on GitLab until moving back.)
-- GitHub has a repo ruleset (id 15265607) that blocked all pushes to main
-  (created during mothballing); it must be disabled/tailored in repo settings
-  before pushes land.
+- **Canonical remote: GitHub (`sbenson2/GameCodex`)** — created 2026-08-03
+  on the machine's active gh account; plain `git push origin main` works.
+  GitLab (`sbenson2/GameCodex`) is a mirror — push to both.
+  (History: `sbenson2` was suspended March 2026 → GitLab → a brief stint at
+  `sbenson2/GameCodex` → moved here after the suspension lifted. The
+  sbenson2 repo is retired; it had a lockdown ruleset that blocked
+  pushes.)
 - npm publish is manual — `npm publish` from `packages/server/`
   (prepublishOnly runs clean build + tests).
 - No monetization, no tiers, no license keys. All features free.
