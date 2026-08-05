@@ -5,12 +5,12 @@
  * 1. All data stays local by default (no phoning home without opt-in)
  * 2. No PII collected — only anonymous usage patterns
  * 3. Aggregated daily summaries, not individual request logs
- * 4. Users can disable entirely via GAMECODEX_ANALYTICS=false
+ * 4. Users can disable entirely via GAMELENS_ANALYTICS=false
  * 5. Data is human-readable JSON for transparency
  *
  * WHAT WE TRACK:
  * - Tool usage counts (which tools are most popular)
- * - Search query patterns (categories, modules — NOT query text)
+ * - Search query patterns (result counts — NOT query text)
  * - Doc access patterns (which docs are most read)
  * - Session duration and startup time
  * - Error rates by tool
@@ -26,7 +26,7 @@
  * FUTURE (opt-in only):
  * - Anonymous aggregate upload to Cloudflare Workers analytics endpoint
  * - Helps prioritize content creation (which docs are most read)
- * - Controlled by GAMECODEX_ANALYTICS=upload
+ * - Controlled by GAMELENS_ANALYTICS=upload
  */
 
 import * as fs from "fs";
@@ -37,7 +37,7 @@ const ANALYTICS_DIR = path.join(CONFIG_DIR, "analytics");
 
 /** Check if analytics is enabled */
 function isEnabled(): boolean {
-  const env = process.env.GAMECODEX_ANALYTICS;
+  const env = process.env.GAMELENS_ANALYTICS;
   if (env === "false" || env === "0" || env === "off") return false;
   return true; // enabled by default (local-only is safe)
 }
@@ -58,8 +58,6 @@ interface ToolUsage {
 
 interface SearchStats {
   totalQueries: number;
-  byModule: Record<string, number>;    // module → count
-  byCategory: Record<string, number>;  // category → count
   avgResultCount: number;
   zeroResultQueries: number;
 }
@@ -67,7 +65,6 @@ interface SearchStats {
 interface DocAccessStats {
   totalFetches: number;
   byDoc: Record<string, number>;       // doc ID → count
-  byModule: Record<string, number>;    // module → count
   sectionExtractions: number;
   maxLengthTruncations: number;
 }
@@ -88,9 +85,7 @@ export interface DailySummary {
   search: SearchStats;
   docs: DocAccessStats;
   cache: CacheStats;
-  modules: {
-    discovered: number;
-    active: number;
+  library: {
     totalDocs: number;
   };
 }
@@ -104,15 +99,12 @@ function emptyDailySummary(date: string): DailySummary {
     tools: {},
     search: {
       totalQueries: 0,
-      byModule: {},
-      byCategory: {},
       avgResultCount: 0,
       zeroResultQueries: 0,
     },
     docs: {
       totalFetches: 0,
       byDoc: {},
-      byModule: {},
       sectionExtractions: 0,
       maxLengthTruncations: 0,
     },
@@ -122,9 +114,7 @@ function emptyDailySummary(date: string): DailySummary {
       staleFallbacks: 0,
       remoteFetches: 0,
     },
-    modules: {
-      discovered: 0,
-      active: 0,
+    library: {
       totalDocs: 0,
     },
   };
@@ -154,16 +144,12 @@ export class Analytics {
   recordStartup(options: {
     version: string;
     startupTimeMs: number;
-    discoveredModules: number;
-    activeModules: number;
     totalDocs: number;
   }): void {
     if (!this.enabled) return;
     this.summary.version = options.version;
     this.summary.startupTimeMs = options.startupTimeMs;
-    this.summary.modules = {
-      discovered: options.discoveredModules,
-      active: options.activeModules,
+    this.summary.library = {
       totalDocs: options.totalDocs,
     };
     this.dirty = true;
@@ -193,8 +179,6 @@ export class Analytics {
 
   /** Record a search query */
   recordSearch(options: {
-    module?: string;
-    category?: string;
     resultCount: number;
   }): void {
     if (!this.enabled) return;
@@ -203,12 +187,6 @@ export class Analytics {
     const s = this.summary.search;
     s.totalQueries += 1;
 
-    if (options.module) {
-      s.byModule[options.module] = (s.byModule[options.module] ?? 0) + 1;
-    }
-    if (options.category) {
-      s.byCategory[options.category] = (s.byCategory[options.category] ?? 0) + 1;
-    }
     if (options.resultCount === 0) {
       s.zeroResultQueries += 1;
     }
@@ -224,7 +202,6 @@ export class Analytics {
   /** Record a doc access */
   recordDocAccess(options: {
     docId: string;
-    module: string;
     usedSection?: boolean;
     usedMaxLength?: boolean;
   }): void {
@@ -234,7 +211,6 @@ export class Analytics {
     const d = this.summary.docs;
     d.totalFetches += 1;
     d.byDoc[options.docId] = (d.byDoc[options.docId] ?? 0) + 1;
-    d.byModule[options.module] = (d.byModule[options.module] ?? 0) + 1;
     if (options.usedSection) d.sectionExtractions += 1;
     if (options.usedMaxLength) d.maxLengthTruncations += 1;
     this.dirty = true;

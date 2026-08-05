@@ -1,11 +1,11 @@
-# GameCodex
+# GameLens
 
 **A game designer AI lens for programmers.**
 
 Your AI assistant writes competent game code and gives you zero design judgment.
 It will implement a jump, a shop, or a crafting system without ever asking
 whether it should exist, what it should feel like, or which proven design
-thinking applies. GameCodex fixes exactly that: **one MCP tool — `lens` —**
+thinking applies. GameLens fixes exactly that: **one MCP tool — `lens` —**
 that answers as the game designer looking over your shoulder.
 
 ```
@@ -27,7 +27,7 @@ Koster's theory of fun, and BotW-style emergence.
 ## Install
 
 ```bash
-claude mcp add gamecodex -- npx -y gamecodex
+claude mcp add gamelens -- npx -y gamelens
 ```
 
 Or in any MCP config (`claude_desktop_config.json`, `.cursor/mcp.json`, …):
@@ -35,7 +35,7 @@ Or in any MCP config (`claude_desktop_config.json`, `.cursor/mcp.json`, …):
 ```json
 {
   "mcpServers": {
-    "gamecodex": { "command": "npx", "args": ["-y", "gamecodex"] }
+    "gamelens": { "command": "npx", "args": ["-y", "gamelens"] }
   }
 }
 ```
@@ -46,24 +46,28 @@ Or in any MCP config (`claude_desktop_config.json`, `.cursor/mcp.json`, …):
 |------|---------|
 | `lens { situation: "players quit at the first boss" }` | The matching lenses (here: flow & difficulty, playtesting) — designer questions, red flags, prescriptions — **plus matching docs from the knowledge base** |
 | `lens { lens: "scope" }` | One named lens in full |
-| `lens { doc: "G106" }` | A knowledge-base doc (big ones return a table of contents; add `section: "…"` for one part) |
+| `lens { doc: "E6" }` | A knowledge-base doc (big ones return a table of contents; add `section: "…"` for one part) |
 | `lens { }` | The catalog of all 15 lenses |
 
 That's the entire tool surface. No schema bloat, no action routing.
 
-## The knowledge base works within the lens
+## Design philosophy only
 
-The 957-doc engine library (29 engines — deepest on MonoGame, Godot, Unity,
-Unreal) is reachable through the same tool: every `situation` reply ends with
-the matching docs, and `doc`/`section` reads them — section-aware, so 100KB
-guides never flood your context. The docs also ship as passive **MCP
-resources** (`gamedev://docs/...`). Scope which modules load with
-`GAMEDEV_MODULES` (e.g. `core,godot-arch`).
+The knowledge base is a small, curated library of game-design docs — genre
+reference, game feel craft, design fundamentals, level design, postmortem
+lessons, difficulty & accessibility — reachable through the same tool: every
+`situation` reply ends with the matching docs, and `doc`/`section` reads them.
+The docs also ship as passive **MCP resources** (`gamelens://docs/...`).
+
+No engine documentation. Engine API freshness is Context7's job; editor
+integration is Godot-MCP's and Unity-MCP's. GameLens is the design-judgment
+layer none of them touch — they compose well. (GameLens 2.x, published as
+`gamecodex`, bundled a 957-doc engine library; v3 removed it.)
 
 ## Monorepo
 
 ```
-GameCodex/
+GameLens/
 ├── packages/
 │   ├── server/    <- the MCP server (the product) — see its README + SPEC.md
 │   └── site/      <- marketing site (stale; predates the lens direction)
@@ -76,10 +80,10 @@ npm install && npm run build && npm test
 
 ## Links
 
-- [npm](https://www.npmjs.com/package/gamecodex)
-- [GitHub](https://github.com/sbenson2/GameCodex) (canonical)
-- [Issues](https://github.com/sbenson2/GameCodex/issues)
-- [GitLab mirror](https://github.com/sbenson2/GameCodex)
+- [npm](https://www.npmjs.com/package/gamelens)
+- [GitHub](https://github.com/sbenson2/GameLens) (canonical)
+- [Issues](https://github.com/sbenson2/GameLens/issues)
+- [GitLab mirror](https://github.com/sbenson2/GameLens)
 
 ## License
 

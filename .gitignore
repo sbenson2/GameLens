@@ -24,3 +24,9 @@ yarn-debug.log*
 
 # Next.js
 next-env.d.ts
+
+# Research corpus (raw source material — never commit)
+research/
+
+# Packed tarballs
+*.tgz

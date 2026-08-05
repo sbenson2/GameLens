@@ -9,8 +9,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import {
-  GameCodexTool,
-  GameCodexToolDef,
+  GameLensTool,
+  GameLensToolDef,
   ToolDependencies,
   ToolResult,
   buildTool,
@@ -23,18 +23,18 @@ let activeToolCalls = 0;
 // ---- Registry ----
 
 export class ToolRegistry {
-  private tools: Map<string, GameCodexTool> = new Map();
+  private tools: Map<string, GameLensTool> = new Map();
   private deps!: ToolDependencies;
 
   /** Register a tool definition (applies fail-closed defaults) */
-  register<TInput extends z.ZodRawShape>(def: GameCodexToolDef<TInput>): void {
+  register<TInput extends z.ZodRawShape>(def: GameLensToolDef<TInput>): void {
     const tool = buildTool(def);
     if (this.tools.has(tool.name)) {
-      console.error(`[gamecodex] Warning: duplicate tool registration "${tool.name}", overwriting`);
+      console.error(`[gamelens] Warning: duplicate tool registration "${tool.name}", overwriting`);
     }
     // Cast is safe: the registry stores tools with erased input types
     // and validates via Zod at runtime
-    this.tools.set(tool.name, tool as unknown as GameCodexTool);
+    this.tools.set(tool.name, tool as unknown as GameLensTool);
   }
 
   /** Set shared dependencies (called once during server init) */
@@ -43,7 +43,7 @@ export class ToolRegistry {
   }
 
   /** Get all registered tools */
-  getAllTools(): GameCodexTool[] {
+  getAllTools(): GameLensTool[] {
     return [...this.tools.values()];
   }
 
@@ -76,7 +76,7 @@ export class ToolRegistry {
 
   /** Execute a tool with concurrency, analytics, and error handling applied */
   private async executeTool(
-    tool: GameCodexTool,
+    tool: GameLensTool,
     args: Record<string, unknown>
   ): Promise<ToolResult> {
     const { analytics } = this.deps;

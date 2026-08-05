@@ -1,10 +1,10 @@
 {
-  "name": "gamecodex",
-  "version": "2.0.1",
-  "description": "A game designer AI lens for programmers — one MCP tool that applies industry-proven design philosophies (Cerny's Method, MDA, game feel, juice, flow, scope discipline…) to whatever you're building. 957 engine docs ride along as MCP resources.",
+  "name": "gamelens",
+  "version": "3.0.0",
+  "description": "A game designer AI lens for programmers — one MCP tool that applies industry-proven design philosophies (Cerny's Method, MDA, game feel, juice, flow, scope discipline…) to whatever you're building.",
   "main": "dist/index.js",
   "bin": {
-    "gamecodex": "dist/index.js"
+    "gamelens": "dist/index.js"
   },
   "scripts": {
     "build": "rm -rf dist && tsc",
@@ -26,53 +26,25 @@
     "design-lens",
     "game-feel",
     "mda",
-    "gamecodex",
+    "juice",
+    "playtesting",
+    "gamelens",
     "model-context-protocol",
     "ai",
     "ai-assistant",
     "game-ai",
     "claude",
     "cursor",
-    "windsurf",
-    "ecs",
-    "godot",
-    "unity",
-    "unreal",
-    "monogame",
-    "bevy",
-    "phaser",
-    "gamemaker",
-    "pygame",
-    "love2d",
-    "raylib",
-    "defold",
-    "construct",
-    "renpy",
-    "rpgmaker",
-    "pixijs",
-    "threejs",
-    "babylonjs",
-    "sfml",
-    "sdl3",
-    "libgdx",
-    "stride",
-    "haxeflixel",
-    "heaps",
-    "playcanvas",
-    "excalibur",
-    "macroquad",
-    "fna",
-    "gdevelop",
-    "kaplay"
+    "windsurf"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sbenson2/GameCodex.git"
+    "url": "git+https://github.com/sbenson2/GameLens.git"
   },
-  "homepage": "https://github.com/sbenson2/GameCodex",
+  "homepage": "https://github.com/sbenson2/GameLens",
   "bugs": {
-    "url": "https://github.com/sbenson2/GameCodex/issues"
+    "url": "https://github.com/sbenson2/GameLens/issues"
   },
   "author": "sbenson2",
   "dependencies": {

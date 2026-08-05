@@ -75,7 +75,7 @@ export const LENSES: Lens[] = [
     ],
     furtherReading: [
       "Mark Cerny — \"Method\" (D.I.C.E. Summit 2002 talk)",
-      "GameCodex docs: core project-management (scope, phases)",
+      "GameLens docs: E6 — Game Design Fundamentals",
     ],
   },
   {
@@ -155,7 +155,7 @@ export const LENSES: Lens[] = [
     ],
     furtherReading: [
       "Sid Meier — \"Interesting Decisions\" (GDC 2012 talk, free on GDC Vault)",
-      "GameCodex docs: core game-design (balancing)",
+      "GameLens docs: E6 — Game Design Fundamentals",
     ],
   },
   {
@@ -196,7 +196,7 @@ export const LENSES: Lens[] = [
     ],
     furtherReading: [
       "Steve Swink — *Game Feel* (2008)",
-      "GameCodex docs: engine guides on character controllers and fixed timestep/interpolation (e.g. godot-arch G106, monogame-arch G52)",
+      "GameLens docs: C2 — Game Feel & Genre Design Craft",
     ],
   },
   {
@@ -237,7 +237,7 @@ export const LENSES: Lens[] = [
     furtherReading: [
       "Jonasson & Purho — \"Juice it or lose it\" (2012, free online)",
       "Nijman — \"The art of screenshake\" (2013, free online)",
-      "GameCodex docs: combat-theory (combat feel), engine animation/effects guides",
+      "GameLens docs: C2 — Game Feel & Genre Design Craft",
     ],
   },
   {
@@ -320,7 +320,7 @@ export const LENSES: Lens[] = [
     ],
     furtherReading: [
       "George Fan — \"How I Got My Mom to Play Through Plants vs. Zombies\" (GDC 2012, free on GDC Vault)",
-      "GameCodex docs: core game-design (playtesting), level design guides",
+      "GameLens docs: E8 — Level Design",
     ],
   },
   {
@@ -401,7 +401,7 @@ export const LENSES: Lens[] = [
     ],
     furtherReading: [
       "Joris Dormans — *Game Mechanics: Advanced Game Design* (2012) and the Machinations framework",
-      "GameCodex docs: core game-design (genre loop profiles)",
+      "GameLens docs: C1 — Genre Reference",
     ],
   },
   {
@@ -442,7 +442,7 @@ export const LENSES: Lens[] = [
     ],
     furtherReading: [
       "Derek Yu — \"Finishing a Game\" (2010, derekyu.com, free)",
-      "GameCodex: the `project` tool's scope/health tracking exists exactly for this — use `project scope` and `project health`",
+      "GameLens docs: E10 — Shipping Lessons from Postmortems",
     ],
   },
   {

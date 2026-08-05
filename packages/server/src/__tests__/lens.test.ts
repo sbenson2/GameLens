@@ -6,7 +6,6 @@ import { LENSES, findLens, matchLenses } from "../core/lenses.js";
 import { lensToolDef } from "../tools/lens.js";
 import { DocStore } from "../core/docs.js";
 import { SearchEngine } from "../core/search.js";
-import { discoverModules } from "../core/modules.js";
 import { ToolDependencies } from "../tool-definition.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -17,20 +16,16 @@ const docsRoot = path.resolve(__dirname, "../../docs");
 let deps: ToolDependencies;
 
 before(async () => {
-  const discoveredModules = await discoverModules(docsRoot);
-  const activeModules = discoveredModules.map((m) => m.id);
   const docStore = new DocStore(docsRoot);
-  await docStore.load(activeModules);
+  await docStore.load();
   const allDocs = [...docStore.getAllDocs()];
   const searchEngine = new SearchEngine();
   searchEngine.index(allDocs);
   deps = {
     docStore,
     searchEngine,
-    discoveredModules,
     analytics: { recordSearch() {}, recordDocAccess() {} } as unknown as ToolDependencies["analytics"],
     serverVersion: "test",
-    activeModules,
     allDocs,
   };
 });
@@ -209,13 +204,13 @@ describe("docs within lens", () => {
     assert.ok(text.includes('doc: "<id>"'), "fetch hint missing");
   });
 
-  it("implementation questions surface docs even without a strong lens match", async () => {
+  it("design questions surface docs even without a strong lens match", async () => {
     const result = await lensToolDef.handler(
-      { situation: "tilemap collision setup in godot" }, deps
+      { situation: "how should I pace and structure my platformer levels" }, deps
     );
     const text = result.content[0].text;
     assert.ok(text.includes("From the knowledge base:"), "docs block missing");
-    assert.ok(/godot|Godot/.test(text), "expected a Godot doc in results");
+    assert.ok(/level/i.test(text), "expected a level design doc in results");
   });
 
   it("fetches a small doc in full", async () => {

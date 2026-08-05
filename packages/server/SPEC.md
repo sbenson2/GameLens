@@ -1,6 +1,6 @@
-# GameCodex v2 — Specification
+# GameLens v3 — Specification
 
-**One sentence:** GameCodex is a game designer AI lens for programmers — a single-tool
+**One sentence:** GameLens is a game designer AI lens for programmers — a single-tool
 MCP server that lets any AI coding assistant apply industry-proven game design
 judgment while its user builds.
 
@@ -9,31 +9,35 @@ judgment while its user builds.
 Programmers using AI assistants get competent *code* help and almost no *design*
 help: the assistant will happily implement a jump, a shop, or a crafting system
 without ever asking whether it should exist, what it should feel like, or which
-proven design thinking applies. GameCodex fills exactly that gap, and only that
+proven design thinking applies. GameLens fills exactly that gap, and only that
 gap.
 
 - **One tool: `lens`.** The whole tool surface — and the one door to
-  everything, including the knowledge base. Four optional string parameters,
-  no action routing.
+  everything, including the design knowledge base. Four optional string
+  parameters, no action routing.
+- **Design philosophy only.** No engine documentation, no implementation
+  guides. Engine docs pulled the product toward being a worse Context7;
+  v3 removed them (they live in the 2.x tags). What remains is the thing
+  nothing else provides: design judgment.
 - **The knowledge base works within the lens**: `situation` text is also
-  searched against the 957-doc engine library (matching docs are appended to
+  searched against the design doc library (matching docs are appended to
   every reply), and `doc` (+ optional `section`) reads one. The same docs
-  additionally ship as passive MCP resources (`gamedev://docs/...`) for
+  additionally ship as passive MCP resources (`gamelens://docs/...`) for
   clients that browse resources.
 
 ## The `lens` tool
 
 | Input | Behavior |
 |-------|----------|
-| `situation` | Free-text description of what the user is building/deciding/struggling with → top 3 matched lenses rendered in full **plus** top 5 matching knowledge-base docs (id, title, engine, snippet) |
+| `situation` | Free-text description of what the user is building/deciding/struggling with → top 3 matched lenses rendered in full **plus** top 5 matching knowledge-base docs (id, title, snippet) |
 | `lens` | A lens id or name → that lens rendered in full (plus up to 2 related lenses and matching docs if `situation` also given) |
 | `doc` | A knowledge-base doc id → the doc. Docs over 25KB return their table of contents + lead instead of full text |
 | `doc` + `section` | Just that section, matched by partial heading text |
 | *(none)* | The catalog: every lens with one-liner and phase tags |
 
 Precedence: `doc` > `lens` > `situation` > catalog. Doc search is the
-resurrected v1 TF-IDF engine (`src/core/search.ts` — synonym expansion,
-stemming, title boosts; the empirically tuned one, post cache-bug-fix).
+TF-IDF engine (`src/core/search.ts` — synonym expansion, stemming, title
+boosts; zero deps) indexed over the design docs at startup.
 
 Matching is deterministic keyword/phrase scoring (`src/core/lenses.ts:matchLenses`)
 — the calling model supplies semantic understanding; the tool's job is to surface
@@ -72,35 +76,47 @@ phrased in code/backlog terms), `prescriptions` (≥4 concrete moves), `phases`,
 for programmers ("input handled in a fixed tick without interpolation"), not
 designers ("bad game feel").
 
+## The knowledge base (`docs/`)
+
+A small, curated library of game-design docs — genre reference, game feel and
+genre craft, design fundamentals, emergent/puzzle design, level design,
+postmortem shipping lessons, difficulty & accessibility, and resource maps.
+Design content only: anything engine- or implementation-specific belongs in
+engine docs (Context7, official manuals), not here.
+
 ## Architecture
 
 ```
 index.ts          CLI: default = serve; init = write MCP config; status
-server.ts         createServer(): discover modules → load docs → register lens
-                  → wire resources → stdio transport
+server.ts         createServer(): load docs → register lens → wire resources
+                  → stdio transport
 tool-registry.ts  concurrency cap (8) → handler → analytics → isError mapping
-tool-definition.ts GameCodexToolDef/ToolResult/ToolDependencies (slim)
+tool-definition.ts GameLensToolDef/ToolResult/ToolDependencies (slim)
 core/lenses.ts    the lens data + matchLenses/findLens (pure, tested)
 core/search.ts    TF-IDF doc search (zero deps) powering the in-lens KB block
 tools/lens.ts     the one tool: lens rendering + doc search/fetch/sections
-core/docs.ts      DocStore for the knowledge base (in-lens + resources)
-core/modules.ts   module auto-discovery + GAMEDEV_MODULES filtering
-analytics.ts      local-only daily aggregates (~/.gamecodex/analytics/)
+core/docs.ts      DocStore for the design knowledge base (in-lens + resources)
+analytics.ts      local-only daily aggregates (~/.gamelens/analytics/)
 cli/              init/detect: auto-write MCP config for detected AI tools
 ```
 
 Runtime deps: `@modelcontextprotocol/sdk`, `zod`. Nothing else.
 
-## Non-goals (v2)
+## Non-goals (v3)
 
-- No editor integration (Godot-MCP/Unity-MCP own that; complementary)
-- No second tool — doc access lives *inside* the lens, not beside it; no
-  general web-docs freshness either (that's Context7's job)
+- No engine documentation — removed in v3; the design-philosophy-only
+  direction is the product decision. Engine API freshness is Context7's job;
+  editor integration is Godot-MCP/Unity-MCP's job. They compose well.
+- No second tool — doc access lives *inside* the lens, not beside it
 - No project state, scope tracker, personality, sessions, GDD generation
   (removed in v2 — the 1.0.x line has them; git history preserves them)
 - No network, no accounts, no telemetry upload — stdio only, analytics local
 
 ## Versioning note
 
-v2.0.0 is a breaking release: the 5-tool surface (project/design/docs/build/meta)
-is removed. 1.0.1 is the final release of that surface.
+v3.0.0 is a breaking release **and a rename**: the package is now `gamelens`
+(formerly `gamecodex`). The 29 engine-doc modules, the module system
+(`GAMEDEV_MODULES`), and engine detection are removed; 2.0.1 is the final
+`gamecodex` release and the last with the engine knowledge base. v2.0.0 removed
+the old 5-tool surface (project/design/docs/build/meta); 1.0.1 was that
+surface's final release.

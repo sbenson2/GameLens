@@ -1,7 +1,7 @@
 /**
- * Environment detection — find AI tools and game engines.
+ * Environment detection — find installed AI tools.
  *
- * Used by `gamecodex init` to auto-configure MCP connections.
+ * Used by `gamelens init` to auto-configure MCP connections.
  */
 
 import * as fs from "fs";
@@ -14,18 +14,7 @@ export interface AIToolInfo {
   label: string;
   configPath: string;
   exists: boolean;
-  hasGameCodex: boolean;
-}
-
-export interface EngineInfo {
-  engine: "godot" | "monogame" | "phaser";
-  confidence: "high" | "medium";
-  evidence: string;
-}
-
-export interface EnvironmentInfo {
-  aiTools: AIToolInfo[];
-  engine: EngineInfo | null;
+  hasGameLens: boolean;
 }
 
 // ---- AI tool detection ----
@@ -79,11 +68,11 @@ function getAIToolPaths(): Array<{ name: string; label: string; configPath: stri
   return tools;
 }
 
-function configHasGameCodex(configPath: string): boolean {
+function configHasGameLens(configPath: string): boolean {
   try {
     const content = fs.readFileSync(configPath, "utf-8");
     const config = JSON.parse(content);
-    return !!(config?.mcpServers?.gamecodex);
+    return !!(config?.mcpServers?.gamelens);
   } catch {
     return false;
   }
@@ -93,62 +82,8 @@ export function detectAITools(): AIToolInfo[] {
   return getAIToolPaths().map((tool) => ({
     ...tool,
     exists: fs.existsSync(tool.configPath),
-    hasGameCodex: configHasGameCodex(tool.configPath),
+    hasGameLens: configHasGameLens(tool.configPath),
   }));
-}
-
-// ---- Engine detection ----
-
-export function detectEngine(dir?: string): EngineInfo | null {
-  const cwd = dir ?? process.cwd();
-
-  // Godot: project.godot file
-  if (fs.existsSync(path.join(cwd, "project.godot"))) {
-    return { engine: "godot", confidence: "high", evidence: "Found project.godot" };
-  }
-
-  // Godot: any .godot file
-  try {
-    const files = fs.readdirSync(cwd);
-    const godotFile = files.find((f) => f.endsWith(".godot"));
-    if (godotFile) {
-      return { engine: "godot", confidence: "medium", evidence: `Found ${godotFile}` };
-    }
-  } catch { /* ignore */ }
-
-  // MonoGame: .csproj with MonoGame reference
-  try {
-    const files = fs.readdirSync(cwd);
-    for (const f of files) {
-      if (f.endsWith(".csproj")) {
-        try {
-          const content = fs.readFileSync(path.join(cwd, f), "utf-8");
-          if (content.includes("MonoGame")) {
-            return { engine: "monogame", confidence: "high", evidence: `Found ${f} with MonoGame reference` };
-          }
-        } catch { /* ignore */ }
-      }
-    }
-  } catch { /* ignore */ }
-
-  // MonoGame: Content.mgcb
-  if (fs.existsSync(path.join(cwd, "Content", "Content.mgcb")) || fs.existsSync(path.join(cwd, "Content.mgcb"))) {
-    return { engine: "monogame", confidence: "medium", evidence: "Found Content.mgcb" };
-  }
-
-  // Phaser: package.json with phaser
-  const pkgPath = path.join(cwd, "package.json");
-  if (fs.existsSync(pkgPath)) {
-    try {
-      const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
-      const deps = { ...pkg.dependencies, ...pkg.devDependencies };
-      if (deps.phaser) {
-        return { engine: "phaser", confidence: "high", evidence: "Found phaser in package.json" };
-      }
-    } catch { /* ignore */ }
-  }
-
-  return null;
 }
 
 // ---- MCP config writing ----
@@ -176,10 +111,10 @@ export function writeMcpConfig(configPath: string): { success: boolean; error?: 
       config.mcpServers = {};
     }
 
-    // Add gamecodex server
-    (config.mcpServers as Record<string, unknown>).gamecodex = {
+    // Add gamelens server
+    (config.mcpServers as Record<string, unknown>).gamelens = {
       command: "npx",
-      args: ["-y", "gamecodex"],
+      args: ["-y", "gamelens"],
     };
 
     // Ensure parent directory exists

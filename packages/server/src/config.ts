@@ -4,10 +4,10 @@
 
 import path from "node:path";
 
-/** User config/data dir (~/.gamecodex). Canonical home for all persisted state. */
+/** User config/data dir (~/.gamelens). Canonical home for all persisted state. */
 export const CONFIG_DIR = path.join(
   process.env.HOME ?? process.env.USERPROFILE ?? "~",
-  ".gamecodex",
+  ".gamelens",
 );
 
 export const CONFIG = {

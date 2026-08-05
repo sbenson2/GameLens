@@ -1,8 +1,8 @@
-# GameCodex
+# GameLens
 
-[![CI](https://github.com/sbenson2/GameCodex/actions/workflows/ci.yml/badge.svg)](https://github.com/sbenson2/GameCodex/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/gamecodex)](https://www.npmjs.com/package/gamecodex)
-[![npm downloads](https://img.shields.io/npm/dm/gamecodex)](https://www.npmjs.com/package/gamecodex)
+[![CI](https://github.com/sbenson2/GameLens/actions/workflows/ci.yml/badge.svg)](https://github.com/sbenson2/GameLens/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/gamelens)](https://www.npmjs.com/package/gamelens)
+[![npm downloads](https://img.shields.io/npm/dm/gamelens)](https://www.npmjs.com/package/gamelens)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **A game designer AI lens for programmers. One MCP tool.**
@@ -10,7 +10,7 @@
 Your AI assistant writes competent game code and gives you zero design
 judgment. It will implement a jump, a shop, or an entire crafting system
 without ever asking whether it should exist, what it should feel like, or
-which proven design thinking applies. GameCodex gives your AI that judgment:
+which proven design thinking applies. GameLens gives your AI that judgment:
 a single tool — `lens` — that answers as the game designer looking over your
 shoulder.
 
@@ -20,7 +20,7 @@ shoulder.
 ## Quick start
 
 ```bash
-claude mcp add gamecodex -- npx -y gamecodex
+claude mcp add gamelens -- npx -y gamelens
 ```
 
 Or add to your MCP config file (`claude_desktop_config.json`,
@@ -29,7 +29,7 @@ Or add to your MCP config file (`claude_desktop_config.json`,
 ```json
 {
   "mcpServers": {
-    "gamecodex": { "command": "npx", "args": ["-y", "gamecodex"] }
+    "gamelens": { "command": "npx", "args": ["-y", "gamelens"] }
   }
 }
 ```
@@ -52,8 +52,8 @@ gravity; add coyote time and input buffering").
 |------|---------|
 | `lens { situation: "..." }` | Top matching lenses for what you're building, deciding, or struggling with — plus the matching knowledge-base docs |
 | `lens { lens: "scope" }` | A specific lens by id |
-| `lens { doc: "G106" }` | A knowledge-base doc — oversized docs return a table of contents |
-| `lens { doc: "G106", section: "Jitter" }` | Just that section of the doc |
+| `lens { doc: "E6" }` | A knowledge-base doc — oversized docs return a table of contents |
+| `lens { doc: "E6", section: "Pacing" }` | Just that section of the doc |
 | `lens { }` | The catalog |
 
 No action routing. Four optional strings. That's the entire API.
@@ -83,44 +83,39 @@ provenance, original distillations:
 
 ## The knowledge base works within the lens
 
-The 957-doc engine library (29 engines — deepest on MonoGame 131, Godot 116,
-Unity 81, Unreal 81; every doc purpose-written for AI consumption, drafted
-with AI assistance under human editorial direction) is reachable through the
-same one tool:
+A small, curated library of game-design docs — genre reference, game feel
+craft, design fundamentals, emergent and puzzle design, level design,
+postmortem shipping lessons, difficulty & accessibility, and maps of the
+best free design resources — is reachable through the same one tool:
 
 - every `situation` reply ends with **From the knowledge base** — the top
   matching docs with ids
 - `doc: "<id>"` reads one; docs over 25KB return their table of contents so
   you fetch just the `section` you need instead of flooding context
 
-The docs also ship as passive **MCP resources** at
-`gamedev://docs/{module}/{id}` for clients that browse resources.
-
-Scope which modules load:
-
-```json
-{ "env": { "GAMEDEV_MODULES": "core,godot-arch" } }
-```
-
-Without `GAMEDEV_MODULES`, all modules load.
+The docs also ship as passive **MCP resources** at `gamelens://docs/{id}`
+for clients that browse resources.
 
 ## What makes this different
 
 - **Judgment, not integration.** Godot-MCP and Unity-MCP give your AI buttons
-  to press in the editor; Context7 gives it API docs. GameCodex gives it
+  to press in the editor; Context7 gives it API docs. GameLens gives it
   *design thinking* — the layer none of them touch. They compose well.
+- **Design philosophy only.** No engine docs, no API reference, no
+  implementation guides — that's someone else's job, done well elsewhere.
+  Everything in this package is about what to build and how it should feel.
 - **One tool.** No 50K-token schema dump. The entire tool surface is four
   optional strings.
 - **Real provenance.** Every lens cites its source — the talks, books, and
   papers the industry actually runs on. No invented frameworks.
 - **Secure by design.** stdio-only transport — no network, no open ports.
-  Analytics are local JSON files (`~/.gamecodex/analytics/`), never uploaded.
+  Analytics are local JSON files (`~/.gamelens/analytics/`), never uploaded.
 
 ## Development
 
 ```bash
-git clone https://github.com/sbenson2/GameCodex.git
-cd GameCodex
+git clone https://github.com/sbenson2/GameLens.git
+cd GameLens
 npm install
 npm run build
 npm test
@@ -128,17 +123,18 @@ npm test
 
 Runtime dependencies: `@modelcontextprotocol/sdk` and `zod`. Nothing else.
 
-See [SPEC.md](./SPEC.md) for the v2 architecture and lens content rules, and
+See [SPEC.md](./SPEC.md) for the v3 architecture and lens content rules, and
 [SECURITY.md](./SECURITY.md) for the security policy.
 
-**Upgrading from 1.x:** v2.0.0 removed the project/design/docs/build/meta
-tools — the lens is the product now. `gamecodex@1.0.1` is the final release
-of the old five-tool surface if you depend on it.
+**Upgrading from gamecodex:** GameLens 3.0.0 is the rename of `gamecodex`
+and removes the 29-engine documentation modules (`GAMEDEV_MODULES` is gone —
+there is nothing to scope). If you want the engine knowledge base, stay on
+`gamecodex@2.0.1`, its final release.
 
 ## Contributing
 
 Found a bug, a provenance error, or a doc correction?
-[Open an issue](https://github.com/sbenson2/GameCodex/issues).
+[Open an issue](https://github.com/sbenson2/GameLens/issues).
 New lenses are welcome if they meet the content rules in SPEC.md: real,
 checkable provenance; original distillation; red flags in programmer terms.
 

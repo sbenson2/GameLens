@@ -1,7 +1,6 @@
 import { describe, it, before } from "node:test";
 import assert from "node:assert/strict";
 import * as path from "path";
-import * as fs from "fs";
 import { fileURLToPath } from "url";
 import { DocStore } from "../core/docs.js";
 
@@ -14,11 +13,7 @@ describe("DocStore", () => {
 
   before(async () => {
     store = new DocStore(docsDir);
-    const modules: string[] = [];
-    if (fs.existsSync(path.join(docsDir, "monogame-arch"))) modules.push("monogame-arch");
-    if (fs.existsSync(path.join(docsDir, "godot-arch"))) modules.push("godot-arch");
-    if (fs.existsSync(path.join(docsDir, "core"))) modules.push("core");
-    await store.load(modules);
+    await store.load();
   });
 
   it("should load docs", () => {
@@ -30,29 +25,26 @@ describe("DocStore", () => {
     const docs = store.getAllDocs();
     const ids = docs.map((d) => d.id);
     assert.ok(
-      ids.some((id) => /^[A-Z]\d+$/.test(id)) || ids.length > 0,
-      "Should have doc IDs"
+      ids.some((id) => /^[A-Z]\d+$/.test(id)),
+      "Should derive prefix-style doc IDs (e.g. E6, C1)"
     );
+    assert.equal(new Set(ids).size, ids.length, "doc IDs should be unique");
   });
 
   it("should extract titles from markdown", () => {
-    const docs = store.getAllDocs();
-    for (const doc of docs.slice(0, 10)) {
+    for (const doc of store.getAllDocs()) {
       assert.ok(doc.title.length > 0, `Doc ${doc.id} should have a title`);
     }
   });
 
   it("should populate content for all docs", () => {
-    const docs = store.getAllDocs();
-    for (const doc of docs.slice(0, 10)) {
+    for (const doc of store.getAllDocs()) {
       assert.ok(doc.content.length > 0, `Doc ${doc.id} should have content`);
     }
   });
 
-  it("should assign categories", () => {
-    const docs = store.getAllDocs();
-    for (const doc of docs.slice(0, 10)) {
-      assert.ok(doc.category.length > 0, `Doc ${doc.id} should have a category`);
-    }
+  it("should fetch docs by id", () => {
+    const first = store.getAllDocs()[0];
+    assert.equal(store.getDoc(first.id)?.filePath, first.filePath);
   });
 });

@@ -5,7 +5,7 @@ import * as path from "path";
 import * as os from "os";
 
 // Set analytics dir to temp before importing
-const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "gamecodex-analytics-test-"));
+const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "gamelens-analytics-test-"));
 
 // We need to test the Analytics class directly
 // Since it uses a config dir based on HOME, we test via the public API
@@ -17,7 +17,7 @@ describe("Analytics", () => {
   before(async () => {
     // Set HOME to temp for test isolation
     process.env.HOME = tempDir;
-    process.env.GAMECODEX_ANALYTICS = "true";
+    process.env.GAMELENS_ANALYTICS = "true";
     const mod = await import("../analytics.js");
     Analytics = mod.Analytics;
   });
@@ -38,45 +38,41 @@ describe("Analytics", () => {
 
   it("should record tool calls with duration", () => {
     const analytics = new Analytics();
-    analytics.recordToolCall("search_docs", 150);
-    analytics.recordToolCall("search_docs", 250);
-    analytics.recordToolCall("get_doc", 50, true); // with error
+    analytics.recordToolCall("lens", 150);
+    analytics.recordToolCall("lens", 250);
+    analytics.recordToolCall("other", 50, true); // with error
 
     const summary = analytics.getSummary();
-    assert.equal(summary.tools["search_docs"].calls, 2);
-    assert.equal(summary.tools["search_docs"].errors, 0);
-    assert.equal(summary.tools["search_docs"].avgDurationMs, 200);
-    assert.equal(summary.tools["get_doc"].calls, 1);
-    assert.equal(summary.tools["get_doc"].errors, 1);
+    assert.equal(summary.tools["lens"].calls, 2);
+    assert.equal(summary.tools["lens"].errors, 0);
+    assert.equal(summary.tools["lens"].avgDurationMs, 200);
+    assert.equal(summary.tools["other"].calls, 1);
+    assert.equal(summary.tools["other"].errors, 1);
     analytics.shutdown();
   });
 
   it("should record search patterns without query text", () => {
     const analytics = new Analytics();
-    analytics.recordSearch({ module: "core", resultCount: 5 });
-    analytics.recordSearch({ module: "godot-arch", category: "guide", resultCount: 3 });
+    analytics.recordSearch({ resultCount: 5 });
+    analytics.recordSearch({ resultCount: 3 });
     analytics.recordSearch({ resultCount: 0 }); // zero result
 
     const summary = analytics.getSummary();
     assert.equal(summary.search.totalQueries, 3);
-    assert.equal(summary.search.byModule["core"], 1);
-    assert.equal(summary.search.byModule["godot-arch"], 1);
-    assert.equal(summary.search.byCategory["guide"], 1);
     assert.equal(summary.search.zeroResultQueries, 1);
     analytics.shutdown();
   });
 
   it("should record doc access patterns", () => {
     const analytics = new Analytics();
-    analytics.recordDocAccess({ docId: "G64", module: "monogame-arch" });
-    analytics.recordDocAccess({ docId: "G64", module: "monogame-arch", usedSection: true });
-    analytics.recordDocAccess({ docId: "G1", module: "godot-arch", usedMaxLength: true });
+    analytics.recordDocAccess({ docId: "E6" });
+    analytics.recordDocAccess({ docId: "E6", usedSection: true });
+    analytics.recordDocAccess({ docId: "C1", usedMaxLength: true });
 
     const summary = analytics.getSummary();
     assert.equal(summary.docs.totalFetches, 3);
-    assert.equal(summary.docs.byDoc["G64"], 2);
-    assert.equal(summary.docs.byDoc["G1"], 1);
-    assert.equal(summary.docs.byModule["monogame-arch"], 2);
+    assert.equal(summary.docs.byDoc["E6"], 2);
+    assert.equal(summary.docs.byDoc["C1"], 1);
     assert.equal(summary.docs.sectionExtractions, 1);
     assert.equal(summary.docs.maxLengthTruncations, 1);
     analytics.shutdown();
@@ -99,18 +95,15 @@ describe("Analytics", () => {
   it("should record startup info", () => {
     const analytics = new Analytics();
     analytics.recordStartup({
-      version: "1.2.0",
+      version: "3.0.0",
       startupTimeMs: 342,
-      discoveredModules: 3,
-      activeModules: 2,
-      totalDocs: 134,
+      totalDocs: 10,
     });
 
     const summary = analytics.getSummary();
-    assert.equal(summary.version, "1.2.0");
+    assert.equal(summary.version, "3.0.0");
     assert.equal(summary.startupTimeMs, 342);
-    assert.equal(summary.modules.discovered, 3);
-    assert.equal(summary.modules.totalDocs, 134);
+    assert.equal(summary.library.totalDocs, 10);
     analytics.shutdown();
   });
 
@@ -118,27 +111,27 @@ describe("Analytics", () => {
     // Clear any existing analytics file for today so test is isolated
     // (previous tests in this suite may have flushed to the same temp dir)
     const today = new Date().toISOString().slice(0, 10);
-    const analyticsDir = path.join(tempDir, ".gamecodex", "analytics");
+    const analyticsDir = path.join(tempDir, ".gamelens", "analytics");
     const todayFile = path.join(analyticsDir, `${today}.json`);
     try { fs.unlinkSync(todayFile); } catch { /* may not exist */ }
 
     const analytics = new Analytics();
-    analytics.recordToolCall("search_docs", 100);
+    analytics.recordToolCall("lens", 100);
     analytics.recordSearch({ resultCount: 5 });
     analytics.flush();
 
     // Create new instance — should load from disk
     const analytics2 = new Analytics();
     const summary = analytics2.getSummary();
-    assert.equal(summary.tools["search_docs"]?.calls, 1);
+    assert.equal(summary.tools["lens"]?.calls, 1);
     assert.equal(summary.search.totalQueries, 1);
     analytics.shutdown();
     analytics2.shutdown();
   });
 
   it("should be disabled when env var is false", () => {
-    const origEnv = process.env.GAMECODEX_ANALYTICS;
-    process.env.GAMECODEX_ANALYTICS = "false";
+    const origEnv = process.env.GAMELENS_ANALYTICS;
+    process.env.GAMELENS_ANALYTICS = "false";
 
     // Re-import won't work due to module cache, but we can test the check
     // by verifying no writes happen
@@ -148,7 +141,7 @@ describe("Analytics", () => {
     analytics.recordSearch({ resultCount: 5 });
     analytics.flush(); // Should be no-op
 
-    process.env.GAMECODEX_ANALYTICS = origEnv ?? "true";
+    process.env.GAMELENS_ANALYTICS = origEnv ?? "true";
     analytics.shutdown();
   });
 });

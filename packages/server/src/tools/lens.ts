@@ -9,13 +9,13 @@
  *
  *   { situation: "combat feels flat" }      → matched lenses + matching docs
  *   { lens: "game-feel" }                   → one named lens, full content
- *   { doc: "G106" }                         → a knowledge base doc (TOC-gated)
- *   { doc: "G106", section: "Jitter" }      → just that section
+ *   { doc: "E6" }                           → a knowledge base doc (TOC-gated)
+ *   { doc: "E6", section: "Pacing" }        → just that section
  *   {}                                      → the lens catalog
  */
 
 import { z } from "zod";
-import { GameCodexToolDef, ToolDependencies, ToolResult } from "../tool-definition.js";
+import { GameLensToolDef, ToolDependencies, ToolResult } from "../tool-definition.js";
 import { Lens, LENSES, findLens, matchLenses } from "../core/lenses.js";
 
 /** Docs larger than this return a table of contents instead of full text
@@ -64,15 +64,10 @@ function renderDocMatches(situation: string, deps: ToolDependencies): string {
   deps.analytics?.recordSearch({ resultCount: results.length });
   if (results.length === 0) return "";
 
-  const moduleLabel = new Map<string, string>();
-  for (const m of deps.discoveredModules ?? []) moduleLabel.set(m.id, m.engine);
-  moduleLabel.set("core", "Core");
-
   let out = `\n---\n\n**From the knowledge base:**\n\n`;
   for (const r of results) {
-    const label = moduleLabel.get(r.doc.module) ?? r.doc.module;
     const snippet = r.snippet.split("\n")[0].trim();
-    out += `- \`${r.doc.id}\` — ${r.doc.title} [${label}]${snippet ? ` — ${snippet}` : ""}\n`;
+    out += `- \`${r.doc.id}\` — ${r.doc.title}${snippet ? ` — ${snippet}` : ""}\n`;
   }
   out += `\nRead any of these with \`lens { doc: "<id>" }\` (add \`section\` for one part).\n`;
   return out;
@@ -125,7 +120,7 @@ function fetchDoc(docId: string, section: string | undefined, deps: ToolDependen
       content: [{
         type: "text",
         text:
-          `No doc with id "${docId}" in the loaded modules.\n\n` +
+          `No doc with id "${docId}" in the knowledge base.\n\n` +
           `Tip: describe what you need as \`situation\` — replies include matching ` +
           `doc ids from the knowledge base.`,
       }],
@@ -135,12 +130,10 @@ function fetchDoc(docId: string, section: string | undefined, deps: ToolDependen
 
   deps.analytics?.recordDocAccess({
     docId: doc.id,
-    module: doc.module,
     usedSection: !!section,
-    usedMaxLength: false,
   });
 
-  const header = `# ${doc.title} (\`${doc.id}\`) [${doc.module}]\n\n`;
+  const header = `# ${doc.title} (\`${doc.id}\`)\n\n`;
 
   if (section) {
     const extracted = extractSection(doc.content, section);
@@ -181,19 +174,19 @@ function fetchDoc(docId: string, section: string | undefined, deps: ToolDependen
 
 // ---- The tool ----
 
-export const lensToolDef: GameCodexToolDef = {
+export const lensToolDef: GameLensToolDef = {
   name: "lens",
   description:
-    "The game designer looking over your shoulder. Use when: designing or implementing any game mechanic/feature/system, when gameplay \"feels off\" (floaty, flat, boring, confusing, too hard), when deciding what to build next or cut, or when you need engine implementation guidance. Give `situation` (what you're building or struggling with, in plain words) to get the matching industry-proven design lenses — designer questions, red flags, concrete fixes (MDA, Cerny Method, game feel, juice, flow/difficulty, onboarding, scope discipline, and more) — plus matching docs from the 957-doc engine knowledge base. Give `lens` for a specific lens by id. Give `doc` (+ optional `section`) to read a knowledge-base doc. Give nothing to list all lenses.",
+    "The game designer looking over your shoulder. Use when: designing or implementing any game mechanic/feature/system, when gameplay \"feels off\" (floaty, flat, boring, confusing, too hard), or when deciding what to build next or cut. Give `situation` (what you're building or struggling with, in plain words) to get the matching industry-proven design lenses — designer questions, red flags, concrete fixes (MDA, Cerny Method, game feel, juice, flow/difficulty, onboarding, scope discipline, and more) — plus matching docs from the design knowledge base. Give `lens` for a specific lens by id. Give `doc` (+ optional `section`) to read a knowledge-base doc. Give nothing to list all lenses.",
   inputSchema: {
     situation: z.string().optional().describe(
-      "What you're working on, deciding, or struggling with — plain language, e.g. \"jump feels floaty\", \"thinking of adding a crafting system\", \"tilemap collision in godot\""
+      "What you're working on, deciding, or struggling with — plain language, e.g. \"jump feels floaty\", \"thinking of adding a crafting system\", \"players quit at the first boss\""
     ),
     lens: z.string().optional().describe(
       "A specific lens id or name to apply, e.g. \"game-feel\", \"scope\", \"interesting-decisions\""
     ),
     doc: z.string().optional().describe(
-      "A knowledge-base doc id to read, e.g. \"G106\" — ids appear in situation replies. Large docs return a table of contents unless `section` is given"
+      "A knowledge-base doc id to read, e.g. \"E6\" — ids appear in situation replies. Large docs return a table of contents unless `section` is given"
     ),
     section: z.string().optional().describe(
       "With `doc`: extract one section by (partial) heading text, e.g. \"Knockback\""

@@ -6,8 +6,6 @@ export interface Doc {
   id: string;
   title: string;
   description: string;
-  category: string;
-  module: string;
   content: string;
   filePath: string;
 }
@@ -43,55 +41,30 @@ function extractDescription(content: string): string {
   return "";
 }
 
-/** Derive doc ID from filename: G20_camera_systems.md → G20, P0_master_playbook.md → P0 */
+/** Derive doc ID from filename: E6_game_design_fundamentals.md → E6 */
 function deriveId(filename: string): string {
   const base = filename.replace(/\.md$/, "");
-  // Match patterns like G20, E1, R4, C1, P0, etc.
+  // Match patterns like E6, C1, R4, etc.
   const prefixMatch = base.match(/^([A-Z]\d+)/);
   if (prefixMatch) return prefixMatch[1];
-  // For concept files like camera-theory.md
   return base;
 }
 
-/** Map directory path to category */
-function dirToCategory(dirPath: string): string {
-  const parts = dirPath.split(path.sep);
-  // Look for known category dirs
-  for (const part of parts) {
-    switch (part) {
-      case "reference": return "reference";
-      case "architecture": return "architecture";
-      case "guides": return "guide";
-      case "game-design": return "catalog";
-      case "project-management": return "playbook";
-      case "programming": return "guide";
-      case "ai-workflow": return "explanation";
-      case "concepts": return "concept";
-      case "session": return "explanation";
-    }
-  }
-  return "reference";
-}
-
 /** Recursively load all .md files from a directory */
-async function loadDocsFromDir(dirPath: string, module: string): Promise<Doc[]> {
+async function loadDocsFromDir(dirPath: string): Promise<Doc[]> {
   if (!fs.existsSync(dirPath)) return [];
 
   const entries = await fsp.readdir(dirPath, { withFileTypes: true });
   const tasks = entries.map(async (entry) => {
     const fullPath = path.join(dirPath, entry.name);
     if (entry.isDirectory()) {
-      return loadDocsFromDir(fullPath, module);
+      return loadDocsFromDir(fullPath);
     } else if (entry.name.endsWith(".md")) {
       const content = await fsp.readFile(fullPath, "utf-8");
-      const id = deriveId(entry.name);
-      const category = dirToCategory(fullPath);
       const doc: Doc = {
-        id,
+        id: deriveId(entry.name),
         title: extractTitle(content, entry.name),
         description: extractDescription(content),
-        category,
-        module,
         content,
         filePath: fullPath,
       };
@@ -111,35 +84,13 @@ export class DocStore {
   constructor(private docsRoot: string) {}
 
   /** Load all docs from filesystem */
-  async load(activeModules: string[]): Promise<void> {
+  async load(): Promise<void> {
     this.docs.clear();
     this.allDocs = [];
 
-    // Load core + all module docs in parallel
-    const loadTasks = [
-      loadDocsFromDir(path.join(this.docsRoot, "core"), "core"),
-      ...activeModules.map((mod) =>
-        loadDocsFromDir(path.join(this.docsRoot, mod), mod)
-      ),
-    ];
-    const results = await Promise.all(loadTasks);
-
-    // First result is core docs
-    const coreDocs = results[0];
-    for (const doc of coreDocs) {
+    for (const doc of await loadDocsFromDir(this.docsRoot)) {
       this.docs.set(doc.id, doc);
       this.allDocs.push(doc);
-    }
-
-    // Remaining results are module docs
-    for (let i = 1; i < results.length; i++) {
-      const mod = activeModules[i - 1];
-      for (const doc of results[i]) {
-        const key = this.docs.has(doc.id) ? `${mod}/${doc.id}` : doc.id;
-        doc.id = key;
-        this.docs.set(key, doc);
-        this.allDocs.push(doc);
-      }
     }
   }
 
@@ -149,13 +100,5 @@ export class DocStore {
 
   getAllDocs(): Doc[] {
     return this.allDocs;
-  }
-
-  listDocs(category?: string, module?: string): Doc[] {
-    return this.allDocs.filter((d) => {
-      if (category && d.category !== category) return false;
-      if (module && d.module !== module) return false;
-      return true;
-    });
   }
 }

@@ -2,7 +2,7 @@
  * Tool definition interface — metadata-carrying tool defs with fail-closed
  * defaults, validated via Zod at the MCP boundary.
  *
- * v2: the server exposes a single tool (`lens`); the registry and this
+ * The server exposes a single tool (`lens`); the registry and this
  * interface stay because they keep registration, analytics, concurrency,
  * and error handling in one tested path.
  */
@@ -11,7 +11,6 @@ import { z } from "zod";
 
 import type { DocStore, Doc } from "./core/docs.js";
 import type { SearchEngine } from "./core/search.js";
-import type { ModuleMetadata } from "./core/modules.js";
 import type { Analytics } from "./analytics.js";
 
 // ---- Tool result type ----
@@ -25,7 +24,7 @@ export type ToolResult = {
 
 // ---- Tool definition ----
 
-export interface GameCodexToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> {
+export interface GameLensToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> {
   /** Unique tool name (used in MCP registration) */
   name: string;
 
@@ -81,23 +80,21 @@ export interface GameCodexToolDef<TInput extends z.ZodRawShape = z.ZodRawShape> 
 export interface ToolDependencies {
   docStore: DocStore;
   searchEngine: SearchEngine;
-  discoveredModules: ModuleMetadata[];
   analytics: Analytics;
   serverVersion: string;
-  activeModules: string[];
   allDocs: Doc[];
 }
 
 // ---- Built tool (with defaults applied) ----
 
-export interface GameCodexTool<TInput extends z.ZodRawShape = z.ZodRawShape>
-  extends Required<Pick<GameCodexToolDef<TInput>,
+export interface GameLensTool<TInput extends z.ZodRawShape = z.ZodRawShape>
+  extends Required<Pick<GameLensToolDef<TInput>,
     "isReadOnly" | "isConcurrencySafe" | "isDestructive" | "isEnabled"
   >> {
   name: string;
   description: string;
   inputSchema: TInput;
-  handler: GameCodexToolDef<TInput>["handler"];
+  handler: GameLensToolDef<TInput>["handler"];
   category: string;
   activityDescription: string;
 }
@@ -106,8 +103,8 @@ export interface GameCodexTool<TInput extends z.ZodRawShape = z.ZodRawShape>
  * Build a tool definition with fail-closed defaults applied.
  */
 export function buildTool<TInput extends z.ZodRawShape>(
-  def: GameCodexToolDef<TInput>
-): GameCodexTool<TInput> {
+  def: GameLensToolDef<TInput>
+): GameLensTool<TInput> {
   return {
     // Fail-closed defaults
     isReadOnly: false,

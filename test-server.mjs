@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * GameCodex MCP Server — Smoke Test
+ * GameLens MCP Server — Smoke Test
  * Spawns the server, sends JSON-RPC messages, validates responses.
  * Run: node test-server.mjs
  */
@@ -86,13 +86,13 @@ const INITIALIZED = JSON.stringify({
   method: "notifications/initialized",
 });
 
-console.log("=== GameCodex MCP Server Smoke Test ===\n");
+console.log("=== GameLens MCP Server Smoke Test ===\n");
 
 // --- Test 1: Initialize ---
 console.log("[1/3] Initialize handshake");
 const r1 = await runServer([INIT]);
 check("Server responds with result", r1, '"result"');
-check('Server name is "gamecodex"', r1, '"gamecodex"');
+check('Server name is "gamelens"', r1, '"gamelens"');
 check("Returns protocol version", r1, '"protocolVersion"');
 
 // --- Test 2: List tools ---
@@ -105,20 +105,19 @@ const listTools = JSON.stringify({
 });
 const r2 = await runServer([INIT, INITIALIZED, listTools]);
 check("Returns tool list", r2, '"tools"');
-check("Has search_docs", r2, "search_docs");
-check("Has teach tool", r2, '"teach"');
-check("Has memory tool", r2, '"memory"');
+check("Has the lens tool", r2, '"name":"lens"');
 
-// --- Test 3: Call search_docs ---
-console.log("[3/3] Call search_docs");
-const callSearch = JSON.stringify({
+// --- Test 3: Call lens ---
+console.log("[3/3] Call lens");
+const callLens = JSON.stringify({
   jsonrpc: "2.0",
   id: 3,
   method: "tools/call",
-  params: { name: "search_docs", arguments: { query: "ECS" } },
+  params: { name: "lens", arguments: { situation: "my jump feels floaty" } },
 });
-const r3 = await runServer([INIT, INITIALIZED, callSearch], 15000);
-check("search_docs returns content", r3, '"content"');
+const r3 = await runServer([INIT, INITIALIZED, callLens], 15000);
+check("lens returns content", r3, '"content"');
+check("lens surfaces Game Feel", r3, "Game Feel");
 
 // --- Summary ---
 console.log("");

@@ -14,6 +14,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-08-05
+
+**The rename + the design-philosophy-only release.** The package is now
+**`gamelens`** (formerly `gamecodex`). `gamecodex@2.0.1` is that name's final
+release.
+
+### Removed
+- **The entire engine knowledge base** — 29 engine modules, ~950 docs
+  (MonoGame, Godot, Unity, Unreal, and 25 more). Engine documentation pulled
+  the product away from its purpose; design judgment is the product. The
+  content lives in the 2.x tags if you need it.
+- **The module system** — `GAMEDEV_MODULES`, module auto-discovery, engine
+  aliases (`src/core/modules.ts`). With one small design library there is
+  nothing to scope.
+- **Engine detection** in `init` (Godot/MonoGame/Phaser project sniffing) —
+  the server no longer has engine-specific behavior to configure.
+- Per-module rules-file MCP resources (`gamedev://prompts/...`).
+
+### Changed
+- **Renamed: `gamecodex` → `gamelens`.** Binary is `gamelens`, MCP server
+  name is `gamelens`, config dir is `~/.gamelens`, analytics opt-out is
+  `GAMELENS_ANALYTICS=false`, resources live at `gamelens://docs/{id}`.
+- The knowledge base is now design-only: genre reference, game feel & genre
+  craft, design fundamentals, emergent/puzzle design, level design,
+  postmortem shipping lessons, difficulty & accessibility, and curated
+  resource maps — all reachable through the lens as before (`situation`
+  replies append matches; `doc`/`section` reads them).
+- Lens `furtherReading` entries now point at surviving design docs instead
+  of removed engine guides (and one leftover v1 `project`-tool reference is
+  gone).
+
 ## [2.0.1] - 2026-08-03
 
 ### Fixed
