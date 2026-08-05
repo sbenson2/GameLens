@@ -17,8 +17,9 @@ youtube() {
     --skip-download \
     --write-subs --write-auto-subs \
     --sub-langs "en,en-orig" --sub-format vtt \
-    --sleep-requests 1.5 \
+    --sleep-requests 2.5 \
     --download-archive "$GDC/youtube-archive.txt" \
+    --force-write-archive \
     --print-to-file "%(id)s${tab}%(upload_date)s${tab}%(duration)s${tab}%(title)s${tab}%(webpage_url)s" "$GDC/youtube-meta.tsv" \
     --no-warnings --ignore-errors \
     -o "$GDC/raw-subs/%(id)s.%(ext)s" \
