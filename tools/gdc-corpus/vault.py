@@ -31,7 +31,9 @@ PLAY_RE = re.compile(r'href="(/play/(\d+)[^"]*)"')
 TITLE_RE = re.compile(r"<title>\s*GDC Vault\s*-\s*(.*?)\s*</title>", re.S)
 PDF_RE = re.compile(r'href="([^"]+\.pdf)"', re.I)
 YT_RE = re.compile(r'(?:youtube\.com/embed/|youtu\.be/|youtube\.com/watch\?v=)([A-Za-z0-9_-]{11})')
-META_DESC_RE = re.compile(r'<meta\s+name="description"\s+content="([^"]*)"', re.I)
+META_DESC_RE = re.compile(
+    r'<meta\s+(?:name|property)="(?:og:)?description"\s+content="([^"]*)"', re.I
+)
 
 
 def fetch(url: str) -> str | None:
