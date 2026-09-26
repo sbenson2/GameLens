@@ -30,3 +30,8 @@ research/
 
 # Packed tarballs
 *.tgz
+
+# Skill build: draft registries and verification cache
+build/
+tools/.verify-cache/
+__pycache__/

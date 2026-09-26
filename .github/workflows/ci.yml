@@ -14,81 +14,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build & Test (Node ${{ matrix.node-version }})
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [18, 20, 22, 24]
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-
-      - run: npm ci
-
-      - run: npm run build
-
-      - name: Verify dist output exists
-        run: test -f dist/index.js
-
-      - name: TypeScript strict check
-        run: npx tsc --noEmit
-
-      - name: Run tests
-        run: npm test
-
-      - name: Verify package can be packed
-        run: npm pack --dry-run
-
-  lint:
-    name: Lint
+  check:
+    name: Tests and citation integrity
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-python@v6
         with:
-          node-version: 22
-          cache: npm
+          python-version: "3.12"
 
-      - run: npm ci
+      - name: Unit tests
+        run: python -m unittest discover -s tests
 
-      - name: Check formatting (if prettier configured)
-        run: npx prettier --check "src/**/*.ts" || true
-
-      - name: Lint (if eslint configured)
-        run: npx eslint "src/**/*.ts" 2>/dev/null || true
-
-  audit:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: npm
-
-      - run: npm ci
-
-      - name: Check for known vulnerabilities
-        run: npm audit --omit=dev || true
-
-  dependency-review:
-    name: Dependency Review
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v4
-        with:
-          fail-on-severity: high
-          deny-licenses: GPL-3.0, AGPL-3.0
+      - name: Citations resolve and Sources sections are current
+        run: python tools/check_citations.py --quiet

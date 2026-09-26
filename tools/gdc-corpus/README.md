@@ -13,7 +13,7 @@ Everything lands in `research/` (gitignored — this corpus must never be
 committed or redistributed; GDC talks are copyrighted, "free to watch" is
 not "free to republish"). Its only sanctioned use here is as background
 reading when writing **original distillations** for lens content, per the
-content rules in `packages/server/SPEC.md`.
+content rules in `CONTRIBUTING.md`.
 
 ## Requirements
 

@@ -1,90 +1,89 @@
 # GameLens
 
-**A game designer AI lens for programmers.**
+A game development advisor skill for AI coding agents. It helps you design, diagnose and build games, and it traces its guidance to peer-reviewed research, GDC Vault talks and established books. Every source is cited so you can check it.
 
-Your AI assistant writes competent game code and gives you zero design judgment.
-It will implement a jump, a shop, or a crafting system without ever asking
-whether it should exist, what it should feel like, or which proven design
-thinking applies. GameLens fixes exactly that: **one MCP tool — `lens` —**
-that answers as the game designer looking over your shoulder.
-
-```
-you (or your AI): lens { situation: "my jump feels floaty" }
-
-              → Game Feel (Steve Swink): measure input-to-photon latency;
-                derive gravity from jump height + time-to-apex; split
-                rising/falling gravity; the questions, red flags in code
-                terms, and concrete fixes.
-```
-
-Every lens distills an industry-proven philosophy with real provenance —
-Mark Cerny's Method, MDA, Sid Meier's interesting decisions, Swink's game feel,
-juice, flow & difficulty (incl. Celeste's assist thinking), George Fan's
-onboarding rules, Nintendo's kishōtenketsu, core loops, Derek Yu on finishing,
-Valve-style playtesting, Self-Determination Theory, Sirlin/Schreiber balance,
-Koster's theory of fun, and BotW-style emergence.
+The skill is named `game-development`. It follows the [Agent Skills](https://agentskills.io) format, so it works in Claude Code, Codex, opencode, Cursor and other agents that load skills.
 
 ## Install
 
 ```bash
-claude mcp add gamelens -- npx -y gamelens
+npx skills add sbenson2/GameLens
 ```
 
-Or in any MCP config (`claude_desktop_config.json`, `.cursor/mcp.json`, …):
+Or copy `skills/game-development` into your agent's skills directory:
 
-```json
-{
-  "mcpServers": {
-    "gamelens": { "command": "npx", "args": ["-y", "gamelens"] }
-  }
-}
-```
+| Agent | Directory |
+| --- | --- |
+| Claude Code | `~/.claude/skills/` |
+| Codex, opencode | `~/.agents/skills/` |
 
-## One tool — the whole game
+The runtime script needs Python 3; nothing else is required.
 
-| Call | Returns |
-|------|---------|
-| `lens { situation: "players quit at the first boss" }` | The matching lenses (here: flow & difficulty, playtesting) — designer questions, red flags, prescriptions — **plus matching docs from the knowledge base** |
-| `lens { lens: "scope" }` | One named lens in full |
-| `lens { doc: "E6" }` | A knowledge-base doc (big ones return a table of contents; add `section: "…"` for one part) |
-| `lens { }` | The catalog of all 15 lenses |
+## What it does
 
-That's the entire tool surface. No schema bloat, no action routing.
+The agent works in two modes:
 
-## Design philosophy only
+- **Consulting**: review a design, diagnose a problem ("the jump feels floaty", "everyone picks the same card", "players quit after the first boss"), or answer a design question. It gives a considered opinion and names the sources behind it.
+- **Building**: implement or fix a feature, applying the relevant guidance as it goes. It raises only the design decisions that matter.
 
-The knowledge base is a small, curated library of game-design docs — genre
-reference, game feel craft, design fundamentals, level design, postmortem
-lessons, difficulty & accessibility — reachable through the same tool: every
-`situation` reply ends with the matching docs, and `doc`/`section` reads them.
-The docs also ship as passive **MCP resources** (`gamelens://docs/...`).
+For any consequential recommendation it connects the intended experience, the observed problem, plausible causes, the smallest useful change, and the evidence that would confirm it. It keeps a source's context attached: a lesson from one shipped game or one lab study is not presented as a universal rule.
 
-No engine documentation. Engine API freshness is Context7's job; editor
-integration is Godot-MCP's and Unity-MCP's. GameLens is the design-judgment
-layer none of them touch — they compose well. (GameLens 2.x, published as
-`gamecodex`, bundled a 957-doc engine library; v3 removed it.)
+The agent loads only the references a task needs:
 
-## Monorepo
+| Area | Reference |
+| --- | --- |
+| Diagnosing vague complaints | `lenses.md` (16 named lenses) |
+| Core design, motivation, emergence; whole-game review | `design.md`, `holistic-design.md` |
+| Balance, economies, randomness, monetization ethics | `balance.md` |
+| Controls, latency, jumps, camera, juice | `game-feel.md` |
+| Levels, onboarding, difficulty, puzzles | `levels.md` |
+| Narrative, dialogue, quests; genre notes | `narrative.md`, `genres.md` |
+| Gameplay systems, game AI, procedural generation | `systems.md`, `ai.md`, `procedural-generation.md` |
+| Architecture, multiplayer, engine integration | `architecture.md`, `multiplayer.md`, `engines.md` |
+| Art, UI, audio; accessibility | `presentation.md`, `accessibility.md` |
+| Playtesting and evidence; production and scope | `evaluation.md`, `production.md` |
 
-```
-GameLens/
-├── packages/
-│   ├── server/    <- the MCP server (the product) — see its README + SPEC.md
-│   └── site/      <- marketing site (stale; predates the lens direction)
-└── package.json   <- npm workspaces root
-```
+## Sources
+
+The registry (`references/sources.jsonl`) holds 354 sources:
+
+| Tier | Count | Used for |
+| --- | --- | --- |
+| GDC Vault talks | 206 | Practitioner methods and lessons from shipped games |
+| Peer-reviewed papers | 86 | Measured player behavior, validated methods, frameworks |
+| Books | 21 | Durable concepts and vocabulary |
+| Official engine and platform docs | 41 | API and platform facts only, never design claims |
+
+How the sources were checked:
+
+- **Existence.** Every entry was confirmed against Crossref (DOI), the GDC Vault page (title, speaker, conference), ISBN records, or, for documentation, the cited page at its version. `tools/verify_sources.py` re-runs this check.
+- **Content.** Each entry records what was read to write its summary: a talk transcript (184), the full text (92), the abstract (54) or an excerpt (24). Claims stay within what was read, and numbers and quotations come only from transcripts or full texts.
+- **Claim audit.** Every sentence in the references that cites a source was checked against that source, 1,146 citations in all. 1,102 were supported as written. The other 44 were corrected: 35 overstated a finding or dropped its conditions, 7 had a wrong detail, 1 cited the wrong source, and 1 was unsupported.
+- **Uncited text.** Guidance without a citation is the skill's own reasoning, and it is written as such.
+
+Look up sources from the skill directory:
 
 ```bash
-npm install && npm run build && npm test
+python3 scripts/sources.py find jump buffering
+python3 scripts/sources.py show fan2012-pvz
 ```
 
-## Links
+No skill, source or test guarantees a good game. Treat design advice as hypotheses, and verify it with your own playtests.
 
-- [npm](https://www.npmjs.com/package/gamelens)
-- [GitHub](https://github.com/sbenson2/GameLens) (canonical)
-- [Issues](https://github.com/sbenson2/GameLens/issues)
-- [GitLab mirror](https://github.com/sbenson2/GameLens)
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the source policy, registry schema, writing standard and maintainer tools. The main checks:
+
+```bash
+python3 -m unittest discover -s tests
+python3 tools/check_citations.py
+python3 tools/verify_sources.py
+```
+
+## History
+
+GameLens was an MCP server (npm `gamecodex`) through version 3.0.0. It is now this skill, which needs no server and carries its own verified sources. The server code remains in the git history.
 
 ## License
 
-MIT
+MIT for the skill's text and tools. Cited works belong to their authors and publishers. The skill contains only original summaries and links, never transcripts or excerpts.
