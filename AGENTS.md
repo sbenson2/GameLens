@@ -1,4 +1,4 @@
-# GameLens
+# game-development
 
 This repository publishes one agent skill, **`skills/game-development`**. It is a game development advisor for AI coding agents, and all of its guidance traces to verified sources: peer-reviewed research, GDC Vault talks, and canonical books. It was an MCP server through v3.0.0; the server was retired in favor of the skill. The last server code is at commit `031d4aa` (the parent of the conversion).
 
@@ -47,4 +47,4 @@ python3 skills/game-development/scripts/sources.py find <words>
 
 ## Remotes
 
-GitHub `sbenson2/GameLens` (origin) is canonical; GitLab `sbenson2/GameCodex` is a mirror. The local directory is still `~/Developer/GameCodex`. npm `gamecodex` (last 2.0.1) is retired, and `gamelens` was never published. Nothing in this repository publishes to npm.
+GitHub `sbenson2/game-development` (origin) is canonical; GitLab `sbenson2/game-development` is a mirror. The local checkout is `~/Developer/game-development`. The npm package `gamecodex` (last 2.0.1) is the deprecated predecessor; nothing in this repository publishes to npm.

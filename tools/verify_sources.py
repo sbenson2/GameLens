@@ -27,7 +27,7 @@ import sourcelib as lib  # noqa: E402
 
 CACHE_DIR = Path(__file__).resolve().parent / '.verify-cache'
 CATALOG = lib.ROOT / 'research' / 'gdc' / 'vault-catalog.jsonl'
-AGENT = 'game-development-skill-source-verifier/1.0 (+https://github.com/sbenson2/GameLens)'
+AGENT = 'game-development-skill-source-verifier/1.0 (+https://github.com/sbenson2/game-development)'
 PEER_TYPES = {'journal-article', 'proceedings-article'}
 _last_request = {}
 

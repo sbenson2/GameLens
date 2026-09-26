@@ -8,7 +8,6 @@ material and is never committed.
 import argparse
 import html
 import json
-import os
 from pathlib import Path
 import re
 import sys
@@ -149,7 +148,7 @@ def search(root, query, source, full_text, limit):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--query', required=True, help='Concise words/concepts; not semantic search')
-    parser.add_argument('--root', type=Path, default=Path(os.environ.get('GAMELENS_ROOT', str(Path(__file__).resolve().parents[1]))))
+    parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument('--source', choices=('talks', 'all'), default='all')
     parser.add_argument('--full-text', action='store_true', help='Also scan downloaded transcript bodies')
     parser.add_argument('--limit', type=int, default=5)

@@ -1,4 +1,4 @@
-# GameLens
+# game-development
 
 A game development advisor skill for AI coding agents. It helps you design, diagnose and build games, and it traces its guidance to peer-reviewed research, GDC Vault talks and established books. Every source is cited so you can check it.
 
@@ -7,7 +7,7 @@ The skill is named `game-development`. It follows the [Agent Skills](https://age
 ## Install
 
 ```bash
-npx skills add sbenson2/GameLens
+npx skills add sbenson2/game-development
 ```
 
 Or copy `skills/game-development` into your agent's skills directory:
@@ -82,7 +82,7 @@ python3 tools/verify_sources.py
 
 ## History
 
-GameLens was an MCP server (npm `gamecodex`) through version 3.0.0. It is now this skill, which needs no server and carries its own verified sources. The server code remains in the git history.
+This repository previously held an MCP server, published to npm as `gamecodex` (now deprecated, with a pointer here). The skill replaces it: it needs no server and carries its own verified sources. The server code remains in the git history.
 
 ## License
 

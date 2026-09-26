@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "gamecodex": {
-      "command": "npx",
-      "args": ["-y", "gamecodex"],
-      "env": {}
-    }
-  }
-}

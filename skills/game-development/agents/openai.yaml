@@ -1,4 +1,4 @@
 interface:
-  display_name: "Game Development"
+  display_name: "game-development"
   short_description: "Game development advisor with cited, verified sources"
   default_prompt: "Use $game-development to review this game's design and implementation and advise with sources."
