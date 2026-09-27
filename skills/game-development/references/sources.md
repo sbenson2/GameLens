@@ -4,7 +4,7 @@ Read this when citing guidance to a developer, when a question goes beyond what 
 
 ## What backs this skill
 
-Every attributed idea, finding or number in these references traces to a registered source in `sources.jsonl`. Each source's existence and bibliographic details were verified against Crossref, the GDC Vault or ISBN records (official documentation: the cited page at the cited version). Each entry's `checked.content` field records what was read to confirm its summary: full text, transcript, abstract or excerpt. Every sentence in the references that cites a source was then audited against that source.
+Every attributed idea, finding or number in these references traces to a registered source in `sources.jsonl` (query it with `scripts/sources.py`; the file is too large to read whole). Each source's existence and bibliographic details were verified against Crossref, the GDC Vault or ISBN records (official documentation: the cited page at the cited version). Each entry's `checked.content` field records what was read to confirm its summary: full text, transcript, abstract or excerpt. Every sentence in the references that cites a source was then audited against that source.
 
 | Tier | Good evidence for | Limits |
 | --- | --- | --- |

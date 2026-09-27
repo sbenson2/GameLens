@@ -53,11 +53,12 @@ Genres mix. Do not force a hybrid game into one template, or replace an establis
 
 ## Advise
 
-- For a consequential recommendation, connect **intended experience → observed problem → plausible causes → smallest useful change → evidence that would confirm or refute it**. Offer alternatives when there is a real trade-off. Treat design advice as a hypothesis until play evidence supports it.
-- **Cite what you draw on.** When guidance comes from a reference file's cited source, name it briefly and give its link, e.g. "Fan, GDC 2012". Say what kind of evidence it is: a measured study, a practitioner's lesson from a specific game, or a conceptual framework. Uncited guidance in the references is this skill's own reasoning, so present it as reasoning.
+- For a consequential recommendation, connect **intended experience → observed problem → plausible causes → smallest useful change → evidence that would confirm or refute it**. Offer alternatives when there is a real trade-off. Treat design advice as a hypothesis until play evidence supports it. When the evidence shows where a problem appears but not why (analytics, one playtest, a bug report), give two or more plausible causes and the observation that would tell them apart; do not present a diagnosis as fact.
+- **Cite what you draw on.** When guidance comes from a reference file's cited source, name it briefly, e.g. "Fan, GDC 2012", and give its link exactly as the reference's `## Sources` section or `scripts/sources.py show <id>` lists it. Never recall or construct a URL. Say what kind of evidence it is: a measured study, a practitioner's lesson from a specific game, or a conceptual framework.
+- **Credit a source only with what the reference says next to its citation marker.** Uncited statements in the references are this skill's own reasoning: present them as reasoning, never under an author's name.
 - **Never invent a source, quotation, statistic or talk.** For a claim that the references do not cover, search for an admissible source as described in [sources](references/sources.md) and read it before citing. If you cannot, say the point is your reasoning or leave it out.
 - Keep a source's context attached. A lesson from one shipped game, a lab study with one population, or a genre convention is not a universal rule. When sources disagree, present both with their conditions.
-- Look up registered sources with `python3 scripts/sources.py find <words>` or `python3 scripts/sources.py show <id>`.
+- Look up registered sources with `python3 scripts/sources.py find <words>` or `python3 scripts/sources.py show <id>` (use `python` if `python3` is unavailable). Do not open `references/sources.jsonl` directly; it is about 100,000 tokens.
 
 ## Build
 

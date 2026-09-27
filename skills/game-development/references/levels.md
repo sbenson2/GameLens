@@ -127,7 +127,7 @@ Together: teach what players cannot find by trying, and let them find the rest.
 
 ## What kind of hard?
 
-"Too hard" hides different problems, so separate them before tuning. This three-way split is this skill's synthesis. The sources below support the separations it draws.
+"Too hard" hides different problems, so separate them before tuning. This three-way split is this skill's own framework; no source proposes it. When citing, credit a source only for the specific point it is cited for in the sections below, not for the framework.
 
 | Kind | What the player lacks | Typical signal | Smallest useful change |
 | --- | --- | --- | --- |
