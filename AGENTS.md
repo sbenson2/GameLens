@@ -22,6 +22,7 @@ tools/                       <- maintainer tooling, not shipped
   run_evals.sh               <- behavior evals (claude plugin eval) against a staged plugin copy
   summarize_evals.py         <- trigger recall / false triggers / with-vs-without pass rates
   eval_url_graders.py        <- rebuild the registry-derived URL graders in evals/
+  codex_evals.py             <- the same eval cases against OpenAI Codex via promptfoo (build/run/summarize)
   search_corpus.py           <- search the local research corpus
   gdc-corpus/                <- bulk corpus downloaders (yt-dlp, Vault crawler)
 evals/                       <- claude plugin eval suite: trigger and quality cases (results gitignored)

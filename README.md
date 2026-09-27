@@ -10,6 +10,15 @@ The skill is named `game-development`. It follows the [Agent Skills](https://age
 npx skills add sbenson2/game-development
 ```
 
+In Claude Code you can install it as a plugin instead:
+
+```text
+/plugin marketplace add sbenson2/game-development
+/plugin install game-development@game-development
+```
+
+Use one method, not both; with both, the skill loads twice.
+
 Or copy `skills/game-development` into your agent's skills directory:
 
 | Agent | Directory |
@@ -45,19 +54,19 @@ The agent loads only the references a task needs:
 
 ## Sources
 
-The registry (`references/sources.jsonl`) holds 354 sources:
+The registry (`references/sources.jsonl`) holds 355 sources:
 
 | Tier | Count | Used for |
 | --- | --- | --- |
 | GDC Vault talks | 206 | Practitioner methods and lessons from shipped games |
 | Peer-reviewed papers | 86 | Measured player behavior, validated methods, frameworks |
 | Books | 21 | Durable concepts and vocabulary |
-| Official engine and platform docs | 41 | API and platform facts only, never design claims |
+| Official engine and platform docs | 42 | API and platform facts only, never design claims |
 
 How the sources were checked:
 
 - **Existence.** Every entry was confirmed against Crossref (DOI), the GDC Vault page (title, speaker, conference), ISBN records, or, for documentation, the cited page at its version. `tools/verify_sources.py` re-runs this check.
-- **Content.** Each entry records what was read to write its summary: a talk transcript (184), the full text (92), the abstract (54) or an excerpt (24). Claims stay within what was read, and numbers and quotations come only from transcripts or full texts.
+- **Content.** Each entry records what was read to write its summary: a talk transcript (184), the full text (93), the abstract (54) or an excerpt (24). Claims stay within what was read, and numbers and quotations come only from transcripts or full texts.
 - **Claim audit.** Every sentence in the references that cites a source was checked against that source, 1,146 citations in all. 1,102 were supported as written. The other 44 were corrected: 35 overstated a finding or dropped its conditions, 7 had a wrong detail, 1 cited the wrong source, and 1 was unsupported.
 - **Uncited text.** Guidance without a citation is the skill's own reasoning, and it is written as such.
 
@@ -72,23 +81,24 @@ No skill, source or test guarantees a good game. Treat design advice as hypothes
 
 ## Tested
 
-Behavior evals with `claude plugin eval`, run on 2026-09-26. Each run is an isolated session with only this skill installed, 2 runs per case, and the latest run per model:
+Behavior evals from 2026-09-26. Claude models ran through `claude plugin eval` in isolated sessions with only this skill installed: 3 runs per trigger case and 4 per quality case in each arm. Codex (gpt-6-sol, medium reasoning) ran through promptfoo with user-level skills hidden: 2 runs per case.
 
-| | Haiku 4.5 | Sonnet 5 | Opus 5.5 |
-| --- | --- | --- | --- |
-| Skill loaded on 11 should-fire prompts (design questions, gameplay code, finding talks) | 100% | 100% | 100% |
-| Skill loaded on 10 near misses (game trivia, emulator setup, general web and backend code) | 0% | 0% | 0% |
-| Advice rubric passed, with vs. without the skill | 6/10 vs. 3/10 | 8/10 vs. 6/10 | 10/10 vs. 8/10 |
-| Replies linking a registered source | 2/10 | 8/10 | 10/10 |
-| Replies containing a URL outside the registry | 0/10 | 0/10 | 0/10 |
+| | Haiku 4.5 | Sonnet 5 | Opus 5.5 | Codex |
+| --- | --- | --- | --- | --- |
+| Skill loaded when it should (design questions, gameplay code, finding talks) | 32/33 | 33/33 | 33/33 | 22/22 |
+| Skill loaded on near misses (game trivia, emulator setup, general code) | 0/30 | 0/30 | 0/30 | 2/20 |
+| Advice rubric passed, with vs. without the skill | 13/20 vs. 5/20 | 20/20 vs. 9/20 | 20/20 vs. 16/20 | 10/10 vs. 9/10 |
+| Replies linking a registered source, with vs. without | 7/20 vs. 0/20 | 18/20 vs. 0/20 | 20/20 vs. 3/20 | 10/10 vs. 7/10 |
+| Replies with no link outside the registry, with vs. without | 19/20 vs. 19/20 | 20/20 vs. 20/20 | 20/20 vs. 19/20 | 8/10 vs. 4/10 |
 
 How to read these results:
 - **Trigger rates are an upper bound.** In a real setup, other installed skills compete for the same prompts.
-- **Samples are small.** Each result comes from 2 runs per case.
-- **Advice was scored by a Sonnet judge** against written rubrics.
-- **Smaller models use the skill less faithfully:** Haiku improves its advice but rarely links its sources.
+- **Scoring:** advice was scored by a Sonnet judge against written rubrics.
+- **What the link check counts:** any URL not in the registry, including real pages the registry doesn't list. It measures unverified links, not broken ones.
+- **The near misses Codex loaded the skill on** were both a Blender-to-glTF export question.
+- **Smaller models use the skill less faithfully:** Haiku improves its advice but links its sources less often.
 
-`evals/` holds the suite. See CONTRIBUTING.md to run it.
+`evals/` holds the suite. See CONTRIBUTING.md to run it against Claude or Codex.
 
 ## Contributing
 

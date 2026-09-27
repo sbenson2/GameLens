@@ -74,6 +74,14 @@ python3 tools/summarize_evals.py                              # recall, false tr
 python3 tools/eval_url_graders.py                             # after registry changes: rebuild the URL graders
 ```
 
+The same cases run against OpenAI Codex through promptfoo. It uses your Codex login and, per run, an empty `HOME` so that user-level skills stay hidden:
+
+```bash
+cd build/codex-eval && npm install promptfoo @openai/codex-sdk @anthropic-ai/claude-agent-sdk   # once
+python3 tools/codex_evals.py build && python3 tools/codex_evals.py run --repeat 2
+python3 tools/codex_evals.py summarize
+```
+
 Runs are isolated sessions with only this plugin loaded, so trigger rates are an upper bound: in a real setup, other installed skills compete for the same prompts. Each run is a full agent session billed at list price (or plan usage); pass `--max-cost-usd` to cap a suite.
 
 `verify_sources.py` proves a source exists as cited. It cannot prove a summary is faithful: that is the author's responsibility, recorded in `checked.content`. Captions can mistranscribe names and numbers; check anything exact against slides or a second source. The `research/` corpus (transcripts, Vault catalog, slides) is local research material: never commit or redistribute it.

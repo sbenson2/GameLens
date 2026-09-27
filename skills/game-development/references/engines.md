@@ -56,6 +56,10 @@ With an engine, the engine owns the main loop and calls your code [@nystrom2014-
 
 Hitstop, slow motion, pause menus and cutscenes all touch these controls. Give each one an owner, decide which clock every system reads (scaled game time, unscaled real time, fixed physics time), and do not blindly reset a global time scale to 1.0 when one effect ends while another is still active. Test transitions: pausing during hitstop, unpausing mid-tween, and a scene change while slowed down.
 
+## Networking APIs
+
+- **Godot.** The high-level multiplayer API's default ENet transport uses UDP only, so a player hosting for friends outside the LAN usually has to forward the port as UDP. Remote calls are declared with `@rpc`, whose options set who may call (`authority` or `any_peer`), whether the call also runs locally, and the transfer mode (`reliable`, `unreliable`, `unreliable_ordered`). The server is peer 1 and the default authority; `set_multiplayer_authority` changes it per node. The documentation advises treating client input as untrusted and validating RPC arguments [@godot2026-high-level-multiplayer]. For authority models, latency hiding and scope, see [multiplayer](multiplayer.md).
+
 ## Symptoms and likely causes
 
 This table is diagnostic reasoning that builds on the documented behavior above; confirm each cause in the project before changing code.
@@ -119,5 +123,6 @@ Use the project's documented build and test commands. Report what was run and wh
 - `phaser2026-arcade-world` Phaser Studio (2026). Phaser.Physics.Arcade.World. Phaser 4.1 documentation. https://docs.phaser.io/api-documentation/class/physics-arcade-world (official documentation)
 - `phaser2026-clock` Phaser Studio (2026). Phaser.Time.Clock. Phaser 4.1 documentation. https://docs.phaser.io/api-documentation/class/time-clock (official documentation)
 - `bevy2026-virtual` Bevy contributors (2026). Virtual. Bevy 0.19.1 API documentation. https://docs.rs/bevy/0.19.1/bevy/time/struct.Virtual.html (official documentation)
+- `godot2026-high-level-multiplayer` Godot Engine contributors (2026). High-level multiplayer. Godot Engine 4.7 documentation. https://docs.godotengine.org/en/4.7/tutorials/networking/high_level_multiplayer.html (official documentation)
 - `godot2026-command-line` Godot Engine contributors (2026). Command line tutorial. Godot Engine 4.7 documentation. https://docs.godotengine.org/en/4.7/tutorials/editor/command_line_tutorial.html (official documentation)
 - `unity2026-test-cli` Unity Technologies (2026). Run tests from the command line. Unity 6.3 (6000.3) documentation. https://docs.unity3d.com/6000.3/Documentation/Manual/test-framework/run-tests-from-command-line.html (official documentation)

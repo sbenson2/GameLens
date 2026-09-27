@@ -1,0 +1,15 @@
+{
+  "name": "game-development",
+  "description": "The game-development advisor skill as a Claude Code plugin.",
+  "owner": {
+    "name": "sbenson2",
+    "url": "https://github.com/sbenson2"
+  },
+  "plugins": [
+    {
+      "name": "game-development",
+      "source": "./",
+      "description": "Game development advisor for AI coding agents, with guidance traced to verified GDC Vault talks, peer-reviewed research and books."
+    }
+  ]
+}
