@@ -60,6 +60,22 @@ python3 tools/apply_findings.py                                  # exact-quote f
 
 Verdicts are `supported`, `overstated`, `wrong-detail`, `unsupported`, `misattributed` and `unverifiable`. A non-supported record carries the exact `quote` from the line and its `fix`. After applying the fixes, read each edited file in full to repair the prose, then run the checks below.
 
+### Behavior evals
+
+`evals/` holds a `claude plugin eval` suite that tests how agents use the skill, not what the references say:
+
+- **Trigger cases** (`trigger-*`, `skip-*`, tag `trigger`): prompts a developer would type that should load the skill, and near misses that share game vocabulary but are not game development. Graded by whether the `game-development` skill was invoked.
+- **Quality cases** (`quality-*`, tag `quality`): realistic questions run with and without the skill. They are graded by a rubric (`advice.md`, judged by a model) and by two registry-derived URL checks: the reply links at least one registered source, and it contains no URL outside the registry (recalled or constructed links fail).
+
+```bash
+tools/run_evals.sh trigger haiku --ablation none --runs 2     # stages a clean plugin copy, then runs
+tools/run_evals.sh quality sonnet --judge-model sonnet --runs 2
+python3 tools/summarize_evals.py                              # recall, false triggers, with/without pass rates
+python3 tools/eval_url_graders.py                             # after registry changes: rebuild the URL graders
+```
+
+Runs are isolated sessions with only this plugin loaded, so trigger rates are an upper bound: in a real setup, other installed skills compete for the same prompts. Each run is a full agent session billed at list price (or plan usage); pass `--max-cost-usd` to cap a suite.
+
 `verify_sources.py` proves a source exists as cited. It cannot prove a summary is faithful: that is the author's responsibility, recorded in `checked.content`. Captions can mistranscribe names and numbers; check anything exact against slides or a second source. The `research/` corpus (transcripts, Vault catalog, slides) is local research material: never commit or redistribute it.
 
 ## Writing reference files

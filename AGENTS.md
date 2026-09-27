@@ -19,8 +19,13 @@ tools/                       <- maintainer tooling, not shipped
   merge_fragments.py         <- merge draft registries (build/fragments/*.jsonl) into the registry
   audit_manifest.py          <- claim audit: every source with every line citing it; --coverage
   apply_findings.py          <- apply audit verdicts (exact-quote fixes, registry corrections)
+  run_evals.sh               <- behavior evals (claude plugin eval) against a staged plugin copy
+  summarize_evals.py         <- trigger recall / false triggers / with-vs-without pass rates
+  eval_url_graders.py        <- rebuild the registry-derived URL graders in evals/
   search_corpus.py           <- search the local research corpus
   gdc-corpus/                <- bulk corpus downloaders (yt-dlp, Vault crawler)
+evals/                       <- claude plugin eval suite: trigger and quality cases (results gitignored)
+.claude-plugin/plugin.json   <- plugin manifest (needed by claude plugin eval; also makes the repo a plugin)
 tests/                       <- python -m unittest discover -s tests
 research/                    <- local research corpus; gitignored, never commit or redistribute
 build/                       <- scratch for drafting; gitignored

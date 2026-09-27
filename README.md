@@ -70,6 +70,26 @@ python3 scripts/sources.py show fan2012-pvz
 
 No skill, source or test guarantees a good game. Treat design advice as hypotheses, and verify it with your own playtests.
 
+## Tested
+
+Behavior evals with `claude plugin eval`, run on 2026-09-26. Each run is an isolated session with only this skill installed, 2 runs per case, and the latest run per model:
+
+| | Haiku 4.5 | Sonnet 5 | Opus 5.5 |
+| --- | --- | --- | --- |
+| Skill loaded on 11 should-fire prompts (design questions, gameplay code, finding talks) | 100% | 100% | 100% |
+| Skill loaded on 10 near misses (game trivia, emulator setup, general web and backend code) | 0% | 0% | 0% |
+| Advice rubric passed, with vs. without the skill | 6/10 vs. 3/10 | 8/10 vs. 6/10 | 10/10 vs. 8/10 |
+| Replies linking a registered source | 2/10 | 8/10 | 10/10 |
+| Replies containing a URL outside the registry | 0/10 | 0/10 | 0/10 |
+
+How to read these results:
+- **Trigger rates are an upper bound.** In a real setup, other installed skills compete for the same prompts.
+- **Samples are small.** Each result comes from 2 runs per case.
+- **Advice was scored by a Sonnet judge** against written rubrics.
+- **Smaller models use the skill less faithfully:** Haiku improves its advice but rarely links its sources.
+
+`evals/` holds the suite. See CONTRIBUTING.md to run it.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the source policy, registry schema, writing standard and maintainer tools. The main checks:

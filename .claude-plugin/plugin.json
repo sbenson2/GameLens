@@ -1,0 +1,11 @@
+{
+  "name": "game-development",
+  "description": "Game development advisor for AI coding agents, with guidance traced to verified GDC Vault talks, peer-reviewed research and books.",
+  "version": "1.0.0",
+  "repository": "https://github.com/sbenson2/game-development",
+  "license": "MIT",
+  "author": {
+    "name": "sbenson2",
+    "url": "https://github.com/sbenson2"
+  }
+}

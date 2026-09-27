@@ -35,3 +35,6 @@ research/
 build/
 tools/.verify-cache/
 __pycache__/
+
+# Plugin eval results (claude plugin eval)
+evals/results/
