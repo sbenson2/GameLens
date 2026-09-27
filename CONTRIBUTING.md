@@ -62,7 +62,7 @@ Verdicts are `supported`, `overstated`, `wrong-detail`, `unsupported`, `misattri
 
 ### Behavior evals
 
-`evals/` holds a `claude plugin eval` suite that tests how agents use the skill, not what the references say:
+`evals/` holds cases that test how agents use the skill, not what the references say. They are written for `claude plugin eval`, and `tools/agent_evals.py` runs the same cases on other agents:
 
 - **Trigger cases** (`trigger-*`, `skip-*`, tag `trigger`): prompts a developer would type that should load the skill, and near misses that share game vocabulary but are not game development. Graded by whether the `game-development` skill was invoked.
 - **Quality cases** (`quality-*`, tag `quality`): realistic questions run with and without the skill. They are graded by a rubric (`advice.md`, judged by a model) and by two registry-derived URL checks: the reply links at least one registered source, and it contains no URL outside the registry (recalled or constructed links fail).
@@ -74,15 +74,27 @@ python3 tools/summarize_evals.py                              # recall, false tr
 python3 tools/eval_url_graders.py                             # after registry changes: rebuild the URL graders
 ```
 
-The same cases run against OpenAI Codex through promptfoo. It uses your Codex login and, per run, an empty `HOME` so that user-level skills stay hidden:
+Claude runs are isolated sessions with only this plugin loaded. Each run is a full agent session billed at list price (or plan usage); pass `--max-cost-usd` to cap a suite.
+
+`tools/agent_evals.py` runs the same cases against other agent CLIs, using only the Python standard library. Each run is a fresh session in a scratch directory outside this repository, initialized as its own git root, so the agent never sees this repo's AGENTS.md. The with-skill arm gets a copy of the skill in `.agents/skills`; the without-skill arm gets an empty directory. Profiles for Codex, opencode and Qwen Code hide user-level skills:
+
+- **Codex and opencode** get an empty home directory. Codex keeps your real `CODEX_HOME` for the login, so it still reads `~/.codex/AGENTS.md`.
+- **Qwen Code** gets a workspace setting that turns off user-level skills and pre-approves its skill tool, because headless runs cannot approve it.
+
+Rubrics are judged by Claude Code running Sonnet with no tools. `--judge` takes any other command that reads a prompt on stdin, and `--no-judge` skips the rubric.
 
 ```bash
-cd build/codex-eval && npm install promptfoo @openai/codex-sdk @anthropic-ai/claude-agent-sdk   # once
-python3 tools/codex_evals.py build && python3 tools/codex_evals.py run --repeat 2
-python3 tools/codex_evals.py summarize
+python3 tools/agent_evals.py run --agent codex --model gpt-6-sol --repeat 2 -- -c model_reasoning_effort=medium
+python3 tools/agent_evals.py run --agent opencode --model opencode-go/deepseek-v4.1-flash --repeat 2
+python3 tools/agent_evals.py run --agent qwen --suite trigger
+python3 tools/agent_evals.py run --agent codex --pointer AGENTS.md --suite quality    # skill reached through the README's pointer
+python3 tools/agent_evals.py run --cmd 'mycli --json -p {prompt}' --name mycli        # any CLI that prints its tool calls as JSON
+python3 tools/agent_evals.py summarize                                               # every run in build/agent-evals/
 ```
 
-Runs are isolated sessions with only this plugin loaded, so trigger rates are an upper bound: in a real setup, other installed skills compete for the same prompts. Each run is a full agent session billed at list price (or plan usage); pass `--max-cost-usd` to cap a suite.
+A run counts as loading the skill when the agent's JSON output shows it reading the skill's files or calling the skill by name. Should-fire runs stop as soon as the skill loads. The harness flags any run that loads a copy of the skill from outside its scratch directory. When it does, the arms are not independent and the results are invalid. With `--cmd`, remove other installed copies of the skill first.
+
+Trigger rates from isolated runs are an upper bound: in a real setup, other installed skills compete for the same prompts.
 
 `verify_sources.py` proves a source exists as cited. It cannot prove a summary is faithful: that is the author's responsibility, recorded in `checked.content`. Captions can mistranscribe names and numbers; check anything exact against slides or a second source. The `research/` corpus (transcripts, Vault catalog, slides) is local research material: never commit or redistribute it.
 

@@ -58,6 +58,14 @@ def alternation(entries):
     return '|'.join(patterns)
 
 
+def url_patterns(entries):
+    """The `cites` and `unlisted` patterns; valid in both JavaScript and Python."""
+    allowed = alternation(entries)
+    cites = r'https?:\/\/(?:' + allowed + ')'
+    unlisted = r'https?:\/\/(?!(?:' + allowed + r'))[^\s)\]>"' + "'" + r'`]+'
+    return cites, unlisted
+
+
 def grader(name, pattern, match=None):
     lines = ['---', 'type: regex', 'target: last_message', 'flags: i']
     if match:
@@ -72,9 +80,7 @@ def main():
     entries, errors = lib.load(lib.REGISTRY)
     if errors:
         raise SystemExit('\n'.join(errors))
-    allowed = alternation(entries)
-    cites = r'https?:\/\/(?:' + allowed + ')'
-    unlisted = r'https?:\/\/(?!(?:' + allowed + r'))[^\s)\]>"' + "'" + r'`]+'
+    cites, unlisted = url_patterns(entries)
     written = 0
     for prompt in sorted(EVALS.glob('*/prompt.md')):
         front = prompt.read_text().split('---')[1] if prompt.read_text().startswith('---') else ''
@@ -85,7 +91,7 @@ def main():
         (graders / 'cites-registry-source.md').write_text(grader('cites', cites))
         (graders / 'no-unlisted-urls.md').write_text(grader('unlisted', unlisted, 'not_contains'))
         written += 1
-    print(f"{allowed.count(chr(124)) + 1} alternatives; graders written to {written} quality cases")
+    print(f"{alternation(entries).count(chr(124)) + 1} alternatives; graders written to {written} quality cases")
     return 0
 
 

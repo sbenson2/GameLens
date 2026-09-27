@@ -59,7 +59,7 @@ Genres mix. Do not force a hybrid game into one template, or replace an establis
 - **Credit a source only with what the reference says next to its citation marker.** Uncited statements in the references are this skill's own reasoning: present them as reasoning, never under an author's name.
 - **Never invent a source, quotation, statistic or talk.** For a claim that the references do not cover, search for an admissible source as described in [sources](references/sources.md) and read it before citing. If you cannot, say the point is your reasoning or leave it out.
 - Keep a source's context attached. A lesson from one shipped game, a lab study with one population, or a genre convention is not a universal rule. When sources disagree, present both with their conditions.
-- Look up registered sources with `python3 scripts/sources.py find <words>` or `python3 scripts/sources.py show <id>` (use `python` if `python3` is unavailable). If you cannot run scripts, search the `## Sources` sections of the reference files instead. Do not open `references/sources.jsonl` directly; it is about 100,000 tokens.
+- Look up registered sources with `python3 scripts/sources.py find <words>` or `python3 scripts/sources.py show <id>`, where the script path is relative to this skill's directory (use `python` if `python3` is unavailable). If you cannot run scripts, search the `## Sources` sections of the reference files instead. Do not open `references/sources.jsonl` directly; it is about 100,000 tokens.
 
 ## Build
 

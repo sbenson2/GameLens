@@ -2,13 +2,15 @@
 
 A game development advisor skill for AI coding agents. It helps you design, diagnose and build games, and it traces its guidance to peer-reviewed research, GDC Vault talks and established books. Every source is cited so you can check it.
 
-The skill is named `game-development`. It follows the [Agent Skills](https://agentskills.io) format, so it works in Claude Code, Codex, opencode, Cursor and other agents that load skills.
+The skill is named `game-development` and follows the open [Agent Skills](https://agentskills.io) format. Agents that support skills load it on their own when a request calls for it. Any other agent that can read files can use it through a short pointer in its instructions file.
 
 ## Install
 
 ```bash
 npx skills add sbenson2/game-development
 ```
+
+The [skills CLI](https://github.com/vercel-labs/skills) supports 79 agents as of version 1.7.0, among them Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, opencode, Qwen Code, Windsurf, Cline, Goose, Amp and Warp. It asks which agents to install for. Use `-a <agent>` to name them, and `-g` to install for your user account instead of the current project.
 
 In Claude Code you can install it as a plugin instead:
 
@@ -19,14 +21,43 @@ In Claude Code you can install it as a plugin instead:
 
 Use one method, not both; with both, the skill loads twice.
 
-Or copy `skills/game-development` into your agent's skills directory:
+To install by hand, copy or symlink `skills/game-development` into a skills folder your agent reads. Many agents share `.agents/skills`:
 
-| Agent | Directory |
-| --- | --- |
-| Claude Code | `~/.claude/skills/` |
-| Codex, opencode | `~/.agents/skills/` |
+| Agent | Project folder | User folder |
+| --- | --- | --- |
+| Codex | `.agents/skills/` | `~/.agents/skills/` |
+| opencode | `.agents/skills/` | `~/.agents/skills/` or `~/.config/opencode/skills/` |
+| Qwen Code | `.agents/skills/` or `.qwen/skills/` | `~/.agents/skills/` or `~/.qwen/skills/` |
+| Cursor | `.agents/skills/` | `~/.cursor/skills/` |
+| GitHub Copilot | `.agents/skills/` | `~/.copilot/skills/` |
+| Gemini CLI | `.agents/skills/` | `~/.gemini/skills/` |
+| Cline, Warp, Zed | `.agents/skills/` | `~/.agents/skills/` |
+| Claude Code | `.claude/skills/` | `~/.claude/skills/` |
+| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` |
+| Goose | `.goose/skills/` | `~/.config/goose/skills/` |
+| Roo Code | `.roo/skills/` | `~/.roo/skills/` |
 
-The runtime script needs Python 3; nothing else is required.
+Folders for agents not tested here come from the skills CLI's agent list, which also covers the rest. Install the skill in one folder per agent; an agent that reads two folders may list the skill twice.
+
+The lookup script needs Python 3. Without it, the agent searches the source lists in the reference files instead.
+
+### Agents without skill support
+
+An agent that follows a project instructions file and can read files can use the skill through a pointer. Copy `skills/game-development` into your project as `docs/game-development`. Then add this to the instructions file the agent reads, such as `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, or a Cursor or Windsurf rule:
+
+```markdown
+## Game development
+
+When designing, reviewing or diagnosing a game, writing or changing gameplay code (player movement, jumps, cameras, combat, enemy AI, inventories, saves), or looking for GDC talks or research on a game-design question, first read `docs/game-development/SKILL.md` and follow it. Paths in it are relative to that folder. Skip it for tasks that only involve games in passing, such as game trivia, tool setup, or code that is not part of a game.
+```
+
+Aider works from the files you add to the chat. Add SKILL.md and the reference for your question as read-only files; the routing table in SKILL.md says which reference covers what:
+
+```bash
+aider --read docs/game-development/SKILL.md --read docs/game-development/references/game-feel.md
+```
+
+In a chat app that supports skills, such as Claude's apps, zip the `game-development` folder and upload it as a skill. In other chat apps, attach SKILL.md and the relevant references to the conversation.
 
 ## What it does
 
@@ -81,24 +112,36 @@ No skill, source or test guarantees a good game. Treat design advice as hypothes
 
 ## Tested
 
-Behavior evals from 2026-09-26. Claude models ran through `claude plugin eval` in isolated sessions with only this skill installed: 3 runs per trigger case and 4 per quality case in each arm. Codex (gpt-6-sol, medium reasoning) ran through promptfoo with user-level skills hidden: 2 runs per case.
+Behavior evals from 2026-09-26. Every agent ran the same cases from `evals/` in isolated sessions where this was the only skill available:
 
-| | Haiku 4.5 | Sonnet 5 | Opus 5.5 | Codex |
-| --- | --- | --- | --- | --- |
-| Skill loaded when it should (design questions, gameplay code, finding talks) | 32/33 | 33/33 | 33/33 | 22/22 |
-| Skill loaded on near misses (game trivia, emulator setup, general code) | 0/30 | 0/30 | 0/30 | 2/20 |
-| Advice rubric passed, with vs. without the skill | 13/20 vs. 5/20 | 20/20 vs. 9/20 | 20/20 vs. 16/20 | 10/10 vs. 9/10 |
-| Replies linking a registered source, with vs. without | 7/20 vs. 0/20 | 18/20 vs. 0/20 | 20/20 vs. 3/20 | 10/10 vs. 7/10 |
-| Replies with no link outside the registry, with vs. without | 19/20 vs. 19/20 | 20/20 vs. 20/20 | 20/20 vs. 19/20 | 8/10 vs. 4/10 |
+- **Claude Code** (Haiku 4.5, Sonnet 5, Opus 5.5) through `claude plugin eval`: 3 runs per trigger case and 4 per quality case in each arm.
+- **Codex** (gpt-6-sol, medium reasoning) and **opencode** (DeepSeek V4.1 Flash) through `tools/agent_evals.py`: 2 runs per case in each arm.
+
+| | Haiku 4.5 | Sonnet 5 | Opus 5.5 | Codex | opencode |
+| --- | --- | --- | --- | --- | --- |
+| Skill loaded when it should (design questions, gameplay code, finding talks) | 32/33 | 33/33 | 33/33 | 22/22 | 22/22 |
+| Skill loaded on near misses (game trivia, emulator setup, general code) | 0/30 | 0/30 | 0/30 | 0/20 | 3/20 |
+| Advice rubric passed, with vs. without the skill | 13/20 vs. 5/20 | 20/20 vs. 9/20 | 20/20 vs. 16/20 | 10/10 vs. 10/10 | 10/10 vs. 10/10 |
+| Replies linking a registered source, with vs. without | 7/20 vs. 0/20 | 18/20 vs. 0/20 | 20/20 vs. 3/20 | 10/10 vs. 4/10 | 10/10 vs. 2/10 |
+| Replies with no link outside the registry, with vs. without | 19/20 vs. 19/20 | 20/20 vs. 20/20 | 20/20 vs. 19/20 | 8/10 vs. 2/10 | 10/10 vs. 10/10 |
+
+The pointer for agents without skill support was tested the same way, 1 run per case. The skill was in `docs/game-development`, and the snippet above in AGENTS.md was the only way to find it:
+
+- **Codex and opencode** each read SKILL.md on 11/11 should-fire prompts and on 2/10 near misses.
+- **Quality questions:** replies linked a registered source 5/5 times, against 2/5 (Codex) and 1/5 (opencode) without the skill.
+
+Qwen Code 0.21.8 had a smoke test only: it lists the skill from `.agents/skills` and calls it on a game-feel question.
 
 How to read these results:
 - **Trigger rates are an upper bound.** In a real setup, other installed skills compete for the same prompts.
-- **Scoring:** advice was scored by a Sonnet judge against written rubrics.
+- **Scoring:** advice was scored by a Sonnet judge against written rubrics. Codex and opencode passed the rubrics with or without the skill; for them, the skill's effect shows in the sourcing rows.
 - **What the link check counts:** any URL not in the registry, including real pages the registry doesn't list. It measures unverified links, not broken ones.
-- **The near misses Codex loaded the skill on** were both a Blender-to-glTF export question.
+- **The near misses opencode loaded the skill on** were a Flask leaderboard bug (twice) and a Blender glTF export question (once).
+- **Other paths to sources:** in 2 of opencode's 10 with-skill quality runs, it used its built-in web search instead of the skill.
+- **The pointer's wording was revised once.** The first version named only what the skill is for, and opencode read the skill on 6 of 10 near misses. Adding what it is not for brought that to 2 of 10. The near-miss cases informed that change, so treat the pointer's rates as less independent than the others.
 - **Smaller models use the skill less faithfully:** Haiku improves its advice but links its sources less often.
 
-`evals/` holds the suite. See CONTRIBUTING.md to run it against Claude or Codex.
+`evals/` holds the suite. CONTRIBUTING.md explains how to run it against Claude Code or any other agent CLI.
 
 ## Contributing
 
